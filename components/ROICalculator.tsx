@@ -4,6 +4,7 @@ import { useMemo, useRef, useState } from "react";
 import { Section, Eyebrow, Heading, Lead, ButtonLink } from "./ui";
 import { Reveal } from "./Reveal";
 import { track } from "@/lib/site";
+import { useAnimatedNumber } from "@/lib/useAnimatedNumber";
 
 type Inputs = {
   employees: number;
@@ -76,6 +77,31 @@ function printSummary(v: Inputs, r: Results) {
     w.document.write(html);
     w.document.close();
   }
+}
+
+/** Radial progress ring — faster payback fills more of the ring. */
+function PaybackGauge({ months }: { months: number }) {
+  const capped = Number.isFinite(months) ? Math.min(24, Math.max(0, months)) : 24;
+  const fraction = 1 - capped / 24; // faster payback -> fuller ring
+  const animatedFraction = useAnimatedNumber(fraction, 700);
+  const r = 22;
+  const c = 2 * Math.PI * r;
+  return (
+    <svg viewBox="0 0 56 56" className="h-14 w-14 shrink-0 -rotate-90" aria-hidden="true">
+      <circle cx="28" cy="28" r={r} fill="none" stroke="rgba(255,255,255,0.12)" strokeWidth="5" />
+      <circle
+        cx="28" cy="28" r={r} fill="none" stroke="#6FABE3" strokeWidth="5" strokeLinecap="round"
+        strokeDasharray={c}
+        strokeDashoffset={c * (1 - animatedFraction)}
+      />
+    </svg>
+  );
+}
+
+/** Displays a currency/number value that eases toward changes instead of snapping. */
+function AnimatedStat({ value, format = fmt }: { value: number; format?: (n: number) => string }) {
+  const animated = useAnimatedNumber(value, 500);
+  return <>{format(animated)}</>;
 }
 
 function Field({
@@ -155,31 +181,34 @@ export default function ROICalculator() {
             <dl className="mt-6 space-y-5">
               <div className="flex items-baseline justify-between gap-4 border-b border-white/10 pb-4">
                 <dt className="text-sm text-ice-300">Estimated monthly labor savings</dt>
-                <dd className="font-display text-xl font-semibold text-steel-300">{fmt(r.monthlySavings)}</dd>
+                <dd className="font-display text-xl font-semibold text-steel-300"><AnimatedStat value={r.monthlySavings} /></dd>
               </div>
               <div className="flex items-baseline justify-between gap-4 border-b border-white/10 pb-4">
                 <dt className="text-sm text-ice-300">Estimated annual labor savings</dt>
-                <dd className="font-display text-xl font-semibold text-steel-300">{fmt(r.annualSavings)}</dd>
+                <dd className="font-display text-xl font-semibold text-steel-300"><AnimatedStat value={r.annualSavings} /></dd>
               </div>
               <div className="flex items-baseline justify-between gap-4 border-b border-white/10 pb-4">
                 <dt className="text-sm text-ice-300">Estimated monthly rework reduction</dt>
-                <dd className="font-display text-xl font-semibold text-steel-300">{fmt(r.reworkReduction)}</dd>
+                <dd className="font-display text-xl font-semibold text-steel-300"><AnimatedStat value={r.reworkReduction} /></dd>
               </div>
               <div className="flex items-baseline justify-between gap-4 border-b border-white/10 pb-4">
                 <dt className="text-sm text-ice-300">Hours returned to the organization / year</dt>
                 <dd className="font-display text-xl font-semibold text-steel-300">
-                  {Math.round(r.hoursReturned).toLocaleString()} hrs
+                  <AnimatedStat value={r.hoursReturned} format={(n) => `${Math.round(n).toLocaleString()} hrs`} />
                 </dd>
               </div>
               <div className="flex items-baseline justify-between gap-4 border-b border-white/10 pb-4">
                 <dt className="text-sm text-ice-300">Estimated annual financial opportunity</dt>
-                <dd className="font-display text-2xl font-semibold text-white">{fmt(r.annualTotal)}</dd>
+                <dd className="font-display text-2xl font-semibold text-white"><AnimatedStat value={r.annualTotal} /></dd>
               </div>
-              <div className="flex items-baseline justify-between gap-4">
-                <dt className="text-sm text-ice-300">Illustrative payback period</dt>
-                <dd className="font-display text-xl font-semibold text-steel-300">
-                  {Number.isFinite(r.paybackMonths) ? `${Math.max(1, Math.round(r.paybackMonths))} months` : "—"}
-                </dd>
+              <div className="flex items-center justify-between gap-4">
+                <div>
+                  <dt className="text-sm text-ice-300">Illustrative payback period</dt>
+                  <dd className="font-display text-xl font-semibold text-steel-300">
+                    {Number.isFinite(r.paybackMonths) ? `${Math.max(1, Math.round(r.paybackMonths))} months` : "—"}
+                  </dd>
+                </div>
+                <PaybackGauge months={r.paybackMonths} />
               </div>
             </dl>
             <p className="mt-6 text-xs leading-relaxed text-silver-400">

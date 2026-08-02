@@ -3,14 +3,22 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
-import { AlertCircle, ArrowRight, CheckCircle2, Target } from "lucide-react";
-import { industries } from "@/data/industries";
-import { services } from "@/data/services";
+import { AlertCircle, ArrowRight, CheckCircle2, Target, XCircle } from "lucide-react";
+import { industries as localIndustries } from "@/data/industries";
+import { services as localServices } from "@/data/services";
+import type { Industry } from "@/data/industries";
+import type { Service } from "@/data/services";
 import { Icon } from "./Icon";
 import { Section } from "./ui";
 import { track } from "@/lib/site";
 
-export default function IndustryExplorer() {
+export default function IndustryExplorer({
+  industries = localIndustries,
+  services = localServices,
+}: {
+  industries?: Industry[];
+  services?: Service[];
+}) {
   const [active, setActive] = useState(industries[0].slug);
   const current = industries.find((i) => i.slug === active) ?? industries[0];
 
@@ -21,6 +29,7 @@ export default function IndustryExplorer() {
     if (!hash || !industries.some((i) => i.slug === hash)) return;
     const id = requestAnimationFrame(() => setActive(hash));
     return () => cancelAnimationFrame(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- only ever needs to run on mount
   }, []);
 
   return (
@@ -68,6 +77,22 @@ export default function IndustryExplorer() {
               <div className="flex items-center gap-3">
                 <Icon name={current.icon} size={26} className="text-steel-600" />
                 <h2 className="font-display text-2xl font-semibold text-navy-900">{current.name}</h2>
+              </div>
+
+              {/* Before / after — the same "old way vs. with Catalyst" language as the homepage story */}
+              <div className="mt-6 grid gap-3 rounded-card border border-ice-200 bg-ice-50 p-1.5 sm:grid-cols-2">
+                <div className="rounded-[10px] bg-white p-4">
+                  <p className="flex items-center gap-1.5 text-[0.65rem] font-bold tracking-[0.18em] text-silver-500 uppercase">
+                    <XCircle size={13} className="text-danger/70" /> The old way
+                  </p>
+                  <p className="mt-2 text-sm leading-snug text-navy-700">{current.problems[0]}</p>
+                </div>
+                <div className="rounded-[10px] bg-navy-900 p-4">
+                  <p className="flex items-center gap-1.5 text-[0.65rem] font-bold tracking-[0.18em] text-steel-300 uppercase">
+                    <CheckCircle2 size={13} className="text-success" /> With Catalyst
+                  </p>
+                  <p className="mt-2 text-sm leading-snug text-white">{current.solutions[0]}</p>
+                </div>
               </div>
 
               <div className="mt-8 grid gap-8 md:grid-cols-3">

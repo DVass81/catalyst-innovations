@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Section, Eyebrow, Heading, Lead, HexFrame, StatusBadge, ButtonLink } from "@/components/ui";
 import { Reveal, RevealGroup, RevealItem } from "@/components/Reveal";
 import { Icon } from "@/components/Icon";
-import { products } from "@/data/products";
+import { getProducts } from "@/lib/cms";
 import CTABand from "@/components/CTABand";
 
 export const metadata: Metadata = {
@@ -11,7 +11,8 @@ export const metadata: Metadata = {
     "Catalyst Innovations' growing portfolio: procurement intelligence, Catalyst AI, manufacturing operations intelligence, supply-chain intelligence, and more — labeled honestly by development status.",
 };
 
-export default function PortfolioPage() {
+export default async function PortfolioPage() {
+  const products = await getProducts();
   return (
     <>
       <section className="relative overflow-hidden bg-navy-900 pb-20 pt-36 text-white">

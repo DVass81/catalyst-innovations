@@ -1,0 +1,36 @@
+name: Lighthouse CI
+
+# Informational only — reports scores as a PR comment / workflow summary,
+# never blocks merges or deploys. Tighten `assert` in lighthouserc.json
+# once baseline scores are known if you want it to start failing builds.
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+      - run: npm run build
+
+      - name: Run Lighthouse CI
+        uses: treosh/lighthouse-ci-action@v11
+        with:
+          urls: |
+            http://localhost:3000/
+            http://localhost:3000/solutions
+            http://localhost:3000/industries
+          startServerCommand: npm start
+          startServerReadyPattern: "Ready in"
+          uploadArtifacts: true
+          temporaryPublicStorage: true

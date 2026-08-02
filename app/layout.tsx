@@ -5,6 +5,8 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ScrollProgress from "@/components/ScrollProgress";
 import Analytics from "@/components/Analytics";
+import CommandPalette from "@/components/CommandPalette";
+import ErrorMonitoring from "@/components/ErrorMonitoring";
 import { site } from "@/lib/site";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
@@ -51,17 +53,22 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       className={`${geistSans.variable} ${geistMono.variable} ${sora.variable} ${grotesk.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
+        {/* Faint site-wide film grain — ties the whole site to the portal's material feel */}
+        <div aria-hidden="true" className="grain pointer-events-none fixed inset-0 z-[999] opacity-[0.025]" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }}
         />
-        <Navbar />
-        <ScrollProgress />
-        <Analytics />
-        <main id="main" className="flex-1">
-          {children}
-        </main>
-        <Footer />
+        <ErrorMonitoring>
+          <Navbar />
+          <ScrollProgress />
+          <Analytics />
+          <main id="main" className="flex-1">
+            {children}
+          </main>
+          <Footer />
+          <CommandPalette />
+        </ErrorMonitoring>
       </body>
     </html>
   );

@@ -6,6 +6,15 @@ import {
   AlertTriangle, ArrowDownRight, ArrowUpRight, Bell, Check, ShieldAlert, Sparkles, X,
 } from "lucide-react";
 import { track } from "@/lib/site";
+import { useAnimatedNumber } from "@/lib/useAnimatedNumber";
+
+const fmtSpend = (n: number) =>
+  n.toLocaleString("en-US", {
+    style: "currency",
+    currency: "USD",
+    notation: n >= 1_000_000 ? "compact" : "standard",
+    maximumFractionDigits: n >= 1_000_000 ? 2 : 0,
+  });
 
 /**
  * Demo Lab — interactive simulated product demonstrations.
@@ -38,14 +47,17 @@ const t = (widget: string, action: string) => track("demo_interaction", { widget
 /* ---------- 1. Procurement executive dashboard ---------- */
 
 const spendData = {
-  "This Month": { total: "$412,800", vsBudget: "-4.2%", open: 37, flagged: 3, bars: [62, 48, 71, 55, 80, 44, 66] },
-  "This Quarter": { total: "$1.24M", vsBudget: "+1.8%", open: 92, flagged: 7, bars: [55, 70, 63, 78, 52, 69, 74] },
-  "Year to Date": { total: "$3.86M", vsBudget: "-2.1%", open: 214, flagged: 11, bars: [68, 59, 75, 66, 81, 58, 72] },
+  "This Month": { totalNum: 412_800, vsBudget: "-4.2%", open: 37, flagged: 3, bars: [62, 48, 71, 55, 80, 44, 66] },
+  "This Quarter": { totalNum: 1_240_000, vsBudget: "+1.8%", open: 92, flagged: 7, bars: [55, 70, 63, 78, 52, 69, 74] },
+  "Year to Date": { totalNum: 3_860_000, vsBudget: "-2.1%", open: 214, flagged: 11, bars: [68, 59, 75, 66, 81, 58, 72] },
 } as const;
 
 export function ProcurementDashboard() {
   const [range, setRange] = useState<keyof typeof spendData>("This Month");
   const d = spendData[range];
+  const animatedTotal = useAnimatedNumber(d.totalNum, 600);
+  const animatedOpen = useAnimatedNumber(d.open, 500);
+  const animatedFlagged = useAnimatedNumber(d.flagged, 500);
   return (
     <WindowFrame title="Catalyst Procurement Intelligence — Executive Dashboard">
       <div className="flex flex-wrap gap-2" role="tablist" aria-label="Date range">
@@ -65,9 +77,9 @@ export function ProcurementDashboard() {
       </div>
       <div className="mt-5 grid gap-3 sm:grid-cols-4">
         {[
-          ["Total spend", d.total, d.vsBudget.startsWith("-") ? "under budget" : "over budget", d.vsBudget],
-          ["Open POs", String(d.open), "in workflow", ""],
-          ["Policy flags", String(d.flagged), "need review", ""],
+          ["Total spend", fmtSpend(animatedTotal), d.vsBudget.startsWith("-") ? "under budget" : "over budget", d.vsBudget],
+          ["Open POs", String(Math.round(animatedOpen)), "in workflow", ""],
+          ["Policy flags", String(Math.round(animatedFlagged)), "need review", ""],
           ["On-time delivery", "94.2%", "trailing 90 days", "+1.1%"],
         ].map(([label, value, sub, delta]) => (
           <div key={label} className="rounded-xl bg-white/5 p-4">

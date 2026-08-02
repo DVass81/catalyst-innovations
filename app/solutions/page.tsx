@@ -4,7 +4,7 @@ import { ArrowRight } from "lucide-react";
 import { Section, Eyebrow, Heading, Lead, HexFrame } from "@/components/ui";
 import { Reveal, RevealGroup, RevealItem } from "@/components/Reveal";
 import { Icon } from "@/components/Icon";
-import { services } from "@/data/services";
+import { getServices } from "@/lib/cms";
 import CTABand from "@/components/CTABand";
 
 export const metadata: Metadata = {
@@ -13,7 +13,8 @@ export const metadata: Metadata = {
     "Custom business software, practical AI and automation, procurement technology, manufacturing systems, supply-chain intelligence, and digital transformation consulting.",
 };
 
-export default function SolutionsPage() {
+export default async function SolutionsPage() {
+  const services = await getServices();
   return (
     <>
       <section className="bg-navy-900 pb-16 pt-36 text-white">

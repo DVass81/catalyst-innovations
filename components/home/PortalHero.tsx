@@ -75,7 +75,31 @@ const screenLines = [
   { text: "LAST SYSTEM UPDATE: 2009", dim: false },
 ];
 
+const easterEggLines = [
+  "nice click. nothing happens on old computers either.",
+  "still here? the future is three scrolls away.",
+  "you have unlocked: absolutely nothing. try scrolling instead.",
+  "C:\\OPS> whoami\n> a very patient visitor",
+];
+
 function OldComputer({ phase = 0 }: { phase?: number }) {
+  const [egg, setEgg] = useState<string | null>(null);
+  const eggIndex = useRef(0);
+  const eggTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  function onScreenClick() {
+    if (phase !== 0) return;
+    track("demo_interaction", { widget: "portal_crt", action: "click" });
+    setEgg(easterEggLines[eggIndex.current % easterEggLines.length]);
+    eggIndex.current += 1;
+    if (eggTimer.current) clearTimeout(eggTimer.current);
+    eggTimer.current = setTimeout(() => setEgg(null), 3600);
+  }
+
+  useEffect(() => () => {
+    if (eggTimer.current) clearTimeout(eggTimer.current);
+  }, []);
+
   return (
     <div className="relative w-[min(88vw,70svh,500px)]">
       {/* Monitor shell */}
@@ -86,8 +110,13 @@ function OldComputer({ phase = 0 }: { phase?: number }) {
             <span key={i} className="h-[10px] w-[2.5px] rounded-full bg-[#9a9585]" />
           ))}
         </div>
-        {/* Screen bezel */}
-        <div className="rounded-[13px] bg-[#8a8575] p-[2.5%] shadow-[inset_0_4px_10px_rgb(0_0_0/0.55)]">
+        {/* Screen bezel — clickable easter egg while idle */}
+        <button
+          type="button"
+          onClick={onScreenClick}
+          aria-label="It's just an old computer. Click if you're curious."
+          className={`block w-full appearance-none rounded-[13px] border-0 bg-[#8a8575] p-[2.5%] text-left shadow-[inset_0_4px_10px_rgb(0_0_0/0.55)] ${phase === 0 ? "cursor-pointer" : "cursor-default"}`}
+        >
           <div className="crt-flicker relative aspect-[4/3] overflow-hidden rounded-[10px] bg-[#04140a]">
             {/* Phosphor glow */}
             <div
@@ -129,8 +158,13 @@ function OldComputer({ phase = 0 }: { phase?: number }) {
               className="absolute inset-0"
               style={{ background: "linear-gradient(115deg, rgba(255,255,255,0.1) 0%, transparent 22%, transparent 78%, rgba(255,255,255,0.04) 100%)" }}
             />
+            {egg && (
+              <div className="absolute inset-x-[6%] bottom-[8%] rounded-[4px] border border-[#52c56d]/40 bg-[#04140a]/95 px-[4%] py-[3%] font-mono text-[clamp(0.42rem,1.9vw,0.68rem)] leading-snug whitespace-pre-line text-[#7ee694] shadow-[0_0_16px_rgba(82,197,109,0.25)]">
+                {egg}
+              </div>
+            )}
           </div>
-        </div>
+        </button>
         {/* Brand plate + power LED */}
         <div className="mt-[3%] flex items-center justify-between px-[2%]">
           <span className="font-mono text-[clamp(0.4rem,1.4vw,0.6rem)] font-bold tracking-[0.2em] text-[#6f6a5c]">

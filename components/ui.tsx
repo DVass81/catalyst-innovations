@@ -43,18 +43,30 @@ export function Section({
   className = "",
   id,
   dark = false,
+  seamTo,
 }: {
   children: ReactNode;
   className?: string;
   id?: string;
   dark?: boolean;
+  /** Hex color of the section that follows — draws a soft wave overlap into
+   *  it instead of a hard rectangular break. Rendered inside this section's
+   *  own background, so it never needs to guess what's behind it. */
+  seamTo?: string;
 }) {
   return (
     <section
       id={id}
-      className={`${dark ? "bg-navy-900 text-white" : ""} py-16 sm:py-24 ${className}`}
+      className={`relative ${dark ? "bg-navy-900 text-white" : ""} py-16 sm:py-24 ${className}`}
     >
       <div className="mx-auto max-w-6xl px-5 sm:px-8">{children}</div>
+      {seamTo && (
+        <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-10 translate-y-1/2 overflow-hidden sm:h-16">
+          <svg viewBox="0 0 1200 80" preserveAspectRatio="none" className="h-full w-full">
+            <path d="M0 40 C 200 80, 400 0, 600 32 C 800 64, 1000 8, 1200 40 L1200 80 L0 80 Z" fill={seamTo} />
+          </svg>
+        </div>
+      )}
     </section>
   );
 }

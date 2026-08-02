@@ -2,9 +2,11 @@
 
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { Section, Eyebrow, Heading, Lead, ButtonLink, HexFrame, HexDot, StatusBadge } from "../ui";
+import { Section, Eyebrow, Heading, Lead, ButtonLink, HexDot, StatusBadge } from "../ui";
 import { Reveal, RevealGroup, RevealItem } from "../Reveal";
 import { Icon } from "../Icon";
+import { DuotoneIcon } from "../DuotoneIcon";
+import { Spotlight } from "../Spotlight";
 import { services } from "@/data/services";
 import { products } from "@/data/products";
 import { industries } from "@/data/industries";
@@ -93,7 +95,7 @@ export function Problems() {
 /* ---------- Solutions overview ---------- */
 export function SolutionsOverview() {
   return (
-    <Section className="bg-white">
+    <Section className="bg-white" seamTo="#0a1628">
       <Reveal className="flex flex-wrap items-end justify-between gap-6">
         <div>
           <Eyebrow>Solutions</Eyebrow>
@@ -106,21 +108,21 @@ export function SolutionsOverview() {
       <RevealGroup className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {services.map((s) => (
           <RevealItem key={s.slug}>
-            <Link
-              href={`/solutions/${s.slug}`}
-              className="group flex h-full flex-col rounded-card border border-ice-200 bg-ice-50 p-6 transition-all duration-200 hover:-translate-y-1 hover:border-steel-400/50 hover:shadow-card"
-            >
-              <HexFrame>
-                <Icon name={s.icon} />
-              </HexFrame>
-              <h3 className="mt-4 font-display text-[1.02rem] font-semibold leading-snug text-navy-900">
-                {s.navLabel}
-              </h3>
-              <p className="mt-2 flex-1 text-sm leading-relaxed text-navy-700">{s.tagline}</p>
-              <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-steel-600 group-hover:gap-2 transition-all">
-                Learn more <ArrowRight size={15} />
-              </span>
-            </Link>
+            <Spotlight className="h-full rounded-card">
+              <Link
+                href={`/solutions/${s.slug}`}
+                className="group flex h-full flex-col rounded-card border border-ice-200 bg-ice-50 p-6 transition-all duration-200 hover:-translate-y-1 hover:border-steel-400/50 hover:shadow-card"
+              >
+                <DuotoneIcon name={s.icon} size={30} />
+                <h3 className="mt-4 font-display text-[1.02rem] font-semibold leading-snug text-navy-900">
+                  {s.navLabel}
+                </h3>
+                <p className="mt-2 flex-1 text-sm leading-relaxed text-navy-700">{s.tagline}</p>
+                <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-steel-600 group-hover:gap-2 transition-all">
+                  Learn more <ArrowRight size={15} />
+                </span>
+              </Link>
+            </Spotlight>
           </RevealItem>
         ))}
       </RevealGroup>
@@ -149,20 +151,22 @@ export function PortfolioPreview() {
       <RevealGroup className="mt-12 grid gap-6 lg:grid-cols-3">
         {featured.map((p) => (
           <RevealItem key={p.slug} className="h-full">
-            <div className="flex h-full flex-col rounded-card border border-ice-200 bg-white p-7 shadow-card">
-              <div className="flex items-center justify-between gap-3">
-                <HexFrame><Icon name={p.icon} /></HexFrame>
-                <StatusBadge status={p.status} />
+            <Spotlight className="h-full rounded-card">
+              <div className="flex h-full flex-col rounded-card border border-ice-200 bg-white p-7 shadow-card">
+                <div className="flex items-center justify-between gap-3">
+                  <DuotoneIcon name={p.icon} size={30} />
+                  <StatusBadge status={p.status} />
+                </div>
+                <h3 className="mt-5 font-display text-lg font-semibold text-navy-900">{p.name}</h3>
+                <p className="mt-3 flex-1 text-sm leading-relaxed text-navy-700">{p.summary}</p>
+                <Link
+                  href="/portfolio"
+                  className="mt-5 inline-flex items-center gap-1 text-sm font-medium text-steel-600 hover:gap-2 transition-all"
+                >
+                  Explore <ArrowRight size={15} />
+                </Link>
               </div>
-              <h3 className="mt-5 font-display text-lg font-semibold text-navy-900">{p.name}</h3>
-              <p className="mt-3 flex-1 text-sm leading-relaxed text-navy-700">{p.summary}</p>
-              <Link
-                href="/portfolio"
-                className="mt-5 inline-flex items-center gap-1 text-sm font-medium text-steel-600 hover:gap-2 transition-all"
-              >
-                Explore <ArrowRight size={15} />
-              </Link>
-            </div>
+            </Spotlight>
           </RevealItem>
         ))}
       </RevealGroup>
@@ -211,7 +215,7 @@ export function MethodPreview() {
 /* ---------- Industries preview ---------- */
 export function IndustriesPreview() {
   return (
-    <Section className="bg-white">
+    <Section className="bg-white" seamTo="#050b16">
       <Reveal>
         <Eyebrow>Industries</Eyebrow>
         <Heading>Designed to support the organizations that keep the economy moving.</Heading>
@@ -264,7 +268,7 @@ export function Outcomes() {
 /* ---------- Founders preview ---------- */
 export function FoundersPreview() {
   return (
-    <Section dark>
+    <Section dark seamTo="#ffffff">
       <Reveal className="text-center">
         <Eyebrow dark>Meet the founders</Eyebrow>
         <Heading dark>Built by people who understand both the work and the technology.</Heading>

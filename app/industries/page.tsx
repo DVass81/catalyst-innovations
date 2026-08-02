@@ -3,6 +3,7 @@ import { Eyebrow, Heading, Lead } from "@/components/ui";
 import { Reveal } from "@/components/Reveal";
 import IndustryExplorer from "@/components/IndustryExplorer";
 import CTABand from "@/components/CTABand";
+import { getIndustries, getServices } from "@/lib/cms";
 
 export const metadata: Metadata = {
   title: "Industries — Solutions Designed to Support Real Operations",
@@ -10,7 +11,8 @@ export const metadata: Metadata = {
     "Solutions designed to support manufacturing, financial institutions, credit unions, logistics, construction, contractors, professional services, nonprofits, and growing businesses.",
 };
 
-export default function IndustriesPage() {
+export default async function IndustriesPage() {
+  const [industries, services] = await Promise.all([getIndustries(), getServices()]);
   return (
     <>
       <section className="bg-navy-900 pb-16 pt-36 text-white">
@@ -25,7 +27,7 @@ export default function IndustriesPage() {
           </Reveal>
         </div>
       </section>
-      <IndustryExplorer />
+      <IndustryExplorer industries={industries} services={services} />
       <CTABand
         title="Don't see your industry?"
         body="If your organization has processes, paperwork, and people — we can probably help. Tell us what you run."

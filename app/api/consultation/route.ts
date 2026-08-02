@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { consultationSchema } from "@/lib/consultation";
+import { scoreLead } from "@/lib/leadScoring";
 
 /**
  * Consultation form endpoint.
@@ -55,8 +56,11 @@ export async function POST(req: NextRequest) {
 
   const submission = { ...parsed.data };
   delete submission.website;
+  const { score: leadScore, tier: leadTier } = scoreLead(parsed.data);
   const payload = {
     ...submission,
+    leadScore,
+    leadTier,
     submittedAt: new Date().toISOString(),
     source: "catalyst-innovations-website",
   };
@@ -98,7 +102,7 @@ export async function POST(req: NextRequest) {
           from: process.env.CONSULTATION_FROM_EMAIL ?? "Catalyst Website <onboarding@resend.dev>",
           to: [toEmail],
           reply_to: payload.email,
-          subject: `New ${payload.inquiryType.toLowerCase()} — ${payload.name} (${payload.company})`,
+          subject: `[${leadTier}] New ${payload.inquiryType.toLowerCase()} — ${payload.name} (${payload.company})`,
           text,
         }),
       });
