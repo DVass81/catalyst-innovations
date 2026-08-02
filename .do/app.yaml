@@ -1,0 +1,56 @@
+# DigitalOcean App Platform spec.
+# Import this in the App Platform "Create App" wizard (Edit Your App Spec)
+# or via: doctl apps create --spec .do/app.yaml
+# Docs: https://docs.digitalocean.com/products/app-platform/reference/app-spec/
+
+name: catalyst-innovations
+region: nyc
+services:
+  - name: web
+    github:
+      repo: DVass81/catalyst-innovations
+      branch: main
+      deploy_on_push: true
+    build_command: npm run build
+    run_command: npm start
+    environment_slug: node-js
+    instance_size_slug: apps-s-1vcpu-0.5gb
+    instance_count: 1
+    http_port: 3000
+    envs:
+      - key: NODE_ENV
+        value: production
+      # Set these to real values in the App Platform dashboard
+      # (Settings -> web -> Environment Variables) before or after first deploy.
+      - key: NEXT_PUBLIC_SITE_URL
+        value: https://catalyst-innovations.example.com
+        scope: RUN_AND_BUILD_TIME
+      - key: NEXT_PUBLIC_CONTACT_EMAIL
+        value: ""
+        scope: RUN_AND_BUILD_TIME
+      - key: NEXT_PUBLIC_CONTACT_PHONE
+        value: ""
+        scope: RUN_AND_BUILD_TIME
+      - key: NEXT_PUBLIC_SCHEDULING_URL
+        value: ""
+        scope: RUN_AND_BUILD_TIME
+      - key: NEXT_PUBLIC_PLAUSIBLE_DOMAIN
+        value: ""
+        scope: RUN_AND_BUILD_TIME
+      - key: NEXT_PUBLIC_GA_ID
+        value: ""
+        scope: RUN_AND_BUILD_TIME
+      - key: CONSULTATION_WEBHOOK_URL
+        value: ""
+        type: SECRET
+        scope: RUN_TIME
+      - key: RESEND_API_KEY
+        value: ""
+        type: SECRET
+        scope: RUN_TIME
+      - key: CONSULTATION_TO_EMAIL
+        value: ""
+        scope: RUN_TIME
+      - key: CONSULTATION_FROM_EMAIL
+        value: ""
+        scope: RUN_TIME
