@@ -43,6 +43,8 @@ npm start       # serve the production build
 | `NEXT_PUBLIC_SCHEDULING_URL` | Calendly-style link shown on the form confirmation screen |
 | `NEXT_PUBLIC_PLAUSIBLE_DOMAIN` | Set to your domain → Plausible analytics activates |
 | `NEXT_PUBLIC_GA_ID` | Set to `G-…` → GA4 activates (anonymized IPs) |
+| `NEXT_PUBLIC_SANITY_PROJECT_ID` + `NEXT_PUBLIC_SANITY_DATASET` | Set both → Solutions/Industries/Portfolio pages fetch live content instead of `data/*.ts` (see `lib/cms.ts` for the expected schema) |
+| `NEXT_PUBLIC_ERROR_WEBHOOK_URL` | Any JSON-accepting endpoint → production errors POST there instead of only logging to console |
 
 With no delivery vars set, form submissions log to the server console (dev mode).
 All site events flow through `window.ciTrack` and forward automatically to any
@@ -63,17 +65,48 @@ app/            routes (home, solutions[+8 slugs], industries, portfolio, method
                 demo-lab, portal, privacy, terms, accessibility, api/consultation)
 components/     Navbar, Footer, Logo, ui primitives, Reveal (motion), CTABand,
                 ROICalculator, Assessment, ConsultationForm, DemoLab, IndustryExplorer,
-                home/ (Hero, StoryTransform scroll story, HomeSections)
+                CommandPalette (Ctrl+K search), Spotlight (cursor-reactive card glow),
+                DuotoneIcon, HexPortrait, ErrorMonitoring,
+                home/ (PortalHero teleport intro, StoryTransform, DayStory,
+                MethodJourney, EditorialBreak, Epilogue, HomeSections)
 data/           editable content: services.ts, industries.ts, products.ts, content.ts
-lib/            site.ts (config + analytics hook), consultation.ts (zod schema)
+lib/            site.ts (config + analytics hook), consultation.ts (zod schema),
+                cms.ts (optional Sanity layer), leadScoring.ts, useAnimatedNumber.ts
+.github/        workflows/lighthouse.yml — informational Lighthouse CI on every push/PR
 ```
 
 ## Content editing guide
 
 All copy lives in `data/*.ts` — services, industries, portfolio products (with
 honest status labels), method stages, founder bios, insights, FAQs, differentiators.
-Edit those files; no component changes needed. The structure is deliberately
-CMS-ready: each file maps 1:1 to a future headless-CMS collection.
+Edit those files; no component changes needed.
+
+**Optional live CMS**: `lib/cms.ts` fetches from Sanity when
+`NEXT_PUBLIC_SANITY_PROJECT_ID`/`NEXT_PUBLIC_SANITY_DATASET` are set (currently
+wired into the Solutions, Industries, and Portfolio pages), falling back to the
+local data files instantly on any fetch failure or when unconfigured — a broken
+CMS can never take the site down. The homepage preview sections and Demo Lab
+still read the local files directly; extend the same pattern there if needed.
+
+## Command palette
+
+Press **Ctrl+K** (or click "Search" in the bottom-right corner) anywhere on the
+site to fuzzy-search Solutions, Industries, Portfolio, and published Insights.
+Client-side only, no backend — see `components/CommandPalette.tsx`.
+
+## Lead scoring
+
+Every consultation submission gets a transparent 0–11 point score (timeline +
+company size + budget + inquiry type — see `lib/leadScoring.ts`) and a Hot /
+Warm / Standard tier included in the webhook payload and the email subject
+line, so a full inbox can be triaged at a glance.
+
+## Error monitoring
+
+Dependency-free (`components/ErrorMonitoring.tsx`): a React error boundary plus
+global `window.onerror` / `unhandledrejection` listeners. Set
+`NEXT_PUBLIC_ERROR_WEBHOOK_URL` to any JSON-accepting endpoint to receive
+production errors; without it, they just go to server/browser console logs.
 
 ## Analytics
 
@@ -124,9 +157,13 @@ Any Node host works. Vercel is simplest:
 
 ## QA summary (last verified)
 
-- `npm run build`: ✅ 31 routes, zero TypeScript errors
+- `npm run build`: ✅ 40 routes, zero TypeScript errors
 - `npm run lint`: ✅ zero warnings/errors
 - API: ✅ valid submission returns `{ok:true}`; malformed returns 400 with field issues
 - Accessibility: skip link, focus states, labels/errors, reduced-motion fallbacks,
   keyboard-reachable menus/accordions, non-color status badges
 - All demo data clearly labeled fictional; portfolio labeled by honest dev status
+- Command palette, cursor-spotlight cards, ROI payback gauge, and both CRT
+  click easter eggs verified interactively (browser automation), no console errors
+- DigitalOcean App Platform: deploys as a Web Service (Node), auto-deploy on
+  push to `main` enabled — see `.do/app.yaml`
