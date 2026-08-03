@@ -4,6 +4,7 @@ import path from "node:path";
 import { Section, Eyebrow, Heading, Lead, ButtonLink, HexDot } from "@/components/ui";
 import { Reveal, RevealGroup, RevealItem } from "@/components/Reveal";
 import HexPortrait from "@/components/HexPortrait";
+import EmailLink from "@/components/EmailLink";
 import { founders, partnershipStatement } from "@/data/content";
 import CTABand from "@/components/CTABand";
 
@@ -80,6 +81,7 @@ export default function FoundersPage() {
                   <h2 className="font-display text-2xl font-semibold text-navy-900 sm:text-3xl">{f.name}</h2>
                   <p className="mt-1 font-medium text-steel-600">{f.role}</p>
                   <p className="mt-1 text-sm text-silver-500">{f.years} of experience</p>
+                  <EmailLink email={f.email} context={f.slug} className="mt-3" />
                   <p className="mt-5 leading-relaxed text-navy-800">{f.bio}</p>
                   <p className="mt-4 border-l-2 border-steel-400 pl-4 text-sm italic leading-relaxed text-navy-700">
                     {f.summary}

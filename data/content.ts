@@ -100,6 +100,7 @@ export const founders = [
   {
     slug: "daniel-vass",
     name: "Daniel Vass",
+    email: "daniel@mycatalystinnovations.com",
     role: "Co-Founder | Operations, Manufacturing & Business Transformation",
     years: "~20 years",
     summary:
@@ -121,6 +122,7 @@ export const founders = [
   {
     slug: "josh-ogle",
     name: "Josh Ogle",
+    email: "josh@mycatalystinnovations.com",
     role: "Co-Founder | Technology, Systems & Product Development",
     years: "~15 years U.S. Army + technology",
     summary:

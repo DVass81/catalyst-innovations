@@ -3,8 +3,10 @@ import Link from "next/link";
 import { ArrowRight, Mail, MapPin, MessageSquare } from "lucide-react";
 import { Section, Eyebrow, Heading, Lead, ButtonLink } from "@/components/ui";
 import { Reveal, RevealGroup, RevealItem } from "@/components/Reveal";
+import EmailLink from "@/components/EmailLink";
 import { site } from "@/lib/site";
 import { inquiryTypes } from "@/lib/consultation";
+import { founders } from "@/data/content";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -59,19 +61,15 @@ export default function ContactPage() {
                   <MapPin size={18} className="mt-0.5 shrink-0 text-steel-600" />
                   <span>{site.location}</span>
                 </li>
-                <li className="flex items-start gap-3">
-                  <Mail size={18} className="mt-0.5 shrink-0 text-steel-600" />
-                  {site.contactEmail ? (
-                    <a href={`mailto:${site.contactEmail}`} className="text-steel-600 underline-offset-2 hover:underline">
-                      {site.contactEmail}
-                    </a>
-                  ) : (
-                    <span className="text-silver-500 italic">
-                      Business email coming soon — use the consultation form and we&apos;ll
-                      respond directly.
+                {founders.map((f) => (
+                  <li key={f.slug} className="flex items-start gap-3">
+                    <Mail size={18} className="mt-0.5 shrink-0 text-steel-600" />
+                    <span>
+                      <span className="block text-navy-900">{f.name}</span>
+                      <EmailLink email={f.email} context={`contact_page_${f.slug}`} />
                     </span>
-                  )}
-                </li>
+                  </li>
+                ))}
               </ul>
               <ButtonLink href="/consultation" className="mt-8 w-full">
                 Request a Consultation

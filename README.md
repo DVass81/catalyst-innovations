@@ -136,7 +136,8 @@ steel blue, silver, ice) live in `app/globals.css`.
 - [ ] Official brand color values, if different from extracted ones
 - [ ] Daniel's and Josh's professional headshots (`/founders`, home founders section)
 - [ ] Founder biographies approved for publication (current copy is draft-accurate)
-- [ ] Official business email / phone (set env vars)
+- [x] Founder emails set (daniel@mycatalystinnovations.com, josh@mycatalystinnovations.com — `data/content.ts`, shown on `/founders` and `/contact`)
+- [ ] Official business phone (set `NEXT_PUBLIC_CONTACT_PHONE`)
 - [ ] Business address (if public) and social account URLs (footer)
 - [ ] Domain name → set `NEXT_PUBLIC_SITE_URL`
 - [ ] Legal review of Privacy / Terms / Accessibility placeholder pages
