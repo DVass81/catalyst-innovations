@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { Section, Eyebrow, Heading, Lead, ButtonLink } from "@/components/ui";
 import { Reveal, RevealGroup, RevealItem } from "@/components/Reveal";
 import { differentiators } from "@/data/content";
 import CTABand from "@/components/CTABand";
 import AboutTimeline from "@/components/AboutTimeline";
+import { founderPhoto } from "@/lib/founderPhoto";
 
 export const metadata: Metadata = {
   title: "About — Operational Experience Meets Modern Technology",
@@ -14,6 +16,7 @@ export const metadata: Metadata = {
 };
 
 export default function AboutPage() {
+  const togetherPhoto = founderPhoto("together");
   return (
     <>
       <section className="relative overflow-hidden bg-navy-900 pb-20 pt-36 text-white">
@@ -68,21 +71,36 @@ export default function AboutPage() {
           </Reveal>
         </div>
 
-        <Reveal className="mt-16 max-w-3xl">
-          <Heading as="h3">We don&apos;t force customers into a rigid product.</Heading>
-          <Lead>
-            We study how the business operates, identify opportunities, and build practical
-            solutions around the client&apos;s needs. Both founders are family men building
-            Catalyst Innovations around trust, integrity, accountability, long-term
-            relationships, and meaningful work.
-          </Lead>
-          <Link
-            href="/founders"
-            className="mt-6 inline-flex items-center gap-2 font-medium text-steel-600 hover:underline"
-          >
-            Meet Daniel and Josh <ArrowRight size={16} />
-          </Link>
-        </Reveal>
+        <div className="mt-16 grid items-center gap-10 lg:grid-cols-[1.1fr_1fr]">
+          <Reveal>
+            <Heading as="h3">We don&apos;t force customers into a rigid product.</Heading>
+            <Lead>
+              We study how the business operates, identify opportunities, and build practical
+              solutions around the client&apos;s needs. Both founders are family men building
+              Catalyst Innovations around trust, integrity, accountability, long-term
+              relationships, and meaningful work.
+            </Lead>
+            <Link
+              href="/founders"
+              className="mt-6 inline-flex items-center gap-2 font-medium text-steel-600 hover:underline"
+            >
+              Meet Daniel and Josh <ArrowRight size={16} />
+            </Link>
+          </Reveal>
+          {togetherPhoto && (
+            <Reveal delay={0.1}>
+              <div className="relative aspect-[1284/407] overflow-hidden rounded-card shadow-card lg:aspect-[4/3]">
+                <Image
+                  src={togetherPhoto}
+                  alt="Daniel Vass and Josh Ogle, co-founders of Catalyst Innovations"
+                  fill
+                  sizes="(min-width: 1024px) 480px, 100vw"
+                  className="object-cover"
+                />
+              </div>
+            </Reveal>
+          )}
+        </div>
       </Section>
 
       <Section className="bg-white">

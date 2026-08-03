@@ -1,27 +1,17 @@
 import type { Metadata } from "next";
-import fs from "node:fs";
-import path from "node:path";
+import Image from "next/image";
 import { Section, Eyebrow, Heading, Lead, ButtonLink, HexDot } from "@/components/ui";
 import { Reveal, RevealGroup, RevealItem } from "@/components/Reveal";
 import HexPortrait from "@/components/HexPortrait";
 import EmailLink from "@/components/EmailLink";
 import { founders, partnershipStatement } from "@/data/content";
 import CTABand from "@/components/CTABand";
-
-/** Drop headshots into /public/founders/<slug>.jpg — picked up automatically. */
-function photoFor(slug: string): string | null {
-  for (const ext of ["jpg", "jpeg", "png", "webp"]) {
-    if (fs.existsSync(path.join(process.cwd(), "public", "founders", `${slug}.${ext}`))) {
-      return `/founders/${slug}.${ext}`;
-    }
-  }
-  return null;
-}
+import { founderPhoto as photoFor } from "@/lib/founderPhoto";
 
 export const metadata: Metadata = {
   title: "Founders — Daniel Vass & Josh Ogle",
   description:
-    "Daniel Vass brings ~20 years of manufacturing, procurement, and operations leadership. Josh Ogle brings ~15 years of U.S. Army service plus technology and product development expertise.",
+    "Daniel Vass brings ~20 years of manufacturing, procurement, and operations leadership. Josh Ogle brings ~10 years of U.S. Army service plus technology and product development expertise.",
 };
 
 const personSchema = founders.map((f) => ({
@@ -33,6 +23,7 @@ const personSchema = founders.map((f) => ({
 }));
 
 export default function FoundersPage() {
+  const togetherPhoto = photoFor("together");
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }} />
@@ -105,18 +96,33 @@ export default function FoundersPage() {
           ))}
         </div>
 
-        <Reveal className="mt-16 rounded-card bg-navy-900 p-10 text-center text-white">
-          <p className="font-display text-xl font-medium italic sm:text-2xl">
-            &ldquo;{partnershipStatement}&rdquo;
-          </p>
-          <p className="mx-auto mt-5 max-w-2xl text-ice-300">
-            Complementary capabilities: Daniel understands operational pain, purchasing,
-            manufacturing, process improvement, business value, and customer needs. Josh
-            understands technology, development, systems, security, implementation, and
-            technical execution.
-          </p>
-          <div className="mt-8">
-            <ButtonLink href="/consultation">Start a conversation with us</ButtonLink>
+        <Reveal className="mt-16 overflow-hidden rounded-card bg-navy-900 text-center text-white">
+          {togetherPhoto && (
+            <div className="relative aspect-[1284/407] w-full">
+              <Image
+                src={togetherPhoto}
+                alt="Daniel Vass and Josh Ogle, co-founders of Catalyst Innovations"
+                fill
+                sizes="(min-width: 1024px) 900px, 100vw"
+                className="object-cover"
+                priority={false}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-navy-900 via-navy-900/10 to-transparent" />
+            </div>
+          )}
+          <div className="p-10">
+            <p className="font-display text-xl font-medium italic sm:text-2xl">
+              &ldquo;{partnershipStatement}&rdquo;
+            </p>
+            <p className="mx-auto mt-5 max-w-2xl text-ice-300">
+              Complementary capabilities: Daniel understands operational pain, purchasing,
+              manufacturing, process improvement, business value, and customer needs. Josh
+              understands technology, development, systems, security, implementation, and
+              technical execution.
+            </p>
+            <div className="mt-8">
+              <ButtonLink href="/consultation">Start a conversation with us</ButtonLink>
+            </div>
           </div>
         </Reveal>
       </Section>

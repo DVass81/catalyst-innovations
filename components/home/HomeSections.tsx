@@ -41,7 +41,7 @@ export function Credibility() {
         <RevealGroup className="grid grid-cols-2 gap-4">
           {[
             ["20+", "years of manufacturing, procurement & operations experience"],
-            ["15", "years of U.S. Army leadership & technology discipline"],
+            ["10", "years of U.S. Army leadership & technology discipline"],
             ["6", "stage method from discovery to continuous improvement"],
             ["1", "goal: measurable business results"],
           ].map(([n, t]) => (

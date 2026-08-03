@@ -124,10 +124,10 @@ export const founders = [
     name: "Josh Ogle",
     email: "josh@mycatalystinnovations.com",
     role: "Co-Founder | Technology, Systems & Product Development",
-    years: "~15 years U.S. Army + technology",
+    years: "~10 years U.S. Army + technology",
     summary:
       "Josh combines military leadership with modern technology expertise to turn complex operational requirements into secure, practical, scalable systems.",
-    bio: "Josh brings approximately 15 years of United States Army experience along with information technology, systems, product-development, and software expertise. He brings structured execution, technical knowledge, discipline, and a mission-oriented approach to building reliable solutions.",
+    bio: "Josh brings approximately 10 years of United States Army experience along with information technology, systems, product-development, and software expertise. He brings structured execution, technical knowledge, discipline, and a mission-oriented approach to building reliable solutions.",
     expertise: [
       "Technology strategy & information systems",
       "Product development & software architecture",
