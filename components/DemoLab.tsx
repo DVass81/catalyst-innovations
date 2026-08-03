@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import { track } from "@/lib/site";
 import { useAnimatedNumber } from "@/lib/useAnimatedNumber";
+import ProductWindow from "./ProductWindow";
 
 const fmtSpend = (n: number) =>
   n.toLocaleString("en-US", {
@@ -25,20 +26,9 @@ const fmtSpend = (n: number) =>
 
 function WindowFrame({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="overflow-hidden rounded-card border border-white/12 bg-navy-850 shadow-card-dark">
-      <div className="flex items-center gap-2 border-b border-white/10 bg-navy-900 px-4 py-2.5">
-        <span className="flex gap-1.5" aria-hidden="true">
-          <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
-          <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
-          <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
-        </span>
-        <span className="ml-2 text-xs font-medium text-ice-300">{title}</span>
-        <span className="ml-auto rounded bg-warning/20 px-2 py-0.5 text-[0.6rem] font-bold text-warning">
-          FICTIONAL DEMO DATA
-        </span>
-      </div>
-      <div className="p-5 sm:p-6">{children}</div>
-    </div>
+    <ProductWindow title={title} badge="FICTIONAL DEMO DATA">
+      {children}
+    </ProductWindow>
   );
 }
 

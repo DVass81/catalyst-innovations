@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { LogoLockup } from "./Logo";
+import ThemeToggle from "./ThemeToggle";
 import { navLinks, track } from "@/lib/site";
 
 export default function Navbar() {
@@ -76,26 +77,30 @@ export default function Navbar() {
               </Link>
             );
           })}
+          <ThemeToggle className="ml-2" />
           <Link
             href="/consultation"
             onClick={() => track("cta_consultation_click", { location: "navbar" })}
-            className="ml-3 inline-flex min-h-[44px] items-center rounded-lg bg-steel-400 px-5 text-[0.86rem] font-semibold text-white transition-colors hover:bg-steel-500"
+            className="ml-1 inline-flex min-h-[44px] items-center rounded-lg bg-steel-400 px-5 text-[0.86rem] font-semibold text-white transition-colors hover:bg-steel-500"
           >
             Request a Consultation
           </Link>
         </div>
 
         {/* Mobile toggle */}
-        <button
-          type="button"
-          className="inline-flex h-11 w-11 items-center justify-center rounded-lg text-white lg:hidden"
-          aria-expanded={open}
-          aria-controls="mobile-menu"
-          aria-label={open ? "Close menu" : "Open menu"}
-          onClick={() => setOpen((v) => !v)}
-        >
-          {open ? <X size={26} /> : <Menu size={26} />}
-        </button>
+        <div className="flex items-center gap-1 lg:hidden">
+          <ThemeToggle />
+          <button
+            type="button"
+            className="inline-flex h-11 w-11 items-center justify-center rounded-lg text-white"
+            aria-expanded={open}
+            aria-controls="mobile-menu"
+            aria-label={open ? "Close menu" : "Open menu"}
+            onClick={() => setOpen((v) => !v)}
+          >
+            {open ? <X size={26} /> : <Menu size={26} />}
+          </button>
+        </div>
       </nav>
 
       {/* Mobile menu */}

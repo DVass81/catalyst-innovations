@@ -27,7 +27,7 @@ export function ButtonLink({
     "ghost-dark":
       "border border-white/25 text-white hover:bg-white/10 active:bg-white/15",
     "ghost-light":
-      "border border-navy-900/20 text-navy-900 hover:bg-navy-900/5 active:bg-navy-900/10",
+      "border border-navy-900/20 text-navy-900 hover:bg-navy-900/5 active:bg-navy-900/10 dark:border-white/25 dark:text-white dark:hover:bg-white/10",
   }[variant];
   return (
     <Link href={href} onClick={onClick} className={`${btnBase} ${styles} ${className}`}>
@@ -75,7 +75,7 @@ export function Eyebrow({ children, dark = false }: { children: ReactNode; dark?
   return (
     <p
       className={`font-display text-[0.72rem] font-semibold tracking-[0.28em] uppercase mb-4 ${
-        dark ? "text-steel-300" : "text-steel-600"
+        dark ? "text-steel-300" : "text-steel-600 dark:text-steel-300"
       }`}
     >
       {children}
@@ -103,7 +103,7 @@ export function Heading({
   return (
     <Tag
       className={`font-grotesk font-semibold leading-[1.12] tracking-tight ${size} ${
-        dark ? "text-white" : "text-navy-900"
+        dark ? "text-white" : "text-navy-900 dark:text-white"
       } ${className}`}
     >
       {children}
@@ -156,7 +156,7 @@ export function Lead({
   return (
     <p
       className={`mt-5 text-lg leading-relaxed max-w-2xl ${
-        dark ? "text-ice-300" : "text-navy-700"
+        dark ? "text-ice-300" : "text-navy-700 dark:text-ice-300"
       } ${className}`}
     >
       {children}
@@ -169,11 +169,11 @@ export function Lead({
 export function StatusBadge({ status }: { status: string }) {
   const tone =
     status === "In Development"
-      ? "bg-steel-400/15 text-steel-600 border-steel-400/40"
+      ? "bg-steel-400/15 text-steel-600 border-steel-400/40 dark:text-steel-300"
       : status === "Demonstration Platform"
         ? "bg-success/10 text-success border-success/40"
         : status === "Client-Specific"
-          ? "bg-navy-900/8 text-navy-700 border-navy-900/25"
+          ? "bg-navy-900/8 text-navy-700 border-navy-900/25 dark:bg-white/10 dark:text-ice-200 dark:border-white/25"
           : "bg-warning/10 text-warning border-warning/40";
   return (
     <span
@@ -190,7 +190,7 @@ export function HexFrame({ children, dark = false }: { children: ReactNode; dark
   return (
     <span
       className={`relative inline-flex h-12 w-12 shrink-0 items-center justify-center ${
-        dark ? "text-steel-300" : "text-steel-600"
+        dark ? "text-steel-300" : "text-steel-600 dark:text-steel-300"
       }`}
     >
       <svg viewBox="0 0 48 48" className="absolute inset-0 h-full w-full" aria-hidden="true">

@@ -4,6 +4,7 @@ import { Reveal, RevealGroup, RevealItem } from "@/components/Reveal";
 import { Icon } from "@/components/Icon";
 import { getProducts } from "@/lib/cms";
 import CTABand from "@/components/CTABand";
+import CityAccent from "@/components/CityAccent";
 
 export const metadata: Metadata = {
   title: "Innovation Portfolio — What We're Building",
@@ -17,6 +18,7 @@ export default async function PortfolioPage() {
     <>
       <section className="relative overflow-hidden bg-navy-900 pb-20 pt-36 text-white">
         <div className="bg-grid-dark absolute inset-0" aria-hidden="true" />
+        <CityAccent />
         <div className="relative mx-auto max-w-6xl px-5 sm:px-8">
           <Reveal>
             <Eyebrow dark>Innovation portfolio</Eyebrow>

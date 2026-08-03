@@ -5,6 +5,7 @@ import { Section, Eyebrow, Heading, Lead, ButtonLink } from "@/components/ui";
 import { Reveal, RevealGroup, RevealItem } from "@/components/Reveal";
 import { differentiators } from "@/data/content";
 import CTABand from "@/components/CTABand";
+import AboutTimeline from "@/components/AboutTimeline";
 
 export const metadata: Metadata = {
   title: "About — Operational Experience Meets Modern Technology",
@@ -82,6 +83,10 @@ export default function AboutPage() {
             Meet Daniel and Josh <ArrowRight size={16} />
           </Link>
         </Reveal>
+      </Section>
+
+      <Section className="bg-white">
+        <AboutTimeline />
       </Section>
 
       <Section dark>

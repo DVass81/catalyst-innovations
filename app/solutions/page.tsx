@@ -5,6 +5,7 @@ import { Section, Eyebrow, Heading, Lead, HexFrame } from "@/components/ui";
 import { Reveal, RevealGroup, RevealItem } from "@/components/Reveal";
 import { Icon } from "@/components/Icon";
 import { getServices } from "@/lib/cms";
+import { viewTransitionStyle } from "@/lib/viewTransitionStyle";
 import CTABand from "@/components/CTABand";
 
 export const metadata: Metadata = {
@@ -41,7 +42,9 @@ export default async function SolutionsPage() {
                 className="group flex h-full flex-col rounded-card border border-ice-200 bg-white p-8 transition-all hover:-translate-y-1 hover:border-steel-400/50 hover:shadow-card"
               >
                 <div className="flex items-start gap-4">
-                  <HexFrame><Icon name={s.icon} /></HexFrame>
+                  <div style={viewTransitionStyle(`solution-icon-${s.slug}`)}>
+                    <HexFrame><Icon name={s.icon} /></HexFrame>
+                  </div>
                   <div>
                     <h2 className="font-display text-lg font-semibold text-navy-900">{s.title}</h2>
                     <p className="mt-1 text-sm text-steel-600">{s.tagline}</p>

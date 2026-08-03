@@ -118,10 +118,48 @@ interactions, founder profile views.
 
 ## Forms & security
 
-- Multi-step consultation form → `POST /api/consultation`
-- Zod validation on client **and** server, honeypot field, in-memory rate limiting
-  (swap for Redis in production), no secrets in source
+- Multi-step consultation form → `POST /api/consultation`, with autosave
+  (localStorage) so an accidental tab close doesn't lose an in-progress lead
+- Zod validation on client **and** server, honeypot field, rate limiting
+  (Upstash Redis when `UPSTASH_REDIS_REST_URL`/`_TOKEN` are set, in-memory
+  fallback otherwise — see `lib/rateLimit.ts`), no secrets in source
+- Every submission gets a transparent Hot/Warm/Standard lead score (see
+  `lib/leadScoring.ts`)
 - Security headers + CSP configured in `next.config.ts`
+- `GET /api/health` — point an uptime monitor (UptimeRobot, Better Uptime,
+  etc.) here; a 200 means the process is up
+
+## SEO — Google Search Console
+
+1. Go to [search.google.com/search-console](https://search.google.com/search-console),
+   add a property for your live domain.
+2. Choose **HTML tag** verification, copy just the `content="..."` value.
+3. Set `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` to that value and redeploy —
+   the meta tag appears automatically (`app/layout.tsx`).
+4. Back in Search Console, click **Verify**.
+5. Under **Sitemaps**, submit `sitemap.xml` (the site already generates one
+   at `/sitemap.xml` — `app/sitemap.ts`).
+
+## Dark mode
+
+A user-toggleable theme (button in the navbar, persisted in `localStorage`,
+defaults to system preference, no flash on load — see `ThemeToggle.tsx` and
+the blocking init script in `layout.tsx`). Scope: page backgrounds and every
+heading/body/eyebrow/button/hex element repaint correctly everywhere, since
+they're all driven through the shared primitives in `components/ui.tsx` and
+the `ice-*` CSS variable swap in `globals.css`. Individual white card
+components sprinkled through specific page files were **not** individually
+converted in this pass — extend with `dark:` variants on a page as needed.
+
+## View transitions
+
+Internal navigation uses the browser's native View Transitions API when
+available (`components/ViewTransitionNav.tsx`) — a soft crossfade by
+default, and true shared-element morphing for elements tagged with a
+matching `viewTransitionName` on both pages (currently: a solution's icon,
+from its card on the homepage/listing page to its detail-page hero — see
+`lib/viewTransitionStyle.ts`). Pure enhancement layer: unsupported browsers
+and any runtime error fall straight back to normal navigation.
 
 ## Logo & brand assets
 

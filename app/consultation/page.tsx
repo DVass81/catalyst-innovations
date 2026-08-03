@@ -57,8 +57,9 @@ export default async function ConsultationPage({
           </Reveal>
         </div>
       </section>
-      <Section className="bg-ice-50">
-        <div className="mx-auto max-w-3xl">
+      <Section className="relative overflow-hidden bg-navy-950">
+        <div className="bg-grid-dark absolute inset-0" aria-hidden="true" />
+        <div className="relative mx-auto max-w-3xl">
           <ConsultationForm initial={initial} />
           <div className="mt-10 grid gap-4 sm:grid-cols-3">
             {[
@@ -66,9 +67,9 @@ export default async function ConsultationPage({
               ["Founders on the call", "You talk to Daniel and Josh, not an SDR."],
               ["Honest scoping", "If we're not the right fit, we'll say so."],
             ].map(([t, d]) => (
-              <div key={t} className="rounded-card border border-ice-200 bg-white p-5 text-center">
-                <p className="font-display text-sm font-semibold text-navy-900">{t}</p>
-                <p className="mt-1 text-xs text-navy-700">{d}</p>
+              <div key={t} className="rounded-card border border-white/12 bg-white/5 p-5 text-center">
+                <p className="font-display text-sm font-semibold text-white">{t}</p>
+                <p className="mt-1 text-xs text-ice-300">{d}</p>
               </div>
             ))}
           </div>

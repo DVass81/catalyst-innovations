@@ -3,6 +3,7 @@ import { Eyebrow, Heading, Lead } from "@/components/ui";
 import { Reveal } from "@/components/Reveal";
 import IndustryExplorer from "@/components/IndustryExplorer";
 import CTABand from "@/components/CTABand";
+import CityAccent from "@/components/CityAccent";
 import { getIndustries, getServices } from "@/lib/cms";
 
 export const metadata: Metadata = {
@@ -15,8 +16,9 @@ export default async function IndustriesPage() {
   const [industries, services] = await Promise.all([getIndustries(), getServices()]);
   return (
     <>
-      <section className="bg-navy-900 pb-16 pt-36 text-white">
-        <div className="mx-auto max-w-6xl px-5 sm:px-8">
+      <section className="relative overflow-hidden bg-navy-900 pb-16 pt-36 text-white">
+        <CityAccent />
+        <div className="relative mx-auto max-w-6xl px-5 sm:px-8">
           <Reveal>
             <Eyebrow dark>Industries</Eyebrow>
             <Heading dark as="h1">Built for real work, real teams, and real results.</Heading>

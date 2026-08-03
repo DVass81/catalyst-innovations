@@ -7,6 +7,7 @@ import { Reveal, RevealGroup, RevealItem } from "@/components/Reveal";
 import { Icon } from "@/components/Icon";
 import { services as localServices } from "@/data/services";
 import { getServiceBySlug, getIndustries } from "@/lib/cms";
+import { viewTransitionStyle } from "@/lib/viewTransitionStyle";
 import CTABand from "@/components/CTABand";
 
 export function generateStaticParams() {
@@ -52,7 +53,9 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
               <span className="text-ice-300">{s.navLabel}</span>
             </nav>
             <div className="flex items-start gap-5">
-              <HexFrame dark><Icon name={s.icon} size={24} /></HexFrame>
+              <div style={viewTransitionStyle(`solution-icon-${s.slug}`)}>
+                <HexFrame dark><Icon name={s.icon} size={24} /></HexFrame>
+              </div>
               <div>
                 <Heading dark as="h1">{s.title}</Heading>
                 <Lead dark>{s.tagline}</Lead>

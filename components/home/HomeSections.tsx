@@ -7,6 +7,7 @@ import { Reveal, RevealGroup, RevealItem } from "../Reveal";
 import { Icon } from "../Icon";
 import { DuotoneIcon } from "../DuotoneIcon";
 import { Spotlight } from "../Spotlight";
+import { viewTransitionStyle } from "@/lib/viewTransitionStyle";
 import { services } from "@/data/services";
 import { products } from "@/data/products";
 import { industries } from "@/data/industries";
@@ -113,7 +114,9 @@ export function SolutionsOverview() {
                 href={`/solutions/${s.slug}`}
                 className="group flex h-full flex-col rounded-card border border-ice-200 bg-ice-50 p-6 transition-all duration-200 hover:-translate-y-1 hover:border-steel-400/50 hover:shadow-card"
               >
-                <DuotoneIcon name={s.icon} size={30} />
+                <div style={viewTransitionStyle(`solution-icon-${s.slug}`)}>
+                  <DuotoneIcon name={s.icon} size={30} />
+                </div>
                 <h3 className="mt-4 font-display text-[1.02rem] font-semibold leading-snug text-navy-900">
                   {s.navLabel}
                 </h3>

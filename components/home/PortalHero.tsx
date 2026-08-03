@@ -475,6 +475,28 @@ function useAmbientSound(chapter: number) {
 export default function PortalHero() {
   const ref = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion();
+
+  // Return visitors get the option to skip straight to the arrival — first-
+  // timers always see the full journey.
+  const [showSkip, setShowSkip] = useState(false);
+  useEffect(() => {
+    let seenBefore = false;
+    try {
+      seenBefore = localStorage.getItem("ci-visited") === "1";
+      localStorage.setItem("ci-visited", "1");
+    } catch {
+      /* localStorage unavailable — always show the full journey */
+    }
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (seenBefore) setShowSkip(true);
+  }, []);
+  function skipToFuture() {
+    track("demo_interaction", { widget: "portal_hero", action: "skip_to_future" });
+    const el = ref.current;
+    if (!el) return;
+    window.scrollTo({ top: el.offsetTop + el.offsetHeight - window.innerHeight, behavior: "smooth" });
+  }
+
   const { scrollYProgress: pRaw } = useScroll({ target: ref, offset: ["start start", "end end"] });
   // Dual pacing: a stiff spring drives the warp (snappy teleport feel) and a
   // soft spring drives the arrival (calm, regular speed). Springs also force
@@ -670,6 +692,15 @@ export default function PortalHero() {
           >
             <ChevronDown size={22} />
           </motion.div>
+          {showSkip && (
+            <button
+              type="button"
+              onClick={skipToFuture}
+              className="mx-auto mt-4 block text-xs font-medium text-[#c2b9a4] underline decoration-dotted underline-offset-4 transition-colors hover:text-white lg:mx-0"
+            >
+              Seen this before? Skip to the future →
+            </button>
+          )}
         </motion.div>
 
         {/* Launch message */}

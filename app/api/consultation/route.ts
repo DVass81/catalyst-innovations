@@ -1,36 +1,23 @@
 import { NextRequest, NextResponse } from "next/server";
 import { consultationSchema } from "@/lib/consultation";
 import { scoreLead } from "@/lib/leadScoring";
+import { isRateLimited } from "@/lib/rateLimit";
 
 /**
  * Consultation form endpoint.
  *
  * Backend-ready structure: validated, honeypot-protected, rate-limited
- * (simple in-memory window; swap for Redis/Upstash in production).
+ * (Upstash Redis when configured, in-memory fallback otherwise — see
+ * lib/rateLimit.ts).
  *
  * Delivery: set CONSULTATION_WEBHOOK_URL (e.g. a Zapier/Make/CRM webhook or an
  * email-service endpoint) to forward submissions. Until configured,
  * submissions are logged server-side so nothing is silently lost in dev.
  */
 
-const WINDOW_MS = 60_000;
-const MAX_PER_WINDOW = 5;
-const hits = new Map<string, { count: number; start: number }>();
-
-function rateLimited(ip: string) {
-  const now = Date.now();
-  const h = hits.get(ip);
-  if (!h || now - h.start > WINDOW_MS) {
-    hits.set(ip, { count: 1, start: now });
-    return false;
-  }
-  h.count += 1;
-  return h.count > MAX_PER_WINDOW;
-}
-
 export async function POST(req: NextRequest) {
   const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
-  if (rateLimited(ip)) {
+  if (await isRateLimited(ip)) {
     return NextResponse.json({ ok: false, error: "Too many requests. Please try again shortly." }, { status: 429 });
   }
 
