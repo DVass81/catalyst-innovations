@@ -6,8 +6,7 @@ import { Reveal, RevealGroup, RevealItem } from "./Reveal";
 
 /**
  * The same past-to-future arc the homepage hero tells through animation,
- * told here as a static graphic for the search-traffic visitors who land
- * directly on /about and never see the portal.
+ * told here as a static graphic further down the same page.
  */
 const stages = [
   { icon: Phone, era: "Where most start", title: "Paper & phone calls", text: "Work orders on clipboards. Status updates by phone. Nothing connected." },

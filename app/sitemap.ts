@@ -4,7 +4,7 @@ import { services } from "@/data/services";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes = [
-    "", "/solutions", "/industries", "/portfolio", "/method", "/about",
+    "", "/solutions", "/industries", "/portfolio", "/method",
     "/founders", "/insights", "/insights/why-business-software-fails",
     "/contact", "/consultation", "/roi-estimator", "/demo-lab",
     "/privacy", "/terms", "/accessibility",

@@ -25,7 +25,6 @@ export const navLinks = [
   { href: "/portfolio", label: "Innovation Portfolio" },
   { href: "/method", label: "The Catalyst Method" },
   { href: "/demo-lab", label: "Demo Lab" },
-  { href: "/about", label: "About" },
   { href: "/insights", label: "Insights" },
 ] as const;
 
