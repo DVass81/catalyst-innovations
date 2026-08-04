@@ -7,7 +7,16 @@ import { Reveal, RevealGroup, RevealItem } from "@/components/Reveal";
 import { differentiators } from "@/data/content";
 import CTABand from "@/components/CTABand";
 import AboutTimeline from "@/components/AboutTimeline";
+import EditorialBreak from "@/components/home/EditorialBreak";
+import { Outcomes } from "@/components/home/HomeSections";
 import { founderPhoto } from "@/lib/founderPhoto";
+
+const credibilityStats: [string, string][] = [
+  ["20+", "years of manufacturing, procurement & operations experience"],
+  ["10", "years of U.S. Army leadership & technology discipline"],
+  ["6", "stage method from discovery to continuous improvement"],
+  ["1", "goal: measurable business results"],
+];
 
 export const metadata: Metadata = {
   title: "About — Operational Experience Meets Modern Technology",
@@ -71,6 +80,17 @@ export default function AboutPage() {
           </Reveal>
         </div>
 
+        <RevealGroup className="mt-12 grid grid-cols-2 gap-4 lg:grid-cols-4">
+          {credibilityStats.map(([n, t]) => (
+            <RevealItem key={t}>
+              <div className="h-full rounded-card border border-ice-200 bg-white p-6 shadow-card">
+                <p className="font-display text-4xl font-semibold text-steel-600">{n}</p>
+                <p className="mt-2 text-sm leading-snug text-navy-700">{t}</p>
+              </div>
+            </RevealItem>
+          ))}
+        </RevealGroup>
+
         <div className="mt-16 grid items-center gap-10 lg:grid-cols-[1.1fr_1fr]">
           <Reveal>
             <Heading as="h3">We don&apos;t force customers into a rigid product.</Heading>
@@ -89,7 +109,7 @@ export default function AboutPage() {
           </Reveal>
           {togetherPhoto && (
             <Reveal delay={0.1}>
-              <div className="relative aspect-[1284/407] overflow-hidden rounded-card shadow-card lg:aspect-[4/3]">
+              <div className="relative aspect-[1284/407] overflow-hidden rounded-card shadow-card">
                 <Image
                   src={togetherPhoto}
                   alt="Daniel Vass and Josh Ogle, co-founders of Catalyst Innovations"
@@ -103,9 +123,13 @@ export default function AboutPage() {
         </div>
       </Section>
 
+      <EditorialBreak />
+
       <Section className="bg-white">
         <AboutTimeline />
       </Section>
+
+      <Outcomes />
 
       <Section dark>
         <Reveal>

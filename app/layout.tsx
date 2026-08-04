@@ -5,7 +5,6 @@ import Script from "next/script";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import ScrollProgress from "@/components/ScrollProgress";
 import Analytics from "@/components/Analytics";
 import CommandPalette from "@/components/CommandPalette";
 import ErrorMonitoring from "@/components/ErrorMonitoring";
@@ -89,7 +88,6 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <ViewTransitionNav />
         <ErrorMonitoring>
           <Navbar />
-          <ScrollProgress />
           <Analytics />
           <main id="main" className="flex-1">
             {children}

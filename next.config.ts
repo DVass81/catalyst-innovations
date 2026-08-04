@@ -32,6 +32,9 @@ const nextConfig: NextConfig = {
   async headers() {
     return [{ source: "/(.*)", headers: securityHeaders }];
   },
+  async redirects() {
+    return [{ source: "/start", destination: "/roi-estimator", permanent: true }];
+  },
 };
 
 export default nextConfig;

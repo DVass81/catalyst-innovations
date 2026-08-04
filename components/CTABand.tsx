@@ -63,7 +63,7 @@ export default function CTABand({
             >
               Request a Consultation
             </ButtonLink>
-            <ButtonLink href="/start" variant="ghost-dark">
+            <ButtonLink href="/roi-estimator" variant="ghost-dark">
               Find Your Best Starting Point
             </ButtonLink>
           </div>

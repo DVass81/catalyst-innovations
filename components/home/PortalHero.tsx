@@ -1,26 +1,26 @@
 "use client";
 
-import {
-  motion, useMotionValue, useMotionValueEvent, useReducedMotion, useScroll, useSpring,
-  useTransform,
-} from "framer-motion";
+import { animate, motion, useMotionValue, useReducedMotion, useSpring, useTransform } from "framer-motion";
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { ChevronDown, Volume2, VolumeX } from "lucide-react";
+import { Volume2, VolumeX } from "lucide-react";
 import { CatalystMark } from "../Logo";
 import { ButtonLink } from "../ui";
 import { track } from "@/lib/site";
 import Hero from "./Hero";
 
 /**
- * "Through the Screen" — the teleport opening.
+ * "Through the Screen" — a one-time autoplay intro, not scroll-driven.
  *
- * p 0.00–0.16  the analog world: a 1997 back office and its CRT
- * p 0.16–0.42  the camera accelerates INTO the screen (warp launch)
- * p 0.36–0.62  warp tunnel — the Catalyst brand gate flies past
- * p 0.58–0.66  teleporter flash
- * p 0.62–1.00  arrival: the AI world
+ * stage 0  the analog world: a 1997 back office and its CRT (holds ~3s)
+ * stage 1  the camera launches into the screen (brief transition, ~0.7s)
+ * stage 2  warp tunnel — the Catalyst brand gate holds (~3s)
+ * stage 3  teleporter flash (~0.4s)
+ * stage 4  arrival: the AI world — permanent resting state of the homepage
  *
+ * Nothing here locks scroll — the section is a normal min-h-[100dvh] block,
+ * so a visitor who scrolls immediately just moves past it. Returning
+ * visitors (localStorage flag) skip straight to stage 4.
  * Reduced motion: renders the static Hero instead.
  */
 
@@ -75,31 +75,8 @@ const screenLines = [
   { text: "LAST SYSTEM UPDATE: 2009", dim: false },
 ];
 
-const easterEggLines = [
-  "nice click. nothing happens on old computers either.",
-  "still here? the future is three scrolls away.",
-  "you have unlocked: absolutely nothing. try scrolling instead.",
-  "C:\\OPS> whoami\n> a very patient visitor",
-];
-
-function OldComputer({ phase = 0 }: { phase?: number }) {
-  const [egg, setEgg] = useState<string | null>(null);
-  const eggIndex = useRef(0);
-  const eggTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  function onScreenClick() {
-    if (phase !== 0) return;
-    track("demo_interaction", { widget: "portal_crt", action: "click" });
-    setEgg(easterEggLines[eggIndex.current % easterEggLines.length]);
-    eggIndex.current += 1;
-    if (eggTimer.current) clearTimeout(eggTimer.current);
-    eggTimer.current = setTimeout(() => setEgg(null), 3600);
-  }
-
-  useEffect(() => () => {
-    if (eggTimer.current) clearTimeout(eggTimer.current);
-  }, []);
-
+/** phase 0 = idle terminal, phase 1 = launch (connection-lost flicker) */
+function OldComputer({ phase = 0 }: { phase?: 0 | 1 }) {
   return (
     <div className="relative w-[min(88vw,70svh,500px)]">
       {/* Monitor shell */}
@@ -110,13 +87,8 @@ function OldComputer({ phase = 0 }: { phase?: number }) {
             <span key={i} className="h-[10px] w-[2.5px] rounded-full bg-[#9a9585]" />
           ))}
         </div>
-        {/* Screen bezel — clickable easter egg while idle */}
-        <button
-          type="button"
-          onClick={onScreenClick}
-          aria-label="It's just an old computer. Click if you're curious."
-          className={`block w-full appearance-none rounded-[13px] border-0 bg-[#8a8575] p-[2.5%] text-left shadow-[inset_0_4px_10px_rgb(0_0_0/0.55)] ${phase === 0 ? "cursor-pointer" : "cursor-default"}`}
-        >
+        {/* Screen bezel */}
+        <div className="rounded-[13px] bg-[#8a8575] p-[2.5%] shadow-[inset_0_4px_10px_rgb(0_0_0/0.55)]">
           <div className="crt-flicker relative aspect-[4/3] overflow-hidden rounded-[10px] bg-[#04140a]">
             {/* Phosphor glow */}
             <div
@@ -124,26 +96,25 @@ function OldComputer({ phase = 0 }: { phase?: number }) {
               className="absolute inset-0"
               style={{ background: "radial-gradient(ellipse at 50% 45%, rgba(38,140,60,0.24), transparent 72%)" }}
             />
-            {/* Screen content reacts as the camera dives in */}
-            {phase < 2 ? (
+            {phase === 0 ? (
               <div className="relative flex h-full flex-col justify-center gap-[2.5%] px-[7%] font-mono text-[clamp(0.5rem,2.3vw,0.8rem)] leading-snug">
                 {screenLines.map((l) => (
                   <p key={l.text} className={l.dim ? "text-[#3f9e55]/70" : "text-[#52c56d]"}>
                     {l.text}
                   </p>
                 ))}
-                {phase === 0 ? (
-                  <p className="text-[#52c56d]">
-                    C:\OPS&gt; <span className="cursor-blink inline-block h-[1em] w-[0.6em] translate-y-[0.15em] bg-[#52c56d]" />
-                  </p>
-                ) : (
-                  <p className="text-[#7ee694]">C:\OPS&gt; CONNECTION LOST<span className="cursor-blink">▮</span></p>
-                )}
+                <p className="text-[#52c56d]">
+                  C:\OPS&gt; <span className="cursor-blink inline-block h-[1em] w-[0.6em] translate-y-[0.15em] bg-[#52c56d]" />
+                </p>
               </div>
             ) : (
-              <div className="relative flex h-full flex-col items-center justify-center gap-[4%] px-[7%] text-center font-mono">
-                <p className="text-[clamp(0.7rem,3vw,1.1rem)] text-[#7ee694]">CONNECTION LOST…</p>
-                <p className="text-[clamp(0.6rem,2.6vw,0.95rem)] text-[#52c56d]/80">…or is it.</p>
+              <div className="relative flex h-full flex-col justify-center gap-[2.5%] px-[7%] font-mono text-[clamp(0.5rem,2.3vw,0.8rem)] leading-snug">
+                {screenLines.map((l) => (
+                  <p key={l.text} className={l.dim ? "text-[#3f9e55]/70" : "text-[#52c56d]"}>
+                    {l.text}
+                  </p>
+                ))}
+                <p className="text-[#7ee694]">C:\OPS&gt; CONNECTION LOST<span className="cursor-blink">▮</span></p>
               </div>
             )}
             {/* Scanlines, curvature vignette, glass sheen */}
@@ -158,13 +129,8 @@ function OldComputer({ phase = 0 }: { phase?: number }) {
               className="absolute inset-0"
               style={{ background: "linear-gradient(115deg, rgba(255,255,255,0.1) 0%, transparent 22%, transparent 78%, rgba(255,255,255,0.04) 100%)" }}
             />
-            {egg && (
-              <div className="absolute inset-x-[6%] bottom-[8%] rounded-[4px] border border-[#52c56d]/40 bg-[#04140a]/95 px-[4%] py-[3%] font-mono text-[clamp(0.42rem,1.9vw,0.68rem)] leading-snug whitespace-pre-line text-[#7ee694] shadow-[0_0_16px_rgba(82,197,109,0.25)]">
-                {egg}
-              </div>
-            )}
           </div>
-        </button>
+        </div>
         {/* Brand plate + power LED */}
         <div className="mt-[3%] flex items-center justify-between px-[2%]">
           <span className="font-mono text-[clamp(0.4rem,1.4vw,0.6rem)] font-bold tracking-[0.2em] text-[#6f6a5c]">
@@ -330,20 +296,26 @@ function Sparkline({ points }: { points: string }) {
 
 /* ================= Composition ================= */
 
-const chapterLabels = ["01 · THE PAST", "02 · TRANSFER", "03 · THE OTHER SIDE"];
+const stageLabels = ["01 · THE PAST", "01 · THE PAST", "02 · TRANSFER", "02 · TRANSFER", "03 · THE OTHER SIDE"];
+
+// Timeline (ms from mount, first-time visitors only):
+const T_LAUNCH = 3000; // office hold, then launch into the tunnel
+const T_GATE = 3700; // launch transition done, gate begins its hold
+const T_FLASH = 6700; // gate hold done (3000ms), flash begins
+const T_ARRIVAL = 7100; // flash done, arrival settles in — permanent
 
 /**
  * Ambient sound, fully synthesized with WebAudio — no audio files.
  * Opt-in only (autoplay-safe: context is created on the user's click),
  * remembered in localStorage. Past = CRT hum; other side = soft pad;
- * chapter transition into the world fires a filtered-noise whoosh.
+ * the stage-2→3 transition (through the flash) fires a filtered-noise whoosh.
  */
-function useAmbientSound(chapter: number) {
+function useAmbientSound(stage: number) {
   const [enabled, setEnabled] = useState(false);
   const ctxRef = useRef<AudioContext | null>(null);
   const gainsRef = useRef<{ hum?: GainNode; pad?: GainNode; noise?: GainNode }>({});
   const noiseBufRef = useRef<AudioBuffer | null>(null);
-  const prevChapter = useRef(chapter);
+  const prevStage = useRef(stage);
 
   const stop = useCallback(() => {
     ctxRef.current?.close().catch(() => {});
@@ -417,7 +389,7 @@ function useAmbientSound(chapter: number) {
     gainsRef.current = { hum: humGain, pad: padGain, noise: noiseGain };
   }, []);
 
-  // Chapter-driven mix
+  // Stage-driven mix
   useEffect(() => {
     const ctx = ctxRef.current;
     const g = gainsRef.current;
@@ -427,7 +399,7 @@ function useAmbientSound(chapter: number) {
       node.gain.cancelScheduledValues(t);
       node.gain.setTargetAtTime(v, t, 0.6);
     };
-    if (chapter < 2) {
+    if (stage < 3) {
       ramp(g.hum, 0.05);
       ramp(g.noise, 0.012);
       ramp(g.pad, 0);
@@ -437,7 +409,7 @@ function useAmbientSound(chapter: number) {
       ramp(g.pad, 0.045);
     }
     // Whoosh when passing through the flash
-    if (prevChapter.current === 1 && chapter === 2 && noiseBufRef.current) {
+    if (prevStage.current < 3 && stage >= 3 && noiseBufRef.current) {
       const src = ctx.createBufferSource();
       src.buffer = noiseBufRef.current;
       const bp = ctx.createBiquadFilter();
@@ -452,8 +424,8 @@ function useAmbientSound(chapter: number) {
       src.start(t);
       src.stop(t + 1);
     }
-    prevChapter.current = chapter;
-  }, [chapter, enabled]);
+    prevStage.current = stage;
+  }, [stage, enabled]);
 
   useEffect(() => () => stop(), [stop]);
 
@@ -473,40 +445,56 @@ function useAmbientSound(chapter: number) {
 }
 
 export default function PortalHero() {
-  const ref = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion();
-
-  // Return visitors get the option to skip straight to the arrival — first-
-  // timers always see the full journey.
-  const [showSkip, setShowSkip] = useState(false);
-  useEffect(() => {
-    let seenBefore = false;
+  // Returning visitors (localStorage flag) skip straight to the arrival —
+  // decided during the initial render so there's no flash of the office
+  // scene before jumping past it.
+  const [stage, setStage] = useState(() => {
+    if (typeof window === "undefined") return 0;
     try {
-      seenBefore = localStorage.getItem("ci-visited") === "1";
+      return localStorage.getItem("ci-visited") === "1" ? 4 : 0;
+    } catch {
+      return 0;
+    }
+  });
+
+  // Autoplay timeline for first-time visitors — the full ~7s sequence.
+  // Nothing here locks scroll; this section is a normal-height block, so a
+  // visitor who scrolls immediately just moves past it.
+  useEffect(() => {
+    try {
       localStorage.setItem("ci-visited", "1");
     } catch {
-      /* localStorage unavailable — always show the full journey */
+      /* localStorage unavailable — always show the full sequence */
     }
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    if (seenBefore) setShowSkip(true);
+    if (stage === 4) return;
+    const timers = [
+      setTimeout(() => setStage(1), T_LAUNCH),
+      setTimeout(() => setStage(2), T_GATE),
+      setTimeout(() => setStage(3), T_FLASH),
+      setTimeout(() => setStage(4), T_ARRIVAL),
+    ];
+    return () => timers.forEach(clearTimeout);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- runs once on mount using the initial `stage` value only
   }, []);
-  function skipToFuture() {
-    track("demo_interaction", { widget: "portal_hero", action: "skip_to_future" });
-    const el = ref.current;
-    if (!el) return;
-    window.scrollTo({ top: el.offsetTop + el.offsetHeight - window.innerHeight, behavior: "smooth" });
-  }
 
-  const { scrollYProgress: pRaw } = useScroll({ target: ref, offset: ["start start", "end end"] });
-  // Dual pacing: a stiff spring drives the warp (snappy teleport feel) and a
-  // soft spring drives the arrival (calm, regular speed). Springs also force
-  // framer's JS scroll driver (the browser ViewTimeline fast-path
-  // mismeasures pinned sections).
-  const p = useSpring(pRaw, { stiffness: 190, damping: 26, mass: 0.3, restDelta: 0.0005 });
-  const pc = useSpring(pRaw, { stiffness: 80, damping: 24, mass: 0.6, restDelta: 0.0005 });
+  /* Ambient sound (opt-in, synthesized) */
+  const { enabled: soundOn, toggle: toggleSound } = useAmbientSound(stage);
 
-  /* Editorial split layout on desktop: copy left, machine right — the zoom
-     origin must track wherever the screen actually sits. */
+  /* City wake-up cascade: once arrival begins, ramp a 0→1 value over time
+     (was scroll-driven; now time-driven via framer's imperative animate()). */
+  const [wake, setWake] = useState(0);
+  useEffect(() => {
+    if (stage < 4) return;
+    const controls = animate(0, 1, {
+      duration: 1.8,
+      ease: [0.21, 0.6, 0.35, 1],
+      onUpdate: setWake,
+    });
+    return () => controls.stop();
+  }, [stage]);
+
+  /* Editorial split layout on desktop: copy left, machine right. */
   const [desktop, setDesktop] = useState(false);
   useEffect(() => {
     const mq = window.matchMedia("(min-width: 1024px)");
@@ -517,24 +505,6 @@ export default function PortalHero() {
   }, []);
   const zoomOrigin = desktop ? "63% 46%" : "50% 52%";
 
-  /* Cinematic chapter marker + reactive screen story + city wake */
-  const [chapter, setChapter] = useState(0);
-  const [screenPhase, setScreenPhase] = useState(0);
-  const [wake, setWake] = useState(0);
-  useMotionValueEvent(p, "change", (v) => {
-    const c = v < 0.22 ? 0 : v < 0.58 ? 1 : 2;
-    if (c !== chapter) setChapter(c);
-    const sp = v < 0.09 ? 0 : v < 0.15 ? 1 : 2;
-    if (sp !== screenPhase) setScreenPhase(sp);
-  });
-  useMotionValueEvent(pc, "change", (v) => {
-    const w = Math.round(Math.min(1, Math.max(0, (v - 0.62) / 0.24)) * 12) / 12;
-    if (w !== wake) setWake(w);
-  });
-
-  /* Ambient sound (opt-in, synthesized) */
-  const { enabled: soundOn, toggle: toggleSound } = useAmbientSound(chapter);
-
   /* Mouse parallax in the AI world (desktop pointer only) */
   const mx = useMotionValue(0);
   const my = useMotionValue(0);
@@ -544,84 +514,53 @@ export default function PortalHero() {
   const panelsYm = useTransform(smy, (v) => v * 10);
   const cityX = useTransform(smx, (v) => v * -7);
 
-  /* Phase A — brief hold, then a FAST launch (compressed scroll range) */
-  const sceneScale = useTransform(p, [0.09, 0.17, 0.24], [1, 4.5, 26]);
-  const sceneOpacity = useTransform(p, [0.2, 0.27], [1, 0]);
-  const copyAOpacity = useTransform(p, [0, 0.05, 0.09], [1, 1, 0]);
-  const transferMsg = useTransform(p, [0.1, 0.13, 0.18, 0.22], [0, 1, 1, 0]);
-  const greenWash = useTransform(p, [0.15, 0.23, 0.3], [0, 0.9, 0]);
-
-  /* Warp tunnel + brand gate.
-     Sprint TO the gate, then a long plateau (0.30–0.50) where the brand
-     holds — the "regular speed" begins here and never rushes again. */
-  const tunnelOpacity = useTransform(p, [0.19, 0.24, 0.56, 0.62], [0, 1, 1, 0]);
-  const gateOpacity = useTransform(p, [0.24, 0.28, 0.52, 0.57], [0, 1, 1, 0]);
-  const gateScale = useTransform(p, [0.24, 0.3, 0.5, 0.57], [0.35, 1, 1.05, 2.9]);
-
-  /* Launch camera-shake: a fast jitter that ramps in as the zoom fires */
-  const shakeX = useTransform(p, (v) =>
-    v > 0.12 && v < 0.24 ? Math.sin(v * 300) * 5 * ((v - 0.12) / 0.12) : 0,
-  );
-
-  /* Teleporter flash + expanding shockwave ring */
-  const flash = useTransform(p, [0.54, 0.575, 0.63], [0, 1, 0]);
-  const waveScale = useTransform(p, [0.55, 0.67], [0.2, 3.4]);
-  const waveOpacity = useTransform(p, [0.55, 0.59, 0.67], [0, 0.65, 0]);
-
-  /* Phase C — arrival in the city, on the calm spring (pc): the world
-     unfolds gently across the whole second half of the scroll.
-     Mark continuity: the core arrives LARGE (matching the gate mark you
-     just flew through) and settles down to rest — one continuous object. */
-  const worldOpacity = useTransform(pc, [0.58, 0.68], [0, 1]);
-  const worldScale = useTransform(pc, [0.58, 0.75], [1.18, 1]);
-  const cityY = useTransform(pc, [0.58, 0.8], [46, 0]);
-  const markScale = useTransform(pc, [0.58, 0.76], [2.5, 1]);
-  const markOpacity = useTransform(pc, [0.58, 0.66], [0, 1]);
-  const headOpacity = useTransform(pc, [0.71, 0.82], [0, 1]);
-  const headY = useTransform(pc, [0.71, 0.82], [36, 0]);
-  const headBlur = useTransform(pc, [0.71, 0.83], ["blur(12px)", "blur(0px)"]);
-  const ctaOpacity = useTransform(pc, [0.79, 0.88], [0, 1]);
-  const panelY0 = useTransform(pc, [0.58, 1], [110, -50]);
-  const panelY1 = useTransform(pc, [0.58, 1], [160, -80]);
-  const panelY2 = useTransform(pc, [0.58, 1], [80, -40]);
-  const panelY3 = useTransform(pc, [0.58, 1], [140, -65]);
-  const panelYs = [panelY0, panelY1, panelY2, panelY3];
-  const hintOpacity = useTransform(pc, [0.92, 0.97], [0, 1]);
-
   if (reduce) return <Hero />;
 
-  return (
-    <div ref={ref} className="relative h-[460svh] bg-navy-950">
-      <div
-        className="sticky top-0 h-[100svh] overflow-hidden"
-        onMouseMove={(e) => {
-          const r = e.currentTarget.getBoundingClientRect();
-          mx.set(((e.clientX - r.left) / r.width - 0.5) * 2);
-          my.set(((e.clientY - r.top) / r.height - 0.5) * 2);
-        }}
-      >
-        {/* Chapter marker */}
-        <div
-          aria-hidden="true"
-          className="absolute bottom-5 left-5 z-30 flex items-center gap-3 font-mono text-[0.62rem] tracking-[0.3em] text-white/45"
-        >
-          <span className="h-px w-8 bg-white/25" />
-          {chapterLabels[chapter]}
-        </div>
+  const screenPhase: 0 | 1 = stage === 0 ? 0 : 1;
+  const officeVisible = stage <= 1;
+  const gateVisible = stage === 1 || stage === 2;
+  const flashVisible = stage === 3;
+  const worldVisible = stage >= 3;
 
-        {/* Ambient sound toggle (opt-in) */}
-        <button
-          type="button"
-          onClick={toggleSound}
-          aria-pressed={soundOn}
-          aria-label={soundOn ? "Turn ambient sound off" : "Turn ambient sound on"}
-          className="absolute bottom-4 right-4 z-30 inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-navy-900/60 text-ice-300 backdrop-blur-sm transition-colors hover:border-steel-400/60 hover:text-white"
-        >
-          {soundOn ? <Volume2 size={18} /> : <VolumeX size={18} />}
-        </button>
-        {/* ============ PHASE A — the analog world ============ */}
+  return (
+    <section
+      className="relative min-h-[100dvh] overflow-hidden bg-navy-950"
+      onMouseMove={(e) => {
+        const r = e.currentTarget.getBoundingClientRect();
+        mx.set(((e.clientX - r.left) / r.width - 0.5) * 2);
+        my.set(((e.clientY - r.top) / r.height - 0.5) * 2);
+      }}
+    >
+      {/* Stage marker */}
+      <div
+        aria-hidden="true"
+        className="absolute bottom-5 left-5 z-30 flex items-center gap-3 font-mono text-[0.62rem] tracking-[0.3em] text-white/45"
+      >
+        <span className="h-px w-8 bg-white/25" />
+        {stageLabels[stage]}
+      </div>
+
+      {/* Ambient sound toggle (opt-in) */}
+      <button
+        type="button"
+        onClick={toggleSound}
+        aria-pressed={soundOn}
+        aria-label={soundOn ? "Turn ambient sound off" : "Turn ambient sound on"}
+        className="absolute bottom-4 right-4 z-30 inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-navy-900/60 text-ice-300 backdrop-blur-sm transition-colors hover:border-steel-400/60 hover:text-white"
+      >
+        {soundOn ? <Volume2 size={18} /> : <VolumeX size={18} />}
+      </button>
+
+      {/* ============ STAGE 0–1 — the analog world ============ */}
+      {officeVisible && (
         <motion.div
-          style={{ scale: sceneScale, opacity: sceneOpacity, x: shakeX, transformOrigin: zoomOrigin }}
+          initial={false}
+          animate={{
+            scale: stage === 1 ? 26 : 1,
+            opacity: stage === 1 ? 0 : 1,
+          }}
+          transition={{ duration: stage === 1 ? 0.7 : 0, ease: [0.6, 0, 0.9, 0.4] }}
+          style={{ transformOrigin: zoomOrigin }}
           className="absolute inset-0 will-change-transform"
         >
           <div
@@ -666,10 +605,14 @@ export default function PortalHero() {
             <OldComputer phase={screenPhase} />
           </div>
         </motion.div>
+      )}
 
-        {/* Phase A copy — editorial left column on desktop, top block on mobile */}
+      {/* Phase A copy — editorial left column on desktop, top block on mobile */}
+      {stage === 0 && (
         <motion.div
-          style={{ opacity: copyAOpacity }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
           className="absolute inset-x-0 top-[calc(72px+2svh)] z-10 px-6 text-center lg:inset-x-auto lg:left-[6%] lg:top-1/2 lg:w-[31%] lg:-translate-y-1/2 lg:px-0 lg:text-left"
         >
           <p className="font-display text-[0.66rem] font-semibold tracking-[0.3em] text-[#c9a35c] uppercase">
@@ -681,102 +624,106 @@ export default function PortalHero() {
           <p className="mx-auto mt-3 max-w-md text-[clamp(0.78rem,2.4svh,1rem)] leading-relaxed text-[#c2b9a4] [text-shadow:0_1px_12px_rgba(0,0,0,0.9)] lg:mx-0">
             Green screens. Spreadsheets. &ldquo;It&apos;s always worked.&rdquo;
           </p>
-          <p className="mx-auto mt-2 max-w-md text-[clamp(0.78rem,2.4svh,1rem)] font-medium leading-relaxed text-[#e8d9b8] lg:mx-0">
-            Scroll — we&apos;ll teleport you to the other side.
-          </p>
-          <motion.div
-            aria-hidden="true"
-            className="mx-auto mt-3 w-fit text-[#c2b9a4] lg:mx-0"
-            animate={{ y: [0, 8, 0] }}
-            transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
-          >
-            <ChevronDown size={22} />
-          </motion.div>
-          {showSkip && (
-            <button
-              type="button"
-              onClick={skipToFuture}
-              className="mx-auto mt-4 block text-xs font-medium text-[#c2b9a4] underline decoration-dotted underline-offset-4 transition-colors hover:text-white lg:mx-0"
-            >
-              Seen this before? Skip to the future →
-            </button>
-          )}
         </motion.div>
+      )}
 
-        {/* Launch message */}
+      {/* Launch message */}
+      {stage === 1 && (
         <motion.p
-          style={{ opacity: transferMsg }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
           className="absolute inset-x-0 top-[14%] z-10 text-center font-mono text-sm tracking-[0.2em] text-[#52c56d] sm:text-lg"
         >
           &gt; INITIATING TRANSFER_
         </motion.p>
+      )}
 
-        {/* Green immersion wash */}
-        <motion.div style={{ opacity: greenWash }} aria-hidden="true" className="scanlines absolute inset-0 z-10">
-          <div
-            className="absolute inset-0"
-            style={{ background: "radial-gradient(ellipse at 50% 50%, rgba(23,84,38,0.75), rgba(4,20,7,0.95) 80%)" }}
+      {/* ============ STAGE 1–2 — WARP TUNNEL + BRAND GATE ============ */}
+      {gateVisible && (
+        <>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            aria-hidden="true"
+            className="absolute inset-0 z-10"
+          >
+            <div className="absolute inset-0 bg-[#040a14]" />
+            <div className="warp-lines absolute inset-0" />
+            <div
+              className="absolute inset-0"
+              style={{ background: "radial-gradient(circle at 50% 47%, rgba(74,143,212,0.28), transparent 55%)" }}
+            />
+          </motion.div>
+
+          {/* The brand holds at the gate, then blasts forward into the flash */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.35 }}
+            animate={{ opacity: 1, scale: stage === 2 ? 1 : 0.35 }}
+            transition={{ duration: 0.6, ease: [0.21, 0.6, 0.35, 1] }}
+            className="absolute inset-0 z-10 flex flex-col items-center justify-center will-change-transform"
+          >
+            <span aria-hidden="true" className="gate-breathe absolute h-64 w-64 rounded-full bg-steel-400/30 blur-3xl" />
+            <span
+              aria-hidden="true"
+              className="gate-breathe absolute h-44 w-44 rounded-full border border-steel-300/30"
+              style={{ animationDelay: "1.4s" }}
+            />
+            {/* Orbiting particles during the hold */}
+            <span aria-hidden="true" className="orbit absolute h-48 w-48">
+              <span className="absolute left-1/2 top-0 h-[5px] w-[5px] -translate-x-1/2 rounded-full bg-[#7dd3fc] shadow-[0_0_10px_#7dd3fc]" />
+            </span>
+            <span aria-hidden="true" className="orbit absolute h-64 w-64" style={{ animationDuration: "10s", animationDirection: "reverse" }}>
+              <span className="absolute left-1/2 top-0 h-[4px] w-[4px] -translate-x-1/2 rounded-full bg-steel-300 shadow-[0_0_8px_rgb(111_171_227/0.9)]" />
+            </span>
+            <CatalystMark size={92} />
+            <p className="mt-5 font-display text-2xl font-semibold tracking-[0.24em] text-white [text-shadow:0_0_30px_rgba(74,143,212,0.9)]">
+              CATALYST
+            </p>
+            <p className="mt-1 font-display text-[0.75rem] tracking-[0.55em] text-ice-300">
+              INNOVATIONS
+            </p>
+            <p className="mt-4 font-display text-[0.7rem] font-semibold tracking-[0.32em] text-steel-300 uppercase">
+              Make more · Save time · Work smarter
+            </p>
+          </motion.div>
+        </>
+      )}
+
+      {/* ============ STAGE 3 — TELEPORTER FLASH + SHOCKWAVE ============ */}
+      {flashVisible && (
+        <>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: [0, 1, 0] }}
+            transition={{ duration: 0.4, times: [0, 0.35, 1] }}
+            aria-hidden="true"
+            className="absolute inset-0 z-20"
+          >
+            <div
+              className="absolute inset-0"
+              style={{ background: "radial-gradient(ellipse at 50% 50%, #ffffff 0%, #a8cbef 30%, rgba(10,22,40,0) 75%)" }}
+            />
+          </motion.div>
+          <motion.div
+            aria-hidden="true"
+            initial={{ opacity: 0.65, scale: 0.2 }}
+            animate={{ opacity: 0, scale: 3.4 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+            style={{ x: "-50%", y: "-50%" }}
+            className="absolute left-1/2 top-1/2 z-20 h-[46vmin] w-[46vmin] rounded-full border-2 border-[#a8cbef] shadow-[0_0_40px_rgb(168_203_239/0.5),inset_0_0_40px_rgb(168_203_239/0.3)]"
           />
-        </motion.div>
+        </>
+      )}
 
-        {/* ============ WARP TUNNEL + BRAND GATE ============ */}
-        <motion.div style={{ opacity: tunnelOpacity }} aria-hidden="true" className="absolute inset-0 z-10">
-          <div className="absolute inset-0 bg-[#040a14]" />
-          <div className="warp-lines absolute inset-0" />
-          <div
-            className="absolute inset-0"
-            style={{ background: "radial-gradient(circle at 50% 47%, rgba(74,143,212,0.28), transparent 55%)" }}
-          />
-        </motion.div>
-
-        {/* The brand flies past at warp speed */}
+      {/* ============ STAGE 3–4 — the AI world (permanent resting state) ============ */}
+      {worldVisible && (
         <motion.div
-          style={{ opacity: gateOpacity, scale: gateScale }}
-          className="absolute inset-0 z-10 flex flex-col items-center justify-center will-change-transform"
+          initial={{ opacity: 0, scale: 1.18 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.9, ease: [0.21, 0.6, 0.35, 1] }}
+          className="absolute inset-0 will-change-transform"
         >
-          <span
-            aria-hidden="true"
-            className="gate-breathe absolute h-64 w-64 rounded-full bg-steel-400/30 blur-3xl"
-          />
-          <span
-            aria-hidden="true"
-            className="gate-breathe absolute h-44 w-44 rounded-full border border-steel-300/30"
-            style={{ animationDelay: "1.4s" }}
-          />
-          {/* Orbiting particles during the hold */}
-          <span aria-hidden="true" className="orbit absolute h-48 w-48">
-            <span className="absolute left-1/2 top-0 h-[5px] w-[5px] -translate-x-1/2 rounded-full bg-[#7dd3fc] shadow-[0_0_10px_#7dd3fc]" />
-          </span>
-          <span aria-hidden="true" className="orbit absolute h-64 w-64" style={{ animationDuration: "10s", animationDirection: "reverse" }}>
-            <span className="absolute left-1/2 top-0 h-[4px] w-[4px] -translate-x-1/2 rounded-full bg-steel-300 shadow-[0_0_8px_rgb(111_171_227/0.9)]" />
-          </span>
-          <CatalystMark size={92} />
-          <p className="mt-5 font-display text-2xl font-semibold tracking-[0.24em] text-white [text-shadow:0_0_30px_rgba(74,143,212,0.9)]">
-            CATALYST
-          </p>
-          <p className="mt-1 font-display text-[0.75rem] tracking-[0.55em] text-ice-300">
-            INNOVATIONS
-          </p>
-          <p className="mt-4 font-display text-[0.7rem] font-semibold tracking-[0.32em] text-steel-300 uppercase">
-            Make more · Save time · Work smarter
-          </p>
-        </motion.div>
-
-        {/* ============ TELEPORTER FLASH + SHOCKWAVE ============ */}
-        <motion.div style={{ opacity: flash }} aria-hidden="true" className="absolute inset-0 z-20">
-          <div
-            className="absolute inset-0"
-            style={{ background: "radial-gradient(ellipse at 50% 50%, #ffffff 0%, #a8cbef 30%, rgba(10,22,40,0) 75%)" }}
-          />
-        </motion.div>
-        <motion.div
-          aria-hidden="true"
-          style={{ scale: waveScale, opacity: waveOpacity, x: "-50%", y: "-50%" }}
-          className="absolute left-1/2 top-1/2 z-20 h-[46vmin] w-[46vmin] rounded-full border-2 border-[#a8cbef] shadow-[0_0_40px_rgb(168_203_239/0.5),inset_0_0_40px_rgb(168_203_239/0.3)]"
-        />
-
-        {/* ============ PHASE C — the AI world ============ */}
-        <motion.div style={{ opacity: worldOpacity, scale: worldScale }} className="absolute inset-0 will-change-transform">
           {/* Deep-space backdrop */}
           <div
             aria-hidden="true"
@@ -795,7 +742,10 @@ export default function PortalHero() {
           {/* The city on the horizon */}
           <motion.div
             aria-hidden="true"
-            style={{ y: cityY, x: cityX }}
+            initial={{ y: 46 }}
+            animate={{ y: 0 }}
+            transition={{ duration: 1.2, ease: [0.21, 0.6, 0.35, 1] }}
+            style={{ x: cityX }}
             className="absolute inset-x-0 bottom-[40%] h-[26%] will-change-transform"
           >
             <CitySkyline wake={wake} />
@@ -816,7 +766,7 @@ export default function PortalHero() {
             ))}
           </motion.div>
 
-          {/* Perspective grid floor rushing beneath you */}
+          {/* Perspective grid floor */}
           <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-[46%] [perspective:520px]">
             <div
               className="grid-floor absolute inset-[-40%_-20%_0] origin-bottom [transform:rotateX(63deg)]"
@@ -862,7 +812,10 @@ export default function PortalHero() {
             {worldPanels.map((w, i) => (
               <motion.div
                 key={w.title}
-                style={{ left: w.x, top: w.y, y: panelYs[i], rotate: w.rot }}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.3 + i * 0.1, ease: [0.21, 0.6, 0.35, 1] }}
+                style={{ left: w.x, top: w.y, rotate: w.rot }}
                 className="absolute z-10 hidden lg:[@media(min-height:560px)]:block"
               >
                 <div className={`${w.cls} w-44 rounded-xl bg-gradient-to-br from-steel-400/50 via-white/10 to-transparent p-px lg:w-52`}>
@@ -879,14 +832,24 @@ export default function PortalHero() {
 
           {/* Center: the core ignites */}
           <div className="absolute inset-0 z-20 flex flex-col items-center justify-center px-5 text-center">
-            <motion.div style={{ scale: markScale, opacity: markOpacity }} className="relative">
+            <motion.div
+              initial={{ scale: 2.5, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 1, delay: 0.1, ease: [0.21, 0.6, 0.35, 1] }}
+              className="relative"
+            >
               <span aria-hidden="true" className="ring-pulse absolute inset-[-18px] rounded-full border border-steel-300/50" />
               <span aria-hidden="true" className="ring-pulse absolute inset-[-18px] rounded-full border border-[#7dd3fc]/40" style={{ animationDelay: "1.3s" }} />
               <span aria-hidden="true" className="absolute inset-0 -z-10 scale-[2] rounded-full bg-steel-400/30 blur-2xl" />
               <CatalystMark size={80} />
             </motion.div>
 
-            <motion.div style={{ opacity: headOpacity, y: headY, filter: headBlur }} className="mt-7 max-w-3xl">
+            <motion.div
+              initial={{ opacity: 0, y: 36, filter: "blur(12px)" }}
+              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              transition={{ duration: 0.9, delay: 0.5, ease: [0.21, 0.6, 0.35, 1] }}
+              className="mt-7 max-w-3xl"
+            >
               <p className="font-display text-[0.68rem] font-semibold tracking-[0.3em] text-[#7dd3fc] uppercase">
                 Welcome to the other side
               </p>
@@ -903,7 +866,12 @@ export default function PortalHero() {
               </p>
             </motion.div>
 
-            <motion.div style={{ opacity: ctaOpacity }} className="mt-7 flex flex-col items-center gap-4 sm:flex-row">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.7, delay: 0.85 }}
+              className="mt-7 flex flex-col items-center gap-4 sm:flex-row"
+            >
               <ButtonLink
                 href="/consultation"
                 onClick={() => track("cta_consultation_click", { location: "portal_hero" })}
@@ -921,13 +889,9 @@ export default function PortalHero() {
                 See what we&apos;re building →
               </Link>
             </motion.div>
-
-            <motion.p style={{ opacity: hintOpacity }} className="mt-8 text-sm text-silver-400">
-              Keep scrolling — the story is just beginning ↓
-            </motion.p>
           </div>
         </motion.div>
-      </div>
-    </div>
+      )}
+    </section>
   );
 }

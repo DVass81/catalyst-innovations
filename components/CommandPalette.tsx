@@ -19,7 +19,7 @@ const staticPages: Item[] = [
   { group: "Pages", title: "Demo Lab", subtitle: "Interactive product demonstrations", href: "/demo-lab", icon: "MonitorPlay" },
   { group: "Pages", title: "Founders", subtitle: "Daniel Vass & Josh Ogle", href: "/founders", icon: "Briefcase" },
   { group: "Pages", title: "Request a Consultation", subtitle: "Start a conversation", href: "/consultation", icon: "ShoppingCart" },
-  { group: "Pages", title: "Find Your Starting Point", subtitle: "A short assessment", href: "/start", icon: "Search" },
+  { group: "Pages", title: "ROI Estimator", subtitle: "Calculator plus a short assessment", href: "/roi-estimator", icon: "BarChart3" },
 ];
 
 function buildIndex(): Item[] {

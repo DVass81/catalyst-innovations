@@ -83,7 +83,7 @@ export default function MethodPage() {
           ))}
         </RevealGroup>
         <Reveal className="mt-12">
-          <ButtonLink href="/start">Find your best starting point</ButtonLink>
+          <ButtonLink href="/roi-estimator">Find your best starting point</ButtonLink>
         </Reveal>
       </Section>
       <CTABand />

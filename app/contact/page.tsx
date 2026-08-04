@@ -76,7 +76,7 @@ export default function ContactPage() {
               </ButtonLink>
               <p className="mt-4 text-xs text-silver-500">
                 Prefer a structured start? Try the{" "}
-                <Link href="/start" className="underline">starting-point assessment</Link>.
+                <Link href="/roi-estimator" className="underline">starting-point assessment</Link>.
               </p>
             </div>
           </Reveal>
