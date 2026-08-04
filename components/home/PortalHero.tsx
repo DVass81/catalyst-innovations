@@ -12,7 +12,7 @@ import Hero from "./Hero";
 /**
  * "Through the Screen" — a one-time autoplay intro, not scroll-driven.
  *
- * stage 0  the analog world: a 1997 back office and its CRT (holds ~3s)
+ * stage 0  the analog world: a 1997 back office and its CRT (holds ~6s)
  * stage 1  the camera launches into the screen (brief transition, ~0.7s)
  * stage 2  warp tunnel — the Catalyst brand gate holds (~3s)
  * stage 3  teleporter flash (~0.4s)
@@ -299,10 +299,10 @@ function Sparkline({ points }: { points: string }) {
 const stageLabels = ["01 · THE PAST", "01 · THE PAST", "02 · TRANSFER", "02 · TRANSFER", "03 · THE OTHER SIDE"];
 
 // Timeline (ms from mount, first-time visitors only):
-const T_LAUNCH = 3000; // office hold, then launch into the tunnel
-const T_GATE = 3700; // launch transition done, gate begins its hold
-const T_FLASH = 6700; // gate hold done (3000ms), flash begins
-const T_ARRIVAL = 7100; // flash done, arrival settles in — permanent
+const T_LAUNCH = 6000; // office hold, then launch into the tunnel
+const T_GATE = 6700; // launch transition done, gate begins its hold
+const T_FLASH = 9700; // gate hold done (3000ms), flash begins
+const T_ARRIVAL = 10100; // flash done, arrival settles in — permanent
 
 /**
  * Ambient sound, fully synthesized with WebAudio — no audio files.
@@ -458,7 +458,7 @@ export default function PortalHero() {
     }
   });
 
-  // Autoplay timeline for first-time visitors — the full ~7s sequence.
+  // Autoplay timeline for first-time visitors — the full ~10s sequence.
   // Nothing here locks scroll; this section is a normal-height block, so a
   // visitor who scrolls immediately just moves past it.
   useEffect(() => {
