@@ -10,7 +10,8 @@ import { track } from "@/lib/site";
 import Hero from "./Hero";
 
 /**
- * "Through the Screen" — a one-time autoplay intro, not scroll-driven.
+ * "Through the Screen" — an autoplay intro, not scroll-driven. Plays in
+ * full on every homepage visit.
  *
  * stage 0  the analog world: a 1997 back office and its CRT (holds ~6s)
  * stage 1  the camera launches into the screen (brief transition, ~0.7s)
@@ -19,8 +20,7 @@ import Hero from "./Hero";
  * stage 4  arrival: the AI world — permanent resting state of the homepage
  *
  * Nothing here locks scroll — the section is a normal min-h-[100dvh] block,
- * so a visitor who scrolls immediately just moves past it. Returning
- * visitors (localStorage flag) skip straight to stage 4.
+ * so a visitor who scrolls immediately just moves past it.
  * Reduced motion: renders the static Hero instead.
  */
 
@@ -446,28 +446,12 @@ function useAmbientSound(stage: number) {
 
 export default function PortalHero() {
   const reduce = useReducedMotion();
-  // Returning visitors (localStorage flag) skip straight to the arrival —
-  // decided during the initial render so there's no flash of the office
-  // scene before jumping past it.
-  const [stage, setStage] = useState(() => {
-    if (typeof window === "undefined") return 0;
-    try {
-      return localStorage.getItem("ci-visited") === "1" ? 4 : 0;
-    } catch {
-      return 0;
-    }
-  });
+  const [stage, setStage] = useState(0);
 
-  // Autoplay timeline for first-time visitors — the full ~10s sequence.
-  // Nothing here locks scroll; this section is a normal-height block, so a
-  // visitor who scrolls immediately just moves past it.
+  // Autoplay timeline, every visit — the full ~10s sequence. Nothing here
+  // locks scroll; this section is a normal-height block, so a visitor who
+  // scrolls immediately just moves past it.
   useEffect(() => {
-    try {
-      localStorage.setItem("ci-visited", "1");
-    } catch {
-      /* localStorage unavailable — always show the full sequence */
-    }
-    if (stage === 4) return;
     const timers = [
       setTimeout(() => setStage(1), T_LAUNCH),
       setTimeout(() => setStage(2), T_GATE),
@@ -475,7 +459,6 @@ export default function PortalHero() {
       setTimeout(() => setStage(4), T_ARRIVAL),
     ];
     return () => timers.forEach(clearTimeout);
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- runs once on mount using the initial `stage` value only
   }, []);
 
   /* Ambient sound (opt-in, synthesized) */
