@@ -1,9 +1,12 @@
 export type PricingTier = {
   id: string;
   name: string;
-  oneTime: string;
-  /** Raw monthly price in dollars — formatted in components so annual billing can discount it. */
-  monthlyPrice: number;
+  /** Raw one-time implementation range in dollars (equal low/high renders as a single price). */
+  oneTimeLow: number;
+  oneTimeHigh: number;
+  /** Raw monthly range in dollars — formatted in components so annual billing can discount it. */
+  monthlyLow: number;
+  monthlyHigh: number;
   idealFor: string;
   features: string[];
   /** Featured in the standard 3-tier grid ("Most Popular"). */
@@ -15,16 +18,20 @@ export type PricingTier = {
 /** Discount applied to the monthly price when a client chooses annual billing. */
 export const ANNUAL_DISCOUNT = 0.1;
 
-export function formatMonthly(n: number): string {
-  return `$${Math.round(n).toLocaleString()}/mo`;
+/** Formats a single price, or a range when low and high differ. */
+export function formatPriceRange(low: number, high: number): string {
+  const fmt = (n: number) => `$${Math.round(n).toLocaleString()}`;
+  return low === high ? fmt(low) : `${fmt(low)} – ${fmt(high)}`;
 }
 
 export const pricingTiers: PricingTier[] = [
   {
     id: "founding-partner",
     name: "Founding Partner",
-    oneTime: "$7,500",
-    monthlyPrice: 1200,
+    oneTimeLow: 7500,
+    oneTimeHigh: 7500,
+    monthlyLow: 1200,
+    monthlyHigh: 1200,
     idealFor: "The first 10 strategic partners",
     limited: "First 10 Only",
     features: [
@@ -38,8 +45,10 @@ export const pricingTiers: PricingTier[] = [
   {
     id: "essentials",
     name: "Essentials",
-    oneTime: "$5,000",
-    monthlyPrice: 500,
+    oneTimeLow: 5000,
+    oneTimeHigh: 8000,
+    monthlyLow: 500,
+    monthlyHigh: 1200,
     idealFor: "Small businesses needing a digital foundation",
     features: [
       "Business dashboard",
@@ -53,8 +62,10 @@ export const pricingTiers: PricingTier[] = [
   {
     id: "professional",
     name: "Professional",
-    oneTime: "$10,000",
-    monthlyPrice: 1500,
+    oneTimeLow: 10000,
+    oneTimeHigh: 15000,
+    monthlyLow: 1500,
+    monthlyHigh: 3000,
     idealFor: "Growing companies wanting automation and AI",
     popular: true,
     features: [
@@ -70,8 +81,10 @@ export const pricingTiers: PricingTier[] = [
   {
     id: "executive",
     name: "Executive",
-    oneTime: "$20,000",
-    monthlyPrice: 5000,
+    oneTimeLow: 20000,
+    oneTimeHigh: 25000,
+    monthlyLow: 5000,
+    monthlyHigh: 10000,
     idealFor: "Companies seeking a complete digital operating system",
     features: [
       "Everything in Professional plus executive AI copilot",
@@ -88,6 +101,10 @@ export const pricingTiers: PricingTier[] = [
 ];
 
 export const pricingFaqs: { q: string; a: string }[] = [
+  {
+    q: "Why is pricing shown as a range?",
+    a: "Where you land in the range depends on scope — number of integrations, data volume, and how much customization your workflows need. We'll give you an exact number before anything is signed.",
+  },
   {
     q: "What does the one-time implementation cost cover?",
     a: "Discovery, configuration, integration with your existing systems, data migration where applicable, and training your team to use what we build. Nothing goes live until it actually works the way your team works.",

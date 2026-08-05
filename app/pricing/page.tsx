@@ -4,7 +4,7 @@ import { Section, Eyebrow, Heading, Lead, ButtonLink } from "@/components/ui";
 import { Reveal, RevealGroup, RevealItem } from "@/components/Reveal";
 import CTABand from "@/components/CTABand";
 import PricingGrid from "@/components/PricingGrid";
-import { pricingTiers, pricingFaqs, formatMonthly } from "@/data/pricing";
+import { pricingTiers, pricingFaqs, formatPriceRange } from "@/data/pricing";
 
 export const metadata: Metadata = {
   title: "Pricing",
@@ -71,13 +71,13 @@ export default function PricingPage() {
                   </p>
                   <div className="mt-6 flex items-baseline gap-3">
                     <span className="font-display text-4xl font-semibold text-white">
-                      {foundingPartner.oneTime}
+                      {formatPriceRange(foundingPartner.oneTimeLow, foundingPartner.oneTimeHigh)}
                     </span>
                     <span className="text-sm text-silver-400">one-time implementation</span>
                   </div>
                   <div className="mt-1 flex items-baseline gap-3">
                     <span className="font-display text-2xl font-semibold text-steel-300">
-                      {formatMonthly(foundingPartner.monthlyPrice)}
+                      {formatPriceRange(foundingPartner.monthlyLow, foundingPartner.monthlyHigh)}/mo
                     </span>
                     <span className="text-sm text-silver-400">ongoing investment</span>
                   </div>

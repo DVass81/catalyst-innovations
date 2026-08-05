@@ -5,7 +5,7 @@ import { Check, Sparkles } from "lucide-react";
 import { ButtonLink } from "./ui";
 import { Spotlight } from "./Spotlight";
 import { Reveal, RevealGroup, RevealItem } from "./Reveal";
-import { ANNUAL_DISCOUNT, formatMonthly, type PricingTier } from "@/data/pricing";
+import { ANNUAL_DISCOUNT, formatPriceRange, type PricingTier } from "@/data/pricing";
 
 export default function PricingGrid({ tiers }: { tiers: PricingTier[] }) {
   const [annual, setAnnual] = useState(false);
@@ -46,8 +46,11 @@ export default function PricingGrid({ tiers }: { tiers: PricingTier[] }) {
 
       <RevealGroup className="mt-10 grid items-start gap-6 lg:grid-cols-3" stagger={0.08}>
         {tiers.map((tier) => {
-          const monthly = annual ? tier.monthlyPrice * (1 - ANNUAL_DISCOUNT) : tier.monthlyPrice;
-          const annualTotal = Math.round(tier.monthlyPrice * 12 * (1 - ANNUAL_DISCOUNT));
+          const factor = annual ? 1 - ANNUAL_DISCOUNT : 1;
+          const monthlyLow = tier.monthlyLow * factor;
+          const monthlyHigh = tier.monthlyHigh * factor;
+          const annualLow = tier.monthlyLow * 12 * (1 - ANNUAL_DISCOUNT);
+          const annualHigh = tier.monthlyHigh * 12 * (1 - ANNUAL_DISCOUNT);
           return (
             <RevealItem key={tier.id} className="h-full">
               <Spotlight className="h-full rounded-card">
@@ -67,19 +70,21 @@ export default function PricingGrid({ tiers }: { tiers: PricingTier[] }) {
                   <p className="mt-1.5 text-sm leading-snug text-silver-500">{tier.idealFor}</p>
 
                   <div className="mt-6 flex items-baseline gap-2">
-                    <span className="font-display text-3xl font-semibold text-navy-900">
-                      {tier.oneTime}
+                    <span className="font-display text-2xl font-semibold text-navy-900 sm:text-3xl">
+                      {formatPriceRange(tier.oneTimeLow, tier.oneTimeHigh)}
                     </span>
                   </div>
                   <p className="text-xs text-silver-500">one-time implementation</p>
 
                   <div className="mt-3 flex items-baseline gap-2">
-                    <span className="font-display text-xl font-semibold text-steel-600">
-                      {formatMonthly(monthly)}
+                    <span className="font-display text-lg font-semibold text-steel-600 sm:text-xl">
+                      {formatPriceRange(monthlyLow, monthlyHigh)}/mo
                     </span>
                   </div>
                   <p className="text-xs text-silver-500">
-                    {annual ? `billed annually · $${annualTotal.toLocaleString()}/year` : "billed monthly"}
+                    {annual
+                      ? `billed annually · ${formatPriceRange(annualLow, annualHigh)}/year`
+                      : "billed monthly"}
                   </p>
 
                   <ul className="mt-7 flex-1 space-y-3">
