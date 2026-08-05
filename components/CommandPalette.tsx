@@ -7,7 +7,6 @@ import { Search, CornerDownLeft, ArrowUp, ArrowDown } from "lucide-react";
 import { services } from "@/data/services";
 import { industries } from "@/data/industries";
 import { products } from "@/data/products";
-import { insights } from "@/data/content";
 import { Icon } from "./Icon";
 import { track } from "@/lib/site";
 
@@ -20,6 +19,7 @@ const staticPages: Item[] = [
   { group: "Pages", title: "Founders", subtitle: "Daniel Vass & Josh Ogle", href: "/founders", icon: "Briefcase" },
   { group: "Pages", title: "Request a Consultation", subtitle: "Start a conversation", href: "/consultation", icon: "ShoppingCart" },
   { group: "Pages", title: "ROI Estimator", subtitle: "Calculator plus a short assessment", href: "/roi-estimator", icon: "BarChart3" },
+  { group: "Pages", title: "Pricing", subtitle: "Packages and monthly investment", href: "/pricing", icon: "PiggyBank" },
 ];
 
 function buildIndex(): Item[] {
@@ -28,7 +28,6 @@ function buildIndex(): Item[] {
     ...services.map((s) => ({ group: "Solutions", title: s.title, subtitle: s.tagline, href: `/solutions/${s.slug}`, icon: s.icon })),
     ...industries.map((i) => ({ group: "Industries", title: i.name, subtitle: i.problems[0] ?? "", href: `/industries#${i.slug}`, icon: i.icon })),
     ...products.map((p) => ({ group: "Innovation Portfolio", title: p.name, subtitle: p.status, href: "/portfolio", icon: p.icon })),
-    ...insights.filter((a) => !a.draft).map((a) => ({ group: "Insights", title: a.title, subtitle: a.category, href: `/insights/${a.slug}`, icon: "PenTool" })),
   ];
 }
 

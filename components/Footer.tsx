@@ -9,7 +9,7 @@ const companyLinks = [
   { href: "/founders", label: "Founders" },
   { href: "/method", label: "The Catalyst Method" },
   { href: "/portfolio", label: "Innovation Portfolio" },
-  { href: "/insights", label: "Insights" },
+  { href: "/pricing", label: "Pricing" },
   { href: "/demo-lab", label: "Demo Lab" },
   { href: "/portal", label: "Client Portal" },
   { href: "/contact", label: "Contact" },

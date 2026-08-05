@@ -11,7 +11,7 @@ import { viewTransitionStyle } from "@/lib/viewTransitionStyle";
 import { services } from "@/data/services";
 import { products } from "@/data/products";
 import { industries } from "@/data/industries";
-import { methodStages, outcomes, founders, partnershipStatement, insights, differentiators } from "@/data/content";
+import { methodStages, outcomes, founders, partnershipStatement, differentiators } from "@/data/content";
 import { track } from "@/lib/site";
 
 /* ---------- Credibility ---------- */
@@ -320,44 +320,6 @@ export function WhyCatalyst() {
               <h3 className="font-display text-base font-semibold text-navy-900">{d.title}</h3>
               <p className="mt-2 text-sm leading-relaxed text-navy-700">{d.text}</p>
             </div>
-          </RevealItem>
-        ))}
-      </RevealGroup>
-    </Section>
-  );
-}
-
-/* ---------- Insights preview ---------- */
-export function InsightsPreview() {
-  const featured = insights.slice(0, 3);
-  return (
-    <Section className="bg-ice-50">
-      <Reveal className="flex flex-wrap items-end justify-between gap-6">
-        <div>
-          <Eyebrow>Insights</Eyebrow>
-          <Heading>Thinking from the shop floor up.</Heading>
-        </div>
-        <ButtonLink href="/insights" variant="ghost-light">
-          All insights <ArrowRight size={16} />
-        </ButtonLink>
-      </Reveal>
-      <RevealGroup className="mt-10 grid gap-6 md:grid-cols-3">
-        {featured.map((a) => (
-          <RevealItem key={a.slug} className="h-full">
-            <Link
-              href={a.draft ? "/insights" : `/insights/${a.slug}`}
-              className="group flex h-full flex-col rounded-card border border-ice-200 bg-white p-6 transition-all hover:-translate-y-1 hover:shadow-card"
-            >
-              <p className="text-xs font-semibold tracking-wide text-steel-600 uppercase">
-                {a.category}
-                {a.draft && <span className="ml-2 rounded bg-ice-200 px-1.5 py-0.5 text-[0.6rem] text-navy-700">Draft preview</span>}
-              </p>
-              <h3 className="mt-3 flex-1 font-display text-base font-semibold leading-snug text-navy-900 group-hover:text-steel-600 transition-colors">
-                {a.title}
-              </h3>
-              <p className="mt-3 text-sm leading-relaxed text-navy-700">{a.excerpt}</p>
-              <p className="mt-4 text-xs text-silver-500">{a.readMinutes} min read</p>
-            </Link>
           </RevealItem>
         ))}
       </RevealGroup>

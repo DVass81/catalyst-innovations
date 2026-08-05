@@ -1,4 +1,4 @@
-/* Method stages, outcomes, differentiators, founders, insights, FAQs. */
+/* Method stages, outcomes, differentiators, founders, FAQs. */
 
 export const methodStages = [
   {
@@ -145,100 +145,6 @@ export const founders = [
 
 export const partnershipStatement =
   "One founder understands the operational problem. The other knows how to engineer the solution.";
-
-export type Insight = {
-  slug: string;
-  title: string;
-  excerpt: string;
-  readMinutes: number;
-  category: string;
-  draft: boolean;
-};
-
-/** Sample editorial drafts — labeled until approved for publication. */
-export const insights: Insight[] = [
-  {
-    slug: "why-business-software-fails",
-    title: "Why Most Business Software Fails the People Who Actually Use It",
-    excerpt:
-      "Software succeeds or dies at the point of daily use. Here's why so many systems lose that battle — and what to demand instead.",
-    readMinutes: 7,
-    category: "Operations",
-    draft: false,
-  },
-  {
-    slug: "purchasing-costing-more",
-    title: "Five Signs Your Purchasing Process Is Costing More Than You Think",
-    excerpt: "Purchasing leakage rarely shows up as a line item. It shows up as these five patterns.",
-    readMinutes: 6,
-    category: "Procurement",
-    draft: true,
-  },
-  {
-    slug: "practical-ai-manufacturing",
-    title: "Practical AI for Manufacturing Operations",
-    excerpt: "Forget the hype cycle. Here's where AI earns its keep on a real shop floor.",
-    readMinutes: 8,
-    category: "AI & Automation",
-    draft: true,
-  },
-  {
-    slug: "when-to-build-custom",
-    title: "When Should a Company Build Custom Software?",
-    excerpt: "Build versus buy is a financial decision, not a technical one. A framework for making it honestly.",
-    readMinutes: 6,
-    category: "Strategy",
-    draft: true,
-  },
-  {
-    slug: "roi-of-automation",
-    title: "How to Calculate the ROI of Process Automation",
-    excerpt: "Labor, errors, cycle time, opportunity — the four numbers that turn 'it feels slow' into a business case.",
-    readMinutes: 5,
-    category: "Strategy",
-    draft: true,
-  },
-  {
-    slug: "spreadsheets-to-systems",
-    title: "Turning Spreadsheet Workflows Into Scalable Systems",
-    excerpt: "The spreadsheet that runs your company was a great decision — five years ago. Here's the graduation path.",
-    readMinutes: 6,
-    category: "Operations",
-    draft: true,
-  },
-  {
-    slug: "procurement-operational-intelligence",
-    title: "Why Procurement Needs Better Operational Intelligence",
-    excerpt: "Approval workflows are table stakes. The real value is in what your purchasing data can tell you.",
-    readMinutes: 7,
-    category: "Procurement",
-    draft: true,
-  },
-  {
-    slug: "small-business-ai-control",
-    title: "How Small Businesses Can Use AI Without Losing Control",
-    excerpt: "Human-in-the-loop, approval gates, and audit trails: adopting AI without betting the company on it.",
-    readMinutes: 6,
-    category: "AI & Automation",
-    draft: true,
-  },
-  {
-    slug: "technology-employees-adopt",
-    title: "Building Technology Employees Will Actually Adopt",
-    excerpt: "Adoption isn't a training problem. It's a design decision made months before go-live.",
-    readMinutes: 6,
-    category: "Operations",
-    draft: true,
-  },
-  {
-    slug: "bottleneck-to-advantage",
-    title: "From Process Bottleneck to Competitive Advantage",
-    excerpt: "Your slowest process is also your biggest opportunity. How to find it, measure it, and fix it.",
-    readMinutes: 5,
-    category: "Strategy",
-    draft: true,
-  },
-];
 
 export const faqs = [
   {

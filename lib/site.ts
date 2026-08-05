@@ -21,11 +21,11 @@ export const site = {
 export const navLinks = [
   { href: "/solutions", label: "Solutions" },
   { href: "/roi-estimator", label: "ROI Estimator" },
+  { href: "/pricing", label: "Pricing" },
   { href: "/industries", label: "Industries" },
   { href: "/portfolio", label: "Innovation Portfolio" },
   { href: "/method", label: "The Catalyst Method" },
   { href: "/demo-lab", label: "Demo Lab" },
-  { href: "/insights", label: "Insights" },
 ] as const;
 
 /**
