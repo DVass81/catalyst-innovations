@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import { Check, Sparkles, Clock, ShieldCheck, RefreshCw, TrendingUp } from "lucide-react";
+import { Sparkles, Clock, ShieldCheck, RefreshCw, TrendingUp } from "lucide-react";
 import { Section, Eyebrow, Heading, Lead, ButtonLink } from "@/components/ui";
 import { Reveal, RevealGroup, RevealItem } from "@/components/Reveal";
-import { Spotlight } from "@/components/Spotlight";
 import CTABand from "@/components/CTABand";
-import { pricingTiers, pricingFaqs } from "@/data/pricing";
+import PricingGrid from "@/components/PricingGrid";
+import { pricingTiers, pricingFaqs, formatMonthly } from "@/data/pricing";
 
 export const metadata: Metadata = {
   title: "Pricing",
@@ -14,11 +14,13 @@ export const metadata: Metadata = {
 
 const foundingPartner = pricingTiers.find((t) => t.id === "founding-partner")!;
 const standardTiers = pricingTiers.filter((t) => t.id !== "founding-partner");
+const FOUNDING_PARTNER_SPOTS_CLAIMED = 0;
+const FOUNDING_PARTNER_SPOTS_TOTAL = 10;
 
 const trustPoints = [
   { icon: RefreshCw, text: "Month-to-month, cancel anytime" },
   { icon: TrendingUp, text: "Upgrade tiers as you grow" },
-  { icon: ShieldCheck, text: "No hidden fees, ever" },
+  { icon: ShieldCheck, text: "30-day satisfaction guarantee" },
 ];
 
 export default function PricingPage() {
@@ -60,7 +62,12 @@ export default function PricingPage() {
                   <p className="mt-3 max-w-lg leading-relaxed text-ice-300">
                     We&apos;re opening the door to {foundingPartner.idealFor.toLowerCase()} at
                     founding pricing — below Professional, with founder-level access built in.
-                    Once the first 10 spots are filled, this tier closes for good.
+                    Once the first {FOUNDING_PARTNER_SPOTS_TOTAL} spots are filled, this tier
+                    closes for good.
+                  </p>
+                  <p className="mt-3 font-display text-sm font-semibold tracking-wide text-steel-300">
+                    {FOUNDING_PARTNER_SPOTS_CLAIMED} of {FOUNDING_PARTNER_SPOTS_TOTAL} spots
+                    claimed — now accepting applications.
                   </p>
                   <div className="mt-6 flex items-baseline gap-3">
                     <span className="font-display text-4xl font-semibold text-white">
@@ -70,7 +77,7 @@ export default function PricingPage() {
                   </div>
                   <div className="mt-1 flex items-baseline gap-3">
                     <span className="font-display text-2xl font-semibold text-steel-300">
-                      {foundingPartner.monthly}
+                      {formatMonthly(foundingPartner.monthlyPrice)}
                     </span>
                     <span className="text-sm text-silver-400">ongoing investment</span>
                   </div>
@@ -103,59 +110,16 @@ export default function PricingPage() {
           </Lead>
         </Reveal>
 
-        <RevealGroup className="mt-14 grid items-start gap-6 lg:grid-cols-3" stagger={0.08}>
-          {standardTiers.map((tier) => (
-            <RevealItem key={tier.id} className="h-full">
-              <Spotlight className="h-full rounded-card">
-                <div
-                  className={`relative flex h-full flex-col rounded-card border bg-white p-8 ${
-                    tier.popular
-                      ? "border-steel-400 shadow-card-dark lg:-translate-y-3"
-                      : "border-ice-200 shadow-card"
-                  }`}
-                >
-                  {tier.popular && (
-                    <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 inline-flex items-center gap-1 rounded-full bg-steel-400 px-3.5 py-1 text-xs font-semibold tracking-wide text-white shadow-card">
-                      <Sparkles size={12} /> Most Popular
-                    </span>
-                  )}
-                  <h3 className="font-display text-xl font-semibold text-navy-900">{tier.name}</h3>
-                  <p className="mt-1.5 text-sm leading-snug text-silver-500">{tier.idealFor}</p>
+        <Reveal delay={0.05} className="mx-auto mt-8 flex max-w-xl items-center gap-3 rounded-card border border-steel-400/30 bg-steel-400/10 px-5 py-4">
+          <ShieldCheck size={22} className="shrink-0 text-steel-600" />
+          <p className="text-sm leading-snug text-navy-800">
+            <span className="font-semibold text-navy-900">30-day satisfaction guarantee.</span>{" "}
+            If it&apos;s not the right fit in your first month, we&apos;ll fix it or refund your
+            implementation fee.
+          </p>
+        </Reveal>
 
-                  <div className="mt-6 flex items-baseline gap-2">
-                    <span className="font-display text-3xl font-semibold text-navy-900">
-                      {tier.oneTime}
-                    </span>
-                  </div>
-                  <p className="text-xs text-silver-500">one-time implementation</p>
-                  <div className="mt-3 flex items-baseline gap-2">
-                    <span className="font-display text-xl font-semibold text-steel-600">
-                      {tier.monthly}
-                    </span>
-                  </div>
-                  <p className="text-xs text-silver-500">ongoing investment</p>
-
-                  <ul className="mt-7 flex-1 space-y-3">
-                    {tier.features.map((f) => (
-                      <li key={f} className="flex items-start gap-2.5 text-sm text-navy-700">
-                        <Check size={16} className="mt-0.5 shrink-0 text-steel-600" />
-                        {f}
-                      </li>
-                    ))}
-                  </ul>
-
-                  <ButtonLink
-                    href="/consultation"
-                    variant={tier.popular ? "primary" : "secondary"}
-                    className="mt-8 w-full"
-                  >
-                    Get Started
-                  </ButtonLink>
-                </div>
-              </Spotlight>
-            </RevealItem>
-          ))}
-        </RevealGroup>
+        <PricingGrid tiers={standardTiers} />
 
         <RevealGroup className="mt-14 flex flex-wrap items-center justify-center gap-x-10 gap-y-4" stagger={0.05}>
           {trustPoints.map((t) => (

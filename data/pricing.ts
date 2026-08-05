@@ -2,7 +2,8 @@ export type PricingTier = {
   id: string;
   name: string;
   oneTime: string;
-  monthly: string;
+  /** Raw monthly price in dollars — formatted in components so annual billing can discount it. */
+  monthlyPrice: number;
   idealFor: string;
   features: string[];
   /** Featured in the standard 3-tier grid ("Most Popular"). */
@@ -11,12 +12,19 @@ export type PricingTier = {
   limited?: string;
 };
 
+/** Discount applied to the monthly price when a client chooses annual billing. */
+export const ANNUAL_DISCOUNT = 0.1;
+
+export function formatMonthly(n: number): string {
+  return `$${Math.round(n).toLocaleString()}/mo`;
+}
+
 export const pricingTiers: PricingTier[] = [
   {
     id: "founding-partner",
     name: "Founding Partner",
     oneTime: "$7,500",
-    monthly: "$1,200/mo",
+    monthlyPrice: 1200,
     idealFor: "The first 10 strategic partners",
     limited: "First 10 Only",
     features: [
@@ -31,7 +39,7 @@ export const pricingTiers: PricingTier[] = [
     id: "essentials",
     name: "Essentials",
     oneTime: "$5,000",
-    monthly: "$500/mo",
+    monthlyPrice: 500,
     idealFor: "Small businesses needing a digital foundation",
     features: [
       "Business dashboard",
@@ -46,7 +54,7 @@ export const pricingTiers: PricingTier[] = [
     id: "professional",
     name: "Professional",
     oneTime: "$10,000",
-    monthly: "$1,500/mo",
+    monthlyPrice: 1500,
     idealFor: "Growing companies wanting automation and AI",
     popular: true,
     features: [
@@ -63,7 +71,7 @@ export const pricingTiers: PricingTier[] = [
     id: "executive",
     name: "Executive",
     oneTime: "$20,000",
-    monthly: "$5,000/mo",
+    monthlyPrice: 5000,
     idealFor: "Companies seeking a complete digital operating system",
     features: [
       "Everything in Professional plus executive AI copilot",
@@ -99,5 +107,13 @@ export const pricingFaqs: { q: string; a: string }[] = [
   {
     q: "What if we need something outside these packages?",
     a: "Enterprise needs, multi-entity organizations, and unusual compliance requirements are common enough that we scope those separately — reach out and we'll build a custom proposal.",
+  },
+  {
+    q: "What does the 30-day satisfaction guarantee cover?",
+    a: "If your package isn't the right fit within the first 30 days after implementation, we'll either fix what's wrong or refund your one-time implementation fee — your choice.",
+  },
+  {
+    q: "Is annual billing actually cheaper?",
+    a: "Yes — choosing annual billing takes 10% off the monthly investment on every standard package, billed as one upfront annual payment. The one-time implementation cost is the same either way.",
   },
 ];
