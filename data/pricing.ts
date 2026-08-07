@@ -45,10 +45,10 @@ export const pricingTiers: PricingTier[] = [
   {
     id: "essentials",
     name: "Essentials",
-    oneTimeLow: 5000,
-    oneTimeHigh: 8000,
-    monthlyLow: 500,
-    monthlyHigh: 1200,
+    oneTimeLow: 10000,
+    oneTimeHigh: 15000,
+    monthlyLow: 1500,
+    monthlyHigh: 2500,
     idealFor: "Small businesses needing a digital foundation",
     features: [
       "Business dashboard",
@@ -62,10 +62,10 @@ export const pricingTiers: PricingTier[] = [
   {
     id: "professional",
     name: "Professional",
-    oneTimeLow: 10000,
-    oneTimeHigh: 15000,
-    monthlyLow: 1500,
-    monthlyHigh: 3000,
+    oneTimeLow: 15000,
+    oneTimeHigh: 30000,
+    monthlyLow: 2500,
+    monthlyHigh: 5000,
     idealFor: "Growing companies wanting automation and AI",
     popular: true,
     features: [
@@ -81,10 +81,10 @@ export const pricingTiers: PricingTier[] = [
   {
     id: "executive",
     name: "Executive",
-    oneTimeLow: 20000,
-    oneTimeHigh: 25000,
+    oneTimeLow: 30000,
+    oneTimeHigh: 70000,
     monthlyLow: 5000,
-    monthlyHigh: 10000,
+    monthlyHigh: 15000,
     idealFor: "Companies seeking a complete digital operating system",
     features: [
       "Everything in Professional plus executive AI copilot",

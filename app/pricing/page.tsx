@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Sparkles, Clock, ShieldCheck, RefreshCw, TrendingUp } from "lucide-react";
+import { Sparkles, Clock, ShieldCheck, RefreshCw, TrendingUp, Settings2 } from "lucide-react";
 import { Section, Eyebrow, Heading, Lead, ButtonLink } from "@/components/ui";
 import { Reveal, RevealGroup, RevealItem } from "@/components/Reveal";
 import CTABand from "@/components/CTABand";
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 
 const foundingPartner = pricingTiers.find((t) => t.id === "founding-partner")!;
 const standardTiers = pricingTiers.filter((t) => t.id !== "founding-partner");
-const FOUNDING_PARTNER_SPOTS_CLAIMED = 0;
+const FOUNDING_PARTNER_SPOTS_CLAIMED = 3;
 const FOUNDING_PARTNER_SPOTS_TOTAL = 10;
 
 const trustPoints = [
@@ -67,7 +67,7 @@ export default function PricingPage() {
                   </p>
                   <p className="mt-3 font-display text-sm font-semibold tracking-wide text-steel-300">
                     {FOUNDING_PARTNER_SPOTS_CLAIMED} of {FOUNDING_PARTNER_SPOTS_TOTAL} spots
-                    claimed — now accepting applications.
+                    claimed — {FOUNDING_PARTNER_SPOTS_TOTAL - FOUNDING_PARTNER_SPOTS_CLAIMED} remaining.
                   </p>
                   <div className="mt-6 flex items-baseline gap-3">
                     <span className="font-display text-4xl font-semibold text-white">
@@ -108,6 +108,10 @@ export default function PricingPage() {
             Every package includes hosting, security updates, and support — the difference is
             how much automation and AI does for your team, and how deep our involvement goes.
           </Lead>
+          <p className="mt-4 inline-flex items-center gap-2 rounded-full border border-ice-200 bg-white px-4 py-1.5 text-xs font-semibold tracking-wide text-navy-700 shadow-card">
+            <Settings2 size={14} className="text-steel-600" />
+            Every engagement is customized — pricing reflects your actual scope, not a rigid tier.
+          </p>
         </Reveal>
 
         <Reveal delay={0.05} className="mx-auto mt-8 flex max-w-xl items-center gap-3 rounded-card border border-steel-400/30 bg-steel-400/10 px-5 py-4">
