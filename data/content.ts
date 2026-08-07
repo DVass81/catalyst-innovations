@@ -61,6 +61,37 @@ export const outcomes = [
   "Increased profitability",
 ] as const;
 
+export const coreValues = [
+  {
+    title: "Integrity",
+    text: "Tell the truth, keep commitments, protect client interests, and do the right thing even when it is inconvenient.",
+  },
+  {
+    title: "Partnership",
+    text: "Work alongside clients as a trusted business partner — not simply as a software vendor.",
+  },
+  {
+    title: "Trust & Confidence",
+    text: "Create confidence through clear communication, reliable delivery, disciplined follow-through, and measurable outcomes.",
+  },
+  {
+    title: "Practical Innovation",
+    text: "Use AI and technology where they remove friction, create value, and improve the customer's business — not for novelty.",
+  },
+  {
+    title: "Adaptability",
+    text: "Continuously evolve with technology, customer needs, and market conditions so solutions remain useful over time.",
+  },
+  {
+    title: "Continuous Improvement",
+    text: "Apply lean thinking, learn from results, eliminate waste, and make systems simpler and more effective.",
+  },
+  {
+    title: "Family & Sustainability",
+    text: "Build a company that supports strong families, healthy careers, and long-term opportunity for employees and founders.",
+  },
+];
+
 export const differentiators = [
   {
     title: "Operational experience before software recommendations",

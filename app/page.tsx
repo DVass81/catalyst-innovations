@@ -5,7 +5,7 @@ import { ArrowRight } from "lucide-react";
 import PortalHero from "@/components/home/PortalHero";
 import { Section, Eyebrow, Heading, Lead, ButtonLink } from "@/components/ui";
 import { Reveal, RevealGroup, RevealItem } from "@/components/Reveal";
-import { differentiators } from "@/data/content";
+import { coreValues, differentiators } from "@/data/content";
 import CTABand from "@/components/CTABand";
 import AboutTimeline from "@/components/AboutTimeline";
 import EditorialBreak from "@/components/home/EditorialBreak";
@@ -83,7 +83,24 @@ export default function HomePage() {
           </Reveal>
         </div>
 
-        <RevealGroup className="mt-12 grid grid-cols-2 gap-4 lg:grid-cols-4">
+        <Reveal className="mt-16">
+          <Eyebrow>Core Values</Eyebrow>
+          <Heading>What we stand for.</Heading>
+        </Reveal>
+        <RevealGroup className="mt-10 grid gap-x-10 gap-y-8 md:grid-cols-2" stagger={0.05}>
+          {coreValues.map((v, i) => (
+            <RevealItem key={v.title}>
+              <div className="border-l-2 border-steel-400 pl-5">
+                <h3 className="font-display text-base font-semibold text-navy-900">
+                  <span className="text-steel-600">{i + 1}.</span> {v.title}
+                </h3>
+                <p className="mt-2 text-sm leading-relaxed text-navy-700">{v.text}</p>
+              </div>
+            </RevealItem>
+          ))}
+        </RevealGroup>
+
+        <RevealGroup className="mt-16 grid grid-cols-2 gap-4 lg:grid-cols-4">
           {credibilityStats.map(([n, t]) => (
             <RevealItem key={t}>
               <div className="h-full rounded-card border border-ice-200 bg-white p-6 shadow-card">
