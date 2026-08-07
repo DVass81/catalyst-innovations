@@ -17,9 +17,9 @@ const securityHeaders = [
       "img-src 'self' data: blob:",
       "font-src 'self' data:",
       "connect-src 'self' https://plausible.io https://*.google-analytics.com",
-      // Microsoft Bookings embed on /consultation — booking pages redirect
-      // between these hosts depending on tenant and how old the link is.
-      "frame-src 'self' https://outlook.office.com https://outlook.office365.com https://bookings.cloud.microsoft",
+      // Scheduling embed on /consultation — Google Calendar Appointment
+      // Schedules and Microsoft Bookings both show up under these hosts.
+      "frame-src 'self' https://calendar.google.com https://outlook.office.com https://outlook.office365.com https://bookings.cloud.microsoft",
       "frame-ancestors 'none'",
       "base-uri 'self'",
       "form-action 'self'",
