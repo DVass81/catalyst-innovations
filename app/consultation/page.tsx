@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { Section, Eyebrow, Heading, Lead } from "@/components/ui";
 import { Reveal } from "@/components/Reveal";
 import ConsultationForm from "@/components/ConsultationForm";
+import ConsultationTabs from "@/components/ConsultationTabs";
+import BookingEmbed from "@/components/BookingEmbed";
+import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Request a Consultation",
@@ -60,7 +63,14 @@ export default async function ConsultationPage({
       <Section className="relative overflow-hidden bg-navy-950">
         <div className="bg-grid-dark absolute inset-0" aria-hidden="true" />
         <div className="relative mx-auto max-w-3xl">
-          <ConsultationForm initial={initial} />
+          {site.schedulingUrl ? (
+            <ConsultationTabs
+              form={<ConsultationForm initial={initial} />}
+              booking={<BookingEmbed />}
+            />
+          ) : (
+            <ConsultationForm initial={initial} />
+          )}
           <div className="mt-10 grid gap-4 sm:grid-cols-3">
             {[
               ["No obligation", "A conversation, not a sales funnel."],
