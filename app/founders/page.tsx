@@ -51,11 +51,13 @@ export default function FoundersPage() {
             <Reveal key={f.slug}>
               <article
                 id={f.slug}
-                className={`grid gap-10 rounded-card border border-ice-200 bg-white p-8 shadow-card sm:p-10 lg:grid-cols-[320px_1fr] ${
-                  idx % 2 === 1 ? "lg:[&>*:first-child]:order-2" : ""
+                className={`grid gap-10 rounded-card border border-ice-200 bg-white p-8 shadow-card sm:p-10 ${
+                  idx % 2 === 1
+                    ? "lg:grid-cols-[1fr_320px] lg:[&>*:first-child]:order-2"
+                    : "lg:grid-cols-[320px_1fr]"
                 }`}
               >
-                <div>
+                <div className="lg:sticky lg:top-28 lg:self-start">
                   <HexPortrait
                     src={photoFor(f.slug)}
                     initials={f.name.split(" ").map((n) => n[0]).join("")}
@@ -67,18 +69,24 @@ export default function FoundersPage() {
                       Headshot placeholder — add /public/founders/{f.slug}.jpg to replace.
                     </p>
                   )}
-                </div>
-                <div>
-                  <h2 className="font-display text-2xl font-semibold text-navy-900 sm:text-3xl">{f.name}</h2>
+                  <h2 className="mt-5 font-display text-2xl font-semibold text-navy-900 sm:text-3xl">{f.name}</h2>
                   <p className="mt-1 font-medium text-steel-600">{f.role}</p>
                   <p className="mt-1 text-sm text-silver-500">{f.years} of experience</p>
                   <EmailLink email={f.email} context={f.slug} className="mt-3" />
-                  <div className="mt-5 space-y-4">
+                  {f.personalNote && (
+                    <div className="mt-6 rounded-card border border-ice-200 bg-ice-50 p-4">
+                      <p className="text-xs font-semibold tracking-wide text-steel-600 uppercase">Off the clock</p>
+                      <p className="mt-1.5 text-sm italic leading-relaxed text-navy-700">{f.personalNote}</p>
+                    </div>
+                  )}
+                </div>
+                <div>
+                  <div className="lg:columns-2 lg:gap-10">
                     {f.bio.map((p) => (
-                      <p key={p} className="leading-relaxed text-navy-800">{p}</p>
+                      <p key={p} className="mb-4 break-inside-avoid leading-relaxed text-navy-800">{p}</p>
                     ))}
                   </div>
-                  <p className="mt-4 border-l-2 border-steel-400 pl-4 text-sm italic leading-relaxed text-navy-700">
+                  <p className="mt-2 border-l-2 border-steel-400 pl-4 text-sm italic leading-relaxed text-navy-700">
                     {f.summary}
                   </p>
                   <h3 className="mt-7 font-display text-sm font-semibold tracking-wide text-navy-900 uppercase">

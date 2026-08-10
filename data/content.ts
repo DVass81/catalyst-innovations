@@ -139,6 +139,7 @@ export const founders = [
     bio: [
       "Daniel brings approximately 20 years of manufacturing, procurement, supply-chain, operations, leadership, and continuous-improvement experience. He understands how organizations actually operate — not only how a process looks on paper. His strength is identifying operational friction, understanding the financial consequences, and helping convert those problems into scalable technology solutions.",
     ],
+    personalNote: undefined as string | undefined,
     expertise: [
       "Manufacturing operations",
       "Strategic purchasing & procurement management",
@@ -164,8 +165,9 @@ export const founders = [
       "Josh is an East Tennessee native who brings 10 years of service in the United States Army and more than eight years of professional information technology experience to Catalyst Innovations. His background spans IT systems, cybersecurity, software and product development, and the practical application of emerging technologies to solve real-world business problems.",
       "During his technology career, Josh earned CompTIA Security+ and ITIL 4 certifications, building a strong foundation in cybersecurity, IT service management, and reliable systems. Combined with the discipline, leadership, and mission-focused mindset developed during his Army career, that experience shapes his approach at Catalyst Innovations: understand the problem, build the right solution, and make sure it works in the real world.",
       "A lifelong East Tennessean, Josh believes technology should make people's jobs easier—not more complicated. At Catalyst Innovations, he focuses on turning business challenges into practical, secure, and scalable solutions using software, automation, and artificial intelligence.",
-      "Outside of Catalyst, Josh enjoys spending time with his wife, Melissa, and their three boys. He's an avid sports fan, particularly football and golf, and can regularly be found on a golf course somewhere around East Tennessee.",
     ],
+    personalNote:
+      "Outside of Catalyst, Josh enjoys spending time with his wife, Melissa, and their three boys. He's an avid sports fan, particularly football and golf, and can regularly be found on a golf course somewhere around East Tennessee.",
     expertise: [
       "Technology strategy & information systems",
       "Product development & software architecture",
