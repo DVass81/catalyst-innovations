@@ -73,7 +73,11 @@ export default function FoundersPage() {
                   <p className="mt-1 font-medium text-steel-600">{f.role}</p>
                   <p className="mt-1 text-sm text-silver-500">{f.years} of experience</p>
                   <EmailLink email={f.email} context={f.slug} className="mt-3" />
-                  <p className="mt-5 leading-relaxed text-navy-800">{f.bio}</p>
+                  <div className="mt-5 space-y-4">
+                    {f.bio.map((p) => (
+                      <p key={p} className="leading-relaxed text-navy-800">{p}</p>
+                    ))}
+                  </div>
                   <p className="mt-4 border-l-2 border-steel-400 pl-4 text-sm italic leading-relaxed text-navy-700">
                     {f.summary}
                   </p>
