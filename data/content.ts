@@ -133,7 +133,7 @@ export const founders = [
     name: "Daniel Vass",
     email: "daniel@mycatalystinnovations.com",
     role: "Co-Founder | Operations, Manufacturing & Business Transformation",
-    years: "~20 years",
+    years: ["~20 years of experience"],
     summary:
       "Daniel combines real-world operational experience with a practical understanding of what employees, managers, suppliers, and executives need from business technology.",
     bio: [
@@ -158,7 +158,7 @@ export const founders = [
     name: "Josh Ogle",
     email: "josh@mycatalystinnovations.com",
     role: "Co-Founder | Technology, Systems & Product Development",
-    years: "18+ years (10 Army + 8+ IT)",
+    years: ["10 years U.S. Army", "8+ years in IT"],
     summary:
       "Josh combines military leadership with modern technology expertise to turn complex operational requirements into secure, practical, scalable systems.",
     bio: [

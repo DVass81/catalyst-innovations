@@ -71,7 +71,16 @@ export default function FoundersPage() {
                   )}
                   <h2 className="mt-5 font-display text-2xl font-semibold text-navy-900 sm:text-3xl">{f.name}</h2>
                   <p className="mt-1 font-medium text-steel-600">{f.role}</p>
-                  <p className="mt-1 text-sm text-silver-500">{f.years} of experience</p>
+                  <div className="mt-2.5 flex flex-wrap gap-1.5">
+                    {f.years.map((y) => (
+                      <span
+                        key={y}
+                        className="inline-flex items-center rounded-full bg-ice-100 px-2.5 py-1 text-xs font-medium text-navy-700"
+                      >
+                        {y}
+                      </span>
+                    ))}
+                  </div>
                   <EmailLink email={f.email} context={f.slug} className="mt-3" />
                   {f.personalNote && (
                     <div className="mt-6 rounded-card border border-ice-200 bg-ice-50 p-4">
