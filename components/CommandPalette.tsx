@@ -14,6 +14,7 @@ type Item = { group: string; title: string; subtitle: string; href: string; icon
 
 const staticPages: Item[] = [
   { group: "Pages", title: "Home", subtitle: "Back to the beginning", href: "/", icon: "AppWindow" },
+  { group: "Pages", title: "About", subtitle: "Mission, values, and how we're different", href: "/about", icon: "Building2" },
   { group: "Pages", title: "The Catalyst Method", subtitle: "How we work, six stages", href: "/method", icon: "Rocket" },
   { group: "Pages", title: "Demo Lab", subtitle: "Interactive product demonstrations", href: "/demo-lab", icon: "MonitorPlay" },
   { group: "Pages", title: "Founders", subtitle: "Daniel Vass & Josh Ogle", href: "/founders", icon: "Briefcase" },

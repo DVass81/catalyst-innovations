@@ -97,16 +97,15 @@ export default function Hero() {
           </div>
 
           <h1 className="font-display text-[2.4rem] font-semibold leading-[1.08] tracking-tight text-white sm:text-6xl lg:text-[4.2rem]">
-            Turn operational problems into{" "}
+            Clear visibility.{" "}
             <span className="bg-gradient-to-r from-steel-300 to-steel-400 bg-clip-text text-transparent">
-              intelligent systems.
+              Less friction. More time back.
             </span>
           </h1>
 
           <p className="mt-7 max-w-2xl text-lg leading-relaxed text-ice-300 sm:text-xl">
-            Catalyst Innovations combines real-world operational experience, modern software,
-            automation, and practical AI to help organizations make more money, save time,
-            and work smarter.
+            This is what happens when real operational experience meets modern software,
+            automation, and AI — problems get solved, not just documented.
           </p>
 
           <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">
@@ -117,14 +116,11 @@ export default function Hero() {
             >
               Request a Consultation
             </ButtonLink>
-            <ButtonLink href="/solutions" variant="ghost-dark" className="text-base">
-              Explore Our Solutions
-            </ButtonLink>
             <Link
-              href="/portfolio"
+              href="/solutions"
               className="text-sm font-medium text-steel-300 underline-offset-4 hover:text-white hover:underline sm:ml-2"
             >
-              See what we&apos;re building →
+              Explore our solutions →
             </Link>
           </div>
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { animate, motion, useMotionValue, useReducedMotion, useSpring, useTransform } from "framer-motion";
+import { animate, motion, useInView, useMotionValue, useReducedMotion, useSpring, useTransform } from "framer-motion";
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { Volume2, VolumeX } from "lucide-react";
@@ -10,17 +10,17 @@ import { track } from "@/lib/site";
 import Hero from "./Hero";
 
 /**
- * "Through the Screen" — an autoplay intro, not scroll-driven. Plays in
- * full on every homepage visit.
+ * "Through the Screen" — an autoplay intro that starts once it scrolls
+ * into view (it now sits below the plain value-prop hero, not at the very
+ * top of the page), plays in full, and settles permanently on arrival.
  *
  * stage 0  the analog world: a 1997 back office and its CRT (holds ~6s)
  * stage 1  the camera launches into the screen (brief transition, ~0.7s)
  * stage 2  warp tunnel — the Catalyst brand gate holds (~3s)
  * stage 3  teleporter flash (~0.4s)
- * stage 4  arrival: the AI world — permanent resting state of the homepage
+ * stage 4  arrival: the AI world — permanent resting state of this section
  *
- * Nothing here locks scroll — the section is a normal min-h-[100dvh] block,
- * so a visitor who scrolls immediately just moves past it.
+ * Nothing here locks scroll — the section is a normal min-h-[100dvh] block.
  * Reduced motion: renders the static Hero instead.
  */
 
@@ -447,11 +447,13 @@ function useAmbientSound(stage: number) {
 export default function PortalHero() {
   const reduce = useReducedMotion();
   const [stage, setStage] = useState(0);
+  const sectionRef = useRef<HTMLElement>(null);
+  const inView = useInView(sectionRef, { once: true, margin: "-15% 0px" });
 
-  // Autoplay timeline, every visit — the full ~10s sequence. Nothing here
-  // locks scroll; this section is a normal-height block, so a visitor who
-  // scrolls immediately just moves past it.
+  // Autoplay timeline, starting once this section scrolls into view — the
+  // full ~10s sequence plays out from there.
   useEffect(() => {
+    if (!inView) return;
     const timers = [
       setTimeout(() => setStage(1), T_LAUNCH),
       setTimeout(() => setStage(2), T_GATE),
@@ -459,7 +461,7 @@ export default function PortalHero() {
       setTimeout(() => setStage(4), T_ARRIVAL),
     ];
     return () => timers.forEach(clearTimeout);
-  }, []);
+  }, [inView]);
 
   /* Ambient sound (opt-in, synthesized) */
   const { enabled: soundOn, toggle: toggleSound } = useAmbientSound(stage);
@@ -507,6 +509,8 @@ export default function PortalHero() {
 
   return (
     <section
+      ref={sectionRef}
+      id="the-problem"
       className="relative min-h-[100dvh] overflow-hidden bg-navy-950"
       onMouseMove={(e) => {
         const r = e.currentTarget.getBoundingClientRect();
@@ -837,15 +841,14 @@ export default function PortalHero() {
                 Welcome to the other side
               </p>
               <h2 className="mt-3 font-grotesk text-[clamp(1.7rem,6svh,3.6rem)] font-semibold leading-[1.08] tracking-tight text-white">
-                Turn operational problems into{" "}
+                Clear visibility.{" "}
                 <span className="bg-gradient-to-r from-[#7dd3fc] via-steel-300 to-steel-400 bg-clip-text text-transparent">
-                  intelligent systems.
+                  Less friction. More time back.
                 </span>
               </h2>
               <p className="mx-auto mt-4 max-w-xl text-[clamp(0.82rem,2.4svh,1.1rem)] leading-relaxed text-ice-300">
-                Catalyst Innovations combines real-world operational experience, modern
-                software, automation, and practical AI to help organizations make more
-                money, save time, and work smarter.
+                This is what happens when real operational experience meets modern
+                software, automation, and AI — problems get solved, not just documented.
               </p>
             </motion.div>
 
@@ -862,15 +865,20 @@ export default function PortalHero() {
               >
                 Request a Consultation
               </ButtonLink>
-              <ButtonLink href="/solutions" variant="ghost-dark" className="text-base">
-                Explore Our Solutions
-              </ButtonLink>
-              <Link
-                href="/portfolio"
-                className="text-sm font-medium text-steel-300 underline-offset-4 hover:text-white hover:underline"
-              >
-                See what we&apos;re building →
-              </Link>
+              <div className="flex items-center gap-5">
+                <Link
+                  href="/solutions"
+                  className="text-sm font-medium text-steel-300 underline-offset-4 hover:text-white hover:underline"
+                >
+                  Explore our solutions →
+                </Link>
+                <Link
+                  href="/portfolio"
+                  className="text-sm font-medium text-steel-300 underline-offset-4 hover:text-white hover:underline"
+                >
+                  See what we&apos;re building →
+                </Link>
+              </div>
             </motion.div>
           </div>
         </motion.div>

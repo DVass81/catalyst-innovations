@@ -5,10 +5,11 @@ import { services } from "@/data/services";
 import { industries } from "@/data/industries";
 
 const companyLinks = [
-  { href: "/#about", label: "About" },
+  { href: "/about", label: "About" },
   { href: "/founders", label: "Founders" },
   { href: "/method", label: "The Catalyst Method" },
   { href: "/portfolio", label: "Innovation Portfolio" },
+  { href: "/roi-estimator", label: "ROI Estimator" },
   { href: "/pricing", label: "Pricing" },
   { href: "/demo-lab", label: "Demo Lab" },
   { href: "/portal", label: "Client Portal" },
