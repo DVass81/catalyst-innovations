@@ -45,7 +45,7 @@ export const clientResults = {
   statUnit: "hours/week",
   headline: "Manufacturers, weld shops, and businesses like yours are getting an average of 10 hours back every week.",
   text: "When your team can finally see what's actually happening — on the shop floor, in purchasing, across every process — the busywork disappears. No more chasing people down for updates. No more guessing at status. Just real time back, every single week.",
-  proof: "Real results across the manufacturers, weld shops, and operations businesses we work with — including Aethon Welding.",
+  proof: "Real results across the manufacturers, weld shops, and operations businesses we work with.",
 } as const;
 
 export const outcomes = [
