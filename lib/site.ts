@@ -18,12 +18,23 @@ export const site = {
   location: "Knoxville, Tennessee",
 };
 
-export const navLinks = [
+export type NavLink =
+  | { href: string; label: string }
+  | { label: string; children: { href: string; label: string }[] };
+
+export const navLinks: NavLink[] = [
   { href: "/solutions", label: "Solutions" },
   { href: "/industries", label: "Industries" },
   { href: "/method", label: "The Catalyst Method" },
+  {
+    label: "Pricing",
+    children: [
+      { href: "/pricing", label: "Pricing" },
+      { href: "/roi-estimator", label: "ROI Estimator" },
+    ],
+  },
   { href: "/about", label: "About" },
-] as const;
+];
 
 /**
  * Analytics event hook. Wire to your provider (GA4, Plausible, PostHog…)

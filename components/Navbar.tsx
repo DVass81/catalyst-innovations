@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
 import { LogoLockup } from "./Logo";
 import ThemeToggle from "./ThemeToggle";
 import { navLinks, track } from "@/lib/site";
@@ -12,8 +12,10 @@ import { navLinks, track } from "@/lib/site";
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const pathname = usePathname();
   const panelRef = useRef<HTMLDivElement>(null);
+  const navRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -22,12 +24,13 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Close menu on route change (render-time adjustment, per React docs);
-  // lock body scroll while open.
+  // Close menu/dropdown on route change (render-time adjustment, per React
+  // docs); lock body scroll while the mobile menu is open.
   const [prevPath, setPrevPath] = useState(pathname);
   if (prevPath !== pathname) {
     setPrevPath(pathname);
     setOpen(false);
+    setOpenDropdown(null);
   }
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -43,6 +46,21 @@ export default function Navbar() {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [open]);
+
+  // Close an open dropdown on outside click or Escape.
+  useEffect(() => {
+    if (!openDropdown) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpenDropdown(null);
+    const onClick = (e: MouseEvent) => {
+      if (navRef.current && !navRef.current.contains(e.target as Node)) setOpenDropdown(null);
+    };
+    window.addEventListener("keydown", onKey);
+    window.addEventListener("click", onClick);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      window.removeEventListener("click", onClick);
+    };
+  }, [openDropdown]);
 
   return (
     <header
@@ -60,9 +78,50 @@ export default function Navbar() {
           <LogoLockup variant="dark-bg" />
         </Link>
 
-        {/* Desktop links */}
-        <div className="hidden items-center gap-1 lg:flex">
+        {/* Desktop links — spread evenly across the space between the logo and the CTA cluster */}
+        <div ref={navRef} className="hidden flex-1 items-center justify-evenly lg:flex">
           {navLinks.map((l) => {
+            if ("children" in l) {
+              const isOpen = openDropdown === l.label;
+              const active = l.children.some((c) => pathname === c.href || pathname.startsWith(c.href + "/"));
+              return (
+                <div key={l.label} className="relative">
+                  <button
+                    type="button"
+                    aria-expanded={isOpen}
+                    aria-haspopup="true"
+                    onClick={() => setOpenDropdown((cur) => (cur === l.label ? null : l.label))}
+                    className={`flex items-center gap-1 rounded-md px-3 py-2 text-[0.86rem] font-medium transition-colors ${
+                      active || isOpen ? "text-white bg-white/10" : "text-ice-300 hover:text-white hover:bg-white/5"
+                    }`}
+                  >
+                    {l.label}
+                    <ChevronDown size={14} className={`transition-transform ${isOpen ? "rotate-180" : ""}`} />
+                  </button>
+                  <AnimatePresence>
+                    {isOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -6 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -6 }}
+                        transition={{ duration: 0.15 }}
+                        className="absolute left-0 top-full mt-1 min-w-[10rem] overflow-hidden rounded-lg border border-white/10 bg-navy-900 shadow-card-dark"
+                      >
+                        {l.children.map((c) => (
+                          <Link
+                            key={c.href}
+                            href={c.href}
+                            className="block px-4 py-2.5 text-[0.86rem] font-medium text-ice-300 hover:bg-white/5 hover:text-white"
+                          >
+                            {c.label}
+                          </Link>
+                        ))}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              );
+            }
             const active = pathname === l.href || pathname.startsWith(l.href + "/");
             return (
               <Link
@@ -77,7 +136,10 @@ export default function Navbar() {
               </Link>
             );
           })}
-          <ThemeToggle className="ml-2" />
+        </div>
+
+        <div className="hidden shrink-0 items-center gap-1 lg:flex">
+          <ThemeToggle />
           <Link
             href="/consultation"
             onClick={() => track("cta_consultation_click", { location: "navbar" })}
@@ -116,15 +178,27 @@ export default function Navbar() {
             className="overflow-hidden bg-navy-900 lg:hidden"
           >
             <div className="flex max-h-[calc(100dvh-72px)] flex-col gap-1 overflow-y-auto px-5 pb-8 pt-2">
-              {navLinks.map((l) => (
-                <Link
-                  key={l.href}
-                  href={l.href}
-                  className="rounded-lg px-4 py-3.5 text-base font-medium text-ice-100 hover:bg-white/8"
-                >
-                  {l.label}
-                </Link>
-              ))}
+              {navLinks.flatMap((l) =>
+                "children" in l
+                  ? l.children.map((c) => (
+                      <Link
+                        key={c.href}
+                        href={c.href}
+                        className="rounded-lg px-4 py-3.5 text-base font-medium text-ice-100 hover:bg-white/8"
+                      >
+                        {c.label}
+                      </Link>
+                    ))
+                  : (
+                      <Link
+                        key={l.href}
+                        href={l.href}
+                        className="rounded-lg px-4 py-3.5 text-base font-medium text-ice-100 hover:bg-white/8"
+                      >
+                        {l.label}
+                      </Link>
+                    ),
+              )}
               <Link
                 href="/consultation"
                 onClick={() => track("cta_consultation_click", { location: "mobile_menu" })}
