@@ -74,7 +74,7 @@ export default async function ConsultationPage({
           <div className="mt-10 grid gap-4 sm:grid-cols-3">
             {[
               ["No obligation", "A conversation, not a sales funnel."],
-              ["Founders on the call", "You talk to Daniel and Josh, not an SDR."],
+              ["Founders on the call", "You talk to Josh directly, not an SDR."],
               ["Honest scoping", "If we're not the right fit, we'll say so."],
             ].map(([t, d]) => (
               <div key={t} className="rounded-card border border-white/12 bg-white/5 p-5 text-center">

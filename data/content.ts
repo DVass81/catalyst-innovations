@@ -192,6 +192,14 @@ export const founders = [
   },
 ] as const;
 
+/**
+ * TEMPORARY: Daniel's profile is pulled from public display until his
+ * updated bio and photo are ready. His full entry stays in `founders`
+ * above so nothing is lost — this is the only place the exclusion lives,
+ * so re-adding him later is a one-line change here.
+ */
+export const activeFounders = founders.filter((f) => f.slug !== "daniel-vass");
+
 export const partnershipStatement =
   "One founder understands the operational problem. The other knows how to engineer the solution.";
 

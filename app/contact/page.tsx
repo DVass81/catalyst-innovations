@@ -6,7 +6,7 @@ import { Reveal, RevealGroup, RevealItem } from "@/components/Reveal";
 import EmailLink from "@/components/EmailLink";
 import { site } from "@/lib/site";
 import { inquiryTypes } from "@/lib/consultation";
-import { founders } from "@/data/content";
+import { activeFounders } from "@/data/content";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -61,7 +61,7 @@ export default function ContactPage() {
                   <MapPin size={18} className="mt-0.5 shrink-0 text-steel-600" />
                   <span>{site.location}</span>
                 </li>
-                {founders.map((f) => (
+                {activeFounders.map((f) => (
                   <li key={f.slug} className="flex items-start gap-3">
                     <Mail size={18} className="mt-0.5 shrink-0 text-steel-600" />
                     <span>

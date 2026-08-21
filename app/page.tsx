@@ -63,13 +63,13 @@ export default function HomePage() {
       </Section>
 
       <Section className="bg-ice-50">
-        <div className="grid items-center gap-10 lg:grid-cols-[1fr_1.1fr]">
+        <div className={togetherPhoto ? "grid items-center gap-10 lg:grid-cols-[1fr_1.1fr]" : "mx-auto max-w-2xl text-center"}>
           {togetherPhoto && (
             <Reveal>
               <div className="relative aspect-[1284/407] overflow-hidden rounded-card shadow-card lg:aspect-[4/3]">
                 <Image
                   src={togetherPhoto}
-                  alt="Daniel Vass and Josh Ogle, co-founders of Catalyst Innovations"
+                  alt="The Catalyst Innovations team"
                   fill
                   sizes="(min-width: 1024px) 560px, 100vw"
                   className="object-cover"
@@ -78,18 +78,18 @@ export default function HomePage() {
             </Reveal>
           )}
           <Reveal delay={0.1}>
-            <Eyebrow>Meet the founders</Eyebrow>
+            <Eyebrow>Meet the team</Eyebrow>
             <Heading as="h2">You work directly with the people who built this.</Heading>
-            <Lead>
-              No account managers, no handoffs to an offshore team. Daniel and Josh are on
-              every engagement, from the first conversation through continuous improvement —
+            <Lead className={togetherPhoto ? undefined : "mx-auto"}>
+              No account managers, no handoffs to an offshore team. Josh is on every
+              engagement, from the first conversation through continuous improvement —
               direct founder involvement is a real differentiator for a company our size.
             </Lead>
             <Link
               href="/founders"
               className="mt-6 inline-flex items-center gap-1.5 text-sm font-medium text-steel-600 underline-offset-4 hover:underline"
             >
-              Meet Daniel and Josh <ArrowRight size={15} />
+              Meet the team <ArrowRight size={15} />
             </Link>
           </Reveal>
         </div>

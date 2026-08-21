@@ -53,8 +53,10 @@ const orgSchema = {
   slogan: site.motto,
   description: site.positioning,
   address: { "@type": "PostalAddress", addressLocality: "Knoxville", addressRegion: "TN", addressCountry: "US" },
+  // TEMPORARY: Daniel's profile is pulled from public display for now — see
+  // data/content.ts's `activeFounders` comment. Add him back here too once
+  // his updated profile is live.
   founder: [
-    { "@type": "Person", name: "Daniel Vass", jobTitle: "Co-Founder" },
     { "@type": "Person", name: "Josh Ogle", jobTitle: "Co-Founder" },
   ],
 };

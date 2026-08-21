@@ -121,7 +121,7 @@ export default function AboutPage() {
               href="/founders"
               className="mt-6 inline-flex items-center gap-2 font-medium text-steel-600 hover:underline"
             >
-              Meet Daniel and Josh <ArrowRight size={16} />
+              Meet the team <ArrowRight size={16} />
             </Link>
           </Reveal>
           {togetherPhoto && (

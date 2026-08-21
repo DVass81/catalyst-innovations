@@ -17,7 +17,7 @@ const staticPages: Item[] = [
   { group: "Pages", title: "About", subtitle: "Mission, values, and how we're different", href: "/about", icon: "Building2" },
   { group: "Pages", title: "The Catalyst Method", subtitle: "How we work, six stages", href: "/method", icon: "Rocket" },
   { group: "Pages", title: "Demo Lab", subtitle: "Interactive product demonstrations", href: "/demo-lab", icon: "MonitorPlay" },
-  { group: "Pages", title: "Founders", subtitle: "Daniel Vass & Josh Ogle", href: "/founders", icon: "Briefcase" },
+  { group: "Pages", title: "Founders", subtitle: "Josh Ogle", href: "/founders", icon: "Briefcase" },
   { group: "Pages", title: "Request a Consultation", subtitle: "Start a conversation", href: "/consultation", icon: "ShoppingCart" },
   { group: "Pages", title: "ROI Estimator", subtitle: "Calculator plus a short assessment", href: "/roi-estimator", icon: "BarChart3" },
   { group: "Pages", title: "Pricing", subtitle: "Packages and monthly investment", href: "/pricing", icon: "PiggyBank" },

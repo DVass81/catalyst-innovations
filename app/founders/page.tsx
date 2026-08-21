@@ -1,20 +1,19 @@
 import type { Metadata } from "next";
-import Image from "next/image";
-import { Section, Eyebrow, Heading, Lead, ButtonLink, HexDot } from "@/components/ui";
+import { Section, Eyebrow, Heading, Lead, HexDot } from "@/components/ui";
 import { Reveal, RevealGroup, RevealItem } from "@/components/Reveal";
 import HexPortrait from "@/components/HexPortrait";
 import EmailLink from "@/components/EmailLink";
-import { founders, partnershipStatement } from "@/data/content";
+import { activeFounders } from "@/data/content";
 import CTABand from "@/components/CTABand";
 import { founderPhoto as photoFor } from "@/lib/founderPhoto";
 
 export const metadata: Metadata = {
-  title: "Founders — Daniel Vass & Josh Ogle",
+  title: "Founders — Josh Ogle",
   description:
-    "Daniel Vass brings ~20 years of manufacturing, procurement, and operations leadership. Josh Ogle brings ~10 years of U.S. Army service plus technology and product development expertise.",
+    "Josh Ogle brings ~10 years of U.S. Army service plus IT systems, cybersecurity, and product-development expertise.",
 };
 
-const personSchema = founders.map((f) => ({
+const personSchema = activeFounders.map((f) => ({
   "@context": "https://schema.org",
   "@type": "Person",
   name: f.name,
@@ -23,7 +22,6 @@ const personSchema = founders.map((f) => ({
 }));
 
 export default function FoundersPage() {
-  const togetherPhoto = photoFor("together");
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }} />
@@ -31,15 +29,14 @@ export default function FoundersPage() {
         <div className="bg-grid-dark absolute inset-0" aria-hidden="true" />
         <div className="relative mx-auto max-w-6xl px-5 sm:px-8">
           <Reveal>
-            <Eyebrow dark>Meet the founders</Eyebrow>
+            <Eyebrow dark>Meet the team</Eyebrow>
             <Heading dark as="h1">
-              One understands the operational problem.
-              <br className="hidden sm:block" /> The other engineers the solution.
+              Built by people who understand both the problem and the technology.
             </Heading>
             <Lead dark>
-              Daniel and Josh connect the boardroom, office, shop floor, purchasing
-              department, warehouse, field team, and software environment — because between
-              them, they&apos;ve worked in all of them.
+              Josh brings U.S. Army leadership, IT systems, and product-development
+              expertise to every engagement — connecting the technical solution to the
+              real operational problem it&apos;s solving.
             </Lead>
           </Reveal>
         </div>
@@ -47,16 +44,9 @@ export default function FoundersPage() {
 
       <Section className="bg-ice-50">
         <div className="space-y-16">
-          {founders.map((f, idx) => (
+          {activeFounders.map((f) => (
             <Reveal key={f.slug}>
-              <article
-                id={f.slug}
-                className={`grid gap-10 rounded-card border border-ice-200 bg-white p-8 shadow-card sm:p-10 ${
-                  idx % 2 === 1
-                    ? "lg:grid-cols-[1fr_320px] lg:[&>*:first-child]:order-2"
-                    : "lg:grid-cols-[320px_1fr]"
-                }`}
-              >
+              <article id={f.slug} className="grid gap-10 rounded-card border border-ice-200 bg-white p-8 shadow-card sm:p-10 lg:grid-cols-[320px_1fr]">
                 <div className="lg:sticky lg:top-28 lg:self-start">
                   <HexPortrait
                     src={photoFor(f.slug)}
@@ -64,11 +54,6 @@ export default function FoundersPage() {
                     alt={`Portrait of ${f.name}`}
                     size={260}
                   />
-                  {!photoFor(f.slug) && (
-                    <p className="mt-3 text-xs italic text-silver-500">
-                      Headshot placeholder — add /public/founders/{f.slug}.jpg to replace.
-                    </p>
-                  )}
                   <h2 className="mt-5 font-display text-2xl font-semibold text-navy-900 sm:text-3xl">{f.name}</h2>
                   <p className="mt-1 font-medium text-steel-600">{f.role}</p>
                   <div className="mt-2.5 flex flex-wrap gap-1.5">
@@ -116,36 +101,6 @@ export default function FoundersPage() {
             </Reveal>
           ))}
         </div>
-
-        <Reveal className="mt-16 overflow-hidden rounded-card bg-navy-900 text-center text-white">
-          {togetherPhoto && (
-            <div className="relative aspect-[1284/407] w-full">
-              <Image
-                src={togetherPhoto}
-                alt="Daniel Vass and Josh Ogle, co-founders of Catalyst Innovations"
-                fill
-                sizes="(min-width: 1024px) 900px, 100vw"
-                className="object-cover"
-                priority={false}
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-navy-900 via-navy-900/10 to-transparent" />
-            </div>
-          )}
-          <div className="p-10">
-            <p className="font-display text-xl font-medium italic sm:text-2xl">
-              &ldquo;{partnershipStatement}&rdquo;
-            </p>
-            <p className="mx-auto mt-5 max-w-2xl text-ice-300">
-              Complementary capabilities: Daniel understands operational pain, purchasing,
-              manufacturing, process improvement, business value, and customer needs. Josh
-              understands technology, development, systems, security, implementation, and
-              technical execution.
-            </p>
-            <div className="mt-8">
-              <ButtonLink href="/consultation">Start a conversation with us</ButtonLink>
-            </div>
-          </div>
-        </Reveal>
       </Section>
       <CTABand />
     </>
