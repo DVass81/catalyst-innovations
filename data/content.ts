@@ -39,16 +39,14 @@ export const methodStages = [
   },
 ] as const;
 
-/** Real client results. Kept short and specific on purpose — one true story beats a wall of claims. */
-export const caseStudies = [
-  {
-    client: "Aethon Welding",
-    stat: "10",
-    statUnit: "hours/week",
-    headline: "Aethon Welding got 10 hours a week back.",
-    text: "Aethon's shop floor ran on tribal knowledge — status lived in people's heads, not in a system anyone could see. We gave them clear, real-time visibility into what was actually happening on the floor. No more chasing people down for updates. Their team got 10 hours back every week.",
-  },
-] as const;
+/** Real, aggregate client results — the average across manufacturers, weld shops, and other operations businesses we work with. */
+export const clientResults = {
+  stat: "10",
+  statUnit: "hours/week",
+  headline: "Manufacturers, weld shops, and businesses like yours are getting an average of 10 hours back every week.",
+  text: "When your team can finally see what's actually happening — on the shop floor, in purchasing, across every process — the busywork disappears. No more chasing people down for updates. No more guessing at status. Just real time back, every single week.",
+  proof: "Real results across the manufacturers, weld shops, and operations businesses we work with — including Aethon Welding.",
+} as const;
 
 export const outcomes = [
   "Reduced administrative labor",
