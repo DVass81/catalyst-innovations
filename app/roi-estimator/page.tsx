@@ -1,36 +1,40 @@
 import type { Metadata } from "next";
-import { Section, Eyebrow, Heading, Lead } from "@/components/ui";
-import { Reveal } from "@/components/Reveal";
 import ROICalculator from "@/components/ROICalculator";
 import Assessment from "@/components/Assessment";
-
 export const metadata: Metadata = {
-  title: "ROI Estimator",
+  title: "Workflow Opportunity & ROI Estimator",
   description:
-    "Estimate the return on investment for automation and custom software, then take a two-minute assessment that points you to the most valuable place to begin.",
+    "Compare freed capacity, estimated cash savings, project cost, support and implementation timing. Find a practical starting point for your workflow.",
+  alternates: { canonical: "/roi-estimator" },
 };
-
 export default function ROIEstimatorPage() {
   return (
     <>
-      <section className="bg-navy-900 pb-14 pt-36 text-white">
-        <div className="mx-auto max-w-6xl px-5 sm:px-8">
-          <Reveal>
-            <Eyebrow dark>ROI estimator</Eyebrow>
-            <Heading dark as="h1">See what inefficiency is costing you.</Heading>
-            <Lead dark>
-              Estimate the return on investment below, then take the seven-question
-              starting-point assessment for a tailored recommendation.
-            </Lead>
-          </Reveal>
+      <section className="ci-page-hero">
+        <div className="ci-container">
+          <p className="ci-eyebrow">THE WORKFLOW OPPORTUNITY</p>
+          <h1>
+            See the opportunity.
+            <br />
+            <span>Understand the investment.</span>
+          </h1>
+          <p>
+            Estimate the value of freed time, compare all the costs, and
+            separate capacity from cash savings.
+          </p>
         </div>
       </section>
       <ROICalculator />
-      <Section className="bg-ice-50">
-        <div className="mx-auto max-w-3xl">
+      <section className="ci-section ci-paper" id="assessment">
+        <div className="ci-container ci-assessment">
+          <p className="ci-eyebrow">FIND YOUR STARTING POINT</p>
+          <h2 className="ci-heading">
+            Seven questions.
+            <br />A practical place to begin.
+          </h2>
           <Assessment />
         </div>
-      </Section>
+      </section>
     </>
   );
 }

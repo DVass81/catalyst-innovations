@@ -4,8 +4,10 @@ import { Section, Eyebrow, Heading, Lead, ButtonLink } from "@/components/ui";
 import { Reveal } from "@/components/Reveal";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/portal" },
   title: "Client Portal",
-  description: "The Catalyst Innovations client portal — coming soon for active engagement partners.",
+  description:
+    "Contact your Catalyst Innovations project team for current project access and support.",
   robots: { index: false },
 };
 
@@ -17,14 +19,14 @@ export default function PortalPage() {
           <Lock size={26} className="text-steel-600" />
         </span>
         <Eyebrow>Client portal</Eyebrow>
-        <Heading as="h1">Coming soon for engagement partners.</Heading>
+        <Heading as="h1">Your project. Your team.</Heading>
         <Lead className="mx-auto">
-          Active clients will sign in here to view project status, dashboards, documents,
-          and support. If you&apos;re working with us and need access, contact your project
-          lead directly.
+          For project updates, document access or support, contact your project
+          lead through your agreed project channel. If you need help reaching
+          the team, our contact page lists both founders.
         </Lead>
         <div className="mt-8">
-          <ButtonLink href="/consultation">Become a client</ButtonLink>
+          <ButtonLink href="/contact">Contact your team</ButtonLink>
         </div>
       </Reveal>
     </Section>

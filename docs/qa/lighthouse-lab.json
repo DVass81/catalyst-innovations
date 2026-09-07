@@ -1,0 +1,2828 @@
+{
+  "method": "One local production-build Lighthouse simulated sample per route and device; not field data. TBT is not INP.",
+  "results": [
+    {
+      "path": "/",
+      "device": "mobile",
+      "date": "2026-09-07T05:39:36.051Z",
+      "lighthouse": "12.6.1",
+      "scores": {
+        "performance": 92,
+        "accessibility": 99,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "LCP_ms": 3315.6906,
+      "CLS": 0,
+      "TBT_ms": 43.5,
+      "notes": []
+    },
+    {
+      "path": "/demo-lab",
+      "device": "mobile",
+      "date": "2026-09-07T05:39:56.873Z",
+      "lighthouse": "12.6.1",
+      "scores": {
+        "performance": 93,
+        "accessibility": 98,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "LCP_ms": 3247.0027499999997,
+      "CLS": 0,
+      "TBT_ms": 51.5,
+      "notes": []
+    },
+    {
+      "path": "/pricing",
+      "device": "mobile",
+      "date": "2026-09-07T05:40:13.193Z",
+      "lighthouse": "12.6.1",
+      "scores": {
+        "performance": 95,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "LCP_ms": 2871.303,
+      "CLS": 0,
+      "TBT_ms": 81.44949999999972,
+      "notes": []
+    },
+    {
+      "path": "/consultation",
+      "device": "mobile",
+      "date": "2026-09-07T05:40:28.905Z",
+      "lighthouse": "12.6.1",
+      "scores": {
+        "performance": 93,
+        "accessibility": 100,
+        "best-practices": 96,
+        "seo": 100
+      },
+      "LCP_ms": 3206.94395,
+      "CLS": 0,
+      "TBT_ms": 86.93257500000004,
+      "notes": []
+    },
+    {
+      "path": "/",
+      "device": "desktop",
+      "date": "2026-09-07T05:40:57.331Z",
+      "lighthouse": "12.6.1",
+      "scores": {
+        "performance": 100,
+        "accessibility": 99,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "LCP_ms": 694.7362,
+      "CLS": 0,
+      "TBT_ms": 0,
+      "notes": [],
+      "findings": [
+        {
+          "id": "largest-contentful-paint",
+          "title": "Largest Contentful Paint"
+        },
+        {
+          "id": "heading-order",
+          "title": "Heading elements are not in a sequentially-descending order",
+          "details": {
+            "type": "table",
+            "headings": [
+              {
+                "key": "node",
+                "valueType": "node",
+                "subItemsHeading": {
+                  "key": "relatedNode",
+                  "valueType": "node"
+                },
+                "label": "Failing Elements"
+              }
+            ],
+            "items": [
+              {
+                "node": {
+                  "type": "node",
+                  "lhId": "1-0-H3",
+                  "path": "1,HTML,1,BODY,4,MAIN,0,SECTION,0,DIV,1,DIV,1,DIV,1,DIV,1,H3",
+                  "selector": "div.ci-workflow-scene > div.ci-workbench > div.ci-request > h3",
+                  "boundingRect": {
+                    "top": 357,
+                    "bottom": 417,
+                    "left": 788,
+                    "right": 1109,
+                    "width": 320,
+                    "height": 60
+                  },
+                  "snippet": "<h3>",
+                  "nodeLabel": "Keep the production line moving.",
+                  "explanation": "Fix any of the following:\n  Heading order invalid"
+                }
+              }
+            ],
+            "debugData": {
+              "type": "debugdata",
+              "impact": "moderate",
+              "tags": [
+                "cat.semantics",
+                "best-practice"
+              ]
+            }
+          }
+        },
+        {
+          "id": "label-content-name-mismatch",
+          "title": "Elements with visible text labels do not have matching accessible names.",
+          "details": {
+            "type": "table",
+            "headings": [
+              {
+                "key": "node",
+                "valueType": "node",
+                "subItemsHeading": {
+                  "key": "relatedNode",
+                  "valueType": "node"
+                },
+                "label": "Failing Elements"
+              }
+            ],
+            "items": [
+              {
+                "node": {
+                  "type": "node",
+                  "lhId": "1-1-A",
+                  "path": "1,HTML,1,BODY,3,HEADER,1,NAV,0,A",
+                  "selector": "body.flex > header.ci-nav > nav.ci-container > a",
+                  "boundingRect": {
+                    "top": 21,
+                    "bottom": 68,
+                    "left": 48,
+                    "right": 193,
+                    "width": 145,
+                    "height": 47
+                  },
+                  "snippet": "<a aria-label=\"Catalyst Innovations home\" href=\"/\">",
+                  "nodeLabel": "CATALYST\nINNOVATIONS",
+                  "explanation": "Fix any of the following:\n  Text inside the element is not included in the accessible name"
+                }
+              },
+              {
+                "node": {
+                  "type": "node",
+                  "lhId": "1-2-A",
+                  "path": "1,HTML,1,BODY,5,FOOTER,0,DIV,0,DIV,0,DIV,0,A",
+                  "selector": "div.ci-container > div.ci-footer-grid > div > a",
+                  "boundingRect": {
+                    "top": 6549,
+                    "bottom": 6570,
+                    "left": 48,
+                    "right": 195,
+                    "width": 147,
+                    "height": 21
+                  },
+                  "snippet": "<a aria-label=\"Catalyst Innovations home\" href=\"/\">",
+                  "nodeLabel": "CATALYST\nINNOVATIONS",
+                  "explanation": "Fix any of the following:\n  Text inside the element is not included in the accessible name"
+                }
+              }
+            ],
+            "debugData": {
+              "type": "debugdata",
+              "impact": "serious",
+              "tags": [
+                "cat.semantics",
+                "wcag21a",
+                "wcag253",
+                "EN-301-549",
+                "EN-9.2.5.3",
+                "RGAAv4",
+                "RGAA-6.1.5",
+                "experimental"
+              ]
+            }
+          }
+        },
+        {
+          "id": "render-blocking-resources",
+          "title": "Eliminate render-blocking resources",
+          "details": {
+            "type": "opportunity",
+            "headings": [
+              {
+                "key": "url",
+                "valueType": "url",
+                "label": "URL"
+              },
+              {
+                "key": "totalBytes",
+                "valueType": "bytes",
+                "label": "Transfer Size"
+              },
+              {
+                "key": "wastedMs",
+                "valueType": "timespanMs",
+                "label": "Est Savings"
+              }
+            ],
+            "items": [
+              {
+                "url": "http://localhost:3100/_next/static/chunks/24_n9lr3uzl35.css",
+                "totalBytes": 2398,
+                "wastedMs": 89
+              }
+            ],
+            "overallSavingsMs": 0
+          }
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "details": {
+            "type": "opportunity",
+            "headings": [
+              {
+                "key": "url",
+                "valueType": "url",
+                "subItemsHeading": {
+                  "key": "source",
+                  "valueType": "code"
+                },
+                "label": "URL"
+              },
+              {
+                "key": "totalBytes",
+                "valueType": "bytes",
+                "subItemsHeading": {
+                  "key": "sourceBytes"
+                },
+                "label": "Transfer Size"
+              },
+              {
+                "key": "wastedBytes",
+                "valueType": "bytes",
+                "subItemsHeading": {
+                  "key": "sourceWastedBytes"
+                },
+                "label": "Est Savings"
+              }
+            ],
+            "items": [
+              {
+                "url": "http://localhost:3100/_next/static/chunks/0y-tdava-4nyh.js",
+                "totalBytes": 44405,
+                "wastedBytes": 37740,
+                "wastedPercent": 84.99098681307173
+              },
+              {
+                "url": "http://localhost:3100/_next/static/chunks/33wmmxu2kkyqh.js",
+                "totalBytes": 71394,
+                "wastedBytes": 26207,
+                "wastedPercent": 36.7072726714423
+              }
+            ],
+            "overallSavingsMs": 80,
+            "overallSavingsBytes": 63947,
+            "sortedBy": [
+              "wastedBytes"
+            ],
+            "debugData": {
+              "type": "debugdata",
+              "metricSavings": {
+                "FCP": 0,
+                "LCP": 80
+              }
+            }
+          }
+        },
+        {
+          "id": "uses-responsive-images",
+          "title": "Properly size images",
+          "details": {
+            "type": "opportunity",
+            "headings": [
+              {
+                "key": "node",
+                "valueType": "node",
+                "label": ""
+              },
+              {
+                "key": "url",
+                "valueType": "url",
+                "label": "URL"
+              },
+              {
+                "key": "totalBytes",
+                "valueType": "bytes",
+                "label": "Resource Size"
+              },
+              {
+                "key": "wastedBytes",
+                "valueType": "bytes",
+                "label": "Est Savings"
+              }
+            ],
+            "items": [
+              {
+                "node": {
+                  "type": "node",
+                  "lhId": "1-59-IMG",
+                  "path": "1,HTML,1,BODY,4,MAIN,1,SECTION,0,DIV,2,DIV,0,DIV,0,DIV,0,IMG",
+                  "selector": "div#industry-demo-panel > div.ci-industry-story > div.ci-industry-photo > img",
+                  "boundingRect": {
+                    "top": 1394,
+                    "bottom": 1584,
+                    "left": 48,
+                    "right": 348,
+                    "width": 300,
+                    "height": 190
+                  },
+                  "snippet": "<img alt=\"Precision machinery in a manufacturing workshop\" loading=\"lazy\" decoding=\"async\" data-nimg=\"fill\" style=\"position: absolute; height: 100%; width: 100%; inset: 0px;\" sizes=\"(max-width: 760px) 90vw, 350px\" srcset=\"/_next/image?url=%2Findustries%2Fmanufacturing.jpg&amp;w=640&amp;q=75 640w, /_next…\" src=\"http://localhost:3100/_next/image?url=%2Findustries%2Fmanufacturing.jpg&amp;w=…\">",
+                  "nodeLabel": "Precision machinery in a manufacturing workshop"
+                },
+                "url": "http://localhost:3100/_next/image?url=%2Findustries%2Fmanufacturing.jpg&w=640&q=75",
+                "totalBytes": 21202,
+                "wastedBytes": 16780,
+                "wastedPercent": 79.14227166276346
+              }
+            ],
+            "overallSavingsMs": 0,
+            "overallSavingsBytes": 16780,
+            "sortedBy": [
+              "wastedBytes"
+            ],
+            "debugData": {
+              "type": "debugdata",
+              "metricSavings": {
+                "FCP": 0,
+                "LCP": 0
+              }
+            }
+          }
+        },
+        {
+          "id": "legacy-javascript",
+          "title": "Avoid serving legacy JavaScript to modern browsers",
+          "details": {
+            "type": "opportunity",
+            "headings": [
+              {
+                "key": "url",
+                "valueType": "url",
+                "subItemsHeading": {
+                  "key": "location",
+                  "valueType": "source-location"
+                },
+                "label": "URL"
+              },
+              {
+                "key": null,
+                "valueType": "code",
+                "subItemsHeading": {
+                  "key": "signal"
+                },
+                "label": ""
+              },
+              {
+                "key": "wastedBytes",
+                "valueType": "bytes",
+                "label": "Est Savings"
+              }
+            ],
+            "items": [
+              {
+                "url": "http://localhost:3100/_next/static/chunks/33wmmxu2kkyqh.js",
+                "wastedBytes": 13713,
+                "subItems": {
+                  "type": "subitems",
+                  "items": [
+                    {
+                      "signal": "Array.prototype.at",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://localhost:3100/_next/static/chunks/33wmmxu2kkyqh.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 1116
+                      }
+                    },
+                    {
+                      "signal": "Array.prototype.flat",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://localhost:3100/_next/static/chunks/33wmmxu2kkyqh.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 504
+                      }
+                    },
+                    {
+                      "signal": "Array.prototype.flatMap",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://localhost:3100/_next/static/chunks/33wmmxu2kkyqh.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 617
+                      }
+                    },
+                    {
+                      "signal": "Object.fromEntries",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://localhost:3100/_next/static/chunks/33wmmxu2kkyqh.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 993
+                      }
+                    },
+                    {
+                      "signal": "Object.hasOwn",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://localhost:3100/_next/static/chunks/33wmmxu2kkyqh.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 1251
+                      }
+                    },
+                    {
+                      "signal": "String.prototype.trimEnd",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://localhost:3100/_next/static/chunks/33wmmxu2kkyqh.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 246
+                      }
+                    },
+                    {
+                      "signal": "String.prototype.trimStart",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://localhost:3100/_next/static/chunks/33wmmxu2kkyqh.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 161
+                      }
+                    }
+                  ]
+                },
+                "totalBytes": 0
+              }
+            ],
+            "overallSavingsMs": 0,
+            "overallSavingsBytes": 13713,
+            "sortedBy": [
+              "wastedBytes"
+            ],
+            "debugData": {
+              "type": "debugdata",
+              "metricSavings": {
+                "FCP": 0,
+                "LCP": 0
+              }
+            }
+          }
+        },
+        {
+          "id": "dom-size-insight",
+          "title": "Optimize DOM size",
+          "details": {
+            "type": "table",
+            "headings": [
+              {
+                "key": "statistic",
+                "valueType": "text",
+                "label": "Statistic"
+              },
+              {
+                "key": "node",
+                "valueType": "node",
+                "label": "Element"
+              },
+              {
+                "key": "value",
+                "valueType": "numeric",
+                "label": "Value"
+              }
+            ],
+            "items": [
+              {
+                "statistic": "Total elements",
+                "value": {
+                  "type": "numeric",
+                  "granularity": 1,
+                  "value": 615
+                }
+              },
+              {
+                "statistic": "Most children",
+                "node": {
+                  "type": "node",
+                  "lhId": "page-3-BODY",
+                  "path": "1,HTML,1,BODY",
+                  "selector": "body.flex",
+                  "boundingRect": {
+                    "top": 0,
+                    "bottom": 6988,
+                    "left": 0,
+                    "right": 1340,
+                    "width": 1340,
+                    "height": 6988
+                  },
+                  "snippet": "<body class=\"flex min-h-full flex-col\">",
+                  "nodeLabel": "body.flex"
+                },
+                "value": {
+                  "type": "numeric",
+                  "granularity": 1,
+                  "value": 12
+                }
+              },
+              {
+                "statistic": "DOM depth",
+                "node": {
+                  "type": "node",
+                  "lhId": "page-4-path",
+                  "path": "1,HTML,1,BODY,4,MAIN,1,SECTION,0,DIV,2,DIV,1,DIV,1,DIV,3,DIV,0,DIV,3,DIV,0,BUTTON,0,svg,0,path",
+                  "selector": "div.ci-row-actions > button.ci-action-primary > svg.lucide > path",
+                  "boundingRect": {
+                    "top": 1746,
+                    "bottom": 1753,
+                    "left": 1104,
+                    "right": 1113,
+                    "width": 9,
+                    "height": 6
+                  },
+                  "snippet": "<path d=\"M20 6 9 17l-5-5\">",
+                  "nodeLabel": "div.ci-row-actions > button.ci-action-primary > svg.lucide > path"
+                },
+                "value": {
+                  "type": "numeric",
+                  "granularity": 1,
+                  "value": 13
+                }
+              }
+            ],
+            "debugData": {
+              "type": "debugdata",
+              "totalElements": 615,
+              "maxChildren": 12,
+              "maxDepth": 13
+            }
+          }
+        },
+        {
+          "id": "image-delivery-insight",
+          "title": "Improve image delivery",
+          "details": {
+            "type": "table",
+            "headings": [
+              {
+                "key": "url",
+                "valueType": "url",
+                "label": "URL",
+                "subItemsHeading": {
+                  "key": "reason",
+                  "valueType": "text"
+                }
+              },
+              {
+                "key": "totalBytes",
+                "valueType": "bytes",
+                "label": "Resource Size"
+              },
+              {
+                "key": "wastedBytes",
+                "valueType": "bytes",
+                "label": "Est Savings",
+                "subItemsHeading": {
+                  "key": "wastedBytes",
+                  "valueType": "bytes"
+                }
+              }
+            ],
+            "items": [
+              {
+                "url": "http://localhost:3100/_next/image?url=%2Findustries%2Fmanufacturing.jpg&w=640&q=75",
+                "totalBytes": 21202,
+                "wastedBytes": 16274,
+                "subItems": {
+                  "type": "subitems",
+                  "items": [
+                    {
+                      "reason": "This image file is larger than it needs to be (640x404) for its displayed dimensions (300x200). Use responsive images to reduce the image download size.",
+                      "wastedBytes": 16274
+                    }
+                  ]
+                }
+              }
+            ],
+            "debugData": {
+              "type": "debugdata",
+              "wastedBytes": 16274
+            }
+          }
+        },
+        {
+          "id": "legacy-javascript-insight",
+          "title": "Legacy JavaScript",
+          "details": {
+            "type": "table",
+            "headings": [
+              {
+                "key": "url",
+                "valueType": "url",
+                "subItemsHeading": {
+                  "key": "location",
+                  "valueType": "source-location"
+                },
+                "label": "URL"
+              },
+              {
+                "key": null,
+                "valueType": "code",
+                "subItemsHeading": {
+                  "key": "signal"
+                },
+                "label": ""
+              },
+              {
+                "key": "wastedBytes",
+                "valueType": "bytes",
+                "label": "Wasted bytes"
+              }
+            ],
+            "items": [
+              {
+                "url": "http://localhost:3100/_next/static/chunks/33wmmxu2kkyqh.js",
+                "wastedBytes": 13912,
+                "subItems": {
+                  "type": "subitems",
+                  "items": [
+                    {
+                      "signal": "Array.prototype.at",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://localhost:3100/_next/static/chunks/33wmmxu2kkyqh.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 1116
+                      }
+                    },
+                    {
+                      "signal": "Array.prototype.flat",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://localhost:3100/_next/static/chunks/33wmmxu2kkyqh.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 504
+                      }
+                    },
+                    {
+                      "signal": "Array.prototype.flatMap",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://localhost:3100/_next/static/chunks/33wmmxu2kkyqh.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 617
+                      }
+                    },
+                    {
+                      "signal": "Object.fromEntries",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://localhost:3100/_next/static/chunks/33wmmxu2kkyqh.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 993
+                      }
+                    },
+                    {
+                      "signal": "Object.hasOwn",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://localhost:3100/_next/static/chunks/33wmmxu2kkyqh.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 1251
+                      }
+                    },
+                    {
+                      "signal": "String.prototype.trimEnd",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://localhost:3100/_next/static/chunks/33wmmxu2kkyqh.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 246
+                      }
+                    },
+                    {
+                      "signal": "String.prototype.trimStart",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://localhost:3100/_next/static/chunks/33wmmxu2kkyqh.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 161
+                      }
+                    }
+                  ]
+                }
+              }
+            ],
+            "debugData": {
+              "type": "debugdata",
+              "wastedBytes": 13912
+            }
+          }
+        },
+        {
+          "id": "network-dependency-tree-insight",
+          "title": "Network dependency tree",
+          "details": {
+            "type": "network-tree",
+            "chains": {
+              "BBE7F215C9D3FCB62E07C2F5FF0A96C7": {
+                "url": "http://localhost:3100/",
+                "navStartToEndTime": 56,
+                "transferSize": 18225,
+                "isLongest": true,
+                "children": {
+                  "31972.4": {
+                    "url": "http://localhost:3100/_next/static/chunks/3yurkjss5ecga.css",
+                    "navStartToEndTime": 82,
+                    "transferSize": 24031,
+                    "children": {}
+                  },
+                  "31972.5": {
+                    "url": "http://localhost:3100/_next/static/chunks/24_n9lr3uzl35.css",
+                    "navStartToEndTime": 80,
+                    "transferSize": 2398,
+                    "children": {}
+                  },
+                  "31972.31": {
+                    "url": "http://localhost:3100/manifest.webmanifest",
+                    "navStartToEndTime": 84,
+                    "transferSize": 1456,
+                    "isLongest": true,
+                    "children": {}
+                  }
+                }
+              }
+            },
+            "longestChain": {
+              "duration": 84
+            }
+          }
+        },
+        {
+          "id": "render-blocking-insight",
+          "title": "Render blocking requests",
+          "details": {
+            "type": "table",
+            "headings": [
+              {
+                "key": "url",
+                "valueType": "url",
+                "label": "URL"
+              },
+              {
+                "key": "totalBytes",
+                "valueType": "bytes",
+                "label": "Transfer Size"
+              },
+              {
+                "key": "wastedMs",
+                "valueType": "timespanMs",
+                "label": "Est Savings"
+              }
+            ],
+            "items": [
+              {
+                "url": "http://localhost:3100/_next/static/chunks/3yurkjss5ecga.css",
+                "totalBytes": 24031
+              },
+              {
+                "url": "http://localhost:3100/_next/static/chunks/24_n9lr3uzl35.css",
+                "totalBytes": 2398,
+                "wastedMs": 89
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "path": "/demo-lab",
+      "device": "desktop",
+      "date": "2026-09-07T05:41:08.927Z",
+      "lighthouse": "12.6.1",
+      "scores": {
+        "performance": 100,
+        "accessibility": 99,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "LCP_ms": 687.9438750000002,
+      "CLS": 0,
+      "TBT_ms": 0,
+      "notes": [],
+      "findings": [
+        {
+          "id": "largest-contentful-paint",
+          "title": "Largest Contentful Paint"
+        },
+        {
+          "id": "heading-order",
+          "title": "Heading elements are not in a sequentially-descending order",
+          "details": {
+            "type": "table",
+            "headings": [
+              {
+                "key": "node",
+                "valueType": "node",
+                "subItemsHeading": {
+                  "key": "relatedNode",
+                  "valueType": "node"
+                },
+                "label": "Failing Elements"
+              }
+            ],
+            "items": [
+              {
+                "node": {
+                  "type": "node",
+                  "lhId": "1-0-H3",
+                  "path": "1,HTML,1,BODY,6,MAIN,2,SECTION,0,DIV,1,DIV,0,DIV,1,H3",
+                  "selector": "div.ci-container > div#industry-demo-panel > div.ci-industry-story > h3",
+                  "boundingRect": {
+                    "top": 944,
+                    "bottom": 1009,
+                    "left": 48,
+                    "right": 348,
+                    "width": 300,
+                    "height": 65
+                  },
+                  "snippet": "<h3>",
+                  "nodeLabel": "Keep work moving. Stop chasing approvals.",
+                  "explanation": "Fix any of the following:\n  Heading order invalid"
+                }
+              }
+            ],
+            "debugData": {
+              "type": "debugdata",
+              "impact": "moderate",
+              "tags": [
+                "cat.semantics",
+                "best-practice"
+              ]
+            }
+          }
+        },
+        {
+          "id": "label-content-name-mismatch",
+          "title": "Elements with visible text labels do not have matching accessible names.",
+          "details": {
+            "type": "table",
+            "headings": [
+              {
+                "key": "node",
+                "valueType": "node",
+                "subItemsHeading": {
+                  "key": "relatedNode",
+                  "valueType": "node"
+                },
+                "label": "Failing Elements"
+              }
+            ],
+            "items": [
+              {
+                "node": {
+                  "type": "node",
+                  "lhId": "1-1-A",
+                  "path": "1,HTML,1,BODY,5,HEADER,1,NAV,0,A",
+                  "selector": "body.flex > header.ci-nav > nav.ci-container > a",
+                  "boundingRect": {
+                    "top": 21,
+                    "bottom": 68,
+                    "left": 48,
+                    "right": 193,
+                    "width": 145,
+                    "height": 47
+                  },
+                  "snippet": "<a aria-label=\"Catalyst Innovations home\" href=\"/\">",
+                  "nodeLabel": "CATALYST\nINNOVATIONS",
+                  "explanation": "Fix any of the following:\n  Text inside the element is not included in the accessible name"
+                }
+              },
+              {
+                "node": {
+                  "type": "node",
+                  "lhId": "1-2-A",
+                  "path": "1,HTML,1,BODY,7,FOOTER,0,DIV,0,DIV,0,DIV,0,A",
+                  "selector": "div.ci-container > div.ci-footer-grid > div > a",
+                  "boundingRect": {
+                    "top": 1978,
+                    "bottom": 1999,
+                    "left": 48,
+                    "right": 195,
+                    "width": 147,
+                    "height": 21
+                  },
+                  "snippet": "<a aria-label=\"Catalyst Innovations home\" href=\"/\">",
+                  "nodeLabel": "CATALYST\nINNOVATIONS",
+                  "explanation": "Fix any of the following:\n  Text inside the element is not included in the accessible name"
+                }
+              }
+            ],
+            "debugData": {
+              "type": "debugdata",
+              "impact": "serious",
+              "tags": [
+                "cat.semantics",
+                "wcag21a",
+                "wcag253",
+                "EN-301-549",
+                "EN-9.2.5.3",
+                "RGAAv4",
+                "RGAA-6.1.5",
+                "experimental"
+              ]
+            }
+          }
+        },
+        {
+          "id": "render-blocking-resources",
+          "title": "Eliminate render-blocking resources",
+          "details": {
+            "type": "opportunity",
+            "headings": [
+              {
+                "key": "url",
+                "valueType": "url",
+                "label": "URL"
+              },
+              {
+                "key": "totalBytes",
+                "valueType": "bytes",
+                "label": "Transfer Size"
+              },
+              {
+                "key": "wastedMs",
+                "valueType": "timespanMs",
+                "label": "Est Savings"
+              }
+            ],
+            "items": [
+              {
+                "url": "http://localhost:3100/_next/static/chunks/3yurkjss5ecga.css",
+                "totalBytes": 24031,
+                "wastedMs": 50
+              },
+              {
+                "url": "http://localhost:3100/_next/static/chunks/24_n9lr3uzl35.css",
+                "totalBytes": 2398,
+                "wastedMs": 90
+              }
+            ],
+            "overallSavingsMs": 0
+          }
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "details": {
+            "type": "opportunity",
+            "headings": [
+              {
+                "key": "url",
+                "valueType": "url",
+                "subItemsHeading": {
+                  "key": "source",
+                  "valueType": "code"
+                },
+                "label": "URL"
+              },
+              {
+                "key": "totalBytes",
+                "valueType": "bytes",
+                "subItemsHeading": {
+                  "key": "sourceBytes"
+                },
+                "label": "Transfer Size"
+              },
+              {
+                "key": "wastedBytes",
+                "valueType": "bytes",
+                "subItemsHeading": {
+                  "key": "sourceWastedBytes"
+                },
+                "label": "Est Savings"
+              }
+            ],
+            "items": [
+              {
+                "url": "http://localhost:3100/_next/static/chunks/33wmmxu2kkyqh.js",
+                "totalBytes": 71394,
+                "wastedBytes": 28708,
+                "wastedPercent": 40.21047275215715
+              },
+              {
+                "url": "http://localhost:3100/_next/static/chunks/0y-tdava-4nyh.js",
+                "totalBytes": 44405,
+                "wastedBytes": 25425,
+                "wastedPercent": 57.256550455147234
+              }
+            ],
+            "overallSavingsMs": 100,
+            "overallSavingsBytes": 54133,
+            "sortedBy": [
+              "wastedBytes"
+            ],
+            "debugData": {
+              "type": "debugdata",
+              "metricSavings": {
+                "FCP": 40,
+                "LCP": 100
+              }
+            }
+          }
+        },
+        {
+          "id": "uses-responsive-images",
+          "title": "Properly size images",
+          "details": {
+            "type": "opportunity",
+            "headings": [
+              {
+                "key": "node",
+                "valueType": "node",
+                "label": ""
+              },
+              {
+                "key": "url",
+                "valueType": "url",
+                "label": "URL"
+              },
+              {
+                "key": "totalBytes",
+                "valueType": "bytes",
+                "label": "Resource Size"
+              },
+              {
+                "key": "wastedBytes",
+                "valueType": "bytes",
+                "label": "Est Savings"
+              }
+            ],
+            "items": [
+              {
+                "node": {
+                  "type": "node",
+                  "lhId": "1-41-IMG",
+                  "path": "1,HTML,1,BODY,6,MAIN,2,SECTION,0,DIV,1,DIV,0,DIV,0,DIV,0,IMG",
+                  "selector": "div#industry-demo-panel > div.ci-industry-story > div.ci-industry-photo > img",
+                  "boundingRect": {
+                    "top": 728,
+                    "bottom": 918,
+                    "left": 48,
+                    "right": 348,
+                    "width": 300,
+                    "height": 190
+                  },
+                  "snippet": "<img alt=\"Precision machinery in a manufacturing workshop\" loading=\"lazy\" decoding=\"async\" data-nimg=\"fill\" style=\"position: absolute; height: 100%; width: 100%; inset: 0px;\" sizes=\"(max-width: 760px) 90vw, 350px\" srcset=\"/_next/image?url=%2Findustries%2Fmanufacturing.jpg&amp;w=640&amp;q=75 640w, /_next…\" src=\"http://localhost:3100/_next/image?url=%2Findustries%2Fmanufacturing.jpg&amp;w=…\">",
+                  "nodeLabel": "Precision machinery in a manufacturing workshop"
+                },
+                "url": "http://localhost:3100/_next/image?url=%2Findustries%2Fmanufacturing.jpg&w=640&q=75",
+                "totalBytes": 21202,
+                "wastedBytes": 16780,
+                "wastedPercent": 79.14227166276346
+              }
+            ],
+            "overallSavingsMs": 0,
+            "overallSavingsBytes": 16780,
+            "sortedBy": [
+              "wastedBytes"
+            ],
+            "debugData": {
+              "type": "debugdata",
+              "metricSavings": {
+                "FCP": 0,
+                "LCP": 0
+              }
+            }
+          }
+        },
+        {
+          "id": "legacy-javascript",
+          "title": "Avoid serving legacy JavaScript to modern browsers",
+          "details": {
+            "type": "opportunity",
+            "headings": [
+              {
+                "key": "url",
+                "valueType": "url",
+                "subItemsHeading": {
+                  "key": "location",
+                  "valueType": "source-location"
+                },
+                "label": "URL"
+              },
+              {
+                "key": null,
+                "valueType": "code",
+                "subItemsHeading": {
+                  "key": "signal"
+                },
+                "label": ""
+              },
+              {
+                "key": "wastedBytes",
+                "valueType": "bytes",
+                "label": "Est Savings"
+              }
+            ],
+            "items": [
+              {
+                "url": "http://localhost:3100/_next/static/chunks/33wmmxu2kkyqh.js",
+                "wastedBytes": 13713,
+                "subItems": {
+                  "type": "subitems",
+                  "items": [
+                    {
+                      "signal": "Array.prototype.at",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://localhost:3100/_next/static/chunks/33wmmxu2kkyqh.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 1116
+                      }
+                    },
+                    {
+                      "signal": "Array.prototype.flat",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://localhost:3100/_next/static/chunks/33wmmxu2kkyqh.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 504
+                      }
+                    },
+                    {
+                      "signal": "Array.prototype.flatMap",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://localhost:3100/_next/static/chunks/33wmmxu2kkyqh.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 617
+                      }
+                    },
+                    {
+                      "signal": "Object.fromEntries",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://localhost:3100/_next/static/chunks/33wmmxu2kkyqh.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 993
+                      }
+                    },
+                    {
+                      "signal": "Object.hasOwn",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://localhost:3100/_next/static/chunks/33wmmxu2kkyqh.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 1251
+                      }
+                    },
+                    {
+                      "signal": "String.prototype.trimEnd",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://localhost:3100/_next/static/chunks/33wmmxu2kkyqh.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 246
+                      }
+                    },
+                    {
+                      "signal": "String.prototype.trimStart",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://localhost:3100/_next/static/chunks/33wmmxu2kkyqh.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 161
+                      }
+                    }
+                  ]
+                },
+                "totalBytes": 0
+              }
+            ],
+            "overallSavingsMs": 40,
+            "overallSavingsBytes": 13713,
+            "sortedBy": [
+              "wastedBytes"
+            ],
+            "debugData": {
+              "type": "debugdata",
+              "metricSavings": {
+                "FCP": 0,
+                "LCP": 40
+              }
+            }
+          }
+        },
+        {
+          "id": "bf-cache",
+          "title": "Page prevented back/forward cache restoration",
+          "details": {
+            "type": "table",
+            "headings": [
+              {
+                "key": "reason",
+                "valueType": "text",
+                "subItemsHeading": {
+                  "key": "frameUrl",
+                  "valueType": "url"
+                },
+                "label": "Failure reason"
+              },
+              {
+                "key": "failureType",
+                "valueType": "text",
+                "label": "Failure type"
+              }
+            ],
+            "items": [
+              {
+                "reason": "Pages whose main resource has cache-control:no-store cannot enter back/forward cache.",
+                "failureType": "Not actionable",
+                "subItems": {
+                  "type": "subitems",
+                  "items": [
+                    {
+                      "frameUrl": "http://localhost:3100/demo-lab"
+                    }
+                  ]
+                },
+                "protocolReason": "MainResourceHasCacheControlNoStore"
+              },
+              {
+                "reason": "Back/forward cache is disabled because some JavaScript network request received resource with Cache-Control: no-store header.",
+                "failureType": "Not actionable",
+                "subItems": {
+                  "type": "subitems",
+                  "items": [
+                    {
+                      "frameUrl": "http://localhost:3100/demo-lab"
+                    }
+                  ]
+                },
+                "protocolReason": "JsNetworkRequestReceivedCacheControlNoStoreResource"
+              }
+            ]
+          }
+        },
+        {
+          "id": "dom-size-insight",
+          "title": "Optimize DOM size",
+          "details": {
+            "type": "table",
+            "headings": [
+              {
+                "key": "statistic",
+                "valueType": "text",
+                "label": "Statistic"
+              },
+              {
+                "key": "node",
+                "valueType": "node",
+                "label": "Element"
+              },
+              {
+                "key": "value",
+                "valueType": "numeric",
+                "label": "Value"
+              }
+            ],
+            "items": [
+              {
+                "statistic": "Total elements",
+                "value": {
+                  "type": "numeric",
+                  "granularity": 1,
+                  "value": 445
+                }
+              },
+              {
+                "statistic": "Most children",
+                "node": {
+                  "type": "node",
+                  "lhId": "page-3-BODY",
+                  "path": "1,HTML,1,BODY",
+                  "selector": "body.flex",
+                  "boundingRect": {
+                    "top": 0,
+                    "bottom": 2417,
+                    "left": 0,
+                    "right": 1340,
+                    "width": 1340,
+                    "height": 2417
+                  },
+                  "snippet": "<body class=\"flex min-h-full flex-col\">",
+                  "nodeLabel": "body.flex"
+                },
+                "value": {
+                  "type": "numeric",
+                  "granularity": 1,
+                  "value": 12
+                }
+              },
+              {
+                "statistic": "DOM depth",
+                "node": {
+                  "type": "node",
+                  "lhId": "page-4-path",
+                  "path": "1,HTML,1,BODY,6,MAIN,4,SECTION,0,DIV,0,DETAILS,2,DIV,2,DIV,1,DIV,0,UL,0,LI,0,DIV,1,DIV,0,BUTTON,0,svg,0,path",
+                  "selector": "div.flex > button.inline-flex > svg.lucide > path",
+                  "boundingRect": {
+                    "top": 2809,
+                    "bottom": 2815,
+                    "left": 1086,
+                    "right": 1095,
+                    "width": 9,
+                    "height": 6
+                  },
+                  "snippet": "<path d=\"M20 6 9 17l-5-5\">",
+                  "nodeLabel": "div.flex > button.inline-flex > svg.lucide > path"
+                },
+                "value": {
+                  "type": "numeric",
+                  "granularity": 1,
+                  "value": 15
+                }
+              }
+            ],
+            "debugData": {
+              "type": "debugdata",
+              "totalElements": 445,
+              "maxChildren": 12,
+              "maxDepth": 15
+            }
+          }
+        },
+        {
+          "id": "forced-reflow-insight",
+          "title": "Forced reflow",
+          "details": {
+            "type": "list",
+            "items": [
+              {
+                "type": "table",
+                "headings": [
+                  {
+                    "key": "source",
+                    "valueType": "source-location",
+                    "label": "Source"
+                  },
+                  {
+                    "key": "reflowTime",
+                    "valueType": "ms",
+                    "granularity": 1,
+                    "label": "Total reflow time"
+                  }
+                ],
+                "items": [
+                  {
+                    "source": {
+                      "type": "text",
+                      "value": "[unattributed]"
+                    },
+                    "reflowTime": 48.484
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "image-delivery-insight",
+          "title": "Improve image delivery",
+          "details": {
+            "type": "table",
+            "headings": [
+              {
+                "key": "url",
+                "valueType": "url",
+                "label": "URL",
+                "subItemsHeading": {
+                  "key": "reason",
+                  "valueType": "text"
+                }
+              },
+              {
+                "key": "totalBytes",
+                "valueType": "bytes",
+                "label": "Resource Size"
+              },
+              {
+                "key": "wastedBytes",
+                "valueType": "bytes",
+                "label": "Est Savings",
+                "subItemsHeading": {
+                  "key": "wastedBytes",
+                  "valueType": "bytes"
+                }
+              }
+            ],
+            "items": [
+              {
+                "url": "http://localhost:3100/_next/image?url=%2Findustries%2Fmanufacturing.jpg&w=640&q=75",
+                "totalBytes": 21202,
+                "wastedBytes": 16298,
+                "subItems": {
+                  "type": "subitems",
+                  "items": [
+                    {
+                      "reason": "This image file is larger than it needs to be (640x406) for its displayed dimensions (300x200). Use responsive images to reduce the image download size.",
+                      "wastedBytes": 16298
+                    }
+                  ]
+                }
+              }
+            ],
+            "debugData": {
+              "type": "debugdata",
+              "wastedBytes": 16298
+            }
+          }
+        },
+        {
+          "id": "legacy-javascript-insight",
+          "title": "Legacy JavaScript",
+          "details": {
+            "type": "table",
+            "headings": [
+              {
+                "key": "url",
+                "valueType": "url",
+                "subItemsHeading": {
+                  "key": "location",
+                  "valueType": "source-location"
+                },
+                "label": "URL"
+              },
+              {
+                "key": null,
+                "valueType": "code",
+                "subItemsHeading": {
+                  "key": "signal"
+                },
+                "label": ""
+              },
+              {
+                "key": "wastedBytes",
+                "valueType": "bytes",
+                "label": "Wasted bytes"
+              }
+            ],
+            "items": [
+              {
+                "url": "http://localhost:3100/_next/static/chunks/33wmmxu2kkyqh.js",
+                "wastedBytes": 13912,
+                "subItems": {
+                  "type": "subitems",
+                  "items": [
+                    {
+                      "signal": "Array.prototype.at",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://localhost:3100/_next/static/chunks/33wmmxu2kkyqh.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 1116
+                      }
+                    },
+                    {
+                      "signal": "Array.prototype.flat",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://localhost:3100/_next/static/chunks/33wmmxu2kkyqh.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 504
+                      }
+                    },
+                    {
+                      "signal": "Array.prototype.flatMap",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://localhost:3100/_next/static/chunks/33wmmxu2kkyqh.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 617
+                      }
+                    },
+                    {
+                      "signal": "Object.fromEntries",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://localhost:3100/_next/static/chunks/33wmmxu2kkyqh.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 993
+                      }
+                    },
+                    {
+                      "signal": "Object.hasOwn",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://localhost:3100/_next/static/chunks/33wmmxu2kkyqh.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 1251
+                      }
+                    },
+                    {
+                      "signal": "String.prototype.trimEnd",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://localhost:3100/_next/static/chunks/33wmmxu2kkyqh.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 246
+                      }
+                    },
+                    {
+                      "signal": "String.prototype.trimStart",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://localhost:3100/_next/static/chunks/33wmmxu2kkyqh.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 161
+                      }
+                    }
+                  ]
+                }
+              }
+            ],
+            "debugData": {
+              "type": "debugdata",
+              "wastedBytes": 13912
+            }
+          }
+        },
+        {
+          "id": "network-dependency-tree-insight",
+          "title": "Network dependency tree",
+          "details": {
+            "type": "network-tree",
+            "chains": {
+              "C8962C8310D6FAD3FE1CC3AE72936A96": {
+                "url": "http://localhost:3100/demo-lab",
+                "navStartToEndTime": 73,
+                "transferSize": 14742,
+                "isLongest": true,
+                "children": {
+                  "30128.4": {
+                    "url": "http://localhost:3100/_next/static/chunks/3yurkjss5ecga.css",
+                    "navStartToEndTime": 89,
+                    "transferSize": 24031,
+                    "children": {}
+                  },
+                  "30128.5": {
+                    "url": "http://localhost:3100/_next/static/chunks/24_n9lr3uzl35.css",
+                    "navStartToEndTime": 85,
+                    "transferSize": 2398,
+                    "children": {}
+                  },
+                  "30128.29": {
+                    "url": "http://localhost:3100/manifest.webmanifest",
+                    "navStartToEndTime": 108,
+                    "transferSize": 1456,
+                    "isLongest": true,
+                    "children": {}
+                  }
+                }
+              }
+            },
+            "longestChain": {
+              "duration": 108
+            }
+          }
+        },
+        {
+          "id": "render-blocking-insight",
+          "title": "Render blocking requests",
+          "details": {
+            "type": "table",
+            "headings": [
+              {
+                "key": "url",
+                "valueType": "url",
+                "label": "URL"
+              },
+              {
+                "key": "totalBytes",
+                "valueType": "bytes",
+                "label": "Transfer Size"
+              },
+              {
+                "key": "wastedMs",
+                "valueType": "timespanMs",
+                "label": "Est Savings"
+              }
+            ],
+            "items": [
+              {
+                "url": "http://localhost:3100/_next/static/chunks/3yurkjss5ecga.css",
+                "totalBytes": 24031,
+                "wastedMs": 50
+              },
+              {
+                "url": "http://localhost:3100/_next/static/chunks/24_n9lr3uzl35.css",
+                "totalBytes": 2398,
+                "wastedMs": 90
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "path": "/pricing",
+      "device": "desktop",
+      "date": "2026-09-07T05:41:17.611Z",
+      "lighthouse": "12.6.1",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "LCP_ms": 584.08955,
+      "CLS": 0,
+      "TBT_ms": 0,
+      "notes": [],
+      "findings": [
+        {
+          "id": "label-content-name-mismatch",
+          "title": "Elements with visible text labels do not have matching accessible names.",
+          "details": {
+            "type": "table",
+            "headings": [
+              {
+                "key": "node",
+                "valueType": "node",
+                "subItemsHeading": {
+                  "key": "relatedNode",
+                  "valueType": "node"
+                },
+                "label": "Failing Elements"
+              }
+            ],
+            "items": [
+              {
+                "node": {
+                  "type": "node",
+                  "lhId": "1-0-A",
+                  "path": "1,HTML,1,BODY,3,HEADER,1,NAV,0,A",
+                  "selector": "body.flex > header.ci-nav > nav.ci-container > a",
+                  "boundingRect": {
+                    "top": 21,
+                    "bottom": 68,
+                    "left": 48,
+                    "right": 193,
+                    "width": 145,
+                    "height": 47
+                  },
+                  "snippet": "<a aria-label=\"Catalyst Innovations home\" href=\"/\">",
+                  "nodeLabel": "CATALYST\nINNOVATIONS",
+                  "explanation": "Fix any of the following:\n  Text inside the element is not included in the accessible name"
+                }
+              },
+              {
+                "node": {
+                  "type": "node",
+                  "lhId": "1-1-A",
+                  "path": "1,HTML,1,BODY,5,FOOTER,0,DIV,0,DIV,0,DIV,0,A",
+                  "selector": "div.ci-container > div.ci-footer-grid > div > a",
+                  "boundingRect": {
+                    "top": 4404,
+                    "bottom": 4425,
+                    "left": 48,
+                    "right": 195,
+                    "width": 147,
+                    "height": 21
+                  },
+                  "snippet": "<a aria-label=\"Catalyst Innovations home\" href=\"/\">",
+                  "nodeLabel": "CATALYST\nINNOVATIONS",
+                  "explanation": "Fix any of the following:\n  Text inside the element is not included in the accessible name"
+                }
+              }
+            ],
+            "debugData": {
+              "type": "debugdata",
+              "impact": "serious",
+              "tags": [
+                "cat.semantics",
+                "wcag21a",
+                "wcag253",
+                "EN-301-549",
+                "EN-9.2.5.3",
+                "RGAAv4",
+                "RGAA-6.1.5",
+                "experimental"
+              ]
+            }
+          }
+        },
+        {
+          "id": "render-blocking-resources",
+          "title": "Eliminate render-blocking resources",
+          "details": {
+            "type": "opportunity",
+            "headings": [
+              {
+                "key": "url",
+                "valueType": "url",
+                "label": "URL"
+              },
+              {
+                "key": "totalBytes",
+                "valueType": "bytes",
+                "label": "Transfer Size"
+              },
+              {
+                "key": "wastedMs",
+                "valueType": "timespanMs",
+                "label": "Est Savings"
+              }
+            ],
+            "items": [
+              {
+                "url": "http://localhost:3100/_next/static/chunks/3yurkjss5ecga.css",
+                "totalBytes": 24031,
+                "wastedMs": 88
+              },
+              {
+                "url": "http://localhost:3100/_next/static/chunks/24_n9lr3uzl35.css",
+                "totalBytes": 2398,
+                "wastedMs": 88
+              }
+            ],
+            "overallSavingsMs": 0
+          }
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "details": {
+            "type": "opportunity",
+            "headings": [
+              {
+                "key": "url",
+                "valueType": "url",
+                "subItemsHeading": {
+                  "key": "source",
+                  "valueType": "code"
+                },
+                "label": "URL"
+              },
+              {
+                "key": "totalBytes",
+                "valueType": "bytes",
+                "subItemsHeading": {
+                  "key": "sourceBytes"
+                },
+                "label": "Transfer Size"
+              },
+              {
+                "key": "wastedBytes",
+                "valueType": "bytes",
+                "subItemsHeading": {
+                  "key": "sourceWastedBytes"
+                },
+                "label": "Est Savings"
+              }
+            ],
+            "items": [
+              {
+                "url": "http://localhost:3100/_next/static/chunks/0y-tdava-4nyh.js",
+                "totalBytes": 44405,
+                "wastedBytes": 37740,
+                "wastedPercent": 84.99098681307173
+              },
+              {
+                "url": "http://localhost:3100/_next/static/chunks/33wmmxu2kkyqh.js",
+                "totalBytes": 71394,
+                "wastedBytes": 28038,
+                "wastedPercent": 39.272601255466896
+              }
+            ],
+            "overallSavingsMs": 70,
+            "overallSavingsBytes": 65778,
+            "sortedBy": [
+              "wastedBytes"
+            ],
+            "debugData": {
+              "type": "debugdata",
+              "metricSavings": {
+                "FCP": 0,
+                "LCP": 70
+              }
+            }
+          }
+        },
+        {
+          "id": "legacy-javascript",
+          "title": "Avoid serving legacy JavaScript to modern browsers",
+          "details": {
+            "type": "opportunity",
+            "headings": [
+              {
+                "key": "url",
+                "valueType": "url",
+                "subItemsHeading": {
+                  "key": "location",
+                  "valueType": "source-location"
+                },
+                "label": "URL"
+              },
+              {
+                "key": null,
+                "valueType": "code",
+                "subItemsHeading": {
+                  "key": "signal"
+                },
+                "label": ""
+              },
+              {
+                "key": "wastedBytes",
+                "valueType": "bytes",
+                "label": "Est Savings"
+              }
+            ],
+            "items": [
+              {
+                "url": "http://localhost:3100/_next/static/chunks/33wmmxu2kkyqh.js",
+                "wastedBytes": 13713,
+                "subItems": {
+                  "type": "subitems",
+                  "items": [
+                    {
+                      "signal": "Array.prototype.at",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://localhost:3100/_next/static/chunks/33wmmxu2kkyqh.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 1116
+                      }
+                    },
+                    {
+                      "signal": "Array.prototype.flat",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://localhost:3100/_next/static/chunks/33wmmxu2kkyqh.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 504
+                      }
+                    },
+                    {
+                      "signal": "Array.prototype.flatMap",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://localhost:3100/_next/static/chunks/33wmmxu2kkyqh.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 617
+                      }
+                    },
+                    {
+                      "signal": "Object.fromEntries",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://localhost:3100/_next/static/chunks/33wmmxu2kkyqh.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 993
+                      }
+                    },
+                    {
+                      "signal": "Object.hasOwn",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://localhost:3100/_next/static/chunks/33wmmxu2kkyqh.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 1251
+                      }
+                    },
+                    {
+                      "signal": "String.prototype.trimEnd",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://localhost:3100/_next/static/chunks/33wmmxu2kkyqh.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 246
+                      }
+                    },
+                    {
+                      "signal": "String.prototype.trimStart",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://localhost:3100/_next/static/chunks/33wmmxu2kkyqh.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 161
+                      }
+                    }
+                  ]
+                },
+                "totalBytes": 0
+              }
+            ],
+            "overallSavingsMs": 30,
+            "overallSavingsBytes": 13713,
+            "sortedBy": [
+              "wastedBytes"
+            ],
+            "debugData": {
+              "type": "debugdata",
+              "metricSavings": {
+                "FCP": 0,
+                "LCP": 30
+              }
+            }
+          }
+        },
+        {
+          "id": "forced-reflow-insight",
+          "title": "Forced reflow",
+          "details": {
+            "type": "list",
+            "items": [
+              {
+                "type": "table",
+                "headings": [
+                  {
+                    "key": "source",
+                    "valueType": "source-location",
+                    "label": "Source"
+                  },
+                  {
+                    "key": "reflowTime",
+                    "valueType": "ms",
+                    "granularity": 1,
+                    "label": "Total reflow time"
+                  }
+                ],
+                "items": [
+                  {
+                    "source": {
+                      "type": "text",
+                      "value": "[unattributed]"
+                    },
+                    "reflowTime": 34.342
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "legacy-javascript-insight",
+          "title": "Legacy JavaScript",
+          "details": {
+            "type": "table",
+            "headings": [
+              {
+                "key": "url",
+                "valueType": "url",
+                "subItemsHeading": {
+                  "key": "location",
+                  "valueType": "source-location"
+                },
+                "label": "URL"
+              },
+              {
+                "key": null,
+                "valueType": "code",
+                "subItemsHeading": {
+                  "key": "signal"
+                },
+                "label": ""
+              },
+              {
+                "key": "wastedBytes",
+                "valueType": "bytes",
+                "label": "Wasted bytes"
+              }
+            ],
+            "items": [
+              {
+                "url": "http://localhost:3100/_next/static/chunks/33wmmxu2kkyqh.js",
+                "wastedBytes": 13912,
+                "subItems": {
+                  "type": "subitems",
+                  "items": [
+                    {
+                      "signal": "Array.prototype.at",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://localhost:3100/_next/static/chunks/33wmmxu2kkyqh.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 1116
+                      }
+                    },
+                    {
+                      "signal": "Array.prototype.flat",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://localhost:3100/_next/static/chunks/33wmmxu2kkyqh.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 504
+                      }
+                    },
+                    {
+                      "signal": "Array.prototype.flatMap",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://localhost:3100/_next/static/chunks/33wmmxu2kkyqh.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 617
+                      }
+                    },
+                    {
+                      "signal": "Object.fromEntries",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://localhost:3100/_next/static/chunks/33wmmxu2kkyqh.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 993
+                      }
+                    },
+                    {
+                      "signal": "Object.hasOwn",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://localhost:3100/_next/static/chunks/33wmmxu2kkyqh.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 1251
+                      }
+                    },
+                    {
+                      "signal": "String.prototype.trimEnd",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://localhost:3100/_next/static/chunks/33wmmxu2kkyqh.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 246
+                      }
+                    },
+                    {
+                      "signal": "String.prototype.trimStart",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://localhost:3100/_next/static/chunks/33wmmxu2kkyqh.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 161
+                      }
+                    }
+                  ]
+                }
+              }
+            ],
+            "debugData": {
+              "type": "debugdata",
+              "wastedBytes": 13912
+            }
+          }
+        },
+        {
+          "id": "network-dependency-tree-insight",
+          "title": "Network dependency tree",
+          "details": {
+            "type": "network-tree",
+            "chains": {
+              "E221D6F6923B3A4E979A1B3BF62C5841": {
+                "url": "http://localhost:3100/pricing",
+                "navStartToEndTime": 59,
+                "transferSize": 13610,
+                "isLongest": true,
+                "children": {
+                  "45876.4": {
+                    "url": "http://localhost:3100/_next/static/chunks/3yurkjss5ecga.css",
+                    "navStartToEndTime": 75,
+                    "transferSize": 24031,
+                    "children": {}
+                  },
+                  "45876.5": {
+                    "url": "http://localhost:3100/_next/static/chunks/24_n9lr3uzl35.css",
+                    "navStartToEndTime": 63,
+                    "transferSize": 2398,
+                    "children": {}
+                  },
+                  "45876.27": {
+                    "url": "http://localhost:3100/manifest.webmanifest",
+                    "navStartToEndTime": 83,
+                    "transferSize": 1456,
+                    "isLongest": true,
+                    "children": {}
+                  }
+                }
+              }
+            },
+            "longestChain": {
+              "duration": 83
+            }
+          }
+        },
+        {
+          "id": "render-blocking-insight",
+          "title": "Render blocking requests",
+          "details": {
+            "type": "table",
+            "headings": [
+              {
+                "key": "url",
+                "valueType": "url",
+                "label": "URL"
+              },
+              {
+                "key": "totalBytes",
+                "valueType": "bytes",
+                "label": "Transfer Size"
+              },
+              {
+                "key": "wastedMs",
+                "valueType": "timespanMs",
+                "label": "Est Savings"
+              }
+            ],
+            "items": [
+              {
+                "url": "http://localhost:3100/_next/static/chunks/3yurkjss5ecga.css",
+                "totalBytes": 24031,
+                "wastedMs": 88
+              },
+              {
+                "url": "http://localhost:3100/_next/static/chunks/24_n9lr3uzl35.css",
+                "totalBytes": 2398,
+                "wastedMs": 88
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "path": "/consultation",
+      "device": "desktop",
+      "date": "2026-09-07T05:41:25.916Z",
+      "lighthouse": "12.6.1",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 96,
+        "seo": 100
+      },
+      "LCP_ms": 692.5945000000002,
+      "CLS": 0,
+      "TBT_ms": 0,
+      "notes": [],
+      "findings": [
+        {
+          "id": "largest-contentful-paint",
+          "title": "Largest Contentful Paint"
+        },
+        {
+          "id": "label-content-name-mismatch",
+          "title": "Elements with visible text labels do not have matching accessible names.",
+          "details": {
+            "type": "table",
+            "headings": [
+              {
+                "key": "node",
+                "valueType": "node",
+                "subItemsHeading": {
+                  "key": "relatedNode",
+                  "valueType": "node"
+                },
+                "label": "Failing Elements"
+              }
+            ],
+            "items": [
+              {
+                "node": {
+                  "type": "node",
+                  "lhId": "1-0-A",
+                  "path": "1,HTML,1,BODY,5,HEADER,1,NAV,0,A",
+                  "selector": "body.flex > header.ci-nav > nav.ci-container > a",
+                  "boundingRect": {
+                    "top": 21,
+                    "bottom": 68,
+                    "left": 48,
+                    "right": 193,
+                    "width": 145,
+                    "height": 47
+                  },
+                  "snippet": "<a aria-label=\"Catalyst Innovations home\" href=\"/\">",
+                  "nodeLabel": "CATALYST\nINNOVATIONS",
+                  "explanation": "Fix any of the following:\n  Text inside the element is not included in the accessible name"
+                }
+              },
+              {
+                "node": {
+                  "type": "node",
+                  "lhId": "1-1-A",
+                  "path": "1,HTML,1,BODY,7,FOOTER,0,DIV,0,DIV,0,DIV,0,A",
+                  "selector": "div.ci-container > div.ci-footer-grid > div > a",
+                  "boundingRect": {
+                    "top": 1473,
+                    "bottom": 1494,
+                    "left": 48,
+                    "right": 195,
+                    "width": 147,
+                    "height": 21
+                  },
+                  "snippet": "<a aria-label=\"Catalyst Innovations home\" href=\"/\">",
+                  "nodeLabel": "CATALYST\nINNOVATIONS",
+                  "explanation": "Fix any of the following:\n  Text inside the element is not included in the accessible name"
+                }
+              }
+            ],
+            "debugData": {
+              "type": "debugdata",
+              "impact": "serious",
+              "tags": [
+                "cat.semantics",
+                "wcag21a",
+                "wcag253",
+                "EN-301-549",
+                "EN-9.2.5.3",
+                "RGAAv4",
+                "RGAA-6.1.5",
+                "experimental"
+              ]
+            }
+          }
+        },
+        {
+          "id": "render-blocking-resources",
+          "title": "Eliminate render-blocking resources",
+          "details": {
+            "type": "opportunity",
+            "headings": [
+              {
+                "key": "url",
+                "valueType": "url",
+                "label": "URL"
+              },
+              {
+                "key": "totalBytes",
+                "valueType": "bytes",
+                "label": "Transfer Size"
+              },
+              {
+                "key": "wastedMs",
+                "valueType": "timespanMs",
+                "label": "Est Savings"
+              }
+            ],
+            "items": [
+              {
+                "url": "http://localhost:3100/_next/static/chunks/3yurkjss5ecga.css",
+                "totalBytes": 24031,
+                "wastedMs": 89
+              },
+              {
+                "url": "http://localhost:3100/_next/static/chunks/24_n9lr3uzl35.css",
+                "totalBytes": 2398,
+                "wastedMs": 89
+              }
+            ],
+            "overallSavingsMs": 0
+          }
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "details": {
+            "type": "opportunity",
+            "headings": [
+              {
+                "key": "url",
+                "valueType": "url",
+                "subItemsHeading": {
+                  "key": "source",
+                  "valueType": "code"
+                },
+                "label": "URL"
+              },
+              {
+                "key": "totalBytes",
+                "valueType": "bytes",
+                "subItemsHeading": {
+                  "key": "sourceBytes"
+                },
+                "label": "Transfer Size"
+              },
+              {
+                "key": "wastedBytes",
+                "valueType": "bytes",
+                "subItemsHeading": {
+                  "key": "sourceWastedBytes"
+                },
+                "label": "Est Savings"
+              }
+            ],
+            "items": [
+              {
+                "url": "http://localhost:3100/_next/static/chunks/321v-0ka7ltv5.js",
+                "totalBytes": 63851,
+                "wastedBytes": 52670,
+                "wastedPercent": 82.48951457018856
+              },
+              {
+                "url": "http://localhost:3100/_next/static/chunks/0y-tdava-4nyh.js",
+                "totalBytes": 44405,
+                "wastedBytes": 37740,
+                "wastedPercent": 84.99098681307173
+              },
+              {
+                "url": "http://localhost:3100/_next/static/chunks/33wmmxu2kkyqh.js",
+                "totalBytes": 71394,
+                "wastedBytes": 28272,
+                "wastedPercent": 39.59940867596934
+              }
+            ],
+            "overallSavingsMs": 130,
+            "overallSavingsBytes": 118682,
+            "sortedBy": [
+              "wastedBytes"
+            ],
+            "debugData": {
+              "type": "debugdata",
+              "metricSavings": {
+                "FCP": 0,
+                "LCP": 130
+              }
+            }
+          }
+        },
+        {
+          "id": "legacy-javascript",
+          "title": "Avoid serving legacy JavaScript to modern browsers",
+          "details": {
+            "type": "opportunity",
+            "headings": [
+              {
+                "key": "url",
+                "valueType": "url",
+                "subItemsHeading": {
+                  "key": "location",
+                  "valueType": "source-location"
+                },
+                "label": "URL"
+              },
+              {
+                "key": null,
+                "valueType": "code",
+                "subItemsHeading": {
+                  "key": "signal"
+                },
+                "label": ""
+              },
+              {
+                "key": "wastedBytes",
+                "valueType": "bytes",
+                "label": "Est Savings"
+              }
+            ],
+            "items": [
+              {
+                "url": "http://localhost:3100/_next/static/chunks/33wmmxu2kkyqh.js",
+                "wastedBytes": 13713,
+                "subItems": {
+                  "type": "subitems",
+                  "items": [
+                    {
+                      "signal": "Array.prototype.at",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://localhost:3100/_next/static/chunks/33wmmxu2kkyqh.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 1116
+                      }
+                    },
+                    {
+                      "signal": "Array.prototype.flat",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://localhost:3100/_next/static/chunks/33wmmxu2kkyqh.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 504
+                      }
+                    },
+                    {
+                      "signal": "Array.prototype.flatMap",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://localhost:3100/_next/static/chunks/33wmmxu2kkyqh.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 617
+                      }
+                    },
+                    {
+                      "signal": "Object.fromEntries",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://localhost:3100/_next/static/chunks/33wmmxu2kkyqh.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 993
+                      }
+                    },
+                    {
+                      "signal": "Object.hasOwn",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://localhost:3100/_next/static/chunks/33wmmxu2kkyqh.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 1251
+                      }
+                    },
+                    {
+                      "signal": "String.prototype.trimEnd",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://localhost:3100/_next/static/chunks/33wmmxu2kkyqh.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 246
+                      }
+                    },
+                    {
+                      "signal": "String.prototype.trimStart",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://localhost:3100/_next/static/chunks/33wmmxu2kkyqh.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 161
+                      }
+                    }
+                  ]
+                },
+                "totalBytes": 0
+              }
+            ],
+            "overallSavingsMs": 0,
+            "overallSavingsBytes": 13713,
+            "sortedBy": [
+              "wastedBytes"
+            ],
+            "debugData": {
+              "type": "debugdata",
+              "metricSavings": {
+                "FCP": 0,
+                "LCP": 0
+              }
+            }
+          }
+        },
+        {
+          "id": "inspector-issues",
+          "title": "Issues were logged in the `Issues` panel in Chrome Devtools",
+          "details": {
+            "type": "table",
+            "headings": [
+              {
+                "key": "issueType",
+                "valueType": "text",
+                "subItemsHeading": {
+                  "key": "url",
+                  "valueType": "url"
+                },
+                "label": "Issue type"
+              }
+            ],
+            "items": [
+              {
+                "issueType": "Content security policy",
+                "subItems": {
+                  "type": "subitems",
+                  "items": []
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "bf-cache",
+          "title": "Page prevented back/forward cache restoration",
+          "details": {
+            "type": "table",
+            "headings": [
+              {
+                "key": "reason",
+                "valueType": "text",
+                "subItemsHeading": {
+                  "key": "frameUrl",
+                  "valueType": "url"
+                },
+                "label": "Failure reason"
+              },
+              {
+                "key": "failureType",
+                "valueType": "text",
+                "label": "Failure type"
+              }
+            ],
+            "items": [
+              {
+                "reason": "Pages whose main resource has cache-control:no-store cannot enter back/forward cache.",
+                "failureType": "Not actionable",
+                "subItems": {
+                  "type": "subitems",
+                  "items": [
+                    {
+                      "frameUrl": "http://localhost:3100/consultation"
+                    }
+                  ]
+                },
+                "protocolReason": "MainResourceHasCacheControlNoStore"
+              },
+              {
+                "reason": "Back/forward cache is disabled because some JavaScript network request received resource with Cache-Control: no-store header.",
+                "failureType": "Not actionable",
+                "subItems": {
+                  "type": "subitems",
+                  "items": [
+                    {
+                      "frameUrl": "http://localhost:3100/consultation"
+                    }
+                  ]
+                },
+                "protocolReason": "JsNetworkRequestReceivedCacheControlNoStoreResource"
+              }
+            ]
+          }
+        },
+        {
+          "id": "forced-reflow-insight",
+          "title": "Forced reflow",
+          "details": {
+            "type": "list",
+            "items": [
+              {
+                "type": "table",
+                "headings": [
+                  {
+                    "key": "source",
+                    "valueType": "source-location",
+                    "label": "Source"
+                  },
+                  {
+                    "key": "reflowTime",
+                    "valueType": "ms",
+                    "granularity": 1,
+                    "label": "Total reflow time"
+                  }
+                ],
+                "items": [
+                  {
+                    "source": {
+                      "type": "text",
+                      "value": "[unattributed]"
+                    },
+                    "reflowTime": 37.753
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "legacy-javascript-insight",
+          "title": "Legacy JavaScript",
+          "details": {
+            "type": "table",
+            "headings": [
+              {
+                "key": "url",
+                "valueType": "url",
+                "subItemsHeading": {
+                  "key": "location",
+                  "valueType": "source-location"
+                },
+                "label": "URL"
+              },
+              {
+                "key": null,
+                "valueType": "code",
+                "subItemsHeading": {
+                  "key": "signal"
+                },
+                "label": ""
+              },
+              {
+                "key": "wastedBytes",
+                "valueType": "bytes",
+                "label": "Wasted bytes"
+              }
+            ],
+            "items": [
+              {
+                "url": "http://localhost:3100/_next/static/chunks/33wmmxu2kkyqh.js",
+                "wastedBytes": 13912,
+                "subItems": {
+                  "type": "subitems",
+                  "items": [
+                    {
+                      "signal": "Array.prototype.at",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://localhost:3100/_next/static/chunks/33wmmxu2kkyqh.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 1116
+                      }
+                    },
+                    {
+                      "signal": "Array.prototype.flat",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://localhost:3100/_next/static/chunks/33wmmxu2kkyqh.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 504
+                      }
+                    },
+                    {
+                      "signal": "Array.prototype.flatMap",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://localhost:3100/_next/static/chunks/33wmmxu2kkyqh.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 617
+                      }
+                    },
+                    {
+                      "signal": "Object.fromEntries",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://localhost:3100/_next/static/chunks/33wmmxu2kkyqh.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 993
+                      }
+                    },
+                    {
+                      "signal": "Object.hasOwn",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://localhost:3100/_next/static/chunks/33wmmxu2kkyqh.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 1251
+                      }
+                    },
+                    {
+                      "signal": "String.prototype.trimEnd",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://localhost:3100/_next/static/chunks/33wmmxu2kkyqh.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 246
+                      }
+                    },
+                    {
+                      "signal": "String.prototype.trimStart",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://localhost:3100/_next/static/chunks/33wmmxu2kkyqh.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 161
+                      }
+                    }
+                  ]
+                }
+              }
+            ],
+            "debugData": {
+              "type": "debugdata",
+              "wastedBytes": 13912
+            }
+          }
+        },
+        {
+          "id": "network-dependency-tree-insight",
+          "title": "Network dependency tree",
+          "details": {
+            "type": "network-tree",
+            "chains": {
+              "B5E62C0F57C9D84CE60A52083F477E8C": {
+                "url": "http://localhost:3100/consultation",
+                "navStartToEndTime": 37,
+                "transferSize": 11373,
+                "isLongest": true,
+                "children": {
+                  "17180.4": {
+                    "url": "http://localhost:3100/_next/static/chunks/3yurkjss5ecga.css",
+                    "navStartToEndTime": 49,
+                    "transferSize": 24031,
+                    "children": {}
+                  },
+                  "17180.5": {
+                    "url": "http://localhost:3100/_next/static/chunks/24_n9lr3uzl35.css",
+                    "navStartToEndTime": 47,
+                    "transferSize": 2398,
+                    "children": {}
+                  },
+                  "17180.29": {
+                    "url": "http://localhost:3100/manifest.webmanifest",
+                    "navStartToEndTime": 119,
+                    "transferSize": 1456,
+                    "isLongest": true,
+                    "children": {}
+                  }
+                }
+              }
+            },
+            "longestChain": {
+              "duration": 119
+            }
+          }
+        },
+        {
+          "id": "render-blocking-insight",
+          "title": "Render blocking requests",
+          "details": {
+            "type": "table",
+            "headings": [
+              {
+                "key": "url",
+                "valueType": "url",
+                "label": "URL"
+              },
+              {
+                "key": "totalBytes",
+                "valueType": "bytes",
+                "label": "Transfer Size"
+              },
+              {
+                "key": "wastedMs",
+                "valueType": "timespanMs",
+                "label": "Est Savings"
+              }
+            ],
+            "items": [
+              {
+                "url": "http://localhost:3100/_next/static/chunks/3yurkjss5ecga.css",
+                "totalBytes": 24031,
+                "wastedMs": 89
+              },
+              {
+                "url": "http://localhost:3100/_next/static/chunks/24_n9lr3uzl35.css",
+                "totalBytes": 2398,
+                "wastedMs": 89
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

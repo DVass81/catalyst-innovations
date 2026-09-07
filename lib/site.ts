@@ -1,68 +1,55 @@
-/**
- * Central site configuration.
- * TODO(founders): replace placeholder values before launch — see README
- * "Content-replacement checklist".
- */
 export const site = {
   name: "Catalyst Innovations",
-  motto: "Make more. Save time. Work smarter.",
+  motto: "See your business working better.",
   positioning:
-    "Catalyst Innovations builds intelligent systems that help businesses increase profitability, eliminate inefficient work, and operate with greater clarity and control.",
-  // Set NEXT_PUBLIC_SITE_URL in production (e.g. https://catalystinnovations.com)
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://example.com",
-  // Contact placeholders — configure via env, never hardcoded personal info.
-  contactEmail: process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? "",
-  contactPhone: process.env.NEXT_PUBLIC_CONTACT_PHONE ?? "",
-  /** Calendly/SavvyCal/etc. — shown on the form confirmation screen when set. */
-  schedulingUrl: process.env.NEXT_PUBLIC_SCHEDULING_URL ?? "",
+    "Custom software, automation, and connected systems built around how your business actually works. Explore industry demos and clear project pricing.",
+  url: process.env.NEXT_PUBLIC_SITE_URL || "https://mycatalystinnovations.com",
+  contactEmail:
+    process.env.NEXT_PUBLIC_CONTACT_EMAIL || "daniel@mycatalystinnovations.com",
+  contactPhone: process.env.NEXT_PUBLIC_CONTACT_PHONE || "",
+  schedulingUrl:
+    process.env.NEXT_PUBLIC_SCHEDULING_URL ||
+    "https://calendar.google.com/calendar/appointments/schedules/AcZssZ0wneeftKVS1hd6XwO-a6o96yWgdFXNr7tBorX-PWzFhfLtP7KSTbY4WukIapu5hH6oQB7GhPRH",
+  schedulingHost: process.env.NEXT_PUBLIC_SCHEDULING_HOST || "",
   location: "Knoxville, Tennessee",
 };
-
 export type NavLink =
   | { href: string; label: string }
   | { label: string; children: { href: string; label: string }[] };
-
 export const navLinks: NavLink[] = [
   { href: "/solutions", label: "Solutions" },
   { href: "/industries", label: "Industries" },
-  { href: "/method", label: "The Catalyst Method" },
-  {
-    label: "Pricing",
-    children: [
-      { href: "/pricing", label: "Pricing" },
-      { href: "/roi-estimator", label: "ROI Estimator" },
-    ],
-  },
+  { href: "/demo-lab", label: "Demo Lab" },
+  { href: "/pricing", label: "Pricing" },
   { href: "/about", label: "About" },
 ];
-
-/**
- * Analytics event hook. Wire to your provider (GA4, Plausible, PostHog…)
- * by defining window.ciTrack, or replace the body of this function.
- * Events are intentionally free of personal data.
- */
 export type AnalyticsEvent =
   | "cta_consultation_click"
   | "form_start"
   | "form_step"
   | "form_complete"
+  | "form_error"
   | "roi_calculator_used"
   | "assessment_start"
   | "assessment_complete"
   | "demo_interaction"
+  | "demo_select"
+  | "demo_complete"
   | "founder_profile_view"
   | "roi_pdf_download"
   | "phone_click"
-  | "email_click";
-
-export function track(event: AnalyticsEvent, props?: Record<string, string | number>) {
+  | "email_click"
+  | "pricing_interest"
+  | "scheduling_click";
+export function track(
+  event: AnalyticsEvent,
+  props?: Record<string, string | number>,
+) {
   if (typeof window === "undefined") return;
   const w = window as typeof window & {
     ciTrack?: (e: string, p?: Record<string, string | number>) => void;
   };
   try {
     w.ciTrack?.(event, props);
-  } catch {
-    /* analytics must never break the UI */
-  }
+  } catch {}
 }

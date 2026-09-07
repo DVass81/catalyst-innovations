@@ -12,7 +12,15 @@ import { track } from "@/lib/site";
  * dashboard | integration | roadmap
  */
 
-type Cat = "custom" | "procurement" | "ai" | "manufacturing" | "supplychain" | "dashboard" | "integration" | "roadmap";
+type Cat =
+  | "custom"
+  | "procurement"
+  | "ai"
+  | "manufacturing"
+  | "supplychain"
+  | "dashboard"
+  | "integration"
+  | "roadmap";
 
 type Option = { label: string; scores: Partial<Record<Cat, number>> };
 type Question = { q: string; options: Option[] };
@@ -21,16 +29,28 @@ const questions: Question[] = [
   {
     q: "What type of organization do you operate?",
     options: [
-      { label: "Manufacturer or industrial operation", scores: { manufacturing: 3, supplychain: 1 } },
-      { label: "Financial institution or credit union", scores: { procurement: 3, dashboard: 1 } },
+      {
+        label: "Manufacturer or industrial operation",
+        scores: { manufacturing: 3, supplychain: 1 },
+      },
+      {
+        label: "Financial institution or credit union",
+        scores: { procurement: 3, dashboard: 1 },
+      },
       { label: "Contractor or field-service business", scores: { custom: 3 } },
-      { label: "Professional services / office-based", scores: { custom: 2, ai: 1, dashboard: 1 } },
+      {
+        label: "Professional services / office-based",
+        scores: { custom: 2, ai: 1, dashboard: 1 },
+      },
     ],
   },
   {
     q: "Which department has the greatest challenge?",
     options: [
-      { label: "Purchasing / procurement", scores: { procurement: 3, supplychain: 1 } },
+      {
+        label: "Purchasing / procurement",
+        scores: { procurement: 3, supplychain: 1 },
+      },
       { label: "Production / operations", scores: { manufacturing: 3 } },
       { label: "Administration / back office", scores: { custom: 2, ai: 2 } },
       { label: "Leadership — we lack visibility", scores: { dashboard: 3 } },
@@ -39,9 +59,15 @@ const questions: Question[] = [
   {
     q: "What is your biggest operational frustration?",
     options: [
-      { label: "Manual paperwork and re-typing data", scores: { custom: 2, ai: 2 } },
+      {
+        label: "Manual paperwork and re-typing data",
+        scores: { custom: 2, ai: 2 },
+      },
       { label: "Slow approvals and weak controls", scores: { procurement: 3 } },
-      { label: "We can't see what's happening in real time", scores: { dashboard: 3, manufacturing: 1 } },
+      {
+        label: "We can't see what's happening in real time",
+        scores: { dashboard: 3, manufacturing: 1 },
+      },
       { label: "Supplier and delivery surprises", scores: { supplychain: 3 } },
     ],
   },
@@ -50,23 +76,41 @@ const questions: Question[] = [
     options: [
       { label: "A handful (1–10)", scores: { custom: 1, ai: 1 } },
       { label: "A department (11–50)", scores: { custom: 2, procurement: 1 } },
-      { label: "Most of the company (51–200)", scores: { dashboard: 1, integration: 2 } },
-      { label: "Multiple locations / 200+", scores: { integration: 2, dashboard: 2, roadmap: 1 } },
+      {
+        label: "Most of the company (51–200)",
+        scores: { dashboard: 1, integration: 2 },
+      },
+      {
+        label: "Multiple locations / 200+",
+        scores: { integration: 2, dashboard: 2, roadmap: 1 },
+      },
     ],
   },
   {
     q: "How are your processes primarily managed today?",
     options: [
-      { label: "Mostly manual and paper", scores: { custom: 2, manufacturing: 1 } },
+      {
+        label: "Mostly manual and paper",
+        scores: { custom: 2, manufacturing: 1 },
+      },
       { label: "Spreadsheets everywhere", scores: { custom: 2, dashboard: 1 } },
-      { label: "Existing software that doesn't fit", scores: { integration: 2, custom: 1 } },
-      { label: "Several systems that don't talk to each other", scores: { integration: 3 } },
+      {
+        label: "Existing software that doesn't fit",
+        scores: { integration: 2, custom: 1 },
+      },
+      {
+        label: "Several systems that don't talk to each other",
+        scores: { integration: 3 },
+      },
     ],
   },
   {
     q: "What outcome matters most?",
     options: [
-      { label: "Lower costs and less admin labor", scores: { ai: 2, custom: 1 } },
+      {
+        label: "Lower costs and less admin labor",
+        scores: { ai: 2, custom: 1 },
+      },
       { label: "Control and audit readiness", scores: { procurement: 3 } },
       { label: "Faster, better decisions", scores: { dashboard: 3 } },
       { label: "A clear long-term technology plan", scores: { roadmap: 3 } },
@@ -141,25 +185,39 @@ export default function Assessment() {
 
   function computeResult(): Cat {
     const totals: Record<Cat, number> = {
-      custom: 0, procurement: 0, ai: 0, manufacturing: 0,
-      supplychain: 0, dashboard: 0, integration: 0, roadmap: 0,
+      custom: 0,
+      procurement: 0,
+      ai: 0,
+      manufacturing: 0,
+      supplychain: 0,
+      dashboard: 0,
+      integration: 0,
+      roadmap: 0,
     };
     answers.forEach((optIdx, qIdx) => {
       const scores = questions[qIdx]?.options[optIdx]?.scores ?? {};
       for (const [k, v] of Object.entries(scores)) totals[k as Cat] += v ?? 0;
     });
-    return (Object.entries(totals).sort((a, b) => b[1] - a[1])[0][0] as Cat) ?? "roadmap";
+    return (
+      (Object.entries(totals).sort((a, b) => b[1] - a[1])[0][0] as Cat) ??
+      "roadmap"
+    );
   }
 
   if (done) {
     const cat = computeResult();
     const r = results[cat];
-    const indKeys = ["manufacturing", "financial", "contractor", "professional"] as const;
+    const indKeys = [
+      "manufacturing",
+      "financial",
+      "contractor",
+      "professional",
+    ] as const;
     const ind = indKeys[answers[0]] ?? "professional";
     const consultHref = `/consultation?rec=${cat}&ind=${ind}`;
     return (
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={false}
         animate={{ opacity: 1, y: 0 }}
         className="rounded-card border border-ice-200 bg-white p-9 text-center shadow-card"
       >
@@ -167,23 +225,33 @@ export default function Assessment() {
         <p className="mt-4 text-xs font-semibold tracking-[0.25em] text-steel-600 uppercase">
           Your recommended starting point
         </p>
-        <h2 className="mt-3 font-display text-2xl font-semibold text-navy-900 sm:text-3xl">{r.title}</h2>
-        <p className="mx-auto mt-4 max-w-xl leading-relaxed text-navy-700">{r.text}</p>
+        <h2 className="mt-3 font-display text-2xl font-semibold text-navy-900 sm:text-3xl">
+          {r.title}
+        </h2>
+        <p className="mx-auto mt-4 max-w-xl leading-relaxed text-navy-700">
+          {r.text}
+        </p>
         <p className="mx-auto mt-3 max-w-xl text-xs text-silver-500">
-          This is a conversation starter based on your answers — not a binding professional
-          diagnosis. The real diagnosis happens in the Discover stage.
+          This is a conversation starter based on your answers — not a binding
+          professional diagnosis. The real diagnosis happens in the Discover
+          stage.
         </p>
         <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
           <Link
             href={consultHref}
-            onClick={() => track("cta_consultation_click", { location: "assessment_result" })}
+            onClick={() =>
+              track("cta_consultation_click", { location: "assessment_result" })
+            }
             className="inline-flex min-h-[48px] items-center rounded-lg bg-steel-400 px-7 font-semibold text-white transition-colors hover:bg-steel-500"
           >
             Discuss this recommendation
           </Link>
           <button
             type="button"
-            onClick={() => { setAnswers([]); setStep(0); }}
+            onClick={() => {
+              setAnswers([]);
+              setStep(0);
+            }}
             className="inline-flex min-h-[48px] items-center gap-2 rounded-lg border border-ice-300 px-6 text-sm font-medium text-navy-800"
           >
             <RefreshCcw size={15} /> Start over
@@ -210,8 +278,14 @@ export default function Assessment() {
           </button>
         )}
       </div>
-      <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-ice-200" role="progressbar"
-        aria-valuenow={step + 1} aria-valuemin={1} aria-valuemax={questions.length}>
+      <div
+        className="mt-3 h-1.5 overflow-hidden rounded-full bg-ice-200"
+        role="progressbar"
+        aria-label="Assessment progress"
+        aria-valuenow={step + 1}
+        aria-valuemin={1}
+        aria-valuemax={questions.length}
+      >
         <motion.div
           className="h-full rounded-full bg-steel-400"
           animate={{ width: `${((step + 1) / questions.length) * 100}%` }}
@@ -222,12 +296,14 @@ export default function Assessment() {
       <AnimatePresence mode="wait">
         <motion.div
           key={step}
-          initial={{ opacity: 0, x: 24 }}
+          initial={false}
           animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -16 }}
+          exit={{ opacity: 1 }}
           transition={{ duration: 0.25 }}
         >
-          <h2 className="mt-6 font-display text-xl font-semibold text-navy-900 sm:text-2xl">{q.q}</h2>
+          <h2 className="mt-6 font-display text-xl font-semibold text-navy-900 sm:text-2xl">
+            {q.q}
+          </h2>
           <div className="mt-6 grid gap-3">
             {q.options.map((o, i) => (
               <button

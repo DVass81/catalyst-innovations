@@ -1,0 +1,338 @@
+/* Founder, contact, and policy pages. */
+.ci-about-intro {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 100px;
+}
+.ci-about-intro > div > p:not(.ci-eyebrow) {
+  color: #486582;
+  font-size: 17px;
+  line-height: 1.9;
+  margin-bottom: 22px;
+}
+.ci-about-intro .ci-text-link {
+  color: #1455d9;
+}
+.ci-about-principles {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+  margin-top: 55px;
+  margin-bottom: 25px;
+}
+.ci-about-principles > div {
+  border-top: 1px solid #4c6684;
+  padding-top: 25px;
+}
+.ci-about-principles svg {
+  color: #75b6ff;
+}
+.ci-about-principles h3 {
+  font:
+    500 24px var(--font-space),
+    sans-serif;
+  letter-spacing: -0.03em;
+  margin-top: 20px;
+}
+.ci-about-principles p {
+  color: #b0c6df;
+  font-size: 15px;
+  line-height: 1.8;
+  margin-top: 15px;
+}
+.ci-values {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px 50px;
+  margin-top: 45px;
+}
+.ci-values article {
+  display: flex;
+  gap: 22px;
+  border-top: 1px solid #b7cbe2;
+  padding-top: 25px;
+}
+.ci-values article > span {
+  color: #1455d9;
+  font-size: 12px;
+  padding-top: 7px;
+}
+.ci-values h3 {
+  font:
+    500 24px var(--font-space),
+    sans-serif;
+  letter-spacing: -0.03em;
+}
+.ci-values p {
+  color: #486582;
+  font-size: 15px;
+  line-height: 1.8;
+  margin-top: 12px;
+}
+.ci-founders-list > article {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 75px;
+  padding-bottom: 70px;
+}
+.ci-founders-list > article + article {
+  border-top: 1px solid #abc2de;
+  padding-top: 70px;
+}
+.ci-founder-profile-heading {
+  align-self: start;
+  position: sticky;
+  top: 115px;
+}
+.ci-profile-initials {
+  height: 210px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #95bce9;
+  background: #10243b;
+  border: 1px solid #365d8b;
+  font:
+    400 90px var(--font-space),
+    sans-serif;
+  letter-spacing: -0.05em;
+  border-radius: 4px;
+  margin-bottom: 27px;
+}
+.ci-founder-profile-heading > .ci-eyebrow {
+  margin-bottom: 12px;
+}
+.ci-founder-profile-heading h2 {
+  font:
+    500 38px var(--font-space),
+    sans-serif;
+  letter-spacing: -0.04em;
+}
+.ci-founder-profile-heading p:not(.ci-eyebrow) {
+  font-size: 15px;
+  line-height: 1.7;
+  color: #365b83;
+  margin: 10px 0 15px;
+}
+.ci-founder-profile-heading > a {
+  font-size: 14px;
+}
+.ci-founder-biography > p {
+  font-size: 16px;
+  line-height: 1.9;
+  color: #4b6683;
+  margin-bottom: 25px;
+}
+.ci-founder-biography > .ci-founder-summary {
+  font-size: 23px;
+  line-height: 1.6;
+  color: #173858;
+}
+.ci-founder-biography h3 {
+  font:
+    500 25px var(--font-space),
+    sans-serif;
+  margin-top: 36px;
+  margin-bottom: 25px;
+  letter-spacing: -0.03em;
+}
+.ci-founder-biography ul {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px 22px;
+}
+.ci-founder-biography li {
+  border-top: 1px solid #c2d2e6;
+  padding-top: 13px;
+  color: #466481;
+  font-size: 14px;
+  line-height: 1.7;
+}
+.ci-contact-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 45px;
+}
+.ci-contact-cards > article {
+  border-top: 1px solid #a7c0dc;
+  padding-top: 28px;
+}
+.ci-contact-cards svg {
+  color: #1455d9;
+}
+.ci-contact-cards h2 {
+  font:
+    500 28px var(--font-space),
+    sans-serif;
+  margin-top: 28px;
+  letter-spacing: -0.035em;
+}
+.ci-contact-cards p {
+  color: #4b6785;
+  font-size: 16px;
+  line-height: 1.8;
+  margin: 15px 0;
+}
+.ci-contact-cards a {
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+.ci-policy {
+  padding: 155px 0 90px;
+}
+.ci-policy .ci-container {
+  max-width: 850px;
+}
+.ci-policy h1 {
+  font:
+    500 clamp(40px, 5vw, 65px)/1.1 var(--font-space),
+    sans-serif;
+  letter-spacing: -0.04em;
+}
+.ci-policy-date {
+  font-size: 13px;
+  color: #5a728d;
+  margin-top: 20px;
+}
+.ci-policy-content {
+  margin-top: 40px;
+}
+.ci-policy-content h2 {
+  font:
+    500 26px/1.25 var(--font-space),
+    sans-serif;
+  margin: 35px 0 16px;
+  letter-spacing: -0.025em;
+}
+.ci-policy-content p,
+.ci-policy-content li {
+  font-size: 17px;
+  line-height: 1.9;
+  color: #435f7d;
+  margin-bottom: 18px;
+}
+.ci-policy-content ul {
+  list-style: disc;
+  padding-left: 25px;
+}
+.ci-policy-content a {
+  color: #1455d9;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  overflow-wrap: anywhere;
+}
+.ci-policy-content button {
+  color: #1455d9;
+  margin-block: 8px;
+}
+.ci-consent {
+  position: fixed;
+  z-index: 90;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  max-width: 1050px;
+  margin-inline: auto;
+  background: #f5f8fc;
+  color: #10243b;
+  border: 1px solid #8daacd;
+  border-radius: 6px;
+  box-shadow: 0 10px 50px #0005;
+  padding: 22px;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+.ci-consent > div {
+  flex: 1;
+}
+.ci-consent h2 {
+  font-size: 16px;
+  font-weight: 600;
+}
+.ci-consent p {
+  font-size: 13px;
+  line-height: 1.7;
+  color: #405d7c;
+  margin-top: 7px;
+}
+.ci-consent p > a {
+  color: #1455d9;
+  text-decoration: underline;
+}
+.ci-consent .ci-btn {
+  white-space: nowrap;
+}
+.ci-consent .ci-btn-outline {
+  color: #1455d9;
+}
+@media (max-width: 980px) {
+  .ci-about-intro {
+    gap: 50px;
+  }
+  .ci-founders-list > article {
+    grid-template-columns: 260px 1fr;
+    gap: 40px;
+  }
+  .ci-contact-cards {
+    gap: 25px;
+  }
+  .ci-consent {
+    flex-wrap: wrap;
+  }
+  .ci-consent > div {
+    flex-basis: 100%;
+  }
+}
+@media (max-width: 760px) {
+  .ci-about-intro {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  .ci-about-principles,
+  .ci-values {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  .ci-founders-list > article {
+    grid-template-columns: 1fr;
+    gap: 35px;
+    padding-bottom: 45px;
+  }
+  .ci-founder-profile-heading {
+    position: static;
+  }
+  .ci-profile-initials {
+    height: 180px;
+    font-size: 80px;
+  }
+  .ci-founder-biography > .ci-founder-summary {
+    font-size: 22px;
+  }
+  .ci-founder-biography ul {
+    grid-template-columns: 1fr;
+  }
+  .ci-contact-cards {
+    grid-template-columns: 1fr;
+    gap: 35px;
+  }
+  .ci-policy {
+    padding: 130px 0 65px;
+  }
+  .ci-policy-content p,
+  .ci-policy-content li {
+    font-size: 16px;
+  }
+  .ci-consent {
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    padding: 18px;
+    gap: 13px;
+  }
+  .ci-consent .ci-btn {
+    flex: 1;
+    font-size: 12px;
+    min-width: 125px;
+  }
+}

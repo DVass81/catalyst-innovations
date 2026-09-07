@@ -13,7 +13,11 @@ import { Component, useEffect, type ReactNode } from "react";
 const ENDPOINT = process.env.NEXT_PUBLIC_ERROR_WEBHOOK_URL;
 
 function report(payload: Record<string, unknown>) {
-  const body = { ...payload, url: typeof location !== "undefined" ? location.href : "", ts: new Date().toISOString() };
+  const body = {
+    type: payload.type,
+    path: typeof location !== "undefined" ? location.pathname : "",
+    ts: new Date().toISOString(),
+  };
   if (!ENDPOINT) {
     console.error("[error-monitoring]", body);
     return;
@@ -33,9 +37,13 @@ function report(payload: Record<string, unknown>) {
 /** Catches window-level errors that React's error boundary can't see. */
 function GlobalListeners() {
   useEffect(() => {
-    const onError = (e: ErrorEvent) => report({ type: "error", message: e.message, stack: e.error?.stack });
+    const onError = (e: ErrorEvent) =>
+      report({ type: "error", message: e.message, stack: e.error?.stack });
     const onRejection = (e: PromiseRejectionEvent) =>
-      report({ type: "unhandledrejection", message: String(e.reason?.message ?? e.reason) });
+      report({
+        type: "unhandledrejection",
+        message: String(e.reason?.message ?? e.reason),
+      });
     window.addEventListener("error", onError);
     window.addEventListener("unhandledrejection", onRejection);
     return () => {
@@ -54,15 +62,23 @@ class Boundary extends Component<{ children: ReactNode }, BoundaryState> {
     return { hasError: true };
   }
   componentDidCatch(error: Error, info: { componentStack?: string | null }) {
-    report({ type: "react_render", message: error.message, stack: error.stack, componentStack: info.componentStack });
+    report({
+      type: "react_render",
+      message: error.message,
+      stack: error.stack,
+      componentStack: info.componentStack,
+    });
   }
   render() {
     if (this.state.hasError) {
       return (
         <div className="mx-auto max-w-lg px-5 py-24 text-center">
-          <p className="font-display text-lg font-semibold text-navy-900">Something went wrong.</p>
+          <p className="font-display text-lg font-semibold text-navy-900">
+            Something went wrong.
+          </p>
           <p className="mt-2 text-sm text-navy-700">
-            Please refresh the page. If this keeps happening, use the contact page to let us know.
+            Please refresh the page. If this keeps happening, use the contact
+            page to let us know.
           </p>
         </div>
       );

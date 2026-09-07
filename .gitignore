@@ -12,6 +12,10 @@
 
 # testing
 /coverage
+/test-results/
+/test-report/
+/dist/
+/.wrangler/
 
 # next.js
 /.next/

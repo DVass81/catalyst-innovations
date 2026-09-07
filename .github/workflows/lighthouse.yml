@@ -1,36 +1,36 @@
-name: Lighthouse CI
-
-# Informational only — reports scores as a PR comment / workflow summary,
-# never blocks merges or deploys. Tighten `assert` in lighthouserc.json
-# once baseline scores are known if you want it to start failing builds.
+name: Website quality
 on:
   pull_request:
     branches: [main]
   push:
     branches: [main]
-
+permissions:
+  contents: read
 jobs:
-  lighthouse:
+  validate:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
           cache: npm
-
       - run: npm ci
+      - run: npm run lint
+      - run: npm test
+      - run: npm audit --omit=dev --audit-level=moderate
       - run: npm run build
-
-      - name: Run Lighthouse CI
-        uses: treosh/lighthouse-ci-action@v11
+      - run: npx playwright install --with-deps chromium
+      - run: |
+          npm start > /tmp/catalyst-server.log 2>&1 &
+          for i in {1..30}; do curl -fsS http://localhost:3000/api/health && break; sleep 1; done
+          npm run test:browser
+      - uses: actions/upload-artifact@v4
+        if: failure()
         with:
-          urls: |
-            http://localhost:3000/
-            http://localhost:3000/solutions
-            http://localhost:3000/industries
-          startServerCommand: npm start
-          startServerReadyPattern: "Ready in"
-          uploadArtifacts: true
-          temporaryPublicStorage: true
+          name: browser-test-evidence
+          path: |
+            test-report/
+            test-results/
+          retention-days: 7

@@ -8,7 +8,11 @@ import { Moon, Sun } from "lucide-react";
  * script in layout.tsx (ThemeScript) that sets the class before first
  * paint, so there's no flash of the wrong theme.
  */
-export default function ThemeToggle({ className = "" }: { className?: string }) {
+export default function ThemeToggle({
+  className = "",
+}: {
+  className?: string;
+}) {
   const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {
@@ -36,7 +40,7 @@ export default function ThemeToggle({ className = "" }: { className?: string }) 
       onClick={toggle}
       aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
       aria-pressed={isDark}
-      className={`inline-flex h-10 w-10 items-center justify-center rounded-lg text-ice-300 transition-colors hover:bg-white/10 hover:text-white ${className}`}
+      className={`inline-flex h-11 w-11 items-center justify-center rounded-lg text-ice-300 transition-colors hover:bg-white/10 hover:text-white ${className}`}
     >
       {isDark ? <Sun size={18} /> : <Moon size={18} />}
     </button>

@@ -1,53 +1,74 @@
 import type { Metadata } from "next";
-import { Section, Eyebrow, Heading, Lead } from "@/components/ui";
-import { Reveal } from "@/components/Reveal";
+import { Suspense } from "react";
+import IndustryShowcase from "@/components/demos/IndustryShowcase";
+import { demoIndustries, type DemoIndustry } from "@/lib/demo";
 import {
-  ProcurementDashboard, AIBriefing, ApprovalWorkflow, OpsKPIs, NLQuery,
+  ProcurementDashboard,
+  AIBriefing,
+  ApprovalWorkflow,
+  OpsKPIs,
+  NLQuery,
 } from "@/components/DemoLab";
-import CTABand from "@/components/CTABand";
-
 export const metadata: Metadata = {
-  title: "Demo Lab — Interactive Product Demonstrations",
+  title: "Demo Lab — Try a connected workflow",
   description:
-    "Click through simulated demonstrations: procurement dashboards, AI operations briefings, approval workflows, manufacturing KPIs, and natural-language business queries. All demo data is fictional.",
+    "Try manufacturing approvals, field service scheduling, and client onboarding with clearly labeled fictional data.",
+  alternates: { canonical: "/demo-lab" },
 };
-
-export default function DemoLabPage() {
+export default async function DemoLabPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ industry?: string }>;
+}) {
+  const { industry } = await searchParams;
+  const selected = demoIndustries.includes(industry as DemoIndustry)
+    ? (industry as DemoIndustry)
+    : "manufacturing";
   return (
     <>
-      <section className="relative overflow-hidden bg-navy-950 pb-16 pt-36 text-white">
-        <div className="bg-grid-dark absolute inset-0" aria-hidden="true" />
-        <div className="relative mx-auto max-w-6xl px-5 sm:px-8">
-          <Reveal>
-            <Eyebrow dark>Demo Lab</Eyebrow>
-            <Heading dark as="h1">Don&apos;t take our word for it. Click around.</Heading>
-            <Lead dark>
-              Interactive, simulated demonstrations of the kinds of systems we build.
-              Approve a purchase, open an alert, ask the AI a question.
-            </Lead>
-            <p className="mt-6 inline-block rounded-lg border border-warning/40 bg-warning/10 px-4 py-2.5 text-sm font-medium text-warning">
-              All names, numbers, and companies in these demos are fictional and generated
-              for demonstration purposes only.
-            </p>
-          </Reveal>
+      <section className="ci-page-hero">
+        <div className="ci-container">
+          <p className="ci-eyebrow">THE DEMO LAB</p>
+          <h1>
+            See what changes
+            <br />
+            when everything connects.
+          </h1>
+          <p>
+            Try a workflow. Make a decision. See the next step happen.
+            <br />
+            Every example uses fictional data and stays inside this
+            demonstration.
+          </p>
         </div>
       </section>
-
-      <Section className="bg-navy-900" dark>
-        <div className="space-y-10">
-          <Reveal><ProcurementDashboard /></Reveal>
-          <Reveal><AIBriefing /></Reveal>
-          <div className="grid gap-10 lg:grid-cols-2">
-            <Reveal><ApprovalWorkflow /></Reveal>
-            <Reveal delay={0.1}><NLQuery /></Reveal>
-          </div>
-          <Reveal><OpsKPIs /></Reveal>
+      <Suspense>
+        <IndustryShowcase
+          key={selected}
+          initialIndustry={selected}
+          standalone
+        />
+      </Suspense>
+      <section className="ci-section ci-dark">
+        <div className="ci-container">
+          <details className="ci-more-demos">
+            <summary>
+              Explore more manufacturing & procurement examples <span>+</span>
+            </summary>
+            <p>
+              Additional simulated dashboards and prepared AI examples. No live
+              business data or AI service is connected.
+            </p>
+            <div className="ci-legacy-demos">
+              <ProcurementDashboard />
+              <AIBriefing />
+              <ApprovalWorkflow />
+              <OpsKPIs />
+              <NLQuery />
+            </div>
+          </details>
         </div>
-      </Section>
-      <CTABand
-        title="Imagine these screens with your data on them."
-        body="A focused prototype with your real workflow is stage four of the Catalyst Method — and it usually takes weeks, not quarters."
-      />
+      </section>
     </>
   );
 }
