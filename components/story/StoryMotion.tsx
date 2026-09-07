@@ -102,19 +102,37 @@ export function MotionToggle() {
   );
 }
 /** Bounded timelines do no work offscreen, in hidden tabs or while paused. */
-export function useStoryTimeline(duration = 5, sessionKey?: string) {
+export function useStoryTimeline(
+  duration = 5,
+  sessionKey?: string,
+  enabled = true,
+) {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { amount: 0.12 });
-  const { paused: sitePaused, reduced, hidden } = useStoryMotion();
+  const {
+    paused: sitePaused,
+    reduced,
+    hidden,
+    toggle: toggleSite,
+  } = useStoryMotion();
   const ready = useSyncExternalStore(noopSubscribe, serverTrue, serverFalse);
   const progress = useMotionValue(0);
   const [paused, setPaused] = useState(false),
     [revision, setRevision] = useState(0),
     [phase, setPhase] = useState(0),
     [complete, setComplete] = useState(false);
+  const lastPhase = useRef(0),
+    lastComplete = useRef(false);
   useMotionValueEvent(progress, "change", (v) => {
-    setPhase(Math.min(4, Math.floor(v * 5)));
-    setComplete(v >= 1);
+    const nextPhase = Math.min(4, Math.floor(v * 5));
+    if (lastPhase.current !== nextPhase) {
+      lastPhase.current = nextPhase;
+      setPhase(nextPhase);
+    }
+    if (lastComplete.current !== v >= 1) {
+      lastComplete.current = v >= 1;
+      setComplete(v >= 1);
+    }
   });
   useEffect(() => {
     if (!ready) return;
@@ -129,7 +147,14 @@ export function useStoryTimeline(duration = 5, sessionKey?: string) {
       progress.set(1);
       return;
     }
-    if (!inView || hidden || paused || sitePaused || progress.get() >= 1)
+    if (
+      !enabled ||
+      !inView ||
+      hidden ||
+      paused ||
+      sitePaused ||
+      progress.get() >= 1
+    )
       return;
     const animation = animate(progress, 1, {
       duration: duration * (1 - progress.get()),
@@ -143,6 +168,7 @@ export function useStoryTimeline(duration = 5, sessionKey?: string) {
     return () => animation.stop();
   }, [
     duration,
+    enabled,
     hidden,
     inView,
     paused,
@@ -174,7 +200,7 @@ export function useStoryTimeline(duration = 5, sessionKey?: string) {
     paused: paused || sitePaused,
     reduced,
     replay,
-    toggle: () => setPaused((v) => !v),
+    toggle: () => (sitePaused ? toggleSite() : setPaused((v) => !v)),
     finish,
   };
 }

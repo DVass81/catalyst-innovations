@@ -281,7 +281,8 @@ test("public routes retain canonical metadata and portal stays private from inde
     expect(response?.status(), route).toBe(200);
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
       "href",
-      "https://mycatalystinnovations.com" + (route === "/" ? "" : route),
+      (process.env.TEST_SITE_ORIGIN || "https://mycatalystinnovations.com") +
+        (route === "/" ? "" : route),
     );
   }
   await page.goto("/portal");
@@ -324,7 +325,7 @@ test("opening animation pauses, completes and plays once per session", async ({
   await page.getByRole("button", { name: "Resume opening animation" }).click();
   await expect(
     page.getByRole("button", { name: "Pause opening animation" }),
-  ).toBeDisabled({ timeout: 9000 });
+  ).toBeDisabled({ timeout: 14000 });
   await page.reload();
   await expect(
     page.getByRole("button", { name: "Pause opening animation" }),

@@ -17,6 +17,7 @@ export default defineConfig({
     trace: "retain-on-failure",
     screenshot: "only-on-failure",
     launchOptions: {
+      args: ["--enable-unsafe-swiftshader"],
       executablePath:
         process.env.BROWSER_PATH ||
         (process.platform === "win32"

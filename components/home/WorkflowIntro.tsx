@@ -1,19 +1,39 @@
 "use client";
 import { ArrowUpRight, CheckCheck, Pause, Play, RotateCcw } from "lucide-react";
-import { motion } from "framer-motion";
+import { useCallback, useState } from "react";
+import { motion, useMotionValue } from "framer-motion";
 import DecisionCascade from "@/components/story/DecisionCascade";
-import ChaosMorph from "@/components/story/ChaosMorph";
+import PaperWorld from "@/components/story/PaperWorld";
 import { useStoryTimeline } from "@/components/story/StoryMotion";
 import { usePurchases } from "@/components/demos/DemoProvider";
 import { track } from "@/lib/site";
 const captions = [
-  "Good work. Scattered everywhere.",
-  "The pieces begin to connect.",
-  "The same work. A clearer shape.",
-  "One request. One connected system.",
-  "Now, you move the work forward.",
+  {
+    title: "A pump is needed on Line 02.",
+    body: "Maintenance raises a $2,400 purchase request. Someone needs to review it.",
+  },
+  {
+    title: "There’s a factory behind this request.",
+    body: "People, equipment, and materials depend on timely decisions between teams.",
+  },
+  {
+    title: "Connect maintenance to purchasing.",
+    body: "The request, its owner, and the budget come together in one shared workflow.",
+  },
+  {
+    title: "The next step becomes clear.",
+    body: "The right person can see what is needed and make the decision.",
+  },
+  {
+    title: "Your turn. Move the work forward.",
+    body: "Approve the pump request below. The purchasing summary and decision history update together.",
+  },
 ];
 export default function WorkflowIntro() {
+  const [sceneReady, setSceneReady] = useState(false);
+  const ready = useCallback(() => setSceneReady(true), []);
+  const connected = useMotionValue(1),
+    industry = useMotionValue(0);
   const {
     ref: sceneRef,
     progress,
@@ -24,7 +44,7 @@ export default function WorkflowIntro() {
     replay,
     toggle,
     finish,
-  } = useStoryTimeline(5, "ci-story-intro-seen");
+  } = useStoryTimeline(8, "ci-factory-story-seen", sceneReady);
   const { purchases, decide } = usePurchases();
   const request = purchases[0],
     approved = request.status === "approved";
@@ -33,76 +53,126 @@ export default function WorkflowIntro() {
       ref={sceneRef}
       className={`ci-workflow-scene story-opening ci-phase-${phase}`}
       data-phase={phase}
-      aria-label="From scattered work to a connected purchasing workflow"
+      aria-label="A paper request unfolds into a connected business"
     >
       <div className="story-scene-heading">
         <span>
           <i /> THE CATALYST EFFECT
         </span>
-        <span>01 — POSSIBILITY</span>
+        <span>MANUFACTURING / A PURCHASE REQUEST</span>
       </div>
-      <ChaosMorph progress={progress} approved={approved} />
-      <div className="story-caption">
-        <p>{captions[phase]}</p>
-        <div>
-          <button
-            type="button"
-            className="ci-icon-btn"
-            aria-label={
-              paused ? "Resume opening animation" : "Pause opening animation"
-            }
-            disabled={reduced || complete}
-            onClick={toggle}
-          >
-            {paused ? <Play size={16} /> : <Pause size={16} />}
-          </button>
-          <button
-            type="button"
-            className="ci-icon-btn"
-            aria-label="Replay opening animation"
-            disabled={reduced}
-            onClick={replay}
-          >
-            <RotateCcw size={16} />
-          </button>
-        </div>
-      </div>
-      <div className="story-live-request">
-        <div>
-          <span>YOUR TURN · REQ–024</span>
-          <strong>
-            Replacement pump <b>$2,400</b>
-          </strong>
-        </div>
-        <button
-          className="story-approval"
-          disabled={request.status !== "pending"}
-          onClick={() => {
-            finish();
-            decide(request.id, "approved");
-            track("demo_interaction", { widget: "hero", action: "approve" });
-          }}
-        >
-          {approved ? <CheckCheck size={18} /> : <ArrowUpRight size={18} />}
-          <span>
-            {approved
-              ? "Approved"
-              : request.status === "returned"
-                ? "Returned"
-                : "Try approval"}
+      <div className="story-scene-content">
+        <div className="story-caption">
+          <span className="factory-story-label">
+            ONE REQUEST. EVERY HANDOFF CONNECTED.
           </span>
-        </button>
+          <h2>
+            {approved
+              ? "Approved. Clear for purchasing."
+              : request.status === "returned"
+                ? "A clear reason. A clear next step."
+                : captions[phase].title}
+          </h2>
+          <p>
+            {approved
+              ? "$2,400 approved. Purchasing has the request, and the team can see the decision."
+              : request.status === "returned"
+                ? "The requester can see what needs to change before this purchase can proceed."
+                : captions[phase].body}
+          </p>
+          <ol
+            className="factory-story-steps"
+            aria-label="The request’s journey"
+          >
+            {["Request", "Factory", "Workflow", "Decision"].map((step, i) => (
+              <li
+                key={step}
+                aria-current={Math.min(phase, 3) === i ? "step" : undefined}
+              >
+                <span>0{i + 1}</span>
+                {step}
+              </li>
+            ))}
+          </ol>
+          <div className="factory-story-controls">
+            <button
+              type="button"
+              className="ci-icon-btn"
+              aria-label={
+                paused ? "Resume opening animation" : "Pause opening animation"
+              }
+              disabled={reduced || complete}
+              onClick={toggle}
+            >
+              {paused ? <Play size={16} /> : <Pause size={16} />}
+            </button>
+            <button
+              type="button"
+              className="ci-icon-btn"
+              aria-label="Replay opening animation"
+              disabled={reduced}
+              onClick={replay}
+            >
+              <RotateCcw size={16} />
+            </button>
+            <span>
+              {reduced
+                ? "Motion reduced"
+                : complete
+                  ? "Replay the story"
+                  : paused
+                    ? "Story paused"
+                    : "Follow the request"}
+            </span>
+          </div>
+        </div>
+        <PaperWorld
+          opening={progress}
+          connected={connected}
+          industryProgress={industry}
+          approved={approved}
+          onReady={ready}
+          intro
+        />
       </div>
-      <DecisionCascade
-        compact
-        state={
-          approved
-            ? "approved"
-            : request.status === "returned"
-              ? "returned"
-              : "waiting"
-        }
-      />
+      <div className="story-decision-row">
+        <div className="story-live-request">
+          <div>
+            <span>YOUR TURN · REQ–024</span>
+            <strong>
+              Replacement pump <b>$2,400</b>
+            </strong>
+          </div>
+          <button
+            className="story-approval"
+            disabled={request.status !== "pending"}
+            onClick={() => {
+              finish();
+              decide(request.id, "approved");
+              track("demo_interaction", { widget: "hero", action: "approve" });
+            }}
+          >
+            {approved ? <CheckCheck size={18} /> : <ArrowUpRight size={18} />}
+            <span>
+              {approved
+                ? "Approved"
+                : request.status === "returned"
+                  ? "Returned"
+                  : "Try approval"}
+            </span>
+          </button>
+        </div>
+        <DecisionCascade
+          compact
+          state={
+            approved
+              ? "approved"
+              : request.status === "returned"
+                ? "returned"
+                : "waiting"
+          }
+        />
+      </div>
       <p className="story-demo-note" role="status">
         {approved
           ? "Decision recorded. $2,400 approved and ready for purchasing."
