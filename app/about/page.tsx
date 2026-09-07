@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowUpRight, Check } from "lucide-react";
+import FounderFusion from "@/components/story/FounderFusion";
 import { coreValues } from "@/data/content";
 export const metadata: Metadata = {
   title: "About — Operations experience meets engineering",
@@ -58,6 +59,9 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
+      <div className="ci-container">
+        <FounderFusion />
+      </div>
       <section className="ci-section ci-method-section">
         <div className="ci-container">
           <div className="ci-section-intro">

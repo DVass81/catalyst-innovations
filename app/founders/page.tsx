@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { founders } from "@/data/content";
+import FounderFusion from "@/components/story/FounderFusion";
 import EmailLink from "@/components/EmailLink";
 export const metadata: Metadata = {
   title: "Founders — Daniel Vass & Josh Ogle",
@@ -28,6 +29,9 @@ export default function FoundersPage() {
         </div>
       </section>
       <section className="ci-section ci-paper">
+        <div className="ci-container">
+          <FounderFusion />
+        </div>
         <div className="ci-container ci-founders-list">
           {founders.map((f) => (
             <article id={f.slug} key={f.slug}>

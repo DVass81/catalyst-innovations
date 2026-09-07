@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { ArrowUpRight, Menu, Search, X } from "lucide-react";
 import { LogoLockup } from "./Logo";
 import ThemeToggle from "./ThemeToggle";
+import { MotionToggle } from "./story/StoryMotion";
 import { track } from "@/lib/site";
 const links = [
   ["/solutions", "Solutions"],
@@ -67,6 +68,7 @@ export default function Navbar() {
           ))}
         </div>
         <div className="ci-nav-actions">
+          <MotionToggle />
           <button
             className="ci-icon-btn ci-search"
             onClick={search}
