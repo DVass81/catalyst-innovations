@@ -64,7 +64,10 @@ test("industry sculpture transforms and settles on the last rapidly selected wor
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await page.goto("/demo-lab");
   const shape = page.locator(".paper-world-compare canvas");
-  await shape.scrollIntoViewIfNeeded();
+  // The streamed Demo Lab may replace its initial tree during hydration.
+  await expect(async () => {
+    await shape.scrollIntoViewIfNeeded();
+  }).toPass({ timeout: 12000 });
   await expect(page.locator(".paper-world-compare")).toHaveAttribute(
     "data-renderer",
     "ready",
