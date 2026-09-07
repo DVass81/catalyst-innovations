@@ -14,6 +14,9 @@ test("true opening morph pauses offscreen and replay preserves an approved reque
   const world = page.locator(".paper-world-intro");
   await expect(world).toHaveAttribute("data-renderer", "ready");
   const shape = world.locator("canvas");
+  await expect
+    .poll(() => shape.evaluate((el) => getComputedStyle(el).opacity))
+    .toBe("1");
   // Begin a fresh playback after graphics preparation, even on a slow runner.
   await page.getByRole("button", { name: "Replay opening animation" }).click();
   const first = await picture(shape);
