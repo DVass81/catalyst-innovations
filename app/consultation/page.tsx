@@ -1,16 +1,18 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { ArrowUpRight, Check } from "lucide-react";
+import { Section, Eyebrow, Heading, Lead } from "@/components/ui";
+import { Reveal } from "@/components/Reveal";
 import ConsultationForm from "@/components/ConsultationForm";
+import ConsultationTabs from "@/components/ConsultationTabs";
 import BookingEmbed from "@/components/BookingEmbed";
 import { site } from "@/lib/site";
-import { consultationSchema, type ConsultationData } from "@/lib/consultation";
+
 export const metadata: Metadata = {
-  title: "Talk about your project",
+  title: "Request a Consultation",
   description:
-    "Start with a free 30-minute conversation about the workflow, software, or automation you want to improve.",
-  alternates: { canonical: "/consultation" },
+    "Tell us about the process that frustrates you most. A consultation costs nothing and starts with listening.",
 };
+
+/** Maps assessment result slugs to prefill text for the form. */
 const recTitles: Record<string, string> = {
   custom: "Custom Workflow Application",
   procurement: "Procurement Transformation",
@@ -21,93 +23,68 @@ const recTitles: Record<string, string> = {
   integration: "System Integration",
   roadmap: "Digital Transformation Roadmap",
 };
-const industries: Record<string, ConsultationData["industry"]> = {
+const industryMap: Record<string, string> = {
   manufacturing: "Manufacturing",
-  "field-service": "Field service",
-  "professional-services": "Professional services",
   financial: "Financial institution",
   contractor: "Construction",
   professional: "Professional services",
 };
+
 export default async function ConsultationPage({
   searchParams,
 }: {
-  searchParams: Promise<{
-    rec?: string;
-    ind?: string;
-    industry?: string;
-    demo?: string;
-    scope?: string;
-  }>;
+  searchParams: Promise<{ rec?: string; ind?: string }>;
 }) {
-  const q = await searchParams;
-  const initial: Partial<ConsultationData> = {};
-  const industry = industries[q.industry || q.ind || ""];
-  if (industry) initial.industry = industry;
-  const demo = consultationSchema.shape.demoContext.safeParse(q.demo);
-  if (demo.success) initial.demoContext = demo.data;
-  const scope = consultationSchema.shape.scope.safeParse(q.scope);
-  if (scope.success) initial.scope = scope.data;
-  if (q.rec && recTitles[q.rec])
-    initial.challenge = `From the starting-point assessment — recommended: ${recTitles[q.rec]}. `;
+  const { rec, ind } = await searchParams;
+  const recTitle = rec ? recTitles[rec] : undefined;
+  const industry = ind ? industryMap[ind] : undefined;
+  const initial = recTitle
+    ? {
+        inquiryType: "Request a consultation" as const,
+        industry: (industry ?? "Other") as never,
+        challenge: `From the starting-point assessment — recommended: ${recTitle}. `,
+      }
+    : undefined;
+
   return (
     <>
-      <section className="ci-page-hero">
-        <div className="ci-container">
-          <p className="ci-eyebrow">LET’S FIND YOUR BETTER WAY</p>
-          <h1>
-            Tell us what
-            <br />
-            <span>could work better.</span>
-          </h1>
-          <p>
-            A free 30-minute conversation starts with understanding your
-            business.
-          </p>
+      <section className="bg-navy-900 pb-14 pt-36 text-white">
+        <div className="mx-auto max-w-6xl px-5 sm:px-8">
+          <Reveal>
+            <Eyebrow dark>Request a consultation</Eyebrow>
+            <Heading dark as="h1">Let&apos;s talk about your operation.</Heading>
+            <Lead dark>
+              Four short steps. We&apos;ll review your submission and respond — usually within
+              one business day.
+            </Lead>
+          </Reveal>
         </div>
       </section>
-      <section className="ci-section ci-paper">
-        <div className="ci-container ci-consultation-layout">
-          <aside>
-            <h2 className="ci-heading">
-              A conversation.
-              <br />A practical next step.
-            </h2>
-            <p>
-              Daniel brings operations experience. Josh brings technical
-              capability. You’ll work directly with the founders throughout your
-              project.
-            </p>
-            <ul>
-              <li>
-                <Check size={17} /> No obligation to start a project
-              </li>
-              <li>
-                <Check size={17} /> Clear scope before implementation
-              </li>
-              <li>
-                <Check size={17} /> Your questions are welcome
-              </li>
-            </ul>
-            {site.schedulingUrl && (
-              <div className="ci-book-direct">
-                <h3>Prefer to choose a time?</h3>
-                <p>
-                  {site.schedulingHost
-                    ? `Book with ${site.schedulingHost}. `
-                    : ""}
-                  The calendar identifies your host and shows available times.
-                </p>
-                <BookingEmbed />
+      <Section className="relative overflow-hidden bg-navy-950">
+        <div className="bg-grid-dark absolute inset-0" aria-hidden="true" />
+        <div className="relative mx-auto max-w-3xl">
+          {site.schedulingUrl ? (
+            <ConsultationTabs
+              form={<ConsultationForm initial={initial} />}
+              booking={<BookingEmbed />}
+            />
+          ) : (
+            <ConsultationForm initial={initial} />
+          )}
+          <div className="mt-10 grid gap-4 sm:grid-cols-3">
+            {[
+              ["No obligation", "A conversation, not a sales funnel."],
+              ["Founders on the call", "You talk to Josh directly, not an SDR."],
+              ["Honest scoping", "If we're not the right fit, we'll say so."],
+            ].map(([t, d]) => (
+              <div key={t} className="rounded-card border border-white/12 bg-white/5 p-5 text-center">
+                <p className="font-display text-sm font-semibold text-white">{t}</p>
+                <p className="mt-1 text-xs text-ice-300">{d}</p>
               </div>
-            )}
-            <Link href="/pricing" className="ci-text-link">
-              See project pricing <ArrowUpRight size={16} />
-            </Link>
-          </aside>
-          <ConsultationForm initial={initial} />
+            ))}
+          </div>
         </div>
-      </section>
+      </Section>
     </>
   );
 }

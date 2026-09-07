@@ -1,19 +1,11 @@
 import type { Metadata } from "next";
-import {
-  Section,
-  Eyebrow,
-  Heading,
-  Lead,
-  HexFrame,
-  ButtonLink,
-} from "@/components/ui";
+import { Section, Eyebrow, Heading, Lead, HexFrame, ButtonLink } from "@/components/ui";
 import { Reveal, RevealGroup, RevealItem } from "@/components/Reveal";
 import { Icon } from "@/components/Icon";
 import { methodStages, faqs } from "@/data/content";
 import CTABand from "@/components/CTABand";
 
 export const metadata: Metadata = {
-  alternates: { canonical: "/method" },
   title: "The Catalyst Method — Six Stages From Problem to Improvement",
   description:
     "Discover, Diagnose, Design, Demonstrate, Deploy, Improve — how Catalyst Innovations turns operational problems into adopted, measurable systems.",
@@ -32,26 +24,17 @@ const faqSchema = {
 export default function MethodPage() {
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-      />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <section className="relative overflow-hidden bg-navy-900 pb-20 pt-36 text-white">
         <div className="bg-grid-dark absolute inset-0" aria-hidden="true" />
-        <div
-          aria-hidden="true"
-          className="absolute right-0 top-0 h-96 w-96 rounded-full bg-steel-400/15 blur-[120px]"
-        />
+        <div aria-hidden="true" className="absolute right-0 top-0 h-96 w-96 rounded-full bg-steel-400/15 blur-[120px]" />
         <div className="relative mx-auto max-w-6xl px-5 sm:px-8">
           <Reveal>
             <Eyebrow dark>How we work</Eyebrow>
-            <Heading dark as="h1">
-              The Catalyst Method
-            </Heading>
+            <Heading dark as="h1">The Catalyst Method</Heading>
             <Lead dark>
-              Six stages designed to de-risk transformation: you approve a clear
-              scope, review a working demonstration, and launch with testing,
-              documentation, and training.
+              Six stages designed to de-risk transformation: you see a working demonstration
+              before committing, deploy in controlled phases, and keep improving after launch.
             </Lead>
           </Reveal>
         </div>
@@ -60,10 +43,7 @@ export default function MethodPage() {
       <Section className="bg-ice-50">
         <div className="relative">
           {/* Vertical connector */}
-          <div
-            aria-hidden="true"
-            className="absolute left-[27px] top-4 h-[calc(100%-2rem)] w-px bg-gradient-to-b from-steel-400 via-steel-400/40 to-transparent"
-          />
+          <div aria-hidden="true" className="absolute left-[27px] top-4 h-[calc(100%-2rem)] w-px bg-gradient-to-b from-steel-400 via-steel-400/40 to-transparent" />
           <RevealGroup className="space-y-10" stagger={0.08}>
             {methodStages.map((m) => (
               <RevealItem key={m.n}>
@@ -73,16 +53,10 @@ export default function MethodPage() {
                   </div>
                   <div className="flex-1 rounded-card border border-ice-200 bg-white p-6 shadow-card sm:p-8">
                     <div className="flex items-center gap-3">
-                      <HexFrame>
-                        <Icon name={m.icon} />
-                      </HexFrame>
-                      <h2 className="font-display text-xl font-semibold text-navy-900">
-                        {m.name}
-                      </h2>
+                      <HexFrame><Icon name={m.icon} /></HexFrame>
+                      <h2 className="font-display text-xl font-semibold text-navy-900">{m.name}</h2>
                     </div>
-                    <p className="mt-4 max-w-2xl leading-relaxed text-navy-700">
-                      {m.text}
-                    </p>
+                    <p className="mt-4 max-w-2xl leading-relaxed text-navy-700">{m.text}</p>
                   </div>
                 </div>
               </RevealItem>
@@ -103,17 +77,13 @@ export default function MethodPage() {
                 <summary className="cursor-pointer list-none font-display text-base font-semibold text-navy-900 marker:content-none">
                   {f.q}
                 </summary>
-                <p className="mt-3 text-sm leading-relaxed text-navy-700">
-                  {f.a}
-                </p>
+                <p className="mt-3 text-sm leading-relaxed text-navy-700">{f.a}</p>
               </details>
             </RevealItem>
           ))}
         </RevealGroup>
         <Reveal className="mt-12">
-          <ButtonLink href="/roi-estimator">
-            Find your best starting point
-          </ButtonLink>
+          <ButtonLink href="/roi-estimator">Find your best starting point</ButtonLink>
         </Reveal>
       </Section>
       <CTABand />

@@ -17,7 +17,7 @@ export default function ProductWindow({
   children: ReactNode;
 }) {
   return (
-    <div className="ci-product-window overflow-hidden rounded-card border border-white/12 bg-navy-850 shadow-card-dark">
+    <div className="overflow-hidden rounded-card border border-white/12 bg-navy-850 shadow-card-dark">
       <div className="flex items-center gap-2 border-b border-white/10 bg-navy-900 px-4 py-2.5">
         <span className="flex gap-1.5" aria-hidden="true">
           <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
@@ -26,7 +26,7 @@ export default function ProductWindow({
         </span>
         <span className="ml-2 text-xs font-medium text-ice-300">{title}</span>
         {badge && (
-          <span className="ml-auto rounded bg-warning/20 px-2 py-0.5 text-xs font-bold text-warning">
+          <span className="ml-auto rounded bg-warning/20 px-2 py-0.5 text-[0.6rem] font-bold text-warning">
             {badge}
           </span>
         )}

@@ -39,6 +39,15 @@ export const methodStages = [
   },
 ] as const;
 
+/** Real, aggregate client results — the average across manufacturers, weld shops, and other operations businesses we work with. */
+export const clientResults = {
+  stat: "10",
+  statUnit: "hours/week",
+  headline: "Manufacturers, weld shops, and businesses like yours are getting an average of 10 hours back every week.",
+  text: "When your team can finally see what's actually happening — on the shop floor, in purchasing, across every process — the busywork disappears. No more chasing people down for updates. No more guessing at status. Just real time back, every single week.",
+  proof: "Real results across the manufacturers, weld shops, and operations businesses we work with.",
+} as const;
+
 export const outcomes = [
   "Reduced administrative labor",
   "Faster approvals",
@@ -183,8 +192,13 @@ export const founders = [
   },
 ] as const;
 
-/** Public founder profiles approved for the redesign. */
-export const activeFounders = founders;
+/**
+ * TEMPORARY: Daniel's profile is pulled from public display until his
+ * updated bio and photo are ready. His full entry stays in `founders`
+ * above so nothing is lost — this is the only place the exclusion lives,
+ * so re-adding him later is a one-line change here.
+ */
+export const activeFounders = founders.filter((f) => f.slug !== "daniel-vass");
 
 export const partnershipStatement =
   "One founder understands the operational problem. The other knows how to engineer the solution.";
