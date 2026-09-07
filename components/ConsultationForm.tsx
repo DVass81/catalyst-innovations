@@ -74,14 +74,18 @@ export default function ConsultationForm({
         body: JSON.stringify(parsed.data),
         signal: AbortSignal.timeout(25000),
       });
-      const data = await res.json();
-      if (!res.ok || !data.ok) {
-        if (data.issues) {
+      const data = await res.json().catch(() => ({
+        ok: false,
+        error:
+          "Online inquiries are temporarily unavailable. Please email the team or use the booking calendar.",
+      }));
+      if (!res.ok || !data?.ok) {
+        if (data?.issues) {
           setErrors(data.issues);
           focusError(data.issues);
         }
         throw new Error(
-          data.error || "Your request could not be sent. Please try again.",
+          data?.error || "Your request could not be sent. Please try again.",
         );
       }
       setStatus("success");
@@ -89,9 +93,11 @@ export default function ConsultationForm({
     } catch (err) {
       setStatus("error");
       setMessage(
-        err instanceof Error && err.name !== "TimeoutError"
+        err instanceof Error &&
+          err.name !== "TimeoutError" &&
+          err.name !== "TypeError"
           ? err.message
-          : "The request timed out. Please try again or email us directly.",
+          : "We could not reach the inquiry service. Please try again or email us directly.",
       );
       track("form_error", { kind: "delivery" });
     } finally {
