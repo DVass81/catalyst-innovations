@@ -4,6 +4,7 @@ import { ArrowDown, ArrowUpRight } from "lucide-react";
 import WorkflowIntro from "@/components/home/WorkflowIntro";
 import IndustryShowcase from "@/components/demos/IndustryShowcase";
 import HomeContent from "@/components/home/HomeContent";
+import StoryJourney, { StoryNavigation } from "@/components/story/StoryJourney";
 export const metadata: Metadata = {
   alternates: { canonical: "/" },
   title: {
@@ -12,17 +13,15 @@ export const metadata: Metadata = {
 };
 export default function Home() {
   return (
-    <>
-      <section className="ci-hero">
+    <StoryJourney>
+      <section className="ci-hero" id="possibility">
         <div className="ci-container ci-hero-grid">
           <div className="ci-hero-copy">
             <p className="ci-eyebrow">
-              <span /> CUSTOM SYSTEMS. REAL POSSIBILITIES.
+              <span /> 01 / FROM SCATTERED TO CONNECTED
             </p>
             <h1>
-              See your
-              <br />
-              business
+              See your business
               <br />
               <em>working better.</em>
             </h1>
@@ -39,7 +38,7 @@ export default function Home() {
               </Link>
             </div>
             <p className="ci-hero-footnote">
-              Built around your people. Connected to your tools.
+              The work is yours. Let’s give it a better way forward.
             </p>
           </div>
           <WorkflowIntro />
@@ -52,8 +51,9 @@ export default function Home() {
           <span>KNOXVILLE, TN · BUILT FOR YOUR BUSINESS</span>
         </div>
       </section>
+      <StoryNavigation />
       <IndustryShowcase />
       <HomeContent />
-    </>
+    </StoryJourney>
   );
 }

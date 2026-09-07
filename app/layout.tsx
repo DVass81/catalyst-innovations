@@ -7,6 +7,9 @@ import "./redesign.css";
 import "./experience.css";
 import "./forms.css";
 import "./editorial.css";
+import "./story.css";
+import "./story-sections.css";
+import { StoryMotionProvider } from "@/components/story/StoryMotion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Analytics from "@/components/Analytics";
@@ -97,13 +100,15 @@ export default function RootLayout({
         </Suspense>
         <ErrorMonitoring>
           <DemoProvider>
-            <Navbar />
-            <Analytics />
-            <main id="main" tabIndex={-1} className="flex-1">
-              {children}
-            </main>
-            <Footer />
-            <CommandPalette />
+            <StoryMotionProvider>
+              <Navbar />
+              <Analytics />
+              <main id="main" tabIndex={-1} className="flex-1">
+                {children}
+              </main>
+              <Footer />
+              <CommandPalette />
+            </StoryMotionProvider>
           </DemoProvider>
         </ErrorMonitoring>
       </body>

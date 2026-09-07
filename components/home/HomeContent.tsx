@@ -7,6 +7,8 @@ import {
   Workflow,
   PlugZap,
 } from "lucide-react";
+import FounderFusion from "@/components/story/FounderFusion";
+import ClosingFrame from "@/components/story/ClosingFrame";
 import PricingGrid from "@/components/PricingGrid";
 import { pricingTiers } from "@/data/pricing";
 const methods = [
@@ -46,16 +48,17 @@ export default function HomeContent() {
         <div className="ci-container">
           <div className="ci-section-intro">
             <div>
-              <p className="ci-eyebrow">02 / MADE FOR YOUR BUSINESS</p>
+              <p className="ci-eyebrow">THE POSSIBILITIES, BUILT AROUND YOU</p>
               <h2 className="ci-heading">
-                Your process is unique.
+                Start with the work.
                 <br />
-                Your system should fit.
+                Build what fits.
               </h2>
             </div>
             <p>
-              Start with what needs to work better. We bring the operational
-              understanding and the technical capability to build it.
+              The demonstration is a glimpse of what’s possible. The real
+              solution starts with your people, your tools, and the work you
+              want to improve.
             </p>
           </div>
           <div className="ci-capabilities">
@@ -92,17 +95,15 @@ export default function HomeContent() {
           </div>
         </div>
       </section>
-      <section className="ci-section ci-method-section">
+      <section className="ci-section ci-method-section" id="how-we-build">
         <div className="ci-container">
           <div className="ci-section-intro">
             <div>
-              <p className="ci-eyebrow">03 / A CLEAR WAY FORWARD</p>
+              <p className="ci-eyebrow">03 / FROM POSSIBILITY TO PRACTICE</p>
               <h2 className="ci-heading">
-                From “there has to
+                A clear path.
                 <br />
-                be a better way”
-                <br />
-                <span>to working better.</span>
+                <span>From idea to everyday use.</span>
               </h2>
             </div>
             <div>
@@ -126,13 +127,64 @@ export default function HomeContent() {
           </ol>
         </div>
       </section>
+      <section className="ci-section ci-founder-section" id="your-team">
+        <div className="ci-container">
+          <div className="ci-section-intro">
+            <div>
+              <p className="ci-eyebrow">04 / THE PEOPLE WHO MAKE IT HAPPEN</p>
+              <h2 className="ci-heading">
+                Two perspectives.
+                <br />
+                <span>One working system.</span>
+              </h2>
+            </div>
+            <p>
+              Daniel understands how work happens on the ground. Josh turns that
+              understanding into systems people can use. You work directly with
+              the founders.
+            </p>
+          </div>
+          <FounderFusion />
+          <div className="ci-founder-grid">
+            {[
+              [
+                "DV",
+                "Daniel Vass",
+                "Operations & Business Transformation",
+                "Manufacturing, procurement, supply chain, and continuous improvement.",
+                "daniel-vass",
+              ],
+              [
+                "JO",
+                "Josh Ogle",
+                "Technology & Product Development",
+                "Systems, IT, and software development grounded in practical delivery.",
+                "josh-ogle",
+              ],
+            ].map(([initials, name, role, bio, slug]) => (
+              <Link href={`/founders#${slug}`} key={slug}>
+                <span className="ci-founder-initials">
+                  {initials}
+                  <span>CO-FOUNDER</span>
+                </span>
+                <div>
+                  <h3>{name}</h3>
+                  <p className="ci-founder-role">{role}</p>
+                  <p>{bio}</p>
+                </div>
+                <ArrowUpRight size={22} />
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
       <section className="ci-section ci-paper" id="investment">
         <div className="ci-container">
           <div className="ci-section-intro">
             <div>
-              <p className="ci-eyebrow">04 / A CLEAR INVESTMENT</p>
+              <p className="ci-eyebrow">05 / YOUR NEXT MOVE, CLEARLY SCOPED</p>
               <h2 className="ci-heading">
-                Start with the problem.
+                Make the next move.
                 <br />
                 Know the investment.
               </h2>
@@ -175,58 +227,7 @@ export default function HomeContent() {
           </div>
         </div>
       </section>
-      <section className="ci-section ci-founder-section">
-        <div className="ci-container">
-          <div className="ci-section-intro">
-            <div>
-              <p className="ci-eyebrow">05 / THE PEOPLE BEHIND THE WORK</p>
-              <h2 className="ci-heading">
-                Operations experience.
-                <br />
-                Engineering capability.
-                <br />
-                <span>One team.</span>
-              </h2>
-            </div>
-            <p>
-              Daniel understands how work happens on the ground. Josh turns that
-              understanding into systems people can use. You work directly with
-              the founders.
-            </p>
-          </div>
-          <div className="ci-founder-grid">
-            {[
-              [
-                "DV",
-                "Daniel Vass",
-                "Operations & Business Transformation",
-                "Manufacturing, procurement, supply chain, and continuous improvement.",
-                "daniel-vass",
-              ],
-              [
-                "JO",
-                "Josh Ogle",
-                "Technology & Product Development",
-                "Systems, IT, and software development grounded in practical delivery.",
-                "josh-ogle",
-              ],
-            ].map(([initials, name, role, bio, slug]) => (
-              <Link href={`/founders#${slug}`} key={slug}>
-                <span className="ci-founder-initials">
-                  {initials}
-                  <span>CO-FOUNDER</span>
-                </span>
-                <div>
-                  <h3>{name}</h3>
-                  <p className="ci-founder-role">{role}</p>
-                  <p>{bio}</p>
-                </div>
-                <ArrowUpRight size={22} />
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
+
       <section className="ci-section ci-paper">
         <div className="ci-container ci-faq-layout">
           <div>
@@ -253,16 +254,17 @@ export default function HomeContent() {
           </div>
         </div>
       </section>
-      <section className="ci-closing">
+      <section className="ci-closing" id="next-chapter">
+        <ClosingFrame />
         <div className="ci-container">
-          <p className="ci-eyebrow">LET’S BUILD YOUR BETTER WAY</p>
+          <p className="ci-eyebrow">THE NEXT CHAPTER IS YOURS</p>
           <h2>
-            What’s the one thing
+            Your next chapter.
             <br />
-            you wish <span>worked better?</span>
+            <span>Let’s make it work.</span>
           </h2>
           <div>
-            <p>Tell us about it. We’ll start with a conversation.</p>
+            <p>Tell us one thing you wish worked better. We’ll start there.</p>
             <Link href="/consultation" className="ci-btn">
               Talk about your project <ArrowUpRight size={20} />
             </Link>

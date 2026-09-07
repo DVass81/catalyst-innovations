@@ -25,6 +25,8 @@ import {
 } from "@/lib/demo";
 import { usePurchases } from "./DemoProvider";
 import { track } from "@/lib/site";
+import IndustryMorph from "@/components/story/IndustryMorph";
+import DecisionCascade from "@/components/story/DecisionCascade";
 const money = (n: number) =>
   n.toLocaleString("en-US", {
     style: "currency",
@@ -41,6 +43,9 @@ function Stat({ label, value }: { label: string; value: string | number }) {
 }
 function ManufacturingDemo() {
   const { purchases, decide, reset } = usePurchases();
+  const [lastDecision, setLastDecision] = useState<
+    "approved" | "returned" | null
+  >(null);
   const [returnId, setReturnId] = useState<string | null>(null),
     [reason, setReason] = useState(""),
     [message, setMessage] = useState("");
@@ -52,6 +57,7 @@ function ManufacturingDemo() {
       return;
     }
     decide(id, status, reason);
+    setLastDecision(status);
     setReturnId(null);
     setReason("");
     setMessage(
@@ -70,6 +76,7 @@ function ManufacturingDemo() {
         <button
           onClick={() => {
             reset();
+            setLastDecision(null);
             setReturnId(null);
             setReason("");
             setMessage("Manufacturing demo reset.");
@@ -186,6 +193,16 @@ function ManufacturingDemo() {
             : "You make the decision. The connected workflow handles the handoff."}
         </p>
       </div>
+      <DecisionCascade
+        state={
+          lastDecision ||
+          (purchases.some((p) => p.status === "returned") && !approved.length
+            ? "returned"
+            : approved.length
+              ? "approved"
+              : "waiting")
+        }
+      />
       <p role="status" className="ci-demo-message">
         {message}
       </p>
@@ -331,6 +348,16 @@ function FieldDemo() {
           )}
         </button>
       </div>
+      <DecisionCascade
+        state={
+          complete
+            ? "approved"
+            : message.startsWith("Schedule conflict")
+              ? "conflict"
+              : "waiting"
+        }
+        labels={["Schedule", "Job status", "Completion record"]}
+      />
       <p role="status" className="ci-demo-message">
         {message}
       </p>
@@ -445,6 +472,10 @@ function ProfessionalDemo() {
           )}
         </button>
       </div>
+      <DecisionCascade
+        state={approved ? "approved" : "waiting"}
+        labels={["Client summary", "Project owner", "Handoff record"]}
+      />
       <p role="status" className="ci-demo-message">
         {message}
       </p>
@@ -485,15 +516,16 @@ export default function IndustryShowcase({
         {!standalone && (
           <div className="ci-section-intro">
             <div>
-              <p className="ci-eyebrow">01 / YOUR WORLD, CONNECTED</p>
+              <p className="ci-eyebrow">02 / NOW, MAKE IT YOUR WORLD</p>
               <h2 className="ci-heading">
-                Your work.
-                <br />A better way to do it.
+                The story changes.
+                <br />
+                The work connects.
               </h2>
             </div>
             <p>
-              See what a connected workflow could look like in your business.
-              Choose an industry. Try it for yourself.
+              A production line. A field team. A new client. Choose your world,
+              then make a decision and see what happens next.
             </p>
           </div>
         )}
@@ -522,6 +554,7 @@ export default function IndustryShowcase({
             </button>
           ))}
         </div>
+        <IndustryMorph industry={industry} />
         <div
           role="tabpanel"
           id="industry-demo-panel"
