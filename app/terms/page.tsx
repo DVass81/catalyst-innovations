@@ -1,69 +1,50 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { Section, Heading } from "@/components/ui";
+
 export const metadata: Metadata = {
-  title: "Website Terms of Use",
-  description:
-    "How to use the Catalyst Innovations website, demonstrations, estimates, and pricing information.",
-  alternates: { canonical: "/terms" },
+  title: "Terms of Use",
+  description: "Terms governing use of the Catalyst Innovations website.",
 };
+
 export default function TermsPage() {
   return (
-    <section className="ci-policy ci-paper">
-      <div className="ci-container">
-        <p className="ci-eyebrow">USING THIS WEBSITE</p>
-        <h1>Website terms of use</h1>
-        <p className="ci-policy-date">Updated September 7, 2026</p>
-        <div className="ci-policy-content">
-          <h2>Information and demonstrations</h2>
-          <p>
-            This website explains Catalyst Innovations’ services and provides
-            illustrative demonstrations and planning tools. Demo names,
-            companies, records, and outcomes are fictional. Demo actions do not
-            create real purchases, send messages, or book appointments.
-          </p>
-          <h2>Estimates and pricing</h2>
-          <p>
-            Calculator results depend on the assumptions you enter and are not
-            measured customer results or guaranteed financial outcomes. Project
-            ranges are indicative. A written project agreement establishes the
-            actual scope, price, ownership, milestones, acceptance criteria, and
-            support terms. Submitting an inquiry does not purchase a service.
-          </p>
-          <p>
-            Current general pricing is described on our{" "}
-            <Link href="/pricing">pricing page</Link>. Existing signed
-            agreements and negotiated pilots retain their own terms.
-          </p>
-          <h2>Portfolio information</h2>
-          <p>
-            Portfolio entries are labeled by development status. A concept or
-            in-development item is not represented as a delivered customer
-            system. Features and availability can change as development
-            progresses.
-          </p>
-          <h2>Responsible use</h2>
-          <p>
-            Use the site lawfully. Do not attempt to disrupt its operation,
-            bypass access controls, or submit harmful material. Do not submit
-            confidential credentials or sensitive records through a general
-            inquiry.
-          </p>
-          <h2>Site content and third-party services</h2>
-          <p>
-            The Catalyst name, mark, and original site content belong to
-            Catalyst Innovations. Licensed photographs, fonts, and other
-            third-party materials remain subject to their respective licenses.
-            External calendars and other linked services have their own terms
-            and privacy practices.
-          </p>
-          <h2>Questions and updates</h2>
-          <p>
-            Contact us through the <Link href="/contact">contact page</Link>{" "}
-            with questions. This page may be updated as the website or services
-            change; the date above identifies the latest revision.
-          </p>
-        </div>
+    <Section className="bg-white pt-40">
+      <div className="prose-ci mx-auto">
+        <Heading as="h1">Terms of Use</Heading>
+        <p className="mt-2 text-sm text-silver-500">
+          Placeholder terms — to be reviewed by legal counsel before launch. This draft is
+          provided for structure and is not legal advice.
+        </p>
+
+        <h2>Use of this website</h2>
+        <p>
+          This website is provided for informational purposes. Content, including the ROI
+          estimator and starting-point assessment, is illustrative and does not constitute
+          professional, financial, or legal advice, nor a guarantee of results.
+        </p>
+
+        <h2>Intellectual property</h2>
+        <p>
+          The Catalyst Innovations name, logo, and site content are the property of
+          Catalyst Innovations and may not be reproduced without permission.
+        </p>
+
+        <h2>Product information</h2>
+        <p>
+          Items in the Innovation Portfolio are labeled by development status. Concepts and
+          in-development products are described as such and are subject to change.
+        </p>
+
+        <h2>Limitation of liability</h2>
+        <p>
+          The website is provided &ldquo;as is&rdquo; without warranties of any kind. Catalyst
+          Innovations is not liable for decisions made based on illustrative estimates or
+          demo content.
+        </p>
+
+        <h2>Changes</h2>
+        <p>We may update these terms; continued use constitutes acceptance.</p>
       </div>
-    </section>
+    </Section>
   );
 }

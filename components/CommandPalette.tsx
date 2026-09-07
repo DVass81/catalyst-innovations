@@ -3,104 +3,32 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
-import { Search, CornerDownLeft, ArrowUp, ArrowDown, X } from "lucide-react";
+import { Search, CornerDownLeft, ArrowUp, ArrowDown } from "lucide-react";
 import { services } from "@/data/services";
 import { industries } from "@/data/industries";
 import { products } from "@/data/products";
 import { Icon } from "./Icon";
 import { track } from "@/lib/site";
 
-type Item = {
-  group: string;
-  title: string;
-  subtitle: string;
-  href: string;
-  icon: string;
-};
+type Item = { group: string; title: string; subtitle: string; href: string; icon: string };
 
 const staticPages: Item[] = [
-  {
-    group: "Pages",
-    title: "Home",
-    subtitle: "Back to the beginning",
-    href: "/",
-    icon: "AppWindow",
-  },
-  {
-    group: "Pages",
-    title: "About",
-    subtitle: "Mission, values, and how we're different",
-    href: "/about",
-    icon: "Building2",
-  },
-  {
-    group: "Pages",
-    title: "The Catalyst Method",
-    subtitle: "How we work, six stages",
-    href: "/method",
-    icon: "Rocket",
-  },
-  {
-    group: "Pages",
-    title: "Demo Lab",
-    subtitle: "Interactive product demonstrations",
-    href: "/demo-lab",
-    icon: "MonitorPlay",
-  },
-  {
-    group: "Pages",
-    title: "Founders",
-    subtitle: "Daniel Vass and Josh Ogle",
-    href: "/founders",
-    icon: "Briefcase",
-  },
-  {
-    group: "Pages",
-    title: "Request a Consultation",
-    subtitle: "Start a conversation",
-    href: "/consultation",
-    icon: "ShoppingCart",
-  },
-  {
-    group: "Pages",
-    title: "ROI Estimator",
-    subtitle: "Calculator plus a short assessment",
-    href: "/roi-estimator",
-    icon: "BarChart3",
-  },
-  {
-    group: "Pages",
-    title: "Pricing",
-    subtitle: "Packages and monthly investment",
-    href: "/pricing",
-    icon: "PiggyBank",
-  },
+  { group: "Pages", title: "Home", subtitle: "Back to the beginning", href: "/", icon: "AppWindow" },
+  { group: "Pages", title: "About", subtitle: "Mission, values, and how we're different", href: "/about", icon: "Building2" },
+  { group: "Pages", title: "The Catalyst Method", subtitle: "How we work, six stages", href: "/method", icon: "Rocket" },
+  { group: "Pages", title: "Demo Lab", subtitle: "Interactive product demonstrations", href: "/demo-lab", icon: "MonitorPlay" },
+  { group: "Pages", title: "Founders", subtitle: "Josh Ogle", href: "/founders", icon: "Briefcase" },
+  { group: "Pages", title: "Request a Consultation", subtitle: "Start a conversation", href: "/consultation", icon: "ShoppingCart" },
+  { group: "Pages", title: "ROI Estimator", subtitle: "Calculator plus a short assessment", href: "/roi-estimator", icon: "BarChart3" },
+  { group: "Pages", title: "Pricing", subtitle: "Packages and monthly investment", href: "/pricing", icon: "PiggyBank" },
 ];
 
 function buildIndex(): Item[] {
   return [
     ...staticPages,
-    ...services.map((s) => ({
-      group: "Solutions",
-      title: s.title,
-      subtitle: s.tagline,
-      href: `/solutions/${s.slug}`,
-      icon: s.icon,
-    })),
-    ...industries.map((i) => ({
-      group: "Industries",
-      title: i.name,
-      subtitle: i.problems[0] ?? "",
-      href: `/industries#${i.slug}`,
-      icon: i.icon,
-    })),
-    ...products.map((p) => ({
-      group: "Innovation Portfolio",
-      title: p.name,
-      subtitle: p.status,
-      href: "/portfolio",
-      icon: p.icon,
-    })),
+    ...services.map((s) => ({ group: "Solutions", title: s.title, subtitle: s.tagline, href: `/solutions/${s.slug}`, icon: s.icon })),
+    ...industries.map((i) => ({ group: "Industries", title: i.name, subtitle: i.problems[0] ?? "", href: `/industries#${i.slug}`, icon: i.icon })),
+    ...products.map((p) => ({ group: "Innovation Portfolio", title: p.name, subtitle: p.status, href: "/portfolio", icon: p.icon })),
   ];
 }
 
@@ -110,19 +38,13 @@ export default function CommandPalette() {
   const [active, setActive] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
-  const closeRef = useRef<HTMLButtonElement>(null);
   const index = useMemo(() => buildIndex(), []);
 
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
     if (!q) return index.slice(0, 8);
     return index
-      .filter(
-        (i) =>
-          i.title.toLowerCase().includes(q) ||
-          i.subtitle.toLowerCase().includes(q) ||
-          i.group.toLowerCase().includes(q),
-      )
+      .filter((i) => i.title.toLowerCase().includes(q) || i.subtitle.toLowerCase().includes(q) || i.group.toLowerCase().includes(q))
       .slice(0, 12);
   }, [query, index]);
 
@@ -158,7 +80,6 @@ export default function CommandPalette() {
 
   // Genuine side effects (DOM mutation, analytics, focus) stay in an effect.
   useEffect(() => {
-    const previousFocus = document.activeElement as HTMLElement | null;
     if (open) {
       track("demo_interaction", { widget: "command_palette", action: "open" });
       requestAnimationFrame(() => inputRef.current?.focus());
@@ -168,7 +89,6 @@ export default function CommandPalette() {
     }
     return () => {
       document.body.style.overflow = "";
-      if (open) previousFocus?.focus();
     };
   }, [open]);
 
@@ -192,32 +112,33 @@ export default function CommandPalette() {
 
   return (
     <>
+      {/* Discoverability trigger — small, unobtrusive, bottom corner */}
+      <button
+        type="button"
+        onClick={() => setOpen(true)}
+        aria-label="Open search (Ctrl+K)"
+        className="fixed bottom-5 right-5 z-40 hidden min-h-[44px] items-center gap-2 rounded-full border border-ice-200 bg-white/95 px-4 text-sm font-medium text-navy-700 shadow-card backdrop-blur transition-colors hover:border-steel-400/50 lg:flex"
+      >
+        <Search size={15} />
+        Search
+        <kbd className="ml-1 rounded border border-ice-200 bg-ice-50 px-1.5 py-0.5 font-mono text-[0.65rem] text-silver-500">Ctrl K</kbd>
+      </button>
+
       <AnimatePresence>
         {open && (
           <motion.div
             role="dialog"
-            onKeyDown={(e) => {
-              if (e.key === "Tab") {
-                e.preventDefault();
-                if (document.activeElement === inputRef.current)
-                  closeRef.current?.focus();
-                else inputRef.current?.focus();
-              }
-            }}
             aria-modal="true"
             aria-label="Site search"
             className="fixed inset-0 z-[100] flex items-start justify-center px-4 pt-[12vh]"
-            initial={false}
+            initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.15 }}
           >
-            <div
-              className="absolute inset-0 bg-navy-950/60 backdrop-blur-sm"
-              onClick={() => setOpen(false)}
-            />
+            <div className="absolute inset-0 bg-navy-950/60 backdrop-blur-sm" onClick={() => setOpen(false)} />
             <motion.div
-              initial={false}
+              initial={{ opacity: 0, y: -12, scale: 0.98 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -8, scale: 0.98 }}
               transition={{ duration: 0.18 }}
@@ -227,49 +148,24 @@ export default function CommandPalette() {
                 <Search size={18} className="shrink-0 text-silver-400" />
                 <input
                   ref={inputRef}
-                  aria-label="Search website content"
-                  role="combobox"
-                  aria-expanded={true}
-                  aria-controls="site-search-results"
-                  aria-activedescendant={
-                    results[active] ? `search-option-${active}` : undefined
-                  }
-                  autoComplete="off"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   onKeyDown={onKeyDown}
                   placeholder="Search solutions, industries, portfolio, insights…"
-                  className="w-full bg-transparent text-[0.95rem] text-navy-900 placeholder:text-navy-700 focus:outline-none"
+                  className="w-full bg-transparent text-[0.95rem] text-navy-900 placeholder:text-silver-400 focus:outline-none"
                 />
-                <button
-                  ref={closeRef}
-                  type="button"
-                  className="ci-icon-btn shrink-0"
-                  aria-label="Close search"
-                  onClick={() => setOpen(false)}
-                >
-                  <X size={20} />
-                </button>
+                <kbd className="hidden shrink-0 rounded border border-ice-200 bg-ice-50 px-1.5 py-0.5 font-mono text-[0.65rem] text-silver-500 sm:block">Esc</kbd>
               </div>
 
-              <div
-                role="listbox"
-                id="site-search-results"
-                aria-label="Search results"
-                className="max-h-[60vh] overflow-y-auto p-2"
-              >
+              <div role="listbox" className="max-h-[60vh] overflow-y-auto p-2">
                 {results.length === 0 && (
-                  <p className="px-4 py-8 text-center text-sm text-navy-700">
-                    No matches. Try a different term.
-                  </p>
+                  <p className="px-4 py-8 text-center text-sm text-silver-500">No matches. Try a different term.</p>
                 )}
                 {results.map((item, i) => (
                   <button
                     key={item.href + item.title}
                     type="button"
                     role="option"
-                    id={`search-option-${i}`}
-                    tabIndex={-1}
                     aria-selected={i === active}
                     onMouseEnter={() => setActive(i)}
                     onClick={() => go(item)}
@@ -281,25 +177,16 @@ export default function CommandPalette() {
                       <Icon name={item.icon} size={17} />
                     </span>
                     <span className="min-w-0 flex-1">
-                      <span className="block truncate text-sm font-medium text-navy-900">
-                        {item.title}
-                      </span>
-                      <span className="block truncate text-xs text-navy-700">
-                        {item.group} · {item.subtitle}
-                      </span>
+                      <span className="block truncate text-sm font-medium text-navy-900">{item.title}</span>
+                      <span className="block truncate text-xs text-silver-500">{item.group} · {item.subtitle}</span>
                     </span>
                   </button>
                 ))}
               </div>
 
-              <div className="flex items-center gap-4 border-t border-ice-200 px-5 py-2.5 text-xs text-navy-700">
-                <span className="flex items-center gap-1">
-                  <ArrowUp size={11} />
-                  <ArrowDown size={11} /> Navigate
-                </span>
-                <span className="flex items-center gap-1">
-                  <CornerDownLeft size={11} /> Select
-                </span>
+              <div className="flex items-center gap-4 border-t border-ice-200 px-5 py-2.5 text-[0.7rem] text-silver-500">
+                <span className="flex items-center gap-1"><ArrowUp size={11} /><ArrowDown size={11} /> Navigate</span>
+                <span className="flex items-center gap-1"><CornerDownLeft size={11} /> Select</span>
               </div>
             </motion.div>
           </motion.div>

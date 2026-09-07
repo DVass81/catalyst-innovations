@@ -8,10 +8,7 @@ import { CatalystMark } from "@/components/Logo";
 export default function NotFound() {
   return (
     <section className="relative flex min-h-[85vh] items-center justify-center overflow-hidden bg-navy-950 px-5 py-24 text-center text-white">
-      <div
-        className="warp-lines absolute inset-0 opacity-40"
-        aria-hidden="true"
-      />
+      <div className="warp-lines absolute inset-0 opacity-40" aria-hidden="true" />
       <div className="grain absolute inset-0" aria-hidden="true" />
       <div
         aria-hidden="true"
@@ -26,15 +23,12 @@ export default function NotFound() {
           You&apos;ve stepped off the path.
         </h1>
         <p className="mx-auto mt-5 max-w-md text-lg leading-relaxed text-ice-300">
-          Somewhere between the old world and the new, this page doesn&apos;t
-          exist — or hasn&apos;t been built yet. Let&apos;s get you back on
-          solid ground.
+          Somewhere between the old world and the new, this page doesn&apos;t exist — or
+          hasn&apos;t been built yet. Let&apos;s get you back on solid ground.
         </p>
         <div className="mt-9 flex flex-col items-center justify-center gap-4 sm:flex-row">
           <ButtonLink href="/">Back to the beginning</ButtonLink>
-          <ButtonLink href="/solutions" variant="ghost-dark">
-            Explore solutions
-          </ButtonLink>
+          <ButtonLink href="/solutions" variant="ghost-dark">Explore solutions</ButtonLink>
         </div>
       </div>
     </section>
