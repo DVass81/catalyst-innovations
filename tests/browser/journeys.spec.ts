@@ -130,6 +130,22 @@ test("short inquiry handles validation, delivery failure, retry and duplicate cl
     .fill("A controlled test of approval workflows.");
   await page.route("**/api/consultation", (route) =>
     route.fulfill({
+      status: 504,
+      contentType: "text/html",
+      body: "<!doctype html><title>Gateway time-out</title>",
+    }),
+  );
+  await page.getByRole("button", { name: "Send your request" }).click();
+  await expect(page.locator(".ci-form-error")).toContainText(
+    "Online inquiries are temporarily unavailable",
+  );
+  await expect(page.locator(".ci-form-error")).not.toContainText("SyntaxError");
+  await expect(page.getByLabel("Your name", { exact: true })).toHaveValue(
+    "Controlled Test",
+  );
+  await page.unroute("**/api/consultation");
+  await page.route("**/api/consultation", (route) =>
+    route.fulfill({
       status: 503,
       json: { ok: false, error: "Delivery is unavailable. Please try again." },
     }),
