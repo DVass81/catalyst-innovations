@@ -9,6 +9,7 @@ const picture = async (canvas: Locator) =>
 test("true opening morph pauses offscreen and replay preserves an approved request", async ({
   page,
 }) => {
+  await page.clock.install();
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await page.goto("/");
   const world = page.locator(".paper-world-intro");
@@ -17,17 +18,24 @@ test("true opening morph pauses offscreen and replay preserves an approved reque
   await expect
     .poll(() => shape.evaluate((el) => getComputedStyle(el).opacity))
     .toBe("1");
-  // Begin a fresh playback after graphics preparation, even on a slow runner.
-  await page.getByRole("button", { name: "Replay opening animation" }).click();
+  // Hold time while capturing frames: tracing on software GPUs can take longer
+  // than the entire eight-second story, even though the animation works.
+  await page.clock.pauseAt((await page.evaluate(() => Date.now())) + 1000);
+  await page
+    .getByRole("button", { name: "Replay opening animation" })
+    .dispatchEvent("click");
+  await page.clock.runFor(32);
   const first = await picture(shape);
-  await expect.poll(() => picture(shape)).not.toBe(first);
+  await page.clock.runFor(2000);
+  expect(await picture(shape)).not.toBe(first);
   await page
     .getByRole("button", { name: "Pause opening animation", exact: true })
-    .click();
-  await page.waitForTimeout(80);
+    .dispatchEvent("click");
+  await page.clock.runFor(80);
   const paused = await picture(shape);
-  await page.waitForTimeout(250);
+  await page.clock.runFor(250);
   expect(await picture(shape)).toBe(paused);
+  await page.clock.resume();
   await page.getByRole("button", { name: "Replay opening animation" }).click();
   await page.locator("#investment").scrollIntoViewIfNeeded();
   await page.waitForTimeout(120);
