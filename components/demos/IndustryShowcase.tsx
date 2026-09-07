@@ -25,7 +25,7 @@ import {
 } from "@/lib/demo";
 import { usePurchases } from "./DemoProvider";
 import { track } from "@/lib/site";
-import IndustryMorph from "@/components/story/IndustryMorph";
+import ConnectedWorld from "@/components/story/ConnectedWorld";
 import DecisionCascade from "@/components/story/DecisionCascade";
 const money = (n: number) =>
   n.toLocaleString("en-US", {
@@ -554,7 +554,7 @@ export default function IndustryShowcase({
             </button>
           ))}
         </div>
-        <IndustryMorph industry={industry} />
+        <ConnectedWorld industry={industry} />
         <div
           role="tabpanel"
           id="industry-demo-panel"

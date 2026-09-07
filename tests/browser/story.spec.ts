@@ -1,26 +1,38 @@
 import { test, expect } from "@playwright/test";
+import { createHash } from "node:crypto";
+import type { Locator } from "@playwright/test";
+const picture = async (canvas: Locator) =>
+  createHash("sha256")
+    .update(await canvas.screenshot({ animations: "allow" }))
+    .digest("hex");
 
 test("true opening morph pauses offscreen and replay preserves an approved request", async ({
   page,
 }) => {
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await page.goto("/");
-  const shape = page.locator('[data-morph="chaos-outline"]').first();
-  const first = await shape.getAttribute("d");
-  await expect.poll(() => shape.getAttribute("d")).not.toBe(first);
+  const world = page.locator(".paper-world-intro");
+  await expect(world).toHaveAttribute("data-renderer", "ready");
+  const shape = world.locator("canvas");
+  const first = await picture(shape);
+  await expect.poll(() => picture(shape)).not.toBe(first);
   await page
     .getByRole("button", { name: "Pause opening animation", exact: true })
     .click();
   await page.waitForTimeout(80);
-  const paused = await shape.getAttribute("d");
+  const paused = await picture(shape);
   await page.waitForTimeout(250);
-  expect(await shape.getAttribute("d")).toBe(paused);
+  expect(await picture(shape)).toBe(paused);
   await page.getByRole("button", { name: "Replay opening animation" }).click();
   await page.locator("#investment").scrollIntoViewIfNeeded();
   await page.waitForTimeout(120);
-  const offscreen = await shape.getAttribute("d");
+  const offscreen = await page
+    .locator(".ci-scene-progress span")
+    .getAttribute("style");
   await page.waitForTimeout(300);
-  expect(await shape.getAttribute("d")).toBe(offscreen);
+  expect(
+    await page.locator(".ci-scene-progress span").getAttribute("style"),
+  ).toBe(offscreen);
   await page.getByRole("button", { name: "Try approval", exact: true }).click();
   await expect(page.locator(".story-opening .story-cascade")).toHaveAttribute(
     "data-state",
@@ -33,32 +45,33 @@ test("true opening morph pauses offscreen and replay preserves an approved reque
   await expect(page.locator(".ci-demo-stats")).toContainText("$2,400");
 });
 
-test("industry contours truly morph and settle on the last rapidly selected world", async ({
+test("industry sculpture transforms and settles on the last rapidly selected world", async ({
   page,
 }) => {
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await page.goto("/demo-lab");
-  const shape = page.locator('[data-morph="industry-outline"]');
+  const shape = page.locator(".paper-world-compare canvas");
   await shape.scrollIntoViewIfNeeded();
-  const manufacturing = await shape.getAttribute("d");
+  await expect(page.locator(".paper-world-compare")).toHaveAttribute(
+    "data-renderer",
+    "ready",
+  );
+  const manufacturing = await picture(shape);
   await page.getByRole("tab", { name: /Field service/ }).click();
-  await expect.poll(() => shape.getAttribute("d")).not.toBe(manufacturing);
-  const middle = await shape.getAttribute("d");
-  await page.waitForTimeout(180);
-  expect(await shape.getAttribute("d")).not.toBe(middle);
+  await expect.poll(() => picture(shape)).not.toBe(manufacturing);
   await page.getByRole("tab", { name: /Manufacturing/ }).click();
   await page.getByRole("tab", { name: /Professional services/ }).click();
-  await expect(page.locator(".story-industry-morph")).toHaveAttribute(
+  await expect(page.locator(".connected-world")).toHaveAttribute(
     "data-industry",
     "professional-services",
   );
   await expect(
     page.getByRole("button", { name: "Approve handoff" }),
   ).toBeDisabled();
-  await page.waitForTimeout(1500);
-  const end = await shape.getAttribute("d");
+  await page.waitForTimeout(1900);
+  const end = await picture(shape);
   await page.waitForTimeout(200);
-  expect(await shape.getAttribute("d")).toBe(end);
+  expect(await picture(shape)).toBe(end);
 });
 
 test("decision gate morphs on approval and routes a later return correctly", async ({

@@ -9,6 +9,7 @@ import "./forms.css";
 import "./editorial.css";
 import "./story.css";
 import "./story-sections.css";
+import "./paper-world.css";
 import { StoryMotionProvider } from "@/components/story/StoryMotion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
