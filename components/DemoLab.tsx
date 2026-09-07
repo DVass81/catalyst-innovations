@@ -1,9 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
-  AlertTriangle, ArrowDownRight, ArrowUpRight, Bell, Check, ShieldAlert, Sparkles, X,
+  AlertTriangle,
+  ArrowDownRight,
+  ArrowUpRight,
+  Bell,
+  Check,
+  ShieldAlert,
+  Sparkles,
+  X,
 } from "lucide-react";
 import { track } from "@/lib/site";
 import { useAnimatedNumber } from "@/lib/useAnimatedNumber";
@@ -24,7 +31,13 @@ const fmtSpend = (n: number) =>
 
 /* ---------- Shared bits ---------- */
 
-function WindowFrame({ title, children }: { title: string; children: React.ReactNode }) {
+function WindowFrame({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) {
   return (
     <ProductWindow title={title} badge="FICTIONAL DEMO DATA">
       {children}
@@ -32,14 +45,33 @@ function WindowFrame({ title, children }: { title: string; children: React.React
   );
 }
 
-const t = (widget: string, action: string) => track("demo_interaction", { widget, action });
+const t = (widget: string, action: string) =>
+  track("demo_interaction", { widget, action });
 
 /* ---------- 1. Procurement executive dashboard ---------- */
 
 const spendData = {
-  "This Month": { totalNum: 412_800, vsBudget: "-4.2%", open: 37, flagged: 3, bars: [62, 48, 71, 55, 80, 44, 66] },
-  "This Quarter": { totalNum: 1_240_000, vsBudget: "+1.8%", open: 92, flagged: 7, bars: [55, 70, 63, 78, 52, 69, 74] },
-  "Year to Date": { totalNum: 3_860_000, vsBudget: "-2.1%", open: 214, flagged: 11, bars: [68, 59, 75, 66, 81, 58, 72] },
+  "This Month": {
+    totalNum: 412_800,
+    vsBudget: "-4.2%",
+    open: 37,
+    flagged: 3,
+    bars: [62, 48, 71, 55, 80, 44, 66],
+  },
+  "This Quarter": {
+    totalNum: 1_240_000,
+    vsBudget: "+1.8%",
+    open: 92,
+    flagged: 7,
+    bars: [55, 70, 63, 78, 52, 69, 74],
+  },
+  "Year to Date": {
+    totalNum: 3_860_000,
+    vsBudget: "-2.1%",
+    open: 214,
+    flagged: 11,
+    bars: [68, 59, 75, 66, 81, 58, 72],
+  },
 } as const;
 
 export function ProcurementDashboard() {
@@ -50,15 +82,23 @@ export function ProcurementDashboard() {
   const animatedFlagged = useAnimatedNumber(d.flagged, 500);
   return (
     <WindowFrame title="Catalyst Procurement Intelligence — Executive Dashboard">
-      <div className="flex flex-wrap gap-2" role="tablist" aria-label="Date range">
+      <div
+        className="flex flex-wrap gap-2"
+        role="group"
+        aria-label="Date range"
+      >
         {(Object.keys(spendData) as (keyof typeof spendData)[]).map((r) => (
           <button
             key={r}
-            role="tab"
-            aria-selected={range === r}
-            onClick={() => { setRange(r); t("procurement_dashboard", "filter"); }}
-            className={`rounded-full px-4 py-1.5 text-xs font-semibold transition-colors ${
-              range === r ? "bg-steel-400 text-white" : "bg-white/8 text-ice-300 hover:bg-white/15"
+            aria-pressed={range === r}
+            onClick={() => {
+              setRange(r);
+              t("procurement_dashboard", "filter");
+            }}
+            className={`min-h-[44px] rounded-full px-4 py-1.5 text-xs font-semibold transition-colors ${
+              range === r
+                ? "bg-steel-400 text-white"
+                : "bg-white/8 text-ice-300 hover:bg-white/15"
             }`}
           >
             {r}
@@ -67,25 +107,44 @@ export function ProcurementDashboard() {
       </div>
       <div className="mt-5 grid gap-3 sm:grid-cols-4">
         {[
-          ["Total spend", fmtSpend(animatedTotal), d.vsBudget.startsWith("-") ? "under budget" : "over budget", d.vsBudget],
+          [
+            "Total spend",
+            fmtSpend(animatedTotal),
+            d.vsBudget.startsWith("-") ? "under budget" : "over budget",
+            d.vsBudget,
+          ],
           ["Open POs", String(Math.round(animatedOpen)), "in workflow", ""],
-          ["Policy flags", String(Math.round(animatedFlagged)), "need review", ""],
+          [
+            "Policy flags",
+            String(Math.round(animatedFlagged)),
+            "need review",
+            "",
+          ],
           ["On-time delivery", "94.2%", "trailing 90 days", "+1.1%"],
         ].map(([label, value, sub, delta]) => (
           <div key={label} className="rounded-xl bg-white/5 p-4">
-            <p className="text-[0.65rem] font-semibold tracking-wide text-silver-400 uppercase">{label}</p>
-            <p className="mt-1 font-display text-xl font-semibold text-white">{value}</p>
-            <p className="mt-0.5 flex items-center gap-1 text-[0.7rem] text-ice-300">
-              {delta && (delta.startsWith("-")
-                ? <ArrowDownRight size={12} className="text-success" />
-                : <ArrowUpRight size={12} className="text-warning" />)}
+            <p className="text-xs font-semibold tracking-wide text-silver-400 uppercase">
+              {label}
+            </p>
+            <p className="mt-1 font-display text-xl font-semibold text-white">
+              {value}
+            </p>
+            <p className="mt-0.5 flex items-center gap-1 text-xs text-ice-300">
+              {delta &&
+                (delta.startsWith("-") ? (
+                  <ArrowDownRight size={12} className="text-success" />
+                ) : (
+                  <ArrowUpRight size={12} className="text-warning" />
+                ))}
               {delta} {sub}
             </p>
           </div>
         ))}
       </div>
       <div className="mt-5">
-        <p className="text-[0.65rem] font-semibold tracking-wide text-silver-400 uppercase">Spend by department</p>
+        <p className="text-xs font-semibold tracking-wide text-silver-400 uppercase">
+          Spend by department
+        </p>
         <div className="mt-3 flex h-28 items-end gap-2" aria-hidden="true">
           {d.bars.map((h, i) => (
             <motion.div
@@ -97,9 +156,11 @@ export function ProcurementDashboard() {
             />
           ))}
         </div>
-        <div className="mt-2 flex gap-2 text-[0.6rem] text-silver-400">
+        <div className="mt-2 flex gap-2 text-xs text-silver-400">
           {["Ops", "Maint", "IT", "Facil", "Prod", "Mktg", "Admin"].map((l) => (
-            <span key={l} className="flex-1 text-center">{l}</span>
+            <span key={l} className="flex-1 text-center">
+              {l}
+            </span>
           ))}
         </div>
       </div>
@@ -110,7 +171,9 @@ export function ProcurementDashboard() {
 /* ---------- 2. AI daily briefing + approval-gated recommendation ---------- */
 
 export function AIBriefing() {
-  const [decision, setDecision] = useState<"pending" | "approved" | "rejected">("pending");
+  const [decision, setDecision] = useState<"pending" | "approved" | "rejected">(
+    "pending",
+  );
   return (
     <WindowFrame title="Catalyst AI — Daily Operations Briefing">
       <div className="flex items-start gap-3">
@@ -118,18 +181,26 @@ export function AIBriefing() {
           <Sparkles size={17} className="text-steel-300" />
         </span>
         <div className="space-y-3 text-sm leading-relaxed text-ice-100">
-          <p><strong className="text-white">Good morning. Three items need attention today:</strong></p>
           <p>
-            1. <strong className="text-white">Supplier risk:</strong> Meridian Alloys&apos; average lead time rose
-            from 12 to 19 days over six weeks. Two open POs (#8841, #8867) are exposed.
+            <strong className="text-white">
+              Good morning. Three items need attention today:
+            </strong>
           </p>
           <p>
-            2. <strong className="text-white">Duplicate purchase detected:</strong> Requisition R-2210 (safety
-            gloves, $1,840) overlaps a PO received Tuesday. Flagged before approval.
+            1. <strong className="text-white">Supplier risk:</strong> Meridian
+            Alloys&apos; average lead time rose from 12 to 19 days over six
+            weeks. Two open POs (#8841, #8867) are exposed.
           </p>
           <p>
-            3. <strong className="text-white">Cash-flow note:</strong> Month-end spend is tracking 4.2% under
-            budget, driven by lower maintenance parts usage.
+            2.{" "}
+            <strong className="text-white">Duplicate purchase detected:</strong>{" "}
+            Requisition R-2210 (safety gloves, $1,840) overlaps a PO received
+            Tuesday. Flagged before approval.
+          </p>
+          <p>
+            3. <strong className="text-white">Cash-flow note:</strong> Month-end
+            spend is tracking 4.2% under budget, driven by lower maintenance
+            parts usage.
           </p>
         </div>
       </div>
@@ -139,21 +210,27 @@ export function AIBriefing() {
           <ShieldAlert size={14} /> Recommendation — requires your approval
         </p>
         <p className="mt-2 text-sm text-ice-100">
-          Split PO #8867 and move 40% of the order to backup supplier Karston Metals
-          (quoted 9-day lead, +2.1% cost) to protect the Line 3 schedule.
+          Split PO #8867 and move 40% of the order to backup supplier Karston
+          Metals (quoted 9-day lead, +2.1% cost) to protect the Line 3 schedule.
         </p>
         <div className="mt-4 flex gap-3">
           {decision === "pending" ? (
             <>
               <button
-                onClick={() => { setDecision("approved"); t("ai_briefing", "approve"); }}
-                className="inline-flex min-h-[40px] items-center gap-1.5 rounded-lg bg-success px-4 text-xs font-bold text-white"
+                onClick={() => {
+                  setDecision("approved");
+                  t("ai_briefing", "approve");
+                }}
+                className="inline-flex min-h-[44px] items-center gap-1.5 rounded-lg bg-success px-4 text-xs font-bold text-white"
               >
                 <Check size={14} /> Approve
               </button>
               <button
-                onClick={() => { setDecision("rejected"); t("ai_briefing", "reject"); }}
-                className="inline-flex min-h-[40px] items-center gap-1.5 rounded-lg border border-white/20 px-4 text-xs font-bold text-ice-100"
+                onClick={() => {
+                  setDecision("rejected");
+                  t("ai_briefing", "reject");
+                }}
+                className="inline-flex min-h-[44px] items-center gap-1.5 rounded-lg border border-white/20 px-4 text-xs font-bold text-ice-100"
               >
                 <X size={14} /> Reject
               </button>
@@ -167,7 +244,7 @@ export function AIBriefing() {
             >
               {decision === "approved"
                 ? "✓ Approved — action logged to the audit trail, buyer notified."
-                : "Rejected — reasoning captured; the AI will not re-suggest this split."}
+                : "Rejected — decision recorded; the AI will not re-suggest this split."}
             </motion.p>
           )}
         </div>
@@ -178,11 +255,35 @@ export function AIBriefing() {
 
 /* ---------- 3. Approval workflow ---------- */
 
-type Req = { id: string; desc: string; amount: string; dept: string; status: "pending" | "approved" | "rejected" };
+type Req = {
+  id: string;
+  desc: string;
+  amount: string;
+  dept: string;
+  status: "pending" | "approved" | "rejected";
+};
 const initialReqs: Req[] = [
-  { id: "R-2214", desc: "Hydraulic press seals (qty 24)", amount: "$3,120", dept: "Maintenance", status: "pending" },
-  { id: "R-2215", desc: "CNC tooling inserts", amount: "$1,485", dept: "Production", status: "pending" },
-  { id: "R-2216", desc: "Conference room AV upgrade", amount: "$7,900", dept: "Admin", status: "pending" },
+  {
+    id: "R-2214",
+    desc: "Hydraulic press seals (qty 24)",
+    amount: "$3,120",
+    dept: "Maintenance",
+    status: "pending",
+  },
+  {
+    id: "R-2215",
+    desc: "CNC tooling inserts",
+    amount: "$1,485",
+    dept: "Production",
+    status: "pending",
+  },
+  {
+    id: "R-2216",
+    desc: "Conference room AV upgrade",
+    amount: "$7,900",
+    dept: "Admin",
+    status: "pending",
+  },
 ];
 
 export function ApprovalWorkflow() {
@@ -201,19 +302,21 @@ export function ApprovalWorkflow() {
                 <p className="text-sm font-semibold text-white">
                   {r.id} · {r.desc}
                 </p>
-                <p className="mt-0.5 text-xs text-silver-400">{r.dept} · {r.amount} · within budget</p>
+                <p className="mt-0.5 text-xs text-silver-400">
+                  {r.dept} · {r.amount} · within budget
+                </p>
               </div>
               {r.status === "pending" ? (
                 <div className="flex gap-2">
                   <button
                     onClick={() => act(r.id, "approved")}
-                    className="inline-flex min-h-[36px] items-center gap-1 rounded-lg bg-success px-3 text-xs font-bold text-white"
+                    className="inline-flex min-h-[44px] items-center gap-1 rounded-lg bg-success px-3 text-xs font-bold text-white"
                   >
                     <Check size={13} /> Approve
                   </button>
                   <button
                     onClick={() => act(r.id, "rejected")}
-                    className="inline-flex min-h-[36px] items-center gap-1 rounded-lg border border-white/20 px-3 text-xs font-bold text-ice-100"
+                    className="inline-flex min-h-[44px] items-center gap-1 rounded-lg border border-white/20 px-3 text-xs font-bold text-ice-100"
                   >
                     <X size={13} /> Reject
                   </button>
@@ -221,10 +324,14 @@ export function ApprovalWorkflow() {
               ) : (
                 <span
                   className={`rounded-full px-3 py-1 text-xs font-bold ${
-                    r.status === "approved" ? "bg-success/20 text-success" : "bg-white/10 text-ice-300"
+                    r.status === "approved"
+                      ? "bg-success/20 text-success"
+                      : "bg-white/10 text-ice-300"
                   }`}
                 >
-                  {r.status === "approved" ? "✓ Approved → PO generated" : "Rejected → requester notified"}
+                  {r.status === "approved"
+                    ? "✓ Approved → PO generated"
+                    : "Rejected → requester notified"}
                 </span>
               )}
             </div>
@@ -249,15 +356,26 @@ export function OpsKPIs() {
           ["Open work orders", "47", "12 due today", true],
         ].map(([label, value, sub, good]) => (
           <div key={label as string} className="rounded-xl bg-white/5 p-4">
-            <p className="text-[0.65rem] font-semibold tracking-wide text-silver-400 uppercase">{label}</p>
-            <p className="mt-1 font-display text-xl font-semibold text-white">{value}</p>
-            <p className={`mt-0.5 text-[0.7rem] ${good ? "text-success" : "text-warning"}`}>{sub}</p>
+            <p className="text-xs font-semibold tracking-wide text-silver-400 uppercase">
+              {label}
+            </p>
+            <p className="mt-1 font-display text-xl font-semibold text-white">
+              {value}
+            </p>
+            <p
+              className={`mt-0.5 text-xs ${good ? "text-success" : "text-warning"}`}
+            >
+              {sub}
+            </p>
           </div>
         ))}
       </div>
 
       <button
-        onClick={() => { setAlertOpen((v) => !v); t("ops_kpis", "open_alert"); }}
+        onClick={() => {
+          setAlertOpen((v) => !v);
+          t("ops_kpis", "open_alert");
+        }}
         className="mt-4 flex w-full items-center gap-3 rounded-xl border border-warning/40 bg-warning/10 p-4 text-left transition-colors hover:bg-warning/15"
         aria-expanded={alertOpen}
       >
@@ -276,12 +394,21 @@ export function OpsKPIs() {
             className="overflow-hidden"
           >
             <div className="mt-3 rounded-xl bg-white/5 p-4 text-sm leading-relaxed text-ice-100">
-              <p><strong className="text-white">Impact analysis:</strong> Work orders WO-1180 and WO-1194
-              (Line 2) will run short of 4140 bar stock on Thursday.</p>
-              <p className="mt-2"><strong className="text-white">Options prepared:</strong> (1) Pull 60% from
-              Plant 2 buffer stock — zero cost, 1-day transfer. (2) Spot buy from regional
-              distributor at +6.8%. (3) Resequence Line 2 to aluminum jobs until arrival.</p>
-              <p className="mt-2 text-xs text-silver-400">Prepared automatically at 6:02 AM · sources: inventory system, PO tracking, production schedule</p>
+              <p>
+                <strong className="text-white">Impact analysis:</strong> Work
+                orders WO-1180 and WO-1194 (Line 2) will run short of 4140 bar
+                stock on Thursday.
+              </p>
+              <p className="mt-2">
+                <strong className="text-white">Options prepared:</strong> (1)
+                Pull 60% from Plant 2 buffer stock — zero cost, 1-day transfer.
+                (2) Spot buy from regional distributor at +6.8%. (3) Resequence
+                Line 2 to aluminum jobs until arrival.
+              </p>
+              <p className="mt-2 text-xs text-silver-400">
+                Prepared automatically at 6:02 AM · sources: inventory system,
+                PO tracking, production schedule
+              </p>
             </div>
           </motion.div>
         )}
@@ -310,11 +437,22 @@ const cannedQueries = [
 export function NLQuery() {
   const [active, setActive] = useState<number | null>(null);
   const [thinking, setThinking] = useState(false);
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(
+    () => () => {
+      if (timer.current) clearTimeout(timer.current);
+    },
+    [],
+  );
   function ask(i: number) {
+    if (timer.current) clearTimeout(timer.current);
     t("nl_query", "ask");
     setThinking(true);
     setActive(null);
-    setTimeout(() => { setThinking(false); setActive(i); }, 700);
+    timer.current = setTimeout(() => {
+      setThinking(false);
+      setActive(i);
+    }, 700);
   }
   return (
     <WindowFrame title="Catalyst AI — Ask Your Business Anything">
@@ -330,7 +468,10 @@ export function NLQuery() {
           </button>
         ))}
       </div>
-      <div className="mt-4 min-h-[90px] rounded-xl bg-navy-900 p-4" aria-live="polite">
+      <div
+        className="mt-4 min-h-[90px] rounded-xl bg-navy-900 p-4"
+        aria-live="polite"
+      >
         {thinking && (
           <p className="flex items-center gap-2 text-sm text-silver-400">
             <motion.span
@@ -342,7 +483,10 @@ export function NLQuery() {
           </p>
         )}
         {active !== null && !thinking && (
-          <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}>
+          <motion.div
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
             <p className="flex items-start gap-2 text-sm leading-relaxed text-ice-100">
               <Sparkles size={15} className="mt-1 shrink-0 text-steel-300" />
               {cannedQueries[active].a}
@@ -350,7 +494,9 @@ export function NLQuery() {
           </motion.div>
         )}
         {active === null && !thinking && (
-          <p className="text-sm italic text-silver-500">The answer will appear here.</p>
+          <p className="text-sm italic text-silver-500">
+            The answer will appear here.
+          </p>
         )}
       </div>
     </WindowFrame>

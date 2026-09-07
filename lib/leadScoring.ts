@@ -24,6 +24,11 @@ const companySizeScore: Record<string, number> = {
 
 const budgetScore: Record<string, number> = {
   "Prefer not to say": 0,
+  "Under $5k": 0,
+  "$5k–$10k": 1,
+  "$12k–$30k": 1,
+  "$30k–$75k": 2,
+  "$75k+": 3,
   "Under $10k": 0,
   "$10k–$50k": 1,
   "$50k–$150k": 2,
@@ -42,10 +47,13 @@ const inquiryScore: Record<string, number> = {
 
 export type LeadTier = "Hot" | "Warm" | "Standard";
 
-export function scoreLead(data: ConsultationData): { score: number; tier: LeadTier } {
+export function scoreLead(data: ConsultationData): {
+  score: number;
+  tier: LeadTier;
+} {
   const score =
-    (timelineScore[data.timeline] ?? 0) +
-    (companySizeScore[data.companySize] ?? 0) +
+    (timelineScore[data.timeline ?? ""] ?? 0) +
+    (companySizeScore[data.companySize ?? ""] ?? 0) +
     (budgetScore[data.budget ?? ""] ?? 0) +
     (inquiryScore[data.inquiryType] ?? 0);
 

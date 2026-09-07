@@ -22,15 +22,18 @@ export function ButtonLink({
   const styles = {
     primary:
       "relative overflow-hidden bg-steel-400 text-white hover:bg-steel-500 active:bg-steel-600 shadow-[0_4px_14px_rgb(74_143_212_/_0.35)] after:absolute after:inset-0 after:-translate-x-[110%] after:bg-gradient-to-r after:from-transparent after:via-white/25 after:to-transparent after:transition-transform after:duration-700 hover:after:translate-x-[110%] after:content-['']",
-    secondary:
-      "bg-navy-900 text-white hover:bg-navy-800 active:bg-navy-700",
+    secondary: "bg-navy-900 text-white hover:bg-navy-800 active:bg-navy-700",
     "ghost-dark":
       "border border-white/25 text-white hover:bg-white/10 active:bg-white/15",
     "ghost-light":
       "border border-navy-900/20 text-navy-900 hover:bg-navy-900/5 active:bg-navy-900/10 dark:border-white/25 dark:text-white dark:hover:bg-white/10",
   }[variant];
   return (
-    <Link href={href} onClick={onClick} className={`${btnBase} ${styles} ${className}`}>
+    <Link
+      href={href}
+      onClick={onClick}
+      className={`${btnBase} ${styles} ${className}`}
+    >
       {children}
     </Link>
   );
@@ -61,9 +64,19 @@ export function Section({
     >
       <div className="mx-auto max-w-6xl px-5 sm:px-8">{children}</div>
       {seamTo && (
-        <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-10 translate-y-1/2 overflow-hidden sm:h-16">
-          <svg viewBox="0 0 1200 80" preserveAspectRatio="none" className="h-full w-full">
-            <path d="M0 40 C 200 80, 400 0, 600 32 C 800 64, 1000 8, 1200 40 L1200 80 L0 80 Z" fill={seamTo} />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-10 translate-y-1/2 overflow-hidden sm:h-16"
+        >
+          <svg
+            viewBox="0 0 1200 80"
+            preserveAspectRatio="none"
+            className="h-full w-full"
+          >
+            <path
+              d="M0 40 C 200 80, 400 0, 600 32 C 800 64, 1000 8, 1200 40 L1200 80 L0 80 Z"
+              fill={seamTo}
+            />
           </svg>
         </div>
       )}
@@ -71,7 +84,13 @@ export function Section({
   );
 }
 
-export function Eyebrow({ children, dark = false }: { children: ReactNode; dark?: boolean }) {
+export function Eyebrow({
+  children,
+  dark = false,
+}: {
+  children: ReactNode;
+  dark?: boolean;
+}) {
   return (
     <p
       className={`font-display text-[0.72rem] font-semibold tracking-[0.28em] uppercase mb-4 ${
@@ -177,7 +196,7 @@ export function StatusBadge({ status }: { status: string }) {
           : "bg-warning/10 text-warning border-warning/40";
   return (
     <span
-      className={`inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold tracking-wide ${tone}`}
+      className={`ci-legacy-status inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold tracking-wide ${tone}`}
     >
       {status}
     </span>
@@ -186,14 +205,24 @@ export function StatusBadge({ status }: { status: string }) {
 
 /* ---------- Hexagon icon frame (brand geometric motif) ---------- */
 
-export function HexFrame({ children, dark = false }: { children: ReactNode; dark?: boolean }) {
+export function HexFrame({
+  children,
+  dark = false,
+}: {
+  children: ReactNode;
+  dark?: boolean;
+}) {
   return (
     <span
       className={`relative inline-flex h-12 w-12 shrink-0 items-center justify-center ${
         dark ? "text-steel-300" : "text-steel-600 dark:text-steel-300"
       }`}
     >
-      <svg viewBox="0 0 48 48" className="absolute inset-0 h-full w-full" aria-hidden="true">
+      <svg
+        viewBox="0 0 48 48"
+        className="absolute inset-0 h-full w-full"
+        aria-hidden="true"
+      >
         <path
           d="M24 2 L43 13 V35 L24 46 L5 35 V13 Z"
           fill={dark ? "rgba(74,143,212,0.12)" : "rgba(74,143,212,0.10)"}

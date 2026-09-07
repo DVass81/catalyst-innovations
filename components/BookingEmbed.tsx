@@ -1,21 +1,44 @@
-import { site } from "@/lib/site";
-
-/**
- * Embeds the scheduling page set via NEXT_PUBLIC_SCHEDULING_URL — a Google
- * Calendar Appointment Schedule or Microsoft Bookings public page both
- * work. Meetings booked here land directly on the connected calendar; no
- * custom calendar-API integration needed, the scheduling tool handles it.
- */
+"use client";
+import { useState } from "react";
+import { ArrowUpRight } from "lucide-react";
+import { site, track } from "@/lib/site";
 export default function BookingEmbed() {
+  const [show, setShow] = useState(false);
   if (!site.schedulingUrl) return null;
   return (
-    <div className="overflow-hidden rounded-card border border-white/12 bg-white">
-      <iframe
-        src={site.schedulingUrl}
-        title="Schedule a meeting"
-        className="h-[850px] w-full border-0"
-        loading="lazy"
-      />
+    <div>
+      <a
+        className="ci-text-link"
+        href={site.schedulingUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={() => track("scheduling_click", { location: "direct" })}
+      >
+        Open the booking calendar <ArrowUpRight size={17} />
+      </a>
+      <button
+        type="button"
+        className="ci-calendar-toggle"
+        aria-expanded={show}
+        onClick={() => {
+          setShow(!show);
+          if (!show) track("scheduling_click", { location: "embed" });
+        }}
+      >
+        {show ? "Hide calendar" : "Show calendar on this page"}
+      </button>
+      {show && (
+        <iframe
+          src={site.schedulingUrl}
+          title={
+            site.schedulingHost
+              ? `Book a meeting with ${site.schedulingHost}`
+              : "Book a meeting — host shown in calendar"
+          }
+          className="ci-booking-frame"
+          loading="lazy"
+        />
+      )}
     </div>
   );
 }

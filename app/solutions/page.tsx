@@ -9,6 +9,7 @@ import { viewTransitionStyle } from "@/lib/viewTransitionStyle";
 import CTABand from "@/components/CTABand";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/solutions" },
   title: "Solutions — Custom Software, AI, Automation & Procurement Technology",
   description:
     "Custom business software, practical AI and automation, procurement technology, manufacturing systems, supply-chain intelligence, and digital transformation consulting.",
@@ -26,8 +27,8 @@ export default async function SolutionsPage() {
               From manual processes to intelligent operations.
             </Heading>
             <Lead dark>
-              Eight capability areas, one philosophy: study how the work actually happens,
-              then build technology around it.
+              Eight capability areas, one philosophy: study how the work
+              actually happens, then build technology around it.
             </Lead>
           </Reveal>
         </div>
@@ -43,14 +44,20 @@ export default async function SolutionsPage() {
               >
                 <div className="flex items-start gap-4">
                   <div style={viewTransitionStyle(`solution-icon-${s.slug}`)}>
-                    <HexFrame><Icon name={s.icon} /></HexFrame>
+                    <HexFrame>
+                      <Icon name={s.icon} />
+                    </HexFrame>
                   </div>
                   <div>
-                    <h2 className="font-display text-lg font-semibold text-navy-900">{s.title}</h2>
+                    <h2 className="font-display text-lg font-semibold text-navy-900">
+                      {s.title}
+                    </h2>
                     <p className="mt-1 text-sm text-steel-600">{s.tagline}</p>
                   </div>
                 </div>
-                <p className="mt-4 flex-1 text-sm leading-relaxed text-navy-700">{s.description}</p>
+                <p className="mt-4 flex-1 text-sm leading-relaxed text-navy-700">
+                  {s.description}
+                </p>
                 <span className="mt-5 inline-flex items-center gap-1 text-sm font-medium text-steel-600 transition-all group-hover:gap-2">
                   Explore {s.navLabel} <ArrowRight size={15} />
                 </span>

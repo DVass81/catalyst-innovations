@@ -1,43 +1,60 @@
 import type { Metadata } from "next";
-import { Section, Heading } from "@/components/ui";
-
+import { site } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Accessibility",
-  description: "Catalyst Innovations' commitment to an accessible web experience (WCAG 2.2 AA target).",
+  description:
+    "Accessibility features, motion controls, and how to report a problem using the Catalyst Innovations website.",
+  alternates: { canonical: "/accessibility" },
 };
-
 export default function AccessibilityPage() {
   return (
-    <Section className="bg-white pt-40">
-      <div className="prose-ci mx-auto">
-        <Heading as="h1">Accessibility Statement</Heading>
-        <p className="mt-2 text-sm text-silver-500">Last updated: July 2026.</p>
-
-        <h2>Our commitment</h2>
-        <p>
-          Catalyst Innovations is committed to a website usable by everyone. We target WCAG
-          2.2 Level AA and build accessibility into our design system rather than adding it
-          afterward.
-        </p>
-
-        <h2>What we&apos;ve implemented</h2>
-        <ul>
-          <li>Semantic HTML with a correct heading hierarchy on every page.</li>
-          <li>Full keyboard navigation with visible focus indicators.</li>
-          <li>A skip-to-content link on every page.</li>
-          <li>Accessible forms with programmatic labels and clear, associated error messages.</li>
-          <li>Reduced-motion alternatives for all animations, honoring your system preference.</li>
-          <li>Color contrast meeting AA ratios, and status conveyed by text — never color alone.</li>
-          <li>Screen-reader announcements for dynamic content such as form results.</li>
-        </ul>
-
-        <h2>Feedback</h2>
-        <p>
-          If you encounter an accessibility barrier on this site, please tell us through
-          the contact page. We treat accessibility issues as defects and prioritize them
-          accordingly.
-        </p>
+    <section className="ci-policy ci-paper">
+      <div className="ci-container">
+        <p className="ci-eyebrow">BUILT FOR PEOPLE</p>
+        <h1>Accessibility</h1>
+        <div className="ci-policy-content">
+          <p>
+            We aim to make this website usable with different devices and
+            assistive technologies, using WCAG 2.2 Level AA as a design and
+            testing target.
+          </p>
+          <h2>Ways to use the site</h2>
+          <ul>
+            <li>
+              Navigate with a keyboard and use the skip link to reach the main
+              content.
+            </li>
+            <li>Use arrow keys to move between industry demo tabs.</li>
+            <li>
+              Pause or replay the opening animation. Your device’s
+              reduced-motion preference simplifies motion automatically.
+            </li>
+            <li>
+              Increase text size or zoom the page. Content is designed to reflow
+              on smaller screens.
+            </li>
+            <li>
+              Use labeled controls and status messages in the demos, calculator,
+              and inquiry form.
+            </li>
+          </ul>
+          <h2>External services</h2>
+          <p>
+            The booking calendar is provided by an external service. If the
+            embedded calendar is difficult to use, open its direct link or email
+            the team to arrange a conversation.
+          </p>
+          <h2>Report a problem</h2>
+          <p>
+            Email{" "}
+            <a href={`mailto:${site.contactEmail}`}>{site.contactEmail}</a> with
+            the page, what you were trying to do, and the device or assistive
+            technology involved. Please avoid sending sensitive information. We
+            will review the problem and help you access the information or
+            service you need.
+          </p>
+        </div>
       </div>
-    </Section>
+    </section>
   );
 }

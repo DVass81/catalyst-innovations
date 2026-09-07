@@ -20,6 +20,11 @@ const hits = new Map<string, { count: number; start: number }>();
 
 function checkInMemory(ip: string): boolean {
   const now = Date.now();
+  if (hits.size > 5000) {
+    for (const [key, value] of hits)
+      if (now - value.start > WINDOW_SECONDS * 1000) hits.delete(key);
+    if (hits.size > 10000 && !hits.has(ip)) return true;
+  }
   const h = hits.get(ip);
   if (!h || now - h.start > WINDOW_SECONDS * 1000) {
     hits.set(ip, { count: 1, start: now });
@@ -34,7 +39,10 @@ async function checkUpstash(ip: string): Promise<boolean> {
   try {
     const res = await fetch(`${UPSTASH_URL}/pipeline`, {
       method: "POST",
-      headers: { Authorization: `Bearer ${UPSTASH_TOKEN}`, "Content-Type": "application/json" },
+      headers: {
+        Authorization: `Bearer ${UPSTASH_TOKEN}`,
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify([
         ["INCR", key],
         ["EXPIRE", key, String(WINDOW_SECONDS), "NX"],
@@ -43,9 +51,11 @@ async function checkUpstash(ip: string): Promise<boolean> {
     if (!res.ok) throw new Error(`Upstash responded ${res.status}`);
     const [incrResult] = (await res.json()) as { result: number }[];
     return incrResult.result > MAX_PER_WINDOW;
-  } catch (err) {
-    console.error("[rateLimit] Upstash check failed, allowing request:", err);
-    return false; // fail open — a rate-limiter outage shouldn't block real leads
+  } catch {
+    console.error(
+      "[rateLimit] Durable limiter unavailable; using local window",
+    );
+    return checkInMemory(ip);
   }
 }
 

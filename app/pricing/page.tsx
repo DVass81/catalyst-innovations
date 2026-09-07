@@ -1,191 +1,205 @@
 import type { Metadata } from "next";
-import { Sparkles, Clock, ShieldCheck, RefreshCw, TrendingUp, Settings2 } from "lucide-react";
-import { Section, Eyebrow, Heading, Lead, ButtonLink } from "@/components/ui";
-import { Reveal, RevealGroup, RevealItem } from "@/components/Reveal";
-import CTABand from "@/components/CTABand";
+import Link from "next/link";
+import { ArrowUpRight, Check, ArrowRight } from "lucide-react";
 import PricingGrid from "@/components/PricingGrid";
-import { pricingTiers, pricingFaqs, formatPriceRange } from "@/data/pricing";
-
+import { pricingTiers, pricingFaqs, supportPlans } from "@/data/pricing";
 export const metadata: Metadata = {
-  title: "Pricing",
+  title: "Pricing — Clear scope, clear investment",
   description:
-    "Straightforward implementation and monthly pricing for custom software, automation, and AI — from a digital foundation to a complete digital operating system.",
+    "Free initial conversation. $1,500 Solution Blueprint. Custom projects from $5,000 and optional support from $350 per month.",
+  alternates: { canonical: "/pricing" },
 };
-
-const foundingPartner = pricingTiers.find((t) => t.id === "founding-partner")!;
-const standardTiers = pricingTiers.filter((t) => t.id !== "founding-partner");
-const FOUNDING_PARTNER_SPOTS_CLAIMED = 3;
-const FOUNDING_PARTNER_SPOTS_TOTAL = 10;
-
-const trustPoints = [
-  { icon: RefreshCw, text: "Month-to-month, cancel anytime" },
-  { icon: TrendingUp, text: "Upgrade tiers as you grow" },
-  { icon: ShieldCheck, text: "30-day satisfaction guarantee" },
-];
-
 export default function PricingPage() {
   return (
     <>
-      <section className="relative overflow-hidden bg-navy-900 pb-20 pt-36 text-white">
-        <div className="bg-grid-dark absolute inset-0" aria-hidden="true" />
-        <div className="relative mx-auto max-w-6xl px-5 sm:px-8">
-          <Reveal>
-            <Eyebrow dark>Pricing</Eyebrow>
-            <Heading dark as="h1">
-              Straightforward packages that scale with you.
-            </Heading>
-            <Lead dark>
-              One implementation cost to build it right, one predictable monthly investment
-              to keep it running, growing, and supported. No surprise line items.
-            </Lead>
-          </Reveal>
+      <section className="ci-page-hero">
+        <div className="ci-container">
+          <p className="ci-eyebrow">PRICING, PLAINLY EXPLAINED</p>
+          <h1>
+            A clear scope.
+            <br />
+            <span>A clear investment.</span>
+          </h1>
+          <p>
+            Start with a conversation. Understand the work.
+            <br />
+            Get a fixed proposal before we build.
+          </p>
+          <Link href="/consultation" className="ci-btn">
+            Book a free conversation <ArrowUpRight size={18} />
+          </Link>
         </div>
       </section>
-
-      {/* Founding Partner spotlight */}
-      <section className="relative overflow-hidden bg-navy-950 py-16 sm:py-20">
-        <div
-          aria-hidden="true"
-          className="absolute -left-32 top-0 h-96 w-96 rounded-full bg-steel-400/20 blur-[110px]"
-        />
-        <div className="relative mx-auto max-w-6xl px-5 sm:px-8">
-          <Reveal>
-            <div className="rounded-card bg-gradient-to-br from-steel-400/60 via-white/10 to-transparent p-px shadow-[0_0_60px_rgb(74_143_212/0.2)]">
-              <div className="grid gap-10 rounded-[calc(var(--radius-card)-1px)] bg-navy-900/95 p-8 backdrop-blur-md sm:p-10 lg:grid-cols-[1.1fr_1fr] lg:items-center">
-                <div>
-                  <span className="inline-flex items-center gap-1.5 rounded-full border border-steel-400/50 bg-steel-400/15 px-3 py-1 text-xs font-semibold tracking-wide text-steel-300">
-                    <Clock size={13} /> {foundingPartner.limited}
-                  </span>
-                  <h2 className="mt-4 font-grotesk text-2xl font-semibold text-white sm:text-3xl">
-                    {foundingPartner.name} Program
-                  </h2>
-                  <p className="mt-3 max-w-lg leading-relaxed text-ice-300">
-                    We&apos;re opening the door to {foundingPartner.idealFor.toLowerCase()} at
-                    founding pricing — below Professional, with founder-level access built in.
-                    Once the first {FOUNDING_PARTNER_SPOTS_TOTAL} spots are filled, this tier
-                    closes for good.
-                  </p>
-                  <p className="mt-3 font-display text-sm font-semibold tracking-wide text-steel-300">
-                    {FOUNDING_PARTNER_SPOTS_CLAIMED} of {FOUNDING_PARTNER_SPOTS_TOTAL} spots
-                    claimed — {FOUNDING_PARTNER_SPOTS_TOTAL - FOUNDING_PARTNER_SPOTS_CLAIMED} remaining.
-                  </p>
-                  <div className="mt-6 flex items-baseline gap-3">
-                    <span className="font-display text-4xl font-semibold text-white">
-                      {formatPriceRange(foundingPartner.oneTimeLow, foundingPartner.oneTimeHigh)}
-                    </span>
-                    <span className="text-sm text-silver-400">one-time implementation</span>
-                  </div>
-                  <div className="mt-1 flex items-baseline gap-3">
-                    <span className="font-display text-2xl font-semibold text-steel-300">
-                      {formatPriceRange(foundingPartner.monthlyLow, foundingPartner.monthlyHigh)}/mo
-                    </span>
-                    <span className="text-sm text-silver-400">ongoing investment</span>
-                  </div>
-                  <ButtonLink href="/consultation" className="mt-7">
-                    Claim a Founding Partner Spot
-                  </ButtonLink>
-                </div>
-                <ul className="space-y-3 border-t border-white/10 pt-8 lg:border-l lg:border-t-0 lg:pl-10 lg:pt-0">
-                  {foundingPartner.features.map((f) => (
-                    <li key={f} className="flex items-start gap-3 text-sm text-ice-200">
-                      <Sparkles size={16} className="mt-0.5 shrink-0 text-steel-300" />
-                      {f}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* Standard tiers */}
-      <Section className="bg-ice-50">
-        <Reveal className="text-center">
-          <Eyebrow>Standard packages</Eyebrow>
-          <Heading className="mx-auto">Pick a starting point. Grow into the next one.</Heading>
-          <Lead className="mx-auto">
-            Every package includes hosting, security updates, and support — the difference is
-            how much automation and AI does for your team, and how deep our involvement goes.
-          </Lead>
-          <p className="mt-4 inline-flex items-center gap-2 rounded-full border border-ice-200 bg-white px-4 py-1.5 text-xs font-semibold tracking-wide text-navy-700 shadow-card">
-            <Settings2 size={14} className="text-steel-600" />
-            Every engagement is customized — pricing reflects your actual scope, not a rigid tier.
-          </p>
-        </Reveal>
-
-        <Reveal delay={0.05} className="mx-auto mt-8 flex max-w-xl items-center gap-3 rounded-card border border-steel-400/30 bg-steel-400/10 px-5 py-4">
-          <ShieldCheck size={22} className="shrink-0 text-steel-600" />
-          <p className="text-sm leading-snug text-navy-800">
-            <span className="font-semibold text-navy-900">30-day satisfaction guarantee.</span>{" "}
-            If it&apos;s not the right fit in your first month, we&apos;ll fix it or refund your
-            implementation fee.
-          </p>
-        </Reveal>
-
-        <PricingGrid tiers={standardTiers} />
-
-        <RevealGroup className="mt-14 flex flex-wrap items-center justify-center gap-x-10 gap-y-4" stagger={0.05}>
-          {trustPoints.map((t) => (
-            <RevealItem key={t.text}>
-              <div className="flex items-center gap-2.5 text-sm font-medium text-navy-700">
-                <t.icon size={17} className="text-steel-600" />
-                {t.text}
-              </div>
-            </RevealItem>
-          ))}
-        </RevealGroup>
-      </Section>
-
-      {/* Not sure which tier? */}
-      <Section dark>
-        <div className="grid items-center gap-10 lg:grid-cols-[1.1fr_1fr]">
-          <Reveal>
-            <Eyebrow dark>Not sure which package fits?</Eyebrow>
-            <Heading dark>See what inefficiency is actually costing you first.</Heading>
-            <Lead dark>
-              Run the numbers on your own operation, then let&apos;s talk about which package
-              gets you there fastest.
-            </Lead>
-            <ButtonLink href="/roi-estimator" variant="ghost-dark" className="mt-6">
-              Try the ROI Estimator
-            </ButtonLink>
-          </Reveal>
-          <Reveal delay={0.1}>
-            <div className="rounded-card border border-white/12 bg-navy-800/70 p-8">
-              <h3 className="font-display text-lg font-semibold text-white">A quick way to decide</h3>
-              <ul className="mt-5 space-y-4 text-sm leading-relaxed text-ice-300">
-                <li><span className="font-semibold text-white">Essentials</span> — you need one clean dashboard and to stop chasing paperwork.</li>
-                <li><span className="font-semibold text-white">Professional</span> — automation and AI should be doing real work, not just reporting on it.</li>
-                <li><span className="font-semibold text-white">Executive</span> — you want a full digital operating system, not another point solution.</li>
+      <section className="ci-section ci-paper" id="blueprint">
+        <div className="ci-container">
+          <div className="ci-blueprint ci-blueprint-full">
+            <div>
+              <p className="ci-eyebrow">START WITH CLARITY</p>
+              <h2>Solution Blueprint</h2>
+              <p>
+                A practical plan for one priority workflow. You keep it whether
+                or not you continue with Catalyst.
+              </p>
+              <ul>
+                {[
+                  "Stakeholder interviews and workflow review",
+                  "A process map and recommendations",
+                  "A clearly scoped implementation proposal",
+                ].map((t) => (
+                  <li key={t}>
+                    <Check size={16} />
+                    {t}
+                  </li>
+                ))}
               </ul>
             </div>
-          </Reveal>
+            <div>
+              <strong>$1,500</strong>
+              <span>Paid upfront · USD</span>
+              <p>
+                Fully credited against your kickoff payment when implementation
+                is booked within 60 days.
+              </p>
+              <Link
+                href="/consultation?scope=blueprint"
+                className="ci-btn ci-btn-outline"
+              >
+                Discuss a Blueprint <ArrowUpRight size={18} />
+              </Link>
+            </div>
+          </div>
+          <p className="ci-small-note">
+            The Blueprint covers one priority workflow. Multi-department
+            discovery is quoted separately.
+          </p>
         </div>
-      </Section>
-
-      {/* FAQ */}
-      <Section className="bg-white">
-        <Reveal className="text-center">
-          <Eyebrow>Questions</Eyebrow>
-          <Heading className="mx-auto">Pricing, plainly explained.</Heading>
-        </Reveal>
-        <RevealGroup className="mx-auto mt-12 max-w-3xl space-y-4" stagger={0.05}>
-          {pricingFaqs.map((f) => (
-            <RevealItem key={f.q}>
-              <div className="rounded-card border border-ice-200 bg-ice-50 p-6">
-                <h3 className="font-display text-base font-semibold text-navy-900">{f.q}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-navy-700">{f.a}</p>
+      </section>
+      <section className="ci-section ci-paper ci-section-compact">
+        <div className="ci-container">
+          <p className="ci-eyebrow">BUILD WHAT YOUR BUSINESS NEEDS</p>
+          <h2 className="ci-heading">Three ways a project can take shape.</h2>
+          <PricingGrid tiers={pricingTiers} />
+          <div className="ci-included">
+            <Check size={20} />
+            <p>
+              Every project includes design, implementation, testing,
+              documentation, training, and{" "}
+              <strong>30 days of fixes for defects in the agreed scope.</strong>{" "}
+              New features are scoped separately.
+            </p>
+          </div>
+          <div className="ci-payment-milestones">
+            {[
+              ["50%", "At kickoff"],
+              ["30%", "At the agreed demo milestone"],
+              ["20%", "At acceptance"],
+            ].map(([n, t]) => (
+              <div key={n}>
+                <strong>{n}</strong>
+                <span>{t}</span>
               </div>
-            </RevealItem>
-          ))}
-        </RevealGroup>
-      </Section>
-
-      <CTABand
-        title="Still weighing the options?"
-        body="Tell us where it hurts most and we'll tell you honestly which package — or whether a custom scope — actually fits."
-      />
+            ))}
+          </div>
+          <p className="ci-small-note">
+            An eligible Blueprint credit reduces the kickoff payment. Your
+            proposal confirms the scope, milestones, and acceptance criteria.
+          </p>
+        </div>
+      </section>
+      <section className="ci-section ci-dark" id="support">
+        <div className="ci-container">
+          <div className="ci-section-intro">
+            <div>
+              <p className="ci-eyebrow">OPTIONAL ONGOING SUPPORT</p>
+              <h2 className="ci-heading">
+                Keep your system
+                <br />
+                working for you.
+              </h2>
+            </div>
+            <p>
+              Choose the level of maintenance, support, and improvement time
+              that fits your team.
+            </p>
+          </div>
+          <div className="ci-support-grid">
+            {supportPlans.map((p) => (
+              <article key={p.name}>
+                <h3>{p.name}</h3>
+                <p className="ci-support-price">
+                  ${p.price.toLocaleString("en-US")}
+                  <span>/month</span>
+                </p>
+                <p>Up to {p.hours} hours per month</p>
+                <p>{p.description}</p>
+                <Link
+                  href={`/consultation?scope=support-${p.name.toLowerCase()}`}
+                  className="ci-text-link"
+                >
+                  Discuss {p.name} <ArrowUpRight size={17} />
+                </Link>
+              </article>
+            ))}
+          </div>
+          <div className="ci-support-terms">
+            <p>
+              Month to month, with 30 days’ cancellation notice. All labor,
+              including meetings, counts toward your allowance. Unused hours
+              expire monthly.
+            </p>
+            <p>
+              Additional work requires approval at $175/hour or a fixed quote.
+              Standard support is during business hours; emergency coverage
+              requires a separate arrangement.
+            </p>
+          </div>
+        </div>
+      </section>
+      <section className="ci-section ci-paper">
+        <div className="ci-container ci-faq-layout">
+          <div>
+            <p className="ci-eyebrow">THE DETAILS MATTER</p>
+            <h2 className="ci-heading">
+              Know what
+              <br />
+              you’re agreeing to.
+            </h2>
+            <p className="ci-body-copy">
+              Hosting, AI usage, software subscriptions, travel, and specialist
+              third-party services are disclosed separately.
+            </p>
+            <Link href="/roi-estimator" className="ci-text-link">
+              Estimate the opportunity <ArrowRight size={16} />
+            </Link>
+          </div>
+          <div className="ci-faqs">
+            {pricingFaqs.map((f) => (
+              <details key={f.q}>
+                <summary>
+                  {f.q}
+                  <span>+</span>
+                </summary>
+                <p>{f.a}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+      <section className="ci-closing">
+        <div className="ci-container">
+          <h2>
+            Start with a conversation.
+            <br />
+            <span>Leave with a next step.</span>
+          </h2>
+          <div>
+            <p>A free 30-minute conversation about what you want to improve.</p>
+            <Link href="/consultation" className="ci-btn">
+              Let’s talk <ArrowUpRight size={18} />
+            </Link>
+          </div>
+        </div>
+      </section>
     </>
   );
 }
