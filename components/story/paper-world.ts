@@ -1,7 +1,32 @@
 import * as T from "three";
 import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.js";
-import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 import { addFactoryDetails } from "./factory-details";
+
+let studioData: Promise<ArrayBuffer> | undefined;
+async function studioTexture() {
+  studioData ??= fetch("/lighting/studio.bin.gz").then((response) => {
+    if (!response.ok) throw new Error("Studio lighting unavailable");
+    if (!response.body) throw new Error("Studio lighting is empty");
+    return new Response(
+      response.body.pipeThrough(new DecompressionStream("gzip")),
+    ).arrayBuffer();
+  });
+  const data = await studioData;
+  const header = new DataView(data);
+  const texture = new T.DataTexture(
+    new Uint16Array(data, 8),
+    header.getUint32(0, true),
+    header.getUint32(4, true),
+    T.RGBAFormat,
+    T.HalfFloatType,
+  );
+  texture.mapping = T.CubeUVReflectionMapping;
+  texture.minFilter = T.LinearFilter;
+  texture.magFilter = T.LinearFilter;
+  texture.colorSpace = T.LinearSRGBColorSpace;
+  texture.needsUpdate = true;
+  return texture;
+}
 
 export type WorldFrame = {
   opening: number;
@@ -31,6 +56,14 @@ export function createPaperWorld(
     powerPreference: "low-power",
     preserveDrawingBuffer: review,
   });
+  const context = renderer.getContext();
+  const graphicsInfo = context.getExtension("WEBGL_debug_renderer_info");
+  const graphicsName = graphicsInfo
+    ? String(context.getParameter(graphicsInfo.UNMASKED_RENDERER_WEBGL))
+    : "";
+  compact ||= /swiftshader|llvmpipe|softpipe|software rasterizer/i.test(
+    graphicsName,
+  );
   renderer.setPixelRatio(
     Math.min(window.devicePixelRatio, compact ? 1.15 : 1.6),
   );
@@ -38,16 +71,11 @@ export function createPaperWorld(
   renderer.outputColorSpace = T.SRGBColorSpace;
   renderer.toneMapping = T.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 0.92;
-  renderer.shadowMap.enabled = !compact;
+  renderer.shadowMap.enabled = false;
   renderer.shadowMap.type = T.PCFSoftShadowMap;
   const scene = new T.Scene();
   const camera = new T.PerspectiveCamera(33, 1, 0.1, 80);
-  const room = new RoomEnvironment();
-  const pmrem = new T.PMREMGenerator(renderer);
-  const environment = pmrem.fromScene(room, 0.06);
-  scene.environment = environment.texture;
-  room.dispose();
-  pmrem.dispose();
+  let environment: T.DataTexture | undefined;
   scene.add(new T.HemisphereLight(0xd8eeff, 0x182c42, 1.1));
   const key = new T.DirectionalLight(0xffffff, 2.2);
   key.position.set(-4, 8, 5);
@@ -576,7 +604,8 @@ export function createPaperWorld(
   };
   let w = 0,
     h = 0,
-    disposed = false;
+    disposed = false,
+    prepared = false;
   const colorA = new T.Color(0xeaf0f6),
     colorB = new T.Color(0x46565f);
   let lastEnvelope = NaN,
@@ -585,6 +614,7 @@ export function createPaperWorld(
   function draw(frame: WorldFrame) {
     if (disposed) return;
     previous = frame;
+    if (!prepared) return;
     const { opening: p, connected: c, industry: idx, target, approved } = frame;
     const formation = blend(p, 0.16, 0.54),
       connection = blend(p, 0.42, 0.7),
@@ -707,14 +737,28 @@ export function createPaperWorld(
   }
   const observer = new ResizeObserver(resize);
   observer.observe(canvas);
-  resize();
+  // Let the driver compile all three worlds without a blocking first render.
+  // Keep the native still visible and the real page controls usable meanwhile.
+  const ready = studioTexture().then(async (texture) => {
+    if (disposed) {
+      texture.dispose();
+      return;
+    }
+    environment = texture;
+    scene.environment = texture;
+    await renderer.compileAsync(scene, camera);
+    if (disposed) return;
+    prepared = true;
+    resize();
+  });
   return {
     draw,
+    ready,
     dispose() {
       disposed = true;
       observer.disconnect();
       resources.forEach((r) => r.dispose());
-      environment.dispose();
+      environment?.dispose();
       renderer.dispose();
       renderer.forceContextLoss();
     },

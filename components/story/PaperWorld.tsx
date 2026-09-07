@@ -107,8 +107,13 @@ export default function PaperWorld({
               window.matchMedia("(max-width: 760px)").matches,
             );
             world.current.draw(frame.current);
-            setStatus("ready");
-            onReady?.();
+            world.current.ready
+              .then(() => {
+                if (canceled) return;
+                setStatus("ready");
+                onReady?.();
+              })
+              .catch(fail);
           } catch {
             fail();
           }
