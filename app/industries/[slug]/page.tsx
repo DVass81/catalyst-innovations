@@ -1,5 +1,4 @@
-import SoftwareStory from "@/components/SoftwareStory";
-import { industryStory } from "@/data/motionStories";
+import VisualStory from "@/components/VisualStory";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -57,7 +56,7 @@ export default async function IndustryPage({
       </section>
       <section className="wrap content-section">
         <h2>Connect the steps.</h2>
-        <SoftwareStory story={industryStory(i)} />
+        <VisualStory kind="blueprint" context={i.name} workflow={i.workflow} />
         <p style={{ marginTop: 20 }}>
           An example workflow. We adapt the steps to your operation.
         </p>

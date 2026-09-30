@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowUpRight, ArrowRight } from "lucide-react";
-import SoftwareStory from "@/components/SoftwareStory";
+import VisualStory from "@/components/VisualStory";
 import StoryFilm from "@/components/StoryFilm";
-import { connectedStory } from "@/data/motionStories";
 import IndustrySelector from "@/components/IndustrySelector";
 import { DiscussCTA, SolutionCards, Projects } from "@/components/SiteSections";
 import SavingsPreview from "@/components/SavingsPreview";
@@ -15,7 +14,7 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <>
-      <section className="hero wrap">
+      <section className="hero hero-editorial wrap">
         <div className="hero-copy">
           <p className="overline">
             <span className="live-dot" /> Custom software. Real-world
@@ -23,9 +22,7 @@ export default function Home() {
           </p>
           <h1>
             Less busywork.
-            <br />A better-running
-            <br />
-            <em>business.</em>
+            <br />A better-running <em>business.</em>
           </h1>
           <p className="hero-description">
             We build custom software that connects your customers, jobs,
@@ -44,12 +41,7 @@ export default function Home() {
             Built around your business. By people who understand operations.
           </p>
         </div>
-        <div className="hero-motion">
-          <SoftwareStory story={connectedStory} variant="compact" />
-          <span className="hero-motion-label">
-            One request. Every step connected.
-          </span>
-        </div>
+        <VisualStory kind="blueprint" priority />
       </section>
       <div className="benefit-strip">
         <div className="wrap">
@@ -76,7 +68,7 @@ export default function Home() {
             typed into five different places.
           </p>
         </div>
-        <SoftwareStory story={connectedStory} />
+        <VisualStory kind="comparison" />
         <StoryFilm />
       </section>
       <section className="section section-white">

@@ -1,4 +1,4 @@
-import SoftwareStory from "@/components/SoftwareStory";
+import VisualStory from "@/components/VisualStory";
 import { solutionStories } from "@/data/motionStories";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -50,7 +50,11 @@ export default async function Solution({
       </section>
       <section className="wrap content-section">
         <p className="overline">A clearer workflow</p>
-        <SoftwareStory story={solutionStories[s.slug]} />
+        <VisualStory
+          kind="desk"
+          context={s.navLabel}
+          workflow={solutionStories[s.slug].steps.map((step) => step.label)}
+        />
         <p style={{ marginTop: 25 }}>
           Explore the potential value with your own figures.
         </p>

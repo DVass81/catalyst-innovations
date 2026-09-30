@@ -1,7 +1,6 @@
 "use client";
 import { useState } from "react";
-import SoftwareStory from "./SoftwareStory";
-import { industryStory } from "@/data/motionStories";
+import VisualStory from "./VisualStory";
 import Link from "next/link";
 import { ArrowRight, Check } from "lucide-react";
 import { industryList, groups } from "@/data/redesign";
@@ -67,7 +66,13 @@ export default function IndustrySelector() {
         </div>
       </div>
       <div className="industry-motion">
-        <SoftwareStory key={i.slug} story={industryStory(i)} autoplay={false} />
+        <VisualStory
+          key={i.slug}
+          kind="blueprint"
+          context={i.name}
+          workflow={i.workflow}
+          autoplay={false}
+        />
       </div>
     </div>
   );

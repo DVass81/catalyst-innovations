@@ -184,3 +184,30 @@ test("film stays hidden until reviewed and never preloads before visitor selecti
     assert.doesNotMatch(html, /<video|<source|reviewed-example\.mp4/);
   }
 });
+
+test("all three visual concepts expose readable initial stories and contextual workflow without JavaScript", () => {
+  const React = require("react");
+  const { renderToStaticMarkup } = require("react-dom/server");
+  const definitions = load("data/visualStories.ts");
+  const { default: VisualStory } = load("components/VisualStory.tsx", {
+    "@/data/visualStories": definitions,
+    "@/lib/storyPlayback": load("lib/storyPlayback.ts"),
+    "next/image": { default: ({ src, alt }) => React.createElement("img", { src, alt }) },
+  });
+  for (const [kind, story] of Object.entries(definitions.visualStories)) {
+    const html = renderToStaticMarkup(
+      React.createElement(VisualStory, {
+        kind,
+        context: "HOAs",
+        workflow: ["Request", "Assign", "Complete"],
+      }),
+    );
+    assert.ok(html.includes(story.scenes[0].title));
+    assert.match(html, /Illustrative service business/);
+    assert.match(html, /A workflow for hoas/);
+    assert.match(html, /Request/);
+    assert.match(html, /aria-pressed="true"/);
+    assert.match(html, /data-playing="false"/);
+    assert.ok(fs.existsSync(path.join(__dirname, "../public", story.image)));
+  }
+});

@@ -1,3 +1,4 @@
+import VisualStory from "@/components/VisualStory";
 import type { Metadata } from "next";
 import { PageIntro, DiscussCTA } from "@/components/SiteSections";
 import ToolLibrary from "@/components/ToolLibrary";
@@ -16,6 +17,10 @@ export default function Tools() {
       />
       <section className="wrap content-section">
         <ToolLibrary />
+      </section>
+      <section className="wrap content-section">
+        <h2>What could a clearer process change?</h2>
+        <VisualStory kind="comparison" autoplay={false} />
       </section>
       <DiscussCTA />
     </>

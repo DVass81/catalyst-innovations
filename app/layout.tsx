@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import "./globals.css";
 import "./redesign.css";
 import "./motion-story.css";
+import "./visual-story.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Analytics from "@/components/Analytics";
