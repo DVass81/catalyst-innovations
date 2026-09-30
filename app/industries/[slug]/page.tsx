@@ -1,3 +1,5 @@
+import SoftwareStory from "@/components/SoftwareStory";
+import { industryStory } from "@/data/motionStories";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -55,14 +57,7 @@ export default async function IndustryPage({
       </section>
       <section className="wrap content-section">
         <h2>Connect the steps.</h2>
-        <ol className="simple-steps">
-          {i.workflow.map((s, n) => (
-            <li key={s}>
-              <span>0{n + 1}</span>
-              {s}
-            </li>
-          ))}
-        </ol>
+        <SoftwareStory story={industryStory(i)} />
         <p style={{ marginTop: 20 }}>
           An example workflow. We adapt the steps to your operation.
         </p>

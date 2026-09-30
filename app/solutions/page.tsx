@@ -1,3 +1,5 @@
+import SoftwareStory from "@/components/SoftwareStory";
+import { connectedStory } from "@/data/motionStories";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { services } from "@/data/services";
@@ -21,6 +23,10 @@ export default function Solutions() {
       />
       <section className="wrap content-section">
         <SolutionCards />
+      </section>
+      <section className="wrap content-section">
+        <h2>See the pieces work together.</h2>
+        <SoftwareStory story={connectedStory} />
       </section>
       <section className="wrap content-section">
         <h2>Explore a starting point.</h2>

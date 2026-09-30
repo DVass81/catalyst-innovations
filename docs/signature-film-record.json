@@ -1,0 +1,27 @@
+{
+  "status": "prompt-ready-insufficient-credits",
+  "preset": "glass-ui-launch",
+  "sourcePromptSha256": "674ac5c53f5b63e7cd449936c55f4095fecec023554ca9a20a9b6564626932ce",
+  "adaptedPrompt": "signature-film-prompt.md",
+  "reference": {
+    "path": "motion-story-reference.png",
+    "role": "general design and content",
+    "sha256": "81a88ab5c3ccfe9d90fa53abfeddedd48f9bc21ff19b10a143599efc41ce5cfd",
+    "uploaded": false
+  },
+  "settings": {
+    "model": "seedance_2_0",
+    "mode": "std",
+    "duration": 15,
+    "aspect_ratio": "16:9",
+    "resolution": "720p",
+    "generate_audio": false,
+    "count": 1
+  },
+  "estimatedCredits": 67.5,
+  "observedAvailableCredits": 9.49,
+  "jobId": null,
+  "generationSubmitted": false,
+  "filmReviewed": false,
+  "automaticRetry": false
+}

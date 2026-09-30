@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowUpRight, ArrowRight, Check, MoveUpRight } from "lucide-react";
-import WorkflowStory from "@/components/WorkflowStory";
+import { ArrowUpRight, ArrowRight } from "lucide-react";
+import SoftwareStory from "@/components/SoftwareStory";
+import StoryFilm from "@/components/StoryFilm";
+import { connectedStory } from "@/data/motionStories";
 import IndustrySelector from "@/components/IndustrySelector";
 import { DiscussCTA, SolutionCards, Projects } from "@/components/SiteSections";
 import SavingsPreview from "@/components/SavingsPreview";
@@ -42,59 +44,10 @@ export default function Home() {
             Built around your business. By people who understand operations.
           </p>
         </div>
-        <div
-          className="hero-visual"
-          aria-label="Illustration of connected business operations"
-        >
-          <div className="orbit orbit-one" />
-          <div className="orbit orbit-two" />
-          <div className="hero-label">YOUR BUSINESS, CONNECTED</div>
-          <div className="desk-sheet sheet-back">
-            <span>THE WAY IT USED TO BE</span>
-            <p>
-              Spreadsheets.
-              <br />
-              Follow-ups.
-              <br />
-              More follow-ups.
-            </p>
-            <div className="scribble" />
-          </div>
-          <div className="desk-sheet sheet-front">
-            <div className="sheet-heading">
-              <span className="tiny-mark">C</span> A clearer workday{" "}
-              <MoveUpRight size={18} />
-            </div>
-            <div className="sheet-status">
-              <span className="live-dot" /> Everything in its place
-            </div>
-            {[
-              "Customers & quotes",
-              "Jobs & scheduling",
-              "Inventory & purchasing",
-              "Invoices & reporting",
-            ].map((s, n) => (
-              <div key={s} className="sheet-row">
-                <span>0{n + 1}</span>
-                {s}
-                <Check size={16} />
-              </div>
-            ))}
-            <div className="sheet-footer">
-              <span>LESS ADMIN. MORE MOMENTUM.</span>
-              <span>↗</span>
-            </div>
-          </div>
-          <div className="floating-note">
-            <span className="note-check">
-              <Check size={18} />
-            </span>
-            <div>
-              Connected from the start.<small>Built to work your way.</small>
-            </div>
-          </div>
-          <span className="visual-caption">
-            A simpler way to see the whole picture.
+        <div className="hero-motion">
+          <SoftwareStory story={connectedStory} variant="compact" />
+          <span className="hero-motion-label">
+            One request. Every step connected.
           </span>
         </div>
       </section>
@@ -123,7 +76,8 @@ export default function Home() {
             typed into five different places.
           </p>
         </div>
-        <WorkflowStory />
+        <SoftwareStory story={connectedStory} />
+        <StoryFilm />
       </section>
       <section className="section section-white">
         <div className="wrap">

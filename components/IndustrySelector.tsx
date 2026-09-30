@@ -1,5 +1,7 @@
 "use client";
 import { useState } from "react";
+import SoftwareStory from "./SoftwareStory";
+import { industryStory } from "@/data/motionStories";
 import Link from "next/link";
 import { ArrowRight, Check } from "lucide-react";
 import { industryList, groups } from "@/data/redesign";
@@ -53,16 +55,6 @@ export default function IndustrySelector() {
           </Link>
         </div>
         <div className="industry-example">
-          <p className="overline">A more connected workflow</p>
-          <ol>
-            {i.workflow.map((s, n) => (
-              <li key={s}>
-                <span>0{n + 1}</span>
-                {s}
-                {n < 4 && <ArrowRight size={14} />}
-              </li>
-            ))}
-          </ol>
           <p className="overline">Put your numbers to work</p>
           <div className="recommended-tools">
             {i.tools.map((slug) => (
@@ -73,6 +65,9 @@ export default function IndustrySelector() {
             ))}
           </div>
         </div>
+      </div>
+      <div className="industry-motion">
+        <SoftwareStory key={i.slug} story={industryStory(i)} autoplay={false} />
       </div>
     </div>
   );

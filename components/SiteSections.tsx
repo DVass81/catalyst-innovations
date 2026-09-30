@@ -1,4 +1,6 @@
 import Link from "next/link";
+import SoftwareStory from "./SoftwareStory";
+import { projectMotionStories } from "@/data/motionStories";
 import {
   ArrowUpRight,
   Layers3,
@@ -76,36 +78,11 @@ export function Projects() {
     <div className="three-grid project-cards">
       {projectStories.map((p, i) => (
         <article className="project-card" key={p.title}>
-          <div className={`project-art art-${i}`} aria-hidden="true">
-            <span className="project-art-label">
-              {i === 0
-                ? "A shared goal."
-                : i === 1
-                  ? "A connected community."
-                  : "A clearer workday."}
-            </span>
-            {i === 0 ? (
-              <div className="abstract-campaign">
-                <div />
-                <div />
-                <div />
-                <div />
-              </div>
-            ) : i === 1 ? (
-              <div className="abstract-community">
-                {Array.from({ length: 9 }, (_, n) => (
-                  <i key={n} />
-                ))}
-              </div>
-            ) : (
-              <div className="abstract-jobs">
-                <span />
-                <span />
-                <span />
-              </div>
-            )}
-            <span className="illustration-label">Concept illustration</span>
-          </div>
+          <SoftwareStory
+            story={projectMotionStories[i]}
+            variant="card"
+            autoplay={false}
+          />
           <div className="project-copy">
             <p className="overline">
               {p.type} <span className="status-tag">{p.status}</span>

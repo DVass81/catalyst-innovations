@@ -1,3 +1,5 @@
+import SoftwareStory from "@/components/SoftwareStory";
+import { solutionStories } from "@/data/motionStories";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -48,19 +50,7 @@ export default async function Solution({
       </section>
       <section className="wrap content-section">
         <p className="overline">A clearer workflow</p>
-        <ol className="simple-steps">
-          {[
-            "Capture information",
-            "Connect the steps",
-            "Keep people informed",
-            "See what needs attention",
-          ].map((x, i) => (
-            <li key={x}>
-              <span>0{i + 1}</span>
-              {x}
-            </li>
-          ))}
-        </ol>
+        <SoftwareStory story={solutionStories[s.slug]} />
         <p style={{ marginTop: 25 }}>
           Explore the potential value with your own figures.
         </p>
