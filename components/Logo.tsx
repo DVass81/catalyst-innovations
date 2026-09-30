@@ -35,12 +35,26 @@ export function CatalystMark({
         fill="url(#ciBlue)"
       />
       <defs>
-        <linearGradient id="ciSilver" x1="12" y1="4" x2="88" y2="96" gradientUnits="userSpaceOnUse">
+        <linearGradient
+          id="ciSilver"
+          x1="12"
+          y1="4"
+          x2="88"
+          y2="96"
+          gradientUnits="userSpaceOnUse"
+        >
           <stop stopColor="#E8EEF5" />
           <stop offset="0.5" stopColor="#B9C8DA" />
           <stop offset="1" stopColor="#93A3B8" />
         </linearGradient>
-        <linearGradient id="ciBlue" x1="32" y1="32" x2="70" y2="68" gradientUnits="userSpaceOnUse">
+        <linearGradient
+          id="ciBlue"
+          x1="32"
+          y1="32"
+          x2="70"
+          y2="68"
+          gradientUnits="userSpaceOnUse"
+        >
           <stop stopColor="#4A8FD4" />
           <stop offset="1" stopColor="#2F5D8F" />
         </linearGradient>
@@ -58,15 +72,19 @@ export function LogoLockup({
   markSize?: number;
 }) {
   const primary = variant === "dark-bg" ? "text-white" : "text-navy-900";
-  const secondary = variant === "dark-bg" ? "text-ice-300" : "text-silver-500";
+  const secondary = variant === "dark-bg" ? "text-ice-300" : "text-steel-600";
   return (
     <span className="inline-flex items-center gap-2.5">
       <CatalystMark size={markSize} />
       <span className="flex flex-col leading-none">
-        <span className={`font-display font-semibold tracking-[0.18em] text-[0.95rem] ${primary}`}>
+        <span
+          className={`font-display font-semibold tracking-[0.18em] text-[0.95rem] ${primary}`}
+        >
           CATALYST
         </span>
-        <span className={`font-display tracking-[0.42em] text-[0.55rem] mt-1 ${secondary}`}>
+        <span
+          className={`font-display tracking-[0.42em] text-[0.55rem] mt-1 ${secondary}`}
+        >
           INNOVATIONS
         </span>
       </span>

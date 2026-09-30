@@ -1,39 +1,39 @@
 import type { Metadata } from "next";
-import { Eyebrow, Heading, Lead } from "@/components/ui";
-import { Reveal } from "@/components/Reveal";
-import IndustryExplorer from "@/components/IndustryExplorer";
-import CTABand from "@/components/CTABand";
-import CityAccent from "@/components/CityAccent";
-import { getIndustries, getServices } from "@/lib/cms";
-
+import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
+import { industryList, groups } from "@/data/redesign";
+import { PageIntro, DiscussCTA } from "@/components/SiteSections";
 export const metadata: Metadata = {
-  title: "Industries — Solutions Designed to Support Real Operations",
+  title: "Industries We Help",
   description:
-    "Solutions designed to support manufacturing, financial institutions, credit unions, logistics, construction, contractors, professional services, nonprofits, and growing businesses.",
+    "Custom software for trades, manufacturing, warehouses, communities, nonprofits and growing businesses.",
 };
-
-export default async function IndustriesPage() {
-  const [industries, services] = await Promise.all([getIndustries(), getServices()]);
+export default function Industries() {
   return (
     <>
-      <section className="relative overflow-hidden bg-navy-900 pb-16 pt-36 text-white">
-        <CityAccent />
-        <div className="relative mx-auto max-w-6xl px-5 sm:px-8">
-          <Reveal>
-            <Eyebrow dark>Industries</Eyebrow>
-            <Heading dark as="h1">Built for real work, real teams, and real results.</Heading>
-            <Lead dark>
-              Select an industry to see the operational problems we can help solve, the
-              solutions we design, and the outcomes they target.
-            </Lead>
-          </Reveal>
-        </div>
-      </section>
-      <IndustryExplorer industries={industries} services={services} />
-      <CTABand
-        title="Don't see your industry?"
-        body="If your organization has processes, paperwork, and people — we can probably help. Tell us what you run."
+      <PageIntro
+        eyebrow="Industries"
+        title="Different work. The same need for a better way."
+        text="Your business has its own rhythm. We build around it—with connected workflows, useful information and less repetitive work."
       />
+      <section className="wrap content-section">
+        {groups.map((g) => (
+          <div className="industry-directory" key={g}>
+            <h2>{g}</h2>
+            <div className="directory-links">
+              {industryList
+                .filter((i) => i.group === g)
+                .map((i) => (
+                  <Link id={i.slug} key={i.slug} href={`/industries/${i.slug}`}>
+                    {i.name}
+                    <ArrowUpRight size={17} />
+                  </Link>
+                ))}
+            </div>
+          </div>
+        ))}
+      </section>
+      <DiscussCTA />
     </>
   );
 }

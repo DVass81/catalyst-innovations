@@ -28,7 +28,10 @@ const securityHeaders = [
   { key: "X-Content-Type-Options", value: "nosniff" },
   { key: "X-Frame-Options", value: "DENY" },
   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
-  { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
+  {
+    key: "Permissions-Policy",
+    value: "camera=(), microphone=(), geolocation=()",
+  },
 ];
 
 const nextConfig: NextConfig = {
@@ -36,7 +39,14 @@ const nextConfig: NextConfig = {
     return [{ source: "/(.*)", headers: securityHeaders }];
   },
   async redirects() {
-    return [{ source: "/start", destination: "/roi-estimator", permanent: true }];
+    return [
+      { source: "/start", destination: "/tools/project-roi", permanent: true },
+      {
+        source: "/roi-estimator",
+        destination: "/tools/project-roi",
+        permanent: true,
+      },
+    ];
   },
 };
 

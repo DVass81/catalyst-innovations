@@ -5,9 +5,9 @@
  */
 export const site = {
   name: "Catalyst Innovations",
-  motto: "Make more. Save time. Work smarter.",
+  motto: "Less busywork. A better-running business.",
   positioning:
-    "Catalyst Innovations builds intelligent systems that help businesses increase profitability, eliminate inefficient work, and operate with greater clarity and control.",
+    "We build custom software that connects your customers, jobs, inventory, purchasing, and accounting so your team can spend more time doing the work.",
   // Set NEXT_PUBLIC_SITE_URL in production (e.g. https://catalystinnovations.com)
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://example.com",
   // Contact placeholders — configure via env, never hardcoded personal info.
@@ -30,7 +30,7 @@ export const navLinks: NavLink[] = [
     label: "Pricing",
     children: [
       { href: "/pricing", label: "Pricing" },
-      { href: "/roi-estimator", label: "ROI Estimator" },
+      { href: "/tools", label: "Savings Tools" },
     ],
   },
   { href: "/about", label: "About" },
@@ -55,7 +55,10 @@ export type AnalyticsEvent =
   | "phone_click"
   | "email_click";
 
-export function track(event: AnalyticsEvent, props?: Record<string, string | number>) {
+export function track(
+  event: AnalyticsEvent,
+  props?: Record<string, string | number>,
+) {
   if (typeof window === "undefined") return;
   const w = window as typeof window & {
     ciTrack?: (e: string, p?: Record<string, string | number>) => void;

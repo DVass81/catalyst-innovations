@@ -3,9 +3,13 @@
 import { useState } from "react";
 import { Check, Sparkles } from "lucide-react";
 import { ButtonLink } from "./ui";
-import { Spotlight } from "./Spotlight";
+
 import { Reveal, RevealGroup, RevealItem } from "./Reveal";
-import { ANNUAL_DISCOUNT, formatPriceRange, type PricingTier } from "@/data/pricing";
+import {
+  ANNUAL_DISCOUNT,
+  formatPriceRange,
+  type PricingTier,
+} from "@/data/pricing";
 
 export default function PricingGrid({ tiers }: { tiers: PricingTier[] }) {
   const [annual, setAnnual] = useState(false);
@@ -19,7 +23,9 @@ export default function PricingGrid({ tiers }: { tiers: PricingTier[] }) {
             onClick={() => setAnnual(false)}
             aria-pressed={!annual}
             className={`rounded-full px-5 py-2 text-sm font-semibold transition-colors ${
-              !annual ? "bg-navy-900 text-white" : "text-navy-700 hover:text-navy-900"
+              !annual
+                ? "bg-navy-900 text-white"
+                : "text-navy-700 hover:text-navy-900"
             }`}
           >
             Monthly
@@ -29,13 +35,17 @@ export default function PricingGrid({ tiers }: { tiers: PricingTier[] }) {
             onClick={() => setAnnual(true)}
             aria-pressed={annual}
             className={`inline-flex items-center gap-2 rounded-full px-5 py-2 text-sm font-semibold transition-colors ${
-              annual ? "bg-navy-900 text-white" : "text-navy-700 hover:text-navy-900"
+              annual
+                ? "bg-navy-900 text-white"
+                : "text-navy-700 hover:text-navy-900"
             }`}
           >
             Annual
             <span
               className={`rounded-full px-2 py-0.5 text-[0.68rem] font-bold ${
-                annual ? "bg-steel-400 text-white" : "bg-steel-400/15 text-steel-600"
+                annual
+                  ? "bg-steel-400 text-white"
+                  : "bg-steel-400/15 text-steel-600"
               }`}
             >
               Save {ANNUAL_DISCOUNT * 100}%
@@ -44,7 +54,10 @@ export default function PricingGrid({ tiers }: { tiers: PricingTier[] }) {
         </div>
       </Reveal>
 
-      <RevealGroup className="mt-10 grid items-start gap-6 lg:grid-cols-3" stagger={0.08}>
+      <RevealGroup
+        className="mt-10 grid items-start gap-6 lg:grid-cols-3"
+        stagger={0.08}
+      >
         {tiers.map((tier) => {
           const factor = annual ? 1 - ANNUAL_DISCOUNT : 1;
           const monthlyLow = tier.monthlyLow * factor;
@@ -53,7 +66,7 @@ export default function PricingGrid({ tiers }: { tiers: PricingTier[] }) {
           const annualHigh = tier.monthlyHigh * 12 * (1 - ANNUAL_DISCOUNT);
           return (
             <RevealItem key={tier.id} className="h-full">
-              <Spotlight className="h-full rounded-card">
+              <div className="h-full rounded-card">
                 <div
                   className={`relative flex h-full flex-col rounded-card border bg-white p-8 ${
                     tier.popular
@@ -66,15 +79,21 @@ export default function PricingGrid({ tiers }: { tiers: PricingTier[] }) {
                       <Sparkles size={12} /> Most Popular
                     </span>
                   )}
-                  <h3 className="font-display text-xl font-semibold text-navy-900">{tier.name}</h3>
-                  <p className="mt-1.5 text-sm leading-snug text-silver-500">{tier.idealFor}</p>
+                  <h3 className="font-display text-xl font-semibold text-navy-900">
+                    {tier.name}
+                  </h3>
+                  <p className="mt-1.5 text-sm leading-snug text-silver-500">
+                    {tier.idealFor}
+                  </p>
 
                   <div className="mt-6 flex items-baseline gap-2">
                     <span className="font-display text-2xl font-semibold text-navy-900 sm:text-3xl">
                       {formatPriceRange(tier.oneTimeLow, tier.oneTimeHigh)}
                     </span>
                   </div>
-                  <p className="text-xs text-silver-500">one-time implementation</p>
+                  <p className="text-xs text-silver-500">
+                    one-time implementation
+                  </p>
 
                   <div className="mt-3 flex items-baseline gap-2">
                     <span className="font-display text-lg font-semibold text-steel-600 sm:text-xl">
@@ -89,8 +108,14 @@ export default function PricingGrid({ tiers }: { tiers: PricingTier[] }) {
 
                   <ul className="mt-7 flex-1 space-y-3">
                     {tier.features.map((f) => (
-                      <li key={f} className="flex items-start gap-2.5 text-sm text-navy-700">
-                        <Check size={16} className="mt-0.5 shrink-0 text-steel-600" />
+                      <li
+                        key={f}
+                        className="flex items-start gap-2.5 text-sm text-navy-700"
+                      >
+                        <Check
+                          size={16}
+                          className="mt-0.5 shrink-0 text-steel-600"
+                        />
                         {f}
                       </li>
                     ))}
@@ -104,7 +129,7 @@ export default function PricingGrid({ tiers }: { tiers: PricingTier[] }) {
                     Get Started
                   </ButtonLink>
                 </div>
-              </Spotlight>
+              </div>
             </RevealItem>
           );
         })}

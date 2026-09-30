@@ -1,90 +1,58 @@
 import type { Metadata } from "next";
-import { Section, Eyebrow, Heading, Lead } from "@/components/ui";
-import { Reveal } from "@/components/Reveal";
-import ConsultationForm from "@/components/ConsultationForm";
-import ConsultationTabs from "@/components/ConsultationTabs";
-import BookingEmbed from "@/components/BookingEmbed";
-import { site } from "@/lib/site";
-
+import { PageIntro } from "@/components/SiteSections";
+import InquiryForm from "@/components/InquiryForm";
+import { industryList } from "@/data/redesign";
+import { getCalculator } from "@/lib/calculators";
 export const metadata: Metadata = {
-  title: "Request a Consultation",
+  title: "Discuss My Business",
   description:
-    "Tell us about the process that frustrates you most. A consultation costs nothing and starts with listening.",
+    "Tell Catalyst what slows your business down. Start a conversation about custom software and automation.",
 };
-
-/** Maps assessment result slugs to prefill text for the form. */
-const recTitles: Record<string, string> = {
-  custom: "Custom Workflow Application",
-  procurement: "Procurement Transformation",
-  ai: "AI & Automation Assessment",
-  manufacturing: "Manufacturing Operations Platform",
-  supplychain: "Supply-Chain Intelligence",
-  dashboard: "Executive Dashboard",
-  integration: "System Integration",
-  roadmap: "Digital Transformation Roadmap",
-};
-const industryMap: Record<string, string> = {
-  manufacturing: "Manufacturing",
-  financial: "Financial institution",
-  contractor: "Construction",
-  professional: "Professional services",
-};
-
-export default async function ConsultationPage({
+export default async function Consultation({
   searchParams,
 }: {
-  searchParams: Promise<{ rec?: string; ind?: string }>;
+  searchParams: Promise<{
+    industry?: string;
+    tool?: string;
+    attach?: string;
+    ind?: string;
+    rec?: string;
+  }>;
 }) {
-  const { rec, ind } = await searchParams;
-  const recTitle = rec ? recTitles[rec] : undefined;
-  const industry = ind ? industryMap[ind] : undefined;
-  const initial = recTitle
-    ? {
-        inquiryType: "Request a consultation" as const,
-        industry: (industry ?? "Other") as never,
-        challenge: `From the starting-point assessment — recommended: ${recTitle}. `,
-      }
-    : undefined;
-
+  const q = await searchParams;
+  const industry = industryList.find((i) => i.slug === (q.industry ?? q.ind));
+  const tool = q.tool ? getCalculator(q.tool) : undefined;
   return (
     <>
-      <section className="bg-navy-900 pb-14 pt-36 text-white">
-        <div className="mx-auto max-w-6xl px-5 sm:px-8">
-          <Reveal>
-            <Eyebrow dark>Request a consultation</Eyebrow>
-            <Heading dark as="h1">Let&apos;s talk about your operation.</Heading>
-            <Lead dark>
-              Four short steps. We&apos;ll review your submission and respond — usually within
-              one business day.
-            </Lead>
-          </Reveal>
-        </div>
+      <PageIntro
+        eyebrow="Let’s start with your business"
+        title="What’s slowing you down?"
+        text="Tell us about the work, the repeated tasks or the idea you want to explore. You don’t need a software specification to start."
+      />
+      <section className="wrap content-section two-grid">
+        <InquiryForm
+          industry={industry?.name ?? ""}
+          tool={tool?.slug}
+          attach={q.attach === "1"}
+        />
+        <aside className="inquiry-aside">
+          <p className="overline">What happens next</p>
+          <h2>
+            A conversation.
+            <br />A clearer starting point.
+          </h2>
+          <p>
+            We’ll review what you share and contact you to understand the
+            problem, the people involved and what a useful next step could look
+            like.
+          </p>
+          <h3>You bring the business.</h3>
+          <p>
+            We help connect the processes, information and software around it.
+          </p>
+          <p>No obligation. No need to choose a package before we talk.</p>
+        </aside>
       </section>
-      <Section className="relative overflow-hidden bg-navy-950">
-        <div className="bg-grid-dark absolute inset-0" aria-hidden="true" />
-        <div className="relative mx-auto max-w-3xl">
-          {site.schedulingUrl ? (
-            <ConsultationTabs
-              form={<ConsultationForm initial={initial} />}
-              booking={<BookingEmbed />}
-            />
-          ) : (
-            <ConsultationForm initial={initial} />
-          )}
-          <div className="mt-10 grid gap-4 sm:grid-cols-3">
-            {[
-              ["No obligation", "A conversation, not a sales funnel."],
-              ["Founders on the call", "You talk to Josh directly, not an SDR."],
-              ["Honest scoping", "If we're not the right fit, we'll say so."],
-            ].map(([t, d]) => (
-              <div key={t} className="rounded-card border border-white/12 bg-white/5 p-5 text-center">
-                <p className="font-display text-sm font-semibold text-white">{t}</p>
-                <p className="mt-1 text-xs text-ice-300">{d}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </Section>
     </>
   );
 }

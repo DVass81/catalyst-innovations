@@ -16,22 +16,33 @@ import { isRateLimited } from "@/lib/rateLimit";
  */
 
 export async function POST(req: NextRequest) {
-  const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
+  const ip =
+    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
   if (await isRateLimited(ip)) {
-    return NextResponse.json({ ok: false, error: "Too many requests. Please try again shortly." }, { status: 429 });
+    return NextResponse.json(
+      { ok: false, error: "Too many requests. Please try again shortly." },
+      { status: 429 },
+    );
   }
 
   let body: unknown;
   try {
     body = await req.json();
   } catch {
-    return NextResponse.json({ ok: false, error: "Invalid request." }, { status: 400 });
+    return NextResponse.json(
+      { ok: false, error: "Invalid request." },
+      { status: 400 },
+    );
   }
 
   const parsed = consultationSchema.safeParse(body);
   if (!parsed.success) {
     return NextResponse.json(
-      { ok: false, error: "Please check the highlighted fields.", issues: parsed.error.flatten().fieldErrors },
+      {
+        ok: false,
+        error: "Please check the highlighted fields.",
+        issues: parsed.error.flatten().fieldErrors,
+      },
       { status: 400 },
     );
   }
@@ -84,9 +95,14 @@ export async function POST(req: NextRequest) {
         .join("\n");
       const res = await fetch("https://api.resend.com/emails", {
         method: "POST",
-        headers: { Authorization: `Bearer ${resendKey}`, "Content-Type": "application/json" },
+        headers: {
+          Authorization: `Bearer ${resendKey}`,
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({
-          from: process.env.CONSULTATION_FROM_EMAIL ?? "Catalyst Website <onboarding@resend.dev>",
+          from:
+            process.env.CONSULTATION_FROM_EMAIL ??
+            "Catalyst Website <onboarding@resend.dev>",
           to: [toEmail],
           reply_to: payload.email,
           subject: `[${leadTier}] New ${payload.inquiryType.toLowerCase()} — ${payload.name} (${payload.company})`,
@@ -101,7 +117,11 @@ export async function POST(req: NextRequest) {
     }
   }
 
-  if (!webhook && !(resendKey && toEmail)) {
+  if (
+    !webhook &&
+    !(resendKey && toEmail) &&
+    process.env.NODE_ENV !== "production"
+  ) {
     // Dev fallback — visible in server logs so submissions aren't lost.
     console.log("[consultation] submission (no delivery configured):", payload);
     delivered = true;
@@ -109,7 +129,11 @@ export async function POST(req: NextRequest) {
 
   if (!delivered) {
     return NextResponse.json(
-      { ok: false, error: "We couldn't submit your request right now. Please try again or email us directly." },
+      {
+        ok: false,
+        error:
+          "We couldn't submit your request right now. Please try again or email us directly.",
+      },
       { status: 502 },
     );
   }

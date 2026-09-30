@@ -42,10 +42,13 @@ const inquiryScore: Record<string, number> = {
 
 export type LeadTier = "Hot" | "Warm" | "Standard";
 
-export function scoreLead(data: ConsultationData): { score: number; tier: LeadTier } {
+export function scoreLead(data: ConsultationData): {
+  score: number;
+  tier: LeadTier;
+} {
   const score =
-    (timelineScore[data.timeline] ?? 0) +
-    (companySizeScore[data.companySize] ?? 0) +
+    (timelineScore[data.timeline ?? ""] ?? 0) +
+    (companySizeScore[data.companySize ?? ""] ?? 0) +
     (budgetScore[data.budget ?? ""] ?? 0) +
     (inquiryScore[data.inquiryType] ?? 0);
 
