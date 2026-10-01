@@ -234,7 +234,7 @@ test("all three visual concepts expose readable initial stories and contextual w
   }
 });
 
-test("real demo tours have verified local assets and only the public HOA can link out", () => {
+test("video gallery preserves actual demo assets and only the public HOA can link out", () => {
   const { demos } = load("data/demos.ts");
   assert.equal(demos.length, 3);
   for (const demo of demos) {
@@ -245,12 +245,20 @@ test("real demo tours have verified local assets and only the public HOA can lin
       assert.ok(step.alt && step.text && step.width > 0 && step.height > 0);
     }
     if (demo.id !== "hoa") assert.equal(demo.publicUrl, undefined);
+    if (demo.walkthrough) {
+      assert.ok(demo.walkthrough.durationSeconds >= 60 && demo.walkthrough.durationSeconds <= 90);
+      assert.ok(demo.walkthrough.transcript.trim().length > 100);
+      for (const asset of [demo.walkthrough.video, demo.walkthrough.poster, demo.walkthrough.captions]) {
+        assert.ok(asset.startsWith("/demos/"));
+        assert.ok(fs.existsSync(path.join(__dirname, "../public", asset)), `Missing walkthrough asset: ${asset}`);
+      }
+    }
   }
   assert.equal(demos.find(d => d.id === "painting").availability, "archived-guided");
   const React = require("react");
   const { renderToStaticMarkup } = require("react-dom/server");
   const { default: DemoShowcase } = load("components/DemoShowcase.tsx", {
-    "@/data/demos": { demos },
+    "@/data/demos": { demos: demos.map(d => ({ ...d, walkthrough: undefined })) },
     "@/lib/site": { track: () => {} },
     "next/image": { default: ({ src, alt }) => React.createElement("img", { src, alt }) },
     "next/link": { default: ({ children, ...props }) => React.createElement("a", props, children) },
@@ -259,7 +267,29 @@ test("real demo tours have verified local assets and only the public HOA can lin
   assert.equal((html.match(/Explore the public sample/g) || []).length, 1);
   assert.match(html, /demo=flooring&amp;industry=construction/);
   assert.match(html, /Planned system/);
+  assert.match(html, /Oxendine Painting/);
+  assert.match(html, /Knoxville Flooring/);
+  assert.match(html, /HOA platform/);
+  assert.doesNotMatch(html, /<video|<source|Watch walkthrough/);
+  assert.equal((html.match(/Narrated walkthrough in production/g) || []).length, 3);
   assert.doesNotMatch(html, /commonplace-private|knox-flooring|oxendine-operations/);
+});
+
+test("ready walkthroughs offer viewing without preloading media and preserve inquiry context", () => {
+  const React = require("react");
+  const { renderToStaticMarkup } = require("react-dom/server");
+  const { demos } = load("data/demos.ts");
+  const ready = demos.map(d => ({ ...d, walkthrough: { video: `/test/${d.id}.mp4`, poster: d.steps[0].image, captions: `/test/${d.id}.vtt`, transcript: "Test transcript.", durationSeconds: 75 } }));
+  const { default: Gallery } = load("components/DemoShowcase.tsx", {
+    "@/data/demos": { demos: ready }, "@/lib/site": { track: () => {} },
+    "next/image": { default: ({ src, alt }) => React.createElement("img", { src, alt }) },
+    "next/link": { default: ({ children, ...props }) => React.createElement("a", props, children) },
+  });
+  const html = renderToStaticMarkup(React.createElement(Gallery, { detailed: true, context: "industry=hvac&demo=hoa&problem=quoting" }));
+  assert.equal((html.match(/aria-haspopup="dialog"/g) || []).length, 3);
+  assert.match(html, /1:15/);
+  assert.match(html, /industry=hvac&amp;demo=flooring&amp;problem=quoting/);
+  assert.doesNotMatch(html, /<video|<source|\.mp4|\.vtt|in production/);
 });
 
 test("booking is hidden until a public URL is supplied and review is confirmed", () => {

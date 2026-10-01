@@ -1,225 +1,110 @@
 "use client";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { demos, type Demo } from "@/data/demos";
 import { track } from "@/lib/site";
 
-function GuidedDemo({ demo, context = "" }: { demo: Demo; context?: string }) {
+export default function DemoShowcase({ detailed = false, context = "" }: { detailed?: boolean; context?: string }) {
   const dialog = useRef<HTMLDialogElement>(null);
-  const expand = useRef<HTMLButtonElement>(null);
-  const choose = (n: number) => {
-    setStep(n);
-    track("demo_interaction", { demo: demo.id, step: n + 1 });
-  };
-  const [step, setStep] = useState(0);
-  const current = demo.steps[step];
-  return (
-    <article
-      id={demo.id}
-      className="guided-demo"
-      data-section-track={`demo-${demo.id}`}
-    >
-      <div className="demo-intro">
-        <p className="overline">
-          {demo.id === "hoa" ? "Community operations" : `${demo.id} software`}
-        </p>
-        <h2>{demo.title}</h2>
-        <p>{demo.purpose}</p>
-        <span className="demo-status">{demo.status}</span>
-        <p className="demo-problem">
-          <strong>The starting problem</strong>
-          <br />
-          {demo.id === "hoa"
-            ? "A request arrives without enough detail to move forward."
-            : demo.id === "flooring"
-              ? "Room measurements and pricing assumptions are difficult to review together."
-              : "Scope changes and estimate details can drift apart."}
-        </p>
-        <ul>
-          {demo.capabilities.map((c) => (
-            <li key={c}>{c}</li>
-          ))}
-        </ul>
-      </div>
-      <div className="demo-tour">
-        <div className="demo-window">
-          <div className="demo-window-bar">
-            <span>ACTUAL APPLICATION SCREEN</span>
-            <span>Sample information</span>
-          </div>
-          <div className="demo-screen">
-            <Image
-              src={current.image}
-              width={current.width}
-              height={current.height}
-              alt={current.alt}
-              sizes="(max-width:700px) 90vw, 720px"
-            />
+  const video = useRef<HTMLVideoElement>(null);
+  const trigger = useRef<HTMLElement | null>(null);
+  const [selected, setSelected] = useState<Demo | null>(null);
+  const [failed, setFailed] = useState(false);
+  useEffect(() => {
+    if (!detailed) return;
+    const openLinkedDemo = () => {
+      const demo = demos.find(item => `#${item.id}` === window.location.hash && item.walkthrough);
+      if (!demo) return;
+      trigger.current = document.querySelector<HTMLButtonElement>(`#${demo.id} .video-watch`);
+      setFailed(false);
+      setSelected(demo);
+    };
+    openLinkedDemo();
+    window.addEventListener("hashchange", openLinkedDemo);
+    return () => window.removeEventListener("hashchange", openLinkedDemo);
+  }, [detailed]);
+  useEffect(() => { if (selected) dialog.current?.showModal(); }, [selected]);
+  useEffect(() => {
+    const pause = () => { if (document.hidden) video.current?.pause(); };
+    document.addEventListener("visibilitychange", pause);
+    return () => document.removeEventListener("visibilitychange", pause);
+  }, []);
+  function close() {
+    video.current?.pause();
+    setSelected(null);
+    trigger.current?.focus();
+  }
+  function inquiry(demo: Demo) {
+    const params = new URLSearchParams(context);
+    params.set("demo", demo.id);
+    if (!params.has("industry")) params.set("industry", demo.industry);
+    return `/consultation?${params}`;
+  }
+  function watch(demo: Demo, button: HTMLButtonElement) {
+    trigger.current = button;
+    setFailed(false);
+    setSelected(demo);
+    track("demo_interaction", { demo: demo.id, action: "open_walkthrough" });
+  }
+  return <>
+    <div className={`three-grid demo-cards video-demo-cards${detailed ? " video-demo-library" : ""}`}>
+      {demos.map((demo, i) => <article key={demo.id} id={detailed ? demo.id : undefined}>
+        <div className="demo-card-image video-demo-poster">
+          <Image src={demo.walkthrough?.poster ?? demo.steps[0].image}
+            width={demo.walkthrough ? 1920 : demo.steps[0].width} height={demo.walkthrough ? 1080 : demo.steps[0].height}
+            alt={`${demo.displayName}: actual application walkthrough preview`}
+            sizes="(max-width:700px) 90vw, (max-width:1100px) 45vw, 380px" />
+          <span className="video-demo-number">0{i + 1} / BUILT BY CATALYST</span>
+        </div>
+        <div className="demo-card-copy">
+          <p className="overline">{demo.id === "painting" ? "Planned system · Demonstration prototype" : "Actual application · Sample information"}</p>
+          {detailed ? <h2>{demo.displayName}</h2> : <h3>{demo.displayName}</h3>}
+          <p>{demo.purpose}</p>
+          {demo.walkthrough ? <button className="button video-watch"
+            onClick={e => watch(demo, e.currentTarget)} aria-haspopup="dialog"
+            aria-label={`Watch ${demo.displayName} walkthrough`}>
+            <span aria-hidden="true">▶</span> Watch walkthrough
+            <span className="video-duration">{Math.floor(demo.walkthrough.durationSeconds / 60)}:{String(Math.round(demo.walkthrough.durationSeconds % 60)).padStart(2, "0")}</span>
+          </button> : <p className="video-pending">Narrated walkthrough in production</p>}
+          <div className="video-demo-links">
+            <Link className="text-link" href={inquiry(demo)}>Discuss a system like this ↗</Link>
+            {detailed && demo.availability === "public-sample" && demo.publicUrl &&
+              <a className="text-link" href={demo.publicUrl} target="_blank" rel="noopener noreferrer"
+                onClick={() => track("demo_interaction", { demo: demo.id, action: "open_public" })}>
+                Explore the public sample ↗
+              </a>}
           </div>
         </div>
-        <button
-          ref={expand}
-          className="expand-demo quiet-button"
-          onClick={() => {
-            dialog.current?.showModal();
-            track("demo_interaction", { demo: demo.id, action: "enlarge" });
-          }}
-        >
-          Enlarge screen ↗
-        </button>
-        <dialog
-          ref={dialog}
-          className="demo-dialog"
-          aria-labelledby={`${demo.id}-viewer-title`}
-          onClose={() => expand.current?.focus()}
-          onKeyDown={(e) => {
-            if (e.key === "ArrowRight") {
-              e.preventDefault();
-              choose(Math.min(2, step + 1));
-            }
-            if (e.key === "ArrowLeft") {
-              e.preventDefault();
-              choose(Math.max(0, step - 1));
-            }
-          }}
-        >
-          <div className="viewer-heading">
-            <h2 id={`${demo.id}-viewer-title`}>{current.title}</h2>
-            <button
-              autoFocus
-              className="quiet-button"
-              onClick={() => dialog.current?.close()}
-            >
-              Close ✕
-            </button>
-          </div>
-          <div className="viewer-image">
-            <Image
-              src={current.image}
-              width={current.width}
-              height={current.height}
-              alt={current.alt}
-              sizes="90vw"
-            />
-          </div>
-          <p aria-live="polite">{current.text}</p>
-          <div className="viewer-controls">
-            <button
-              className="quiet-button"
-              disabled={step === 0}
-              onClick={() => choose(step - 1)}
-            >
-              ← Previous
-            </button>
-            <span>Step {step + 1} of 3 · Sample information</span>
-            <button
-              className="quiet-button"
-              disabled={step === 2}
-              onClick={() => choose(step + 1)}
-            >
-              Next →
-            </button>
-          </div>
-        </dialog>
-        <div
-          className="demo-step-controls"
-          role="group"
-          aria-label={`Explore ${demo.id} demo`}
-        >
-          {demo.steps.map((s, i) => (
-            <button
-              key={s.title}
-              aria-pressed={step === i}
-              aria-controls={`${demo.id}-explanation`}
-              onClick={() => {
-                setStep(i);
-                track("demo_interaction", { demo: demo.id, step: i + 1 });
-              }}
-            >
-              <span>0{i + 1}</span>
-              {s.title}
-            </button>
-          ))}
-        </div>
-        <div
-          id={`${demo.id}-explanation`}
-          className="demo-explanation"
-          aria-live="polite"
-        >
-          <h3>{current.title}</h3>
-          <p>{current.text}</p>
-        </div>
-        <div className="demo-actions">
-          <Link
-            className="text-link"
-            href={`/consultation?demo=${demo.id}&${context || `industry=${demo.industry}`}`}
-          >
-            Discuss a system like this ↗
-          </Link>
-          {demo.availability === "public-sample" && demo.publicUrl && (
-            <a
-              className="text-link"
-              href={demo.publicUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() =>
-                track("demo_interaction", {
-                  demo: demo.id,
-                  action: "open_public",
-                })
-              }
-            >
-              Explore the public sample ↗
-            </a>
-          )}
-        </div>
-      </div>
-    </article>
-  );
-}
-export default function DemoShowcase({
-  detailed = false,
-  context = "",
-}: {
-  context?: string;
-  detailed?: boolean;
-}) {
-  if (detailed)
-    return (
-      <div className="demo-library">
-        {demos.map((d) => (
-          <GuidedDemo key={d.id} demo={d} context={context} />
-        ))}
-      </div>
-    );
-  return (
-    <div className="three-grid demo-cards">
-      {demos.map((d) => (
-        <article key={d.id}>
-          <Link
-            className="demo-card-image"
-            href={`/portfolio#${d.id}`}
-            aria-label={`Preview ${d.id === "hoa" ? "community" : d.id} software`}
-          >
-            <Image
-              src={d.steps[0].image}
-              width={d.steps[0].width}
-              height={d.steps[0].height}
-              alt={d.steps[0].alt}
-              sizes="(max-width:700px) 90vw, 380px"
-            />
-          </Link>
-          <div className="demo-card-copy">
-            <p className="overline">{d.status}</p>
-            <h3>{d.title}</h3>
-            <p>{d.purpose}</p>
-            <Link className="text-link" href={`/portfolio#${d.id}`}>
-              Explore the guided preview ↗
-            </Link>
-          </div>
-        </article>
-      ))}
+      </article>)}
     </div>
-  );
+    <dialog ref={dialog} className="demo-dialog walkthrough-dialog" aria-labelledby="walkthrough-title"
+      onCancel={() => video.current?.pause()} onClose={close}>
+      {selected?.walkthrough && <>
+        <div className="viewer-heading">
+          <div><p className="overline">Actual software / Narrated walkthrough</p>
+            <h2 id="walkthrough-title">{selected.displayName}</h2></div>
+          <button autoFocus className="quiet-button" onClick={() => dialog.current?.close()}>Close ✕</button>
+        </div>
+        {failed ? <p role="alert" className="video-failure">This video couldn’t load. You can read the transcript below or <button className="text-link" onClick={() => setFailed(false)}>try the video again</button>.</p> :
+          <video ref={video} key={selected.id} className="walkthrough-video" controls playsInline preload="none"
+            width="1920" height="1080" poster={selected.walkthrough.poster}
+            aria-label={`${selected.displayName} narrated walkthrough`}
+            onError={() => setFailed(true)}
+            onPlay={e => {
+              document.querySelectorAll("video").forEach(other => { if (other !== e.currentTarget) other.pause(); });
+              track("demo_interaction", { demo: selected.id, action: "play_walkthrough" });
+            }}>
+            <source src={selected.walkthrough.video} type="video/mp4" onError={() => setFailed(true)} />
+            <track kind="captions" src={selected.walkthrough.captions} srcLang="en" label="English" default />
+            Your browser cannot play this video. Read the transcript below.
+          </video>}
+        <p className="muted">{selected.id === "painting" ? "Demonstration prototype. " : ""}Sample information. Narration uses a synthetic voice. Use fullscreen for a closer look at the application.</p>
+        <details className="walkthrough-transcript"><summary>Read the transcript</summary>
+          {selected.walkthrough.transcript.split("\n\n").map((paragraph, i) => <p key={i}>{paragraph}</p>)}
+        </details>
+        <Link className="text-link" href={inquiry(selected)}>Discuss a system like this ↗</Link>
+      </>}
+    </dialog>
+  </>;
 }

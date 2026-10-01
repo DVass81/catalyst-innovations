@@ -220,6 +220,26 @@
 .demo-dialog::backdrop {
   background: #0a1628c9;
 }
+.video-demo-cards article { scroll-margin-top: 120px; display: flex; flex-direction: column; }
+.video-demo-cards .demo-card-copy { display: flex; flex: 1; flex-direction: column; align-items: flex-start; }
+.video-demo-cards .demo-card-copy h2 { font-size: 27px; line-height: 1.2; }
+.video-demo-cards .demo-card-copy > p:not(.overline) { font-size: 15px; }
+.video-demo-poster { position: relative; padding: 42px 20px 18px; }
+.video-demo-number { position: absolute; top: 16px; left: 20px; color: #2f5d8f; font-size: 10px; letter-spacing: .08em; font-weight: 700; }
+.video-watch { gap: 10px; width: 100%; justify-content: center; margin-top: auto; }
+.video-duration { opacity: .75; font-size: 12px; }
+.video-demo-links { display: grid; align-content: start; gap: 14px; padding-top: 22px; min-height: 124px; }
+.video-demo-links a { font-size: 13px; }
+.video-pending { color: #526271; border-top: 1px solid #dce3e8; padding-top: 14px; width: 100%; }
+.walkthrough-dialog { width: min(1280px, 96vw); }
+.walkthrough-video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; background: #0a1628; margin: 24px 0 14px; border-radius: 8px; }
+.walkthrough-video::cue { font-size: clamp(14px, 1.5vw, 22px); }
+.walkthrough-dialog .viewer-heading > button { flex-shrink: 0; white-space: nowrap; min-height: 44px; }
+.walkthrough-transcript { margin: 20px 0; padding: 18px 0; border-top: 1px solid #dce3e8; border-bottom: 1px solid #dce3e8; }
+.walkthrough-transcript summary { cursor: pointer; font-weight: 600; min-height: 28px; }
+.walkthrough-transcript p { max-width: 78ch; margin: 18px 0; line-height: 1.7; }
+.video-failure { padding: 36px 20px; background: #e9eff5; margin: 24px 0; }
+@media (min-width: 701px) and (max-width: 1100px) { .video-demo-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .viewer-heading,
 .viewer-controls {
   display: flex;

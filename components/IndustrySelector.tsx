@@ -54,7 +54,7 @@ export default function IndustrySelector() {
             className="text-link"
             href={`/portfolio?industry=${i.slug}#${example.id}`}
           >
-            Explore the guided demo ↗
+            See the application walkthrough ↗
           </Link>
           <p className="overline">Put your numbers to work</p>
           <div className="recommended-tools">

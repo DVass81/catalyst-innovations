@@ -1,0 +1,97 @@
+{
+  "status": "Completed and verified in local preview; not published",
+  "date": "2026-10-01",
+  "estimatedCredits": {
+    "painting": 7,
+    "flooring": 7.2,
+    "hoa": 7.2,
+    "total": 21.4
+  },
+  "voice": {
+    "name": "Cillian",
+    "id": "d8ba9f14-8a24-44db-932b-99e16c45bd32",
+    "type": "preset",
+    "model": "seed_audio"
+  },
+  "format": {
+    "width": 1920,
+    "height": 1080,
+    "targetSeconds": [
+      60,
+      90
+    ],
+    "music": false,
+    "captions": "WebVTT"
+  },
+  "scripts": {
+    "painting": "Welcome to the Oxendine Painting demonstration, built by Catalyst Innovations. This is the actual application running with fictional sample information. We will follow one estimate from its scope through pricing and review. Start with the areas of the job. Each room keeps its work, preparation, and estimated hours together, so the scope is easier to review. When the work changes, update the area rather than searching through a separate document. Next, open pricing. Here, the estimate connects labor and material costs with the work being quoted. Review the line items alongside the summary, and see how the entered assumptions affect the estimate. These figures are sample inputs, not promised business results. Finally, move to review. Check the costs and estimated margin before the customer handoff. This is a demonstration prototype for a planned system; approval and sending are simulated. The useful idea is simple: keep the scope, the costs, and the next step together. Talk with Catalyst about connecting the work in your business.",
+    "flooring": "This is Knoxville Flooring's application, built by Catalyst Innovations. We are using sample information to show how room measurements become an estimate. Start by choosing a room and entering its length and width. The estimator calculates the floor area, keeping the measurements and the quantity together. Next, review the assumptions around the work. Waste allowance, material costs, and labor all affect the estimate. Preparation matters too. The application includes options for work such as tear-out and subfloor repair, so those details can be considered alongside the flooring itself. As the inputs change, review the updated summary. It brings the quantity, entered costs, suggested price, and estimated margin into one view. These are sample calculations, not a promise of profit. Finally, the proposal handoff provides a next step from the estimate. We are stopping before creating or sending anything to a customer. Measurements, job details, and pricing stay connected. Talk with Catalyst about building software around the way your team estimates and manages work.",
+    "hoa": "Here is the HOA platform's public sample experience, built by Catalyst Innovations. The communities and information in this demonstration are fictional. We will follow a resident request from the first description to the final review. Start by giving the request a clear title. Then describe what needs attention, so the community team has useful context from the beginning. In this example, the resident is reporting a problem with path lighting. Next, the form explains what supporting information could help the team understand the request. Clear guidance at this stage can make the handoff easier and reduce the need to chase missing details. Continue to the review screen. The resident can check the information before sending it, and go back if something needs changing. We are stopping here without submitting a request. Sending a request does not approve the work or reserve a date. This workflow gives the resident a clear starting point and the community team a more structured handoff. Talk with Catalyst about simplifying the everyday work in your community."
+  },
+  "recordingRules": [
+    "Capture actual application interactions, not generated screens or slideshow substitutes.",
+    "Use only fictional/sample records; never show private account access or customer data.",
+    "Painting runs locally in DEMO_STORAGE=memory. Keep prototype label.",
+    "Stop Flooring before creating/sending a proposal; show the verified handoff action.",
+    "Stop HOA on review without submitting.",
+    "Review all final frames, narration, and caption timing before adding walkthrough definitions.",
+    "User topped up credits. Cillian narration completed. No hosting restored or production deployment performed."
+  ],
+  "releaseGate": [
+    "All three videos and captions exist and are reviewed.",
+    "Selected preset voice is the same across all scripts.",
+    "Videos last 60–90 seconds, 1920x1080, with intelligible narration.",
+    "Posters use completed video frames. Video files are mounted only after visitors choose a walkthrough.",
+    "Test player controls and error handling against real final files.",
+    "Do not push incomplete preview to main."
+  ],
+  "balanceBeforeGeneration": 1005.74,
+  "media": [
+    {
+      "id": "painting",
+      "durationSeconds": 76.5,
+      "bytes": 2896894
+    },
+    {
+      "id": "flooring",
+      "durationSeconds": 69.78,
+      "bytes": 2675667
+    },
+    {
+      "id": "hoa",
+      "durationSeconds": 63.48,
+      "bytes": 2426359
+    }
+  ],
+  "captureNotes": "Actual browser interactions captured as timed screen frames, cropped locally and assembled at 1920x1080 / 30 fps. Source capture intervals vary; repeated frames provide narration holds. Application contents are not generated. No synthetic cursor. Editorial chapter fades and titles only. Flooring excludes all sidebar, account, catalog, notification and private entry content; Painting review excludes fictional names and addresses; HOA excludes resident sidebar. Source frames remain local in work, outside public assets.",
+  "verification": {
+    "tests": "24 passed, including calculator and inquiry regression cases",
+    "lint": "passed",
+    "typecheck": "passed",
+    "build": "passed; 86 routes generated",
+    "media": "All three H.264/AAC MP4s decode without errors; 1920x1080, faststart, 2.43–2.90 MB each. Caption cues have valid ordered times. Actual screen crops exclude account sidebar and unrelated records.",
+    "browser": "All three videos play. Keyboard open, pause, Escape close and focus restoration checked. Captions load. Transcript expands. Native seeking, volume and fullscreen controls available. Painting missing-file fallback and retry verified without changing production. Demo anchors open the correct player. No video elements are mounted before selection. Phone 390px, tablet 768px and desktop layouts have no horizontal overflow.",
+    "performance": {
+      "method": "Local production build, mobile viewport, unthrottled desktop browser. Local-only proxy injected buffered PerformanceObservers; no instrumentation ships. Not a real-device or field measurement.",
+      "phoneRuns": [
+        {
+          "width": 390,
+          "lcpMs": 188,
+          "cls": 0
+        },
+        {
+          "width": 390,
+          "lcpMs": 156,
+          "cls": 0
+        }
+      ],
+      "additionalTabletRun": {
+        "width": 768,
+        "lcpMs": 160,
+        "cls": 0
+      },
+      "gap": "Deployment network and actual mobile-device performance still need a field check."
+    },
+    "release": "Preview only at http://127.0.0.1:3102/portfolio. Production unchanged."
+  }
+}

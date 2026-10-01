@@ -26,7 +26,7 @@ export default function RealSoftwarePreview() {
       <figcaption>
         <strong>One useful tool. A clearer way to work.</strong>
         <Link href="/portfolio#flooring" className="text-link">
-          Explore this demo ↗
+          Watch the Flooring walkthrough ↗
         </Link>
       </figcaption>
     </figure>
