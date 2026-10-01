@@ -35,6 +35,10 @@ export default async function Consultation({
       />
       <section className="wrap content-section two-grid">
         <InquiryForm
+          deliveryConfigured={Boolean(
+            process.env.CONSULTATION_WEBHOOK_URL ||
+              (process.env.RESEND_API_KEY && process.env.CONSULTATION_TO_EMAIL),
+          )}
           industry={industry?.name ?? ""}
           problem={startingPoints.find((p) => p.id === q.problem)?.id}
           tool={tool?.slug}
@@ -60,6 +64,14 @@ export default async function Consultation({
           <h3>You bring the business.</h3>
           <p>
             We help connect the processes, information and software around it.
+          </p>
+          <p>
+            <a
+              className="text-link"
+              href="mailto:daniel@mycatalystinnovations.com"
+            >
+              Email Daniel directly ↗
+            </a>
           </p>
           <p>No obligation. No need to choose a package before we talk.</p>
         </aside>

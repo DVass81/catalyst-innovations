@@ -1,4 +1,5 @@
 "use client";
+import { inquiryEmailDraft } from "@/lib/inquiryEmail";
 import Link from "next/link";
 import { startingPoints } from "@/data/startingPoints";
 import { useRef, useState, useSyncExternalStore, type FormEvent } from "react";
@@ -6,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { industryList } from "@/data/redesign";
 import { track } from "@/lib/site";
 import BookingLink from "./BookingLink";
-import { struggleCategories } from "@/lib/consultation";
+import { consultationSchema, struggleCategories } from "@/lib/consultation";
 const subscribe = () => () => {};
 const serverSnapshot = () => null;
 const readSnapshot = () => {
@@ -22,7 +23,9 @@ export default function InquiryForm({
   attach = false,
   demo,
   problem,
+  deliveryConfigured = true,
 }: {
+  deliveryConfigured?: boolean;
   problem?: string;
   industry?: string;
   tool?: string;
@@ -45,6 +48,11 @@ export default function InquiryForm({
     )
       attachment = saved.summary;
   } catch {}
+  const [emailDraft, setEmailDraft] = useState<ReturnType<
+    typeof inquiryEmailDraft
+  > | null>(null);
+  const [copyMessage, setCopyMessage] = useState("");
+  const draftHeading = useRef<HTMLHeadingElement>(null);
   const selectedProblem = startingPoints.find((p) => p.id === problem);
   const formRef = useRef<HTMLFormElement>(null);
   const errorRef = useRef<HTMLParagraphElement>(null);
@@ -64,6 +72,30 @@ export default function InquiryForm({
     setIssues({});
     const form = new FormData(e.currentTarget);
     const data = Object.fromEntries(form);
+    if (!deliveryConfigured) {
+      const parsed = consultationSchema.safeParse({
+        ...data,
+        struggleCategories: form.getAll("struggleCategories"),
+      });
+      if (!parsed.success) {
+        setIssues(parsed.error.flatten().fieldErrors);
+        setError("Please check the highlighted fields.");
+        setPending(false);
+        requestAnimationFrame(() => errorRef.current?.focus());
+        return;
+      }
+      setEmailDraft(
+        inquiryEmailDraft(parsed.data, {
+          tool,
+          demo,
+          summary: include ? attachment : undefined,
+        }),
+      );
+      setCopyMessage("");
+      setPending(false);
+      requestAnimationFrame(() => draftHeading.current?.focus());
+      return;
+    }
     try {
       const res = await fetch("/api/consultation", {
         method: "POST",
@@ -189,6 +221,9 @@ export default function InquiryForm({
       ref={formRef}
       className="inquiry-form"
       onSubmit={submit}
+      onChange={() => {
+        if (emailDraft) setEmailDraft(null);
+      }}
       onFocusCapture={() => {
         if (!started.current) {
           track("form_start");
@@ -196,6 +231,12 @@ export default function InquiryForm({
         }
       }}
     >
+      {!deliveryConfigured && (
+        <p className="inquiry-context">
+          Tell us a little about your business, then send the prepared inquiry
+          from your email app. Nothing is sent until you send that email.
+        </p>
+      )}
       {(industry || selectedProblem) && (
         <p className="inquiry-context">
           Your starting point:{" "}
@@ -387,8 +428,67 @@ export default function InquiryForm({
         </p>
       )}
       <button className="button" disabled={pending} type="submit">
-        {pending ? "Sending…" : "Discuss my business ↗"}
+        {pending
+          ? "Sending…"
+          : deliveryConfigured
+            ? "Discuss my business ↗"
+            : "Prepare my email inquiry ↗"}
       </button>
+      {emailDraft && (
+        <section
+          className="submitted-summary"
+          aria-labelledby="email-draft-title"
+        >
+          <h2 id="email-draft-title" ref={draftHeading} tabIndex={-1}>
+            Your email draft is ready.
+          </h2>
+          <p>
+            This has not been sent.{" "}
+            {emailDraft.copyRequired
+              ? "Copy the details below, open your email app, and paste them into the message to Daniel."
+              : "Open your email app, review the message and press Send to reach Daniel."}
+          </p>
+          <label htmlFor="email-draft-copy">Your inquiry details</label>
+          <textarea
+            id="email-draft-copy"
+            readOnly
+            value={emailDraft.body}
+            rows={8}
+          />
+          <div className="demo-actions">
+            <button
+              type="button"
+              className="quiet-button"
+              onClick={async () => {
+                try {
+                  await navigator.clipboard.writeText(emailDraft.body);
+                  setCopyMessage(
+                    "Copied. Paste these details into your email.",
+                  );
+                } catch {
+                  setCopyMessage(
+                    "Select and copy the text above, then paste it into your email.",
+                  );
+                }
+              }}
+            >
+              Copy inquiry
+            </button>
+            <a
+              className="button"
+              href={emailDraft.href}
+              onClick={() => track("email_click", { source: "inquiry_draft" })}
+            >
+              Open email app ↗
+            </a>
+          </div>
+          <p role="status">{copyMessage}</p>
+          <p>
+            If an email app does not open, copy the details and send them to
+            daniel@mycatalystinnovations.com.
+          </p>
+        </section>
+      )}
       <p>
         By submitting, you ask Catalyst to contact you about this inquiry.{" "}
         <a href="/privacy" className="quiet-button">

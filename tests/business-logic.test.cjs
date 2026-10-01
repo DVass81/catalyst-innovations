@@ -342,3 +342,31 @@ test("every industry group gets an honest demo recommendation", () => {
     /not a warehouse or manufacturing product/,
   );
 });
+
+const { inquiryEmailDraft } = load("lib/inquiryEmail.ts");
+test("email draft fallback preserves context and excludes calculation figures without consent", () => {
+  const data = {
+    name: "Example",
+    email: "example@example.com",
+    company: "Example & Co",
+    challenge: "Quotes take too long.",
+    struggleCategories: ["Quotes and follow-up"],
+  };
+  const draft = inquiryEmailDraft(data, {
+    demo: "flooring",
+    tool: "quoting-time",
+  });
+  assert.equal(draft.copyRequired, false);
+  assert.match(draft.href, /^mailto:daniel@mycatalystinnovations.com/);
+  assert.match(decodeURIComponent(draft.href), /Example & Co/);
+  assert.match(draft.body, /Demo: flooring/);
+  assert.doesNotMatch(draft.body, /Calculation shared/);
+  const long = inquiryEmailDraft(
+    { ...data, challenge: "x".repeat(3000) },
+    { summary: "Optional calculation" },
+  );
+  assert.equal(long.copyRequired, true);
+  assert.equal(long.href.includes("&body="), false);
+  assert.ok(long.body.includes("x".repeat(3000)));
+  assert.match(long.body, /Optional calculation/);
+});
