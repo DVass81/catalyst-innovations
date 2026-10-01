@@ -1,3 +1,4 @@
+import FounderIntro from "@/components/FounderIntro";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowUpRight, ArrowRight } from "lucide-react";
@@ -119,7 +120,7 @@ export default function Home() {
               </h2>
             </div>
             <Link href="/portfolio" className="text-link">
-              Explore our work <ArrowUpRight size={17} />
+              See what we build <ArrowUpRight size={17} />
             </Link>
           </div>
           <Projects />
@@ -161,17 +162,6 @@ export default function Home() {
               </div>
             ))}
           </div>
-          <div className="team-note">
-            <span>OPERATIONS FIRST. SOFTWARE SECOND.</span>
-            <p>
-              Our background is in real operations, including production and
-              purchasing. That experience shapes the questions we ask and the
-              systems we build.
-            </p>
-            <Link href="/about" className="text-link">
-              Meet Catalyst <ArrowUpRight size={17} />
-            </Link>
-          </div>
         </div>
       </section>
       <section className="section wrap faq-section">
@@ -212,6 +202,7 @@ export default function Home() {
           ))}
         </div>
       </section>
+      <FounderIntro />
       <DiscussCTA />
     </>
   );

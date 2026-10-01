@@ -51,6 +51,15 @@ export const budgets = [
 ] as const;
 export const contactMethods = ["Email", "Phone"] as const;
 
+export const struggleCategories = [
+  "Too much manual entry",
+  "Quotes and follow-up",
+  "Scheduling and handoffs",
+  "Inventory and purchasing",
+  "Invoices and reporting",
+  "Disconnected software",
+] as const;
+
 export const consultationSchema = z.object({
   inquiryType: z.enum(inquiryTypes).default("Request a consultation"),
   name: z.string().trim().min(2, "Please enter your name").max(100),
@@ -76,6 +85,8 @@ export const consultationSchema = z.object({
     .regex(/^[a-z0-9-]+$/)
     .max(80)
     .optional(),
+  sourceDemo: z.enum(["hoa", "flooring", "painting"]).optional(),
+  struggleCategories: z.array(z.enum(struggleCategories)).max(6).optional(),
   calculatorSummary: z.string().trim().max(5000).optional(),
   // Honeypot: real users never fill this hidden field.
   website: z.string().max(500).optional().or(z.literal("")),

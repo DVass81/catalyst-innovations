@@ -1,4 +1,4 @@
-import VisualStory from "@/components/VisualStory";
+import IndustryProblems from "@/components/IndustryProblems";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -33,33 +33,20 @@ export default async function IndustryPage({
     <>
       <PageIntro
         eyebrow={i.group}
-        title={`A better way to run ${i.name.toLowerCase()}.`}
+        title={i.name}
         text={`Practical software for ${i.name.toLowerCase()}, shaped around the way your people work. Start with one problem and connect the right pieces.`}
       />
-      <section className="wrap content-section two-grid">
-        <div className="content-card">
-          <p className="overline">Sound familiar?</p>
-          <ul className="check-list">
-            {i.problems.map((p) => (
-              <li key={p}>— {p}</li>
-            ))}
-          </ul>
-        </div>
-        <div className="content-card">
-          <p className="overline">What we can build</p>
-          <ul className="check-list">
-            {i.solutions.map((p) => (
-              <li key={p}>— {p}</li>
-            ))}
-          </ul>
-        </div>
+      <section className="wrap content-section">
+        <IndustryProblems industry={i} />
       </section>
       <section className="wrap content-section">
-        <h2>Connect the steps.</h2>
-        <VisualStory kind="blueprint" context={i.name} workflow={i.workflow} />
-        <p style={{ marginTop: 20 }}>
-          An example workflow. We adapt the steps to your operation.
-        </p>
+        <h2>A connected workflow.</h2>
+        <ol className="workflow-strip">
+          {i.workflow.map((step) => (
+            <li key={step}>{step}</li>
+          ))}
+        </ol>
+        <p>We adapt these steps to your team and existing tools.</p>
       </section>
       <section className="wrap content-section">
         <p className="overline">Explore your numbers</p>

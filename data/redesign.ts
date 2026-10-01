@@ -1,4 +1,5 @@
 import { industries as existing } from "./industries";
+import { industryNeeds } from "./industryNeeds";
 export const groups = [
   "Trades & construction",
   "Manufacturing & fabrication",
@@ -140,8 +141,8 @@ export const industryList: Industry[] = [...existing, ...extras].map((i) => {
     slug: i.slug,
     name: i.name,
     group: groups[g],
-    problems: i.problems.slice(0, 3),
-    solutions: i.solutions.slice(0, 3),
+    problems: industryNeeds[i.slug].map(([problem]) => problem),
+    solutions: industryNeeds[i.slug].map(([, solution]) => solution),
     workflow: fundraising
       ? ["Campaign", "Outreach", "Contribution", "Follow-up", "Report"]
       : workflows[g],

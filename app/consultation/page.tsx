@@ -1,3 +1,4 @@
+import BookingLink from "@/components/BookingLink";
 import type { Metadata } from "next";
 import { PageIntro } from "@/components/SiteSections";
 import InquiryForm from "@/components/InquiryForm";
@@ -12,6 +13,7 @@ export default async function Consultation({
   searchParams,
 }: {
   searchParams: Promise<{
+    demo?: string;
     industry?: string;
     tool?: string;
     attach?: string;
@@ -33,9 +35,15 @@ export default async function Consultation({
         <InquiryForm
           industry={industry?.name ?? ""}
           tool={tool?.slug}
+          demo={
+            q.demo === "hoa" || q.demo === "flooring" || q.demo === "painting"
+              ? q.demo
+              : undefined
+          }
           attach={q.attach === "1"}
         />
         <aside className="inquiry-aside">
+          <BookingLink />
           <p className="overline">What happens next</p>
           <h2>
             A conversation.

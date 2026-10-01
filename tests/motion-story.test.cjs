@@ -29,6 +29,27 @@ const { createStoryPlayer, createPlaybackCoordinator, stepAt } = load(
 );
 const isolated = (auto = true) =>
   createStoryPlayer(15000, auto, createPlaybackCoordinator());
+test("nine-second visual stories change at three-second boundaries and stop once", () => {
+  const p = createStoryPlayer(9000, true, createPlaybackCoordinator());
+  p.setVisible(true);
+  p.tick(2999);
+  assert.equal(stepAt(p.getSnapshot().elapsed, 3, 9000), 0);
+  p.tick(1);
+  assert.equal(stepAt(p.getSnapshot().elapsed, 3, 9000), 1);
+  p.tick(3000);
+  assert.equal(stepAt(p.getSnapshot().elapsed, 3, 9000), 2);
+  p.tick(3000);
+  assert.equal(p.getSnapshot().playing, false);
+  p.seek(3000);
+  assert.equal(p.getSnapshot().playing, false);
+  p.replay();
+  assert.equal(p.getSnapshot().elapsed, 0);
+  p.setReduced(true);
+  p.seek(6000);
+  assert.equal(stepAt(p.getSnapshot().elapsed, 3, 9000), 2);
+  assert.equal(p.getSnapshot().playing, false);
+  p.dispose();
+});
 test("autoplay starts only when visible, advances 5 story beats and stops once", () => {
   const p = isolated();
   p.tick(5000);
@@ -124,6 +145,7 @@ test("one coordinator allows only one playing illustration and releases safely",
 const { industries } = load("data/industries.ts");
 const { industryList } = load("data/redesign.ts", {
   "./industries": { industries },
+  "./industryNeeds": load("data/industryNeeds.ts"),
 });
 const stories = load("data/motionStories.ts");
 test("all industry and solution stories have complete ordered steps and stable records", () => {
@@ -209,5 +231,52 @@ test("all three visual concepts expose readable initial stories and contextual w
     assert.match(html, /aria-pressed="true"/);
     assert.match(html, /data-playing="false"/);
     assert.ok(fs.existsSync(path.join(__dirname, "../public", story.image)));
+  }
+});
+
+test("real demo tours have verified local assets and only the public HOA can link out", () => {
+  const { demos } = load("data/demos.ts");
+  assert.equal(demos.length, 3);
+  for (const demo of demos) {
+    assert.equal(demo.capabilities.length, 3);
+    assert.equal(demo.steps.length, 3);
+    for (const step of demo.steps) {
+      assert.ok(fs.existsSync(path.join(__dirname, "../public", step.image)));
+      assert.ok(step.alt && step.text && step.width > 0 && step.height > 0);
+    }
+    if (demo.id !== "hoa") assert.equal(demo.publicUrl, undefined);
+  }
+  assert.equal(demos.find(d => d.id === "painting").availability, "archived-guided");
+  const React = require("react");
+  const { renderToStaticMarkup } = require("react-dom/server");
+  const { default: DemoShowcase } = load("components/DemoShowcase.tsx", {
+    "@/data/demos": { demos },
+    "@/lib/site": { track: () => {} },
+    "next/image": { default: ({ src, alt }) => React.createElement("img", { src, alt }) },
+    "next/link": { default: ({ children, ...props }) => React.createElement("a", props, children) },
+  });
+  const html = renderToStaticMarkup(React.createElement(DemoShowcase, { detailed: true }));
+  assert.equal((html.match(/Explore the public sample/g) || []).length, 1);
+  assert.match(html, /demo=flooring&amp;industry=construction/);
+  assert.match(html, /Planned system/);
+  assert.doesNotMatch(html, /commonplace-private|knox-flooring|oxendine-operations/);
+});
+
+test("booking is hidden until a public URL is supplied and review is confirmed", () => {
+  const React = require("react");
+  const { renderToStaticMarkup } = require("react-dom/server");
+  const before = process.env.NEXT_PUBLIC_BOOKING_VERIFIED;
+  try {
+    for (const verified of ["false", "true"]) for (const url of ["", "https://outlook.office.com/bookwithme/test"]) {
+      process.env.NEXT_PUBLIC_BOOKING_VERIFIED = verified;
+      const { default: BookingLink } = load("components/BookingLink.tsx", {
+        "@/lib/site": { site: { schedulingUrl: url }, track: () => {} },
+      });
+      const html = renderToStaticMarkup(React.createElement(BookingLink));
+      assert.equal(html.includes("Book a conversation"), verified === "true" && !!url);
+    }
+  } finally {
+    if (before === undefined) delete process.env.NEXT_PUBLIC_BOOKING_VERIFIED;
+    else process.env.NEXT_PUBLIC_BOOKING_VERIFIED = before;
   }
 });

@@ -25,6 +25,8 @@ export default function RouteProgress() {
       const href = anchor.getAttribute("href");
       const target = anchor.getAttribute("target");
       if (!href || href.startsWith("#") || href.startsWith("http") || href.startsWith("mailto:") || target === "_blank") return;
+      const destination = new URL(href, window.location.href);
+      if (destination.pathname === window.location.pathname && destination.search === window.location.search) return;
 
       setVisible(true);
       setProgress(15);

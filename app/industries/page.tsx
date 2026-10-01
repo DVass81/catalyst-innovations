@@ -1,4 +1,3 @@
-import VisualStory from "@/components/VisualStory";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
@@ -17,9 +16,7 @@ export default function Industries() {
         title="Different work. The same need for a better way."
         text="Your business has its own rhythm. We build around it—with connected workflows, useful information and less repetitive work."
       />
-      <section className="wrap content-section">
-        <VisualStory kind="blueprint" />
-      </section>
+
       <section className="wrap content-section">
         {groups.map((g) => (
           <div className="industry-directory" key={g}>

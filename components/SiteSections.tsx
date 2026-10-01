@@ -1,13 +1,13 @@
 import Link from "next/link";
-import SoftwareStory from "./SoftwareStory";
-import { projectMotionStories } from "@/data/motionStories";
+import DemoShowcase from "./DemoShowcase";
+
 import {
   ArrowUpRight,
   Layers3,
   UsersRound,
   ChartNoAxesCombined,
 } from "lucide-react";
-import { solutionGroups, projectStories } from "@/data/redesign";
+import { solutionGroups } from "@/data/redesign";
 export function PageIntro({
   eyebrow,
   title,
@@ -73,25 +73,6 @@ export function SolutionCards() {
     </div>
   );
 }
-export function Projects() {
-  return (
-    <div className="three-grid project-cards">
-      {projectStories.map((p, i) => (
-        <article className="project-card" key={p.title}>
-          <SoftwareStory
-            story={projectMotionStories[i]}
-            variant="card"
-            autoplay={false}
-          />
-          <div className="project-copy">
-            <p className="overline">
-              {p.type} <span className="status-tag">{p.status}</span>
-            </p>
-            <h3>{p.title}</h3>
-            <p>{p.text}</p>
-          </div>
-        </article>
-      ))}
-    </div>
-  );
+export function Projects({ detailed = false }: { detailed?: boolean }) {
+  return <DemoShowcase detailed={detailed} />;
 }

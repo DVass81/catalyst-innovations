@@ -27,13 +27,13 @@ export default function VisualStory({
   const story = visualStories[kind];
   const id = useId();
   const root = useRef<HTMLElement>(null);
-  const [player] = useState(() => createStoryPlayer(15000, autoplay));
+  const [player] = useState(() => createStoryPlayer(9000, autoplay));
   const state = useSyncExternalStore(
     player.subscribe,
     player.getSnapshot,
     player.getSnapshot,
   );
-  const active = stepAt(state.elapsed, 3, 15000);
+  const active = stepAt(state.elapsed, 3, 9000);
   useEffect(() => {
     const pref = matchMedia("(prefers-reduced-motion: reduce)");
     const reduced = () => player.setReduced(pref.matches);
@@ -97,25 +97,18 @@ export default function VisualStory({
             <div
               className="visual-camera"
               style={{
-                transform: state.reduced
-                  ? "none"
-                  : `scale(${1 + ((index === active ? state.elapsed % 5000 : 0) / 5000) * 0.025})`,
+                transform: "none",
               }}
             >
               <Image
-                src={story.image}
+                src={`/stories/${kind}-${index}.webp`}
                 alt=""
-                width={1536}
-                height={1024}
-                sizes="(max-width: 700px) 140vw, 1200px"
+                width={1484}
+                height={355}
+                sizes="(max-width: 700px) 100vw, 1200px"
                 priority={priority && index === 0}
                 loading={priority && index === 0 ? undefined : "lazy"}
                 className="visual-sheet"
-                style={{
-                  width: `${(1536 / story.width) * 100}%`,
-                  left: `${(-story.left / story.width) * 100}%`,
-                  transform: `translateY(-${(story.tops[index] / 1024) * 100}%)`,
-                }}
               />
             </div>
           </div>
@@ -123,7 +116,7 @@ export default function VisualStory({
         <span className="visual-example">Illustrative service business</span>
       </div>
       <div className="visual-progress" aria-hidden="true">
-        <span style={{ transform: `scaleX(${state.elapsed / 15000})` }} />
+        <span style={{ transform: `scaleX(${state.elapsed / 9000})` }} />
       </div>
       <figcaption id={id} className="visual-story-caption">
         <span className="visual-number">
@@ -146,7 +139,7 @@ export default function VisualStory({
               key={scene.label}
               aria-pressed={active === index}
               aria-controls={id}
-              onClick={() => player.seek(index * 5000)}
+              onClick={() => player.seek(index * 3000)}
             >
               <span>0{index + 1}</span>
               {scene.label}

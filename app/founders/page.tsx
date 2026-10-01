@@ -8,9 +8,9 @@ import CTABand from "@/components/CTABand";
 import { founderPhoto as photoFor } from "@/lib/founderPhoto";
 
 export const metadata: Metadata = {
-  title: "Founders — Josh Ogle",
+  title: "Founders — Josh Ogle and Daniel Vass",
   description:
-    "Josh Ogle brings ~10 years of U.S. Army service plus IT systems, cybersecurity, and product-development expertise.",
+    "Meet Josh Ogle and Daniel Vass: technology and product-development expertise alongside approximately 20 years of operations, manufacturing and purchasing experience.",
 };
 
 const personSchema = activeFounders.map((f) => ({
@@ -34,9 +34,9 @@ export default function FoundersPage() {
               Built by people who understand both the problem and the technology.
             </Heading>
             <Lead dark>
-              Josh brings U.S. Army leadership, IT systems, and product-development
-              expertise to every engagement — connecting the technical solution to the
-              real operational problem it&apos;s solving.
+              Daniel understands the operational problem. Josh brings the technology
+              perspective. Together, they connect how a business works with the
+              software that can help it work better.
             </Lead>
           </Reveal>
         </div>

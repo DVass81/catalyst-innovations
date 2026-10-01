@@ -1,3 +1,4 @@
+import FounderIntro from "@/components/FounderIntro";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PageIntro, DiscussCTA } from "@/components/SiteSections";
@@ -56,6 +57,7 @@ export default function About() {
           </div>
         ))}
       </section>
+      <FounderIntro />
       <DiscussCTA />
     </>
   );

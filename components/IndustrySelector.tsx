@@ -1,8 +1,8 @@
 "use client";
 import { useState } from "react";
-import VisualStory from "./VisualStory";
+import IndustryProblems from "./IndustryProblems";
 import Link from "next/link";
-import { ArrowRight, Check } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { industryList, groups } from "@/data/redesign";
 import { getCalculator } from "@/lib/calculators";
 export default function IndustrySelector() {
@@ -35,20 +35,8 @@ export default function IndustrySelector() {
       <div className="industry-content">
         <div>
           <p className="overline">For {i.name.toLowerCase()}</p>
-          <h3>
-            Less chasing.
-            <br />
-            More getting things done.
-          </h3>
-          <p className="muted">Sound familiar?</p>
-          <ul className="check-list">
-            {i.problems.map((p) => (
-              <li key={p}>
-                <Check size={16} />
-                <span>{p}</span>
-              </li>
-            ))}
-          </ul>
+          <h3>{i.name}</h3>
+          <IndustryProblems industry={i} />
           <Link className="text-link" href={`/industries/${i.slug}`}>
             See what we can build <ArrowRight size={16} />
           </Link>
@@ -64,15 +52,6 @@ export default function IndustrySelector() {
             ))}
           </div>
         </div>
-      </div>
-      <div className="industry-motion">
-        <VisualStory
-          key={i.slug}
-          kind="blueprint"
-          context={i.name}
-          workflow={i.workflow}
-          autoplay={false}
-        />
       </div>
     </div>
   );

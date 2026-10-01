@@ -143,16 +143,29 @@ test("margin, proceeds, rounding and optional contributions remain honest", () =
 });
 const { industryList } = load("data/redesign.ts", {
   "./industries": load("data/industries.ts"),
+  "./industryNeeds": load("data/industryNeeds.ts"),
 });
 test("every industry has three valid recommendations and concrete content", () => {
+  assert.equal(industryList.length, 19);
+  assert.equal(new Set(industryList.flatMap(i => i.problems)).size, 57);
   for (const i of industryList) {
     assert.equal(i.tools.length, 3);
     assert.ok(i.tools.every((slug) => getCalculator(slug)));
     assert.equal(i.problems.length, 3);
+    assert.equal(i.solutions.length, 3);
     assert.equal(i.workflow.length, 5);
   }
   for (const slug of ["plumbing", "hvac", "painting", "hoa"])
     assert.ok(industryList.some((i) => i.slug === slug));
+});
+
+test("questionnaire additions preserve optionality and reject unknown demo/category values", () => {
+  const extended = { ...valid, sourceDemo: "flooring", struggleCategories: ["Inventory and purchasing", "Disconnected software"], currentTools: "Spreadsheets", desiredOutcome: "Less copying" };
+  assert.ok(schema.consultationSchema.safeParse(extended).success);
+  assert.ok(schema.consultationSchema.safeParse({...valid, struggleCategories: []}).success);
+  assert.equal(schema.consultationSchema.safeParse({...extended, sourceDemo: "private-owner"}).success, false);
+  assert.equal(schema.consultationSchema.safeParse({...extended, struggleCategories: ["unknown"]}).success, false);
+  assert.equal(schema.consultationSchema.safeParse({...extended, currentTools: "x".repeat(1001)}).success, false);
 });
 const schema = load("lib/consultation.ts");
 const lead = load("lib/leadScoring.ts");
@@ -218,8 +231,10 @@ test("delivery is truthful and provider requests can be mocked without sending",
     );
     let calls = 0;
     process.env.CONSULTATION_WEBHOOK_URL = "https://example.invalid/webhook";
-    global.fetch = async () => {
+    let deliveredBody;
+    global.fetch = async (_url, options) => {
       calls++;
+      deliveredBody = JSON.parse(options.body);
       return new Response("{}", { status: 200 });
     };
     assert.equal(
@@ -229,6 +244,10 @@ test("delivery is truthful and provider requests can be mocked without sending",
     assert.equal(calls, 0);
     assert.equal((await POST(request())).status, 200);
     assert.equal(calls, 1);
+    assert.equal((await POST(request({...valid, sourceDemo: "hoa", struggleCategories: ["Disconnected software"], currentTools: "Spreadsheets"}))).status, 200);
+    assert.equal(deliveredBody.sourceDemo, "hoa");
+    assert.deepEqual(deliveredBody.struggleCategories, ["Disconnected software"]);
+    assert.equal(deliveredBody.currentTools, "Spreadsheets");
     global.fetch = async () => new Response("{}", { status: 500 });
     assert.equal((await POST(request())).status, 502);
     process.env.RESEND_API_KEY = "test-only";

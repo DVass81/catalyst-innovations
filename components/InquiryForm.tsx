@@ -3,6 +3,8 @@ import { useRef, useState, useSyncExternalStore, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { industryList } from "@/data/redesign";
 import { track } from "@/lib/site";
+import BookingLink from "./BookingLink";
+import { struggleCategories } from "@/lib/consultation";
 const subscribe = () => () => {};
 const serverSnapshot = () => null;
 const readSnapshot = () => {
@@ -16,10 +18,12 @@ export default function InquiryForm({
   industry = "",
   tool,
   attach = false,
+  demo,
 }: {
   industry?: string;
   tool?: string;
   attach?: boolean;
+  demo?: "hoa" | "flooring" | "painting";
 }) {
   const savedRaw = useSyncExternalStore(
     subscribe,
@@ -49,7 +53,8 @@ export default function InquiryForm({
     setPending(true);
     setError("");
     setIssues({});
-    const data = Object.fromEntries(new FormData(e.currentTarget));
+    const form = new FormData(e.currentTarget);
+    const data = Object.fromEntries(form);
     try {
       const res = await fetch("/api/consultation", {
         method: "POST",
@@ -58,6 +63,8 @@ export default function InquiryForm({
           ...data,
           inquiryType: "Request a consultation",
           sourceTool: tool,
+          sourceDemo: demo,
+          struggleCategories: form.getAll("struggleCategories"),
           calculatorSummary: include ? attachment : undefined,
         }),
       });
@@ -93,6 +100,7 @@ export default function InquiryForm({
         <p style={{ marginTop: 20 }}>
           We’ll review your request and contact you about the next step.
         </p>
+        <BookingLink />
         <button className="quiet-button" onClick={() => router.push("/tools")}>
           Explore the savings tools
         </button>
@@ -213,6 +221,38 @@ export default function InquiryForm({
           </span>
         )}
       </div>
+      <fieldset className="struggle-options">
+        <legend>Where does work get stuck? (optional)</legend>
+        {struggleCategories.map((label) => (
+          <label key={label}>
+            <input type="checkbox" name="struggleCategories" value={label} />
+            {label}
+          </label>
+        ))}
+      </fieldset>
+      <div className="form-field">
+        <label htmlFor="currentTools">
+          What tools do you use now? (optional)
+        </label>
+        <input
+          id="currentTools"
+          name="currentTools"
+          maxLength={1000}
+          placeholder="Spreadsheets, accounting software, paper…"
+        />
+      </div>
+      <div className="form-field">
+        <label htmlFor="desiredOutcome">
+          What would a better day look like? (optional)
+        </label>
+        <textarea id="desiredOutcome" name="desiredOutcome" maxLength={2000} />
+      </div>
+      {demo && (
+        <p>
+          You’re asking about the {demo === "hoa" ? "community" : demo}{" "}
+          demonstration.
+        </p>
+      )}
       <div
         style={{ position: "absolute", left: "-10000px" }}
         aria-hidden="true"

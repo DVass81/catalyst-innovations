@@ -56,10 +56,10 @@ const orgSchema = {
     addressRegion: "TN",
     addressCountry: "US",
   },
-  // TEMPORARY: Daniel's profile is pulled from public display for now — see
-  // data/content.ts's `activeFounders` comment. Add him back here too once
-  // his updated profile is live.
-  founder: [{ "@type": "Person", name: "Josh Ogle", jobTitle: "Co-Founder" }],
+  founder: [
+    { "@type": "Person", name: "Josh Ogle", jobTitle: "Co-Founder" },
+    { "@type": "Person", name: "Daniel Vass", jobTitle: "Co-Founder" },
+  ],
 };
 
 export default function RootLayout({

@@ -7,7 +7,7 @@ import { LogoLockup } from "./Logo";
 export const links = [
   ["What We Build", "/solutions"],
   ["Industries", "/industries"],
-  ["Our Work", "/portfolio"],
+  ["See What We Build", "/portfolio"],
   ["Savings Tools", "/tools"],
   ["About", "/about"],
 ];

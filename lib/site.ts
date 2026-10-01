@@ -13,7 +13,7 @@ export const site = {
   // Contact placeholders — configure via env, never hardcoded personal info.
   contactEmail: process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? "",
   contactPhone: process.env.NEXT_PUBLIC_CONTACT_PHONE ?? "",
-  /** Calendly/SavvyCal/etc. — shown on the form confirmation screen when set. */
+  /** Daniel's public Microsoft Bookings URL; shown only after explicit review configuration. */
   schedulingUrl: process.env.NEXT_PUBLIC_SCHEDULING_URL ?? "",
   location: "Knoxville, Tennessee",
 };
@@ -49,6 +49,7 @@ export type AnalyticsEvent =
   | "roi_calculator_used"
   | "assessment_start"
   | "assessment_complete"
+  | "booking_click"
   | "demo_interaction"
   | "founder_profile_view"
   | "roi_pdf_download"
