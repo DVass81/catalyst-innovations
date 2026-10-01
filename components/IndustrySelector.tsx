@@ -1,4 +1,6 @@
 "use client";
+import { track } from "@/lib/site";
+import { recommendedDemo } from "@/data/startingPoints";
 import { useState } from "react";
 import IndustryProblems from "./IndustryProblems";
 import Link from "next/link";
@@ -8,6 +10,7 @@ import { getCalculator } from "@/lib/calculators";
 export default function IndustrySelector() {
   const [slug, setSlug] = useState("plumbing");
   const i = industryList.find((x) => x.slug === slug) ?? industryList[0];
+  const example = recommendedDemo(i.group, i.slug);
   return (
     <div className="industry-selector">
       <div className="industry-select-row">
@@ -17,7 +20,10 @@ export default function IndustrySelector() {
         <select
           id="industry-choice"
           value={slug}
-          onChange={(e) => setSlug(e.target.value)}
+          onChange={(e) => {
+            setSlug(e.target.value);
+            track("industry_select", { industry: e.target.value });
+          }}
         >
           {groups.map((g) => (
             <optgroup label={g} key={g}>
@@ -32,7 +38,7 @@ export default function IndustrySelector() {
           ))}
         </select>
       </div>
-      <div className="industry-content">
+      <div className="industry-content" aria-live="polite">
         <div>
           <p className="overline">For {i.name.toLowerCase()}</p>
           <h3>{i.name}</h3>
@@ -42,6 +48,14 @@ export default function IndustrySelector() {
           </Link>
         </div>
         <div className="industry-example">
+          <p className="overline">A relevant example</p>
+          <p>{example.reason}</p>
+          <Link
+            className="text-link"
+            href={`/portfolio?industry=${i.slug}#${example.id}`}
+          >
+            Explore the guided demo ↗
+          </Link>
           <p className="overline">Put your numbers to work</p>
           <div className="recommended-tools">
             {i.tools.map((slug) => (

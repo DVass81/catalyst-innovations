@@ -15,9 +15,9 @@ export default function Footer() {
         </div>
         <div>
           <span className="overline">Explore</span>
-          <Link href="/solutions">What we build</Link>
+          <Link href="/solutions">Solutions</Link>
           <Link href="/industries">Industries</Link>
-          <Link href="/portfolio">See what we build</Link>
+          <Link href="/portfolio">Demos</Link>
         </div>
         <div>
           <span className="overline">Start a conversation</span>

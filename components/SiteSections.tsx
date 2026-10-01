@@ -36,7 +36,10 @@ export function DiscussCTA() {
             <br />
             your business down?
           </h2>
-          <p>Tell us about it. We’ll help you work out what comes next.</p>
+          <p>
+            Start a conversation with Josh and Daniel. Bring the process you
+            want to improve—we’ll help you find a useful starting point.
+          </p>
         </div>
         <Link className="button button-light" href="/consultation">
           Discuss my business <ArrowUpRight size={18} />

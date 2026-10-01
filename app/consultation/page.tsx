@@ -1,3 +1,4 @@
+import { startingPoints } from "@/data/startingPoints";
 import BookingLink from "@/components/BookingLink";
 import type { Metadata } from "next";
 import { PageIntro } from "@/components/SiteSections";
@@ -13,6 +14,7 @@ export default async function Consultation({
   searchParams,
 }: {
   searchParams: Promise<{
+    problem?: string;
     demo?: string;
     industry?: string;
     tool?: string;
@@ -34,6 +36,7 @@ export default async function Consultation({
       <section className="wrap content-section two-grid">
         <InquiryForm
           industry={industry?.name ?? ""}
+          problem={startingPoints.find((p) => p.id === q.problem)?.id}
           tool={tool?.slug}
           demo={
             q.demo === "hoa" || q.demo === "flooring" || q.demo === "painting"

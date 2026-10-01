@@ -1,4 +1,5 @@
 "use client";
+import { track } from "@/lib/site";
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 
@@ -30,12 +31,27 @@ export default function SectionMotion() {
     document
       .querySelectorAll(".section-heading, .process-grid > div")
       .forEach((el) => observer.observe(el));
+    const engagement = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(({ target, isIntersecting }) => {
+          if (!isIntersecting) return;
+          engagement.unobserve(target);
+          const section = target.getAttribute("data-section-track");
+          if (section) track("section_view", { section });
+        });
+      },
+      { threshold: 0.25 },
+    );
+    document
+      .querySelectorAll("[data-section-track]")
+      .forEach((el) => engagement.observe(el));
     const stop = () => {
       if (preference.matches) animations.forEach((a) => a.cancel());
     };
     preference.addEventListener("change", stop);
     return () => {
       observer.disconnect();
+      engagement.disconnect();
       preference.removeEventListener("change", stop);
       animations.forEach((a) => a.cancel());
     };

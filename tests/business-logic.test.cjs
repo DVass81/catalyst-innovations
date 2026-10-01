@@ -147,7 +147,7 @@ const { industryList } = load("data/redesign.ts", {
 });
 test("every industry has three valid recommendations and concrete content", () => {
   assert.equal(industryList.length, 19);
-  assert.equal(new Set(industryList.flatMap(i => i.problems)).size, 57);
+  assert.equal(new Set(industryList.flatMap((i) => i.problems)).size, 57);
   for (const i of industryList) {
     assert.equal(i.tools.length, 3);
     assert.ok(i.tools.every((slug) => getCalculator(slug)));
@@ -160,12 +160,39 @@ test("every industry has three valid recommendations and concrete content", () =
 });
 
 test("questionnaire additions preserve optionality and reject unknown demo/category values", () => {
-  const extended = { ...valid, sourceDemo: "flooring", struggleCategories: ["Inventory and purchasing", "Disconnected software"], currentTools: "Spreadsheets", desiredOutcome: "Less copying" };
+  const extended = {
+    ...valid,
+    sourceDemo: "flooring",
+    struggleCategories: ["Inventory and purchasing", "Disconnected software"],
+    currentTools: "Spreadsheets",
+    desiredOutcome: "Less copying",
+  };
   assert.ok(schema.consultationSchema.safeParse(extended).success);
-  assert.ok(schema.consultationSchema.safeParse({...valid, struggleCategories: []}).success);
-  assert.equal(schema.consultationSchema.safeParse({...extended, sourceDemo: "private-owner"}).success, false);
-  assert.equal(schema.consultationSchema.safeParse({...extended, struggleCategories: ["unknown"]}).success, false);
-  assert.equal(schema.consultationSchema.safeParse({...extended, currentTools: "x".repeat(1001)}).success, false);
+  assert.ok(
+    schema.consultationSchema.safeParse({ ...valid, struggleCategories: [] })
+      .success,
+  );
+  assert.equal(
+    schema.consultationSchema.safeParse({
+      ...extended,
+      sourceDemo: "private-owner",
+    }).success,
+    false,
+  );
+  assert.equal(
+    schema.consultationSchema.safeParse({
+      ...extended,
+      struggleCategories: ["unknown"],
+    }).success,
+    false,
+  );
+  assert.equal(
+    schema.consultationSchema.safeParse({
+      ...extended,
+      currentTools: "x".repeat(1001),
+    }).success,
+    false,
+  );
 });
 const schema = load("lib/consultation.ts");
 const lead = load("lib/leadScoring.ts");
@@ -244,9 +271,23 @@ test("delivery is truthful and provider requests can be mocked without sending",
     assert.equal(calls, 0);
     assert.equal((await POST(request())).status, 200);
     assert.equal(calls, 1);
-    assert.equal((await POST(request({...valid, sourceDemo: "hoa", struggleCategories: ["Disconnected software"], currentTools: "Spreadsheets"}))).status, 200);
+    assert.equal(
+      (
+        await POST(
+          request({
+            ...valid,
+            sourceDemo: "hoa",
+            struggleCategories: ["Disconnected software"],
+            currentTools: "Spreadsheets",
+          }),
+        )
+      ).status,
+      200,
+    );
     assert.equal(deliveredBody.sourceDemo, "hoa");
-    assert.deepEqual(deliveredBody.struggleCategories, ["Disconnected software"]);
+    assert.deepEqual(deliveredBody.struggleCategories, [
+      "Disconnected software",
+    ]);
     assert.equal(deliveredBody.currentTools, "Spreadsheets");
     global.fetch = async () => new Response("{}", { status: 500 });
     assert.equal((await POST(request())).status, 502);
@@ -264,4 +305,40 @@ test("delivery is truthful and provider requests can be mocked without sending",
       else process.env[k] = before[k];
     }
   }
+});
+
+const { startingPoints, recommendedDemo } = load("data/startingPoints.ts");
+const { demos } = load("data/demos.ts");
+test("problem finder recommendations resolve to actual calculators and verified demos", () => {
+  assert.equal(new Set(startingPoints.map((p) => p.id)).size, 5);
+  for (const p of startingPoints) {
+    assert.ok(getCalculator(p.tool), p.tool);
+    assert.ok(
+      demos.some((d) => d.id === p.demo),
+      p.demo,
+    );
+    assert.ok(p.before.length > 20 && p.after.length > 20);
+  }
+});
+test("every industry group gets an honest demo recommendation", () => {
+  for (const group of [
+    "Trades & construction",
+    "Manufacturing & fabrication",
+    "Distribution & warehousing",
+    "Financial & professional services",
+    "Communities & nonprofits",
+    "Growing businesses",
+  ]) {
+    const d = recommendedDemo(group, "test");
+    assert.ok(demos.some((x) => x.id === d.id));
+    assert.ok(d.reason.length > 30);
+  }
+  assert.equal(
+    recommendedDemo("Trades & construction", "painting").id,
+    "painting",
+  );
+  assert.match(
+    recommendedDemo("Manufacturing & fabrication", "manufacturing").reason,
+    /not a warehouse or manufacturing product/,
+  );
 });

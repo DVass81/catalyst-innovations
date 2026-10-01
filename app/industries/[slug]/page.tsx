@@ -1,3 +1,4 @@
+import { recommendedDemo } from "@/data/startingPoints";
 import IndustryProblems from "@/components/IndustryProblems";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -29,6 +30,7 @@ export default async function IndustryPage({
   const { slug } = await params;
   const i = industryList.find((x) => x.slug === slug);
   if (!i) notFound();
+  const demo = recommendedDemo(i.group, i.slug);
   return (
     <>
       <PageIntro
@@ -47,6 +49,16 @@ export default async function IndustryPage({
           ))}
         </ol>
         <p>We adapt these steps to your team and existing tools.</p>
+        <aside className="related-demo">
+          <p className="overline">See a practical example</p>
+          <p>{demo.reason}</p>
+          <Link
+            className="text-link"
+            href={`/portfolio?industry=${i.slug}#${demo.id}`}
+          >
+            Explore the guided demo ↗
+          </Link>
+        </aside>
       </section>
       <section className="wrap content-section">
         <p className="overline">Explore your numbers</p>
@@ -79,7 +91,7 @@ export default async function IndustryPage({
             className="button button-light"
             href={`/consultation?industry=${i.slug}`}
           >
-            Discuss my business ↗
+            Discuss {i.name.toLowerCase()} workflows ↗
           </Link>
         </div>
       </section>

@@ -5,9 +5,9 @@ import { usePathname } from "next/navigation";
 import { Menu, X, ArrowUpRight } from "lucide-react";
 import { LogoLockup } from "./Logo";
 export const links = [
-  ["What We Build", "/solutions"],
+  ["Solutions", "/solutions"],
   ["Industries", "/industries"],
-  ["See What We Build", "/portfolio"],
+  ["Demos", "/portfolio"],
   ["Savings Tools", "/tools"],
   ["About", "/about"],
 ];

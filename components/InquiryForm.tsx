@@ -1,4 +1,6 @@
 "use client";
+import Link from "next/link";
+import { startingPoints } from "@/data/startingPoints";
 import { useRef, useState, useSyncExternalStore, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { industryList } from "@/data/redesign";
@@ -19,7 +21,9 @@ export default function InquiryForm({
   tool,
   attach = false,
   demo,
+  problem,
 }: {
+  problem?: string;
   industry?: string;
   tool?: string;
   attach?: boolean;
@@ -41,6 +45,11 @@ export default function InquiryForm({
     )
       attachment = saved.summary;
   } catch {}
+  const selectedProblem = startingPoints.find((p) => p.id === problem);
+  const formRef = useRef<HTMLFormElement>(null);
+  const errorRef = useRef<HTMLParagraphElement>(null);
+  const [receipt, setReceipt] = useState<Record<string, string>>({});
+  const [suggestions, setSuggestions] = useState<string[]>([]);
   const [include, setInclude] = useState(attach);
   const [pending, setPending] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -75,6 +84,21 @@ export default function InquiryForm({
           result.error ?? "Your request could not be sent. Please try again.",
         );
       }
+      setReceipt(
+        Object.fromEntries(
+          [
+            "name",
+            "email",
+            "company",
+            "challenge",
+            "industry",
+            "phone",
+            "currentTools",
+            "desiredOutcome",
+          ].map((key) => [key, String(form.get(key) ?? "")]),
+        ),
+      );
+      setSuggestions(form.getAll("struggleCategories").map(String));
       setSuccess(true);
       track("form_complete", { source: tool ? "calculator" : "inquiry" });
       if (include) {
@@ -83,6 +107,10 @@ export default function InquiryForm({
         } catch {}
       }
     } catch (err) {
+      track("form_error", {
+        source: tool ? "calculator" : demo ? "demo" : "inquiry",
+      });
+      requestAnimationFrame(() => errorRef.current?.focus());
       setError(
         err instanceof Error
           ? err.message
@@ -100,6 +128,56 @@ export default function InquiryForm({
         <p style={{ marginTop: 20 }}>
           We’ll review your request and contact you about the next step.
         </p>
+        <dl className="submitted-summary">
+          {[
+            ["Business", receipt.company],
+            ["Contact", `${receipt.name} · ${receipt.email}`],
+            ["Your main struggle", receipt.challenge],
+            ["Industry", receipt.industry],
+            ["Current tools", receipt.currentTools],
+            ["Desired improvement", receipt.desiredOutcome],
+          ]
+            .filter(([, v]) => v)
+            .map(([label, value]) => (
+              <div key={label}>
+                <dt>{label}</dt>
+                <dd>{value}</dd>
+              </div>
+            ))}
+          {suggestions.length > 0 && (
+            <div>
+              <dt>Selected challenges</dt>
+              <dd>{suggestions.join(", ")}</dd>
+            </div>
+          )}
+          {include && attachment && (
+            <div>
+              <dt>Attached calculation</dt>
+              <dd>{attachment}</dd>
+            </div>
+          )}
+        </dl>
+        <h3>While you’re here</h3>
+        <p>
+          Based on the challenges you selected, these may be useful places to
+          explore:
+        </p>
+        <div className="recommended-tools">
+          {(startingPoints.filter((p) => suggestions.includes(p.category))
+            .length
+            ? startingPoints.filter((p) => suggestions.includes(p.category))
+            : [selectedProblem ?? startingPoints[4]]
+          )
+            .slice(0, 3)
+            .map((p) => (
+              <Link
+                key={p.id}
+                href={`/tools/${p.tool}${receipt.industry ? `?industry=${industryList.find((i) => i.name === receipt.industry)?.slug ?? ""}` : ""}`}
+              >
+                {p.label} calculator ↗
+              </Link>
+            ))}
+        </div>
         <BookingLink />
         <button className="quiet-button" onClick={() => router.push("/tools")}>
           Explore the savings tools
@@ -108,6 +186,7 @@ export default function InquiryForm({
     );
   return (
     <form
+      ref={formRef}
       className="inquiry-form"
       onSubmit={submit}
       onFocusCapture={() => {
@@ -117,6 +196,13 @@ export default function InquiryForm({
         }
       }}
     >
+      {(industry || selectedProblem) && (
+        <p className="inquiry-context">
+          Your starting point:{" "}
+          {[industry, selectedProblem?.label].filter(Boolean).join(" · ")}. You
+          can change the optional details below.
+        </p>
+      )}
       <div className="form-grid">
         {[
           {
@@ -171,30 +257,6 @@ export default function InquiryForm({
           </span>
         )}
       </div>
-      <div className="form-grid">
-        <div className="form-field">
-          <label htmlFor="industry">Industry (optional)</label>
-          <select id="industry" name="industry" defaultValue={industry}>
-            <option value="">Choose an industry</option>
-            {industryList.map((i) => (
-              <option key={i.slug} value={i.name}>
-                {i.name}
-              </option>
-            ))}
-            <option>Other</option>
-          </select>
-        </div>
-        <div className="form-field">
-          <label htmlFor="phone">Phone (optional)</label>
-          <input
-            id="phone"
-            name="phone"
-            type="tel"
-            autoComplete="tel"
-            maxLength={30}
-          />
-        </div>
-      </div>
       <div className="form-field">
         <label htmlFor="challenge">What would you like to make easier? *</label>
         <textarea
@@ -221,32 +283,68 @@ export default function InquiryForm({
           </span>
         )}
       </div>
-      <fieldset className="struggle-options">
-        <legend>Where does work get stuck? (optional)</legend>
-        {struggleCategories.map((label) => (
-          <label key={label}>
-            <input type="checkbox" name="struggleCategories" value={label} />
-            {label}
+      <details className="optional-questions">
+        <summary>Tell us a little more (optional)</summary>
+        <div className="form-grid">
+          <div className="form-field">
+            <label htmlFor="industry">Industry (optional)</label>
+            <select id="industry" name="industry" defaultValue={industry}>
+              <option value="">Choose an industry</option>
+              {industryList.map((i) => (
+                <option key={i.slug} value={i.name}>
+                  {i.name}
+                </option>
+              ))}
+              <option>Other</option>
+            </select>
+          </div>
+          <div className="form-field">
+            <label htmlFor="phone">Phone (optional)</label>
+            <input
+              id="phone"
+              name="phone"
+              type="tel"
+              autoComplete="tel"
+              maxLength={30}
+            />
+          </div>
+        </div>
+        <fieldset className="struggle-options">
+          <legend>Where does work get stuck? (optional)</legend>
+          {struggleCategories.map((label) => (
+            <label key={label}>
+              <input
+                type="checkbox"
+                name="struggleCategories"
+                value={label}
+                defaultChecked={label === selectedProblem?.category}
+              />
+              {label}
+            </label>
+          ))}
+        </fieldset>
+        <div className="form-field">
+          <label htmlFor="currentTools">
+            What tools do you use now? (optional)
           </label>
-        ))}
-      </fieldset>
-      <div className="form-field">
-        <label htmlFor="currentTools">
-          What tools do you use now? (optional)
-        </label>
-        <input
-          id="currentTools"
-          name="currentTools"
-          maxLength={1000}
-          placeholder="Spreadsheets, accounting software, paper…"
-        />
-      </div>
-      <div className="form-field">
-        <label htmlFor="desiredOutcome">
-          What would a better day look like? (optional)
-        </label>
-        <textarea id="desiredOutcome" name="desiredOutcome" maxLength={2000} />
-      </div>
+          <input
+            id="currentTools"
+            name="currentTools"
+            maxLength={1000}
+            placeholder="Spreadsheets, accounting software, paper…"
+          />
+        </div>
+        <div className="form-field">
+          <label htmlFor="desiredOutcome">
+            What would a better day look like? (optional)
+          </label>
+          <textarea
+            id="desiredOutcome"
+            name="desiredOutcome"
+            maxLength={2000}
+          />
+        </div>
+      </details>
       {demo && (
         <p>
           You’re asking about the {demo === "hoa" ? "community" : demo}{" "}
@@ -284,7 +382,7 @@ export default function InquiryForm({
       )}
       {tool && <p>Inquiry context: {tool.replaceAll("-", " ")} calculator.</p>}
       {error && (
-        <p role="alert" className="field-error">
+        <p ref={errorRef} tabIndex={-1} role="alert" className="field-error">
           {error}
         </p>
       )}

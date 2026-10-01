@@ -115,6 +115,35 @@ export default function VisualStory({
         ))}
         <span className="visual-example">Illustrative service business</span>
       </div>
+      <div className="mobile-story" aria-hidden="true">
+        <span className="mobile-record">ILLUSTRATIVE REQUEST #104</span>
+        <div className="mobile-flow">
+          {(kind === "blueprint"
+            ? [
+                "Understand the work",
+                "Connect the process",
+                "One business overview",
+              ]
+            : kind === "desk"
+              ? [
+                  "Capture the request",
+                  "Approve & schedule",
+                  "Complete & review invoice",
+                ]
+              : [
+                  "Scattered information",
+                  "Carry details forward",
+                  "A connected working day",
+                ]
+          ).map((label, index) => (
+            <div className={index === active ? "active" : ""} key={label}>
+              <span>{index < active ? "✓" : `0${index + 1}`}</span>
+              <strong>{label}</strong>
+              {index === active && <small>{story.scenes[index].text}</small>}
+            </div>
+          ))}
+        </div>
+      </div>
       <div className="visual-progress" aria-hidden="true">
         <span style={{ transform: `scaleX(${state.elapsed / 9000})` }} />
       </div>
@@ -151,18 +180,18 @@ export default function VisualStory({
             <button
               onClick={() => (state.playing ? player.pause() : player.play())}
               aria-label={
-                state.playing ? "Pause visual story" : "Play visual story"
+                state.playing ? "Pause story" : "Play story"
               }
             >
               {state.playing ? <Pause size={16} /> : <Play size={16} />}
-              <span>{state.playing ? "Pause" : "Play"}</span>
+              <span>{state.playing ? "Pause story" : "Play story"}</span>
             </button>
             <button
               onClick={() => player.replay()}
-              aria-label="Replay visual story"
+              aria-label="Replay story"
             >
               <RotateCcw size={16} />
-              <span>Replay</span>
+              <span>Replay story</span>
             </button>
           </div>
         )}

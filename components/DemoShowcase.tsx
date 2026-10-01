@@ -1,15 +1,25 @@
 "use client";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { demos, type Demo } from "@/data/demos";
 import { track } from "@/lib/site";
 
-function GuidedDemo({ demo }: { demo: Demo }) {
+function GuidedDemo({ demo, context = "" }: { demo: Demo; context?: string }) {
+  const dialog = useRef<HTMLDialogElement>(null);
+  const expand = useRef<HTMLButtonElement>(null);
+  const choose = (n: number) => {
+    setStep(n);
+    track("demo_interaction", { demo: demo.id, step: n + 1 });
+  };
   const [step, setStep] = useState(0);
   const current = demo.steps[step];
   return (
-    <article id={demo.id} className="guided-demo">
+    <article
+      id={demo.id}
+      className="guided-demo"
+      data-section-track={`demo-${demo.id}`}
+    >
       <div className="demo-intro">
         <p className="overline">
           {demo.id === "hoa" ? "Community operations" : `${demo.id} software`}
@@ -17,6 +27,15 @@ function GuidedDemo({ demo }: { demo: Demo }) {
         <h2>{demo.title}</h2>
         <p>{demo.purpose}</p>
         <span className="demo-status">{demo.status}</span>
+        <p className="demo-problem">
+          <strong>The starting problem</strong>
+          <br />
+          {demo.id === "hoa"
+            ? "A request arrives without enough detail to move forward."
+            : demo.id === "flooring"
+              ? "Room measurements and pricing assumptions are difficult to review together."
+              : "Scope changes and estimate details can drift apart."}
+        </p>
         <ul>
           {demo.capabilities.map((c) => (
             <li key={c}>{c}</li>
@@ -39,6 +58,70 @@ function GuidedDemo({ demo }: { demo: Demo }) {
             />
           </div>
         </div>
+        <button
+          ref={expand}
+          className="expand-demo quiet-button"
+          onClick={() => {
+            dialog.current?.showModal();
+            track("demo_interaction", { demo: demo.id, action: "enlarge" });
+          }}
+        >
+          Enlarge screen ↗
+        </button>
+        <dialog
+          ref={dialog}
+          className="demo-dialog"
+          aria-labelledby={`${demo.id}-viewer-title`}
+          onClose={() => expand.current?.focus()}
+          onKeyDown={(e) => {
+            if (e.key === "ArrowRight") {
+              e.preventDefault();
+              choose(Math.min(2, step + 1));
+            }
+            if (e.key === "ArrowLeft") {
+              e.preventDefault();
+              choose(Math.max(0, step - 1));
+            }
+          }}
+        >
+          <div className="viewer-heading">
+            <h2 id={`${demo.id}-viewer-title`}>{current.title}</h2>
+            <button
+              autoFocus
+              className="quiet-button"
+              onClick={() => dialog.current?.close()}
+            >
+              Close ✕
+            </button>
+          </div>
+          <div className="viewer-image">
+            <Image
+              src={current.image}
+              width={current.width}
+              height={current.height}
+              alt={current.alt}
+              sizes="90vw"
+            />
+          </div>
+          <p aria-live="polite">{current.text}</p>
+          <div className="viewer-controls">
+            <button
+              className="quiet-button"
+              disabled={step === 0}
+              onClick={() => choose(step - 1)}
+            >
+              ← Previous
+            </button>
+            <span>Step {step + 1} of 3 · Sample information</span>
+            <button
+              className="quiet-button"
+              disabled={step === 2}
+              onClick={() => choose(step + 1)}
+            >
+              Next →
+            </button>
+          </div>
+        </dialog>
         <div
           className="demo-step-controls"
           role="group"
@@ -70,7 +153,7 @@ function GuidedDemo({ demo }: { demo: Demo }) {
         <div className="demo-actions">
           <Link
             className="text-link"
-            href={`/consultation?demo=${demo.id}&industry=${demo.industry}`}
+            href={`/consultation?demo=${demo.id}&${context || `industry=${demo.industry}`}`}
           >
             Discuss a system like this ↗
           </Link>
@@ -97,14 +180,16 @@ function GuidedDemo({ demo }: { demo: Demo }) {
 }
 export default function DemoShowcase({
   detailed = false,
+  context = "",
 }: {
+  context?: string;
   detailed?: boolean;
 }) {
   if (detailed)
     return (
       <div className="demo-library">
         {demos.map((d) => (
-          <GuidedDemo key={d.id} demo={d} />
+          <GuidedDemo key={d.id} demo={d} context={context} />
         ))}
       </div>
     );

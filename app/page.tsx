@@ -1,3 +1,5 @@
+import RealSoftwarePreview from "@/components/RealSoftwarePreview";
+import ProblemFinder from "@/components/ProblemFinder";
 import FounderIntro from "@/components/FounderIntro";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -42,7 +44,7 @@ export default function Home() {
             Built around your business. By people who understand operations.
           </p>
         </div>
-        <VisualStory kind="blueprint" priority />
+        <RealSoftwarePreview />
       </section>
       <div className="benefit-strip">
         <div className="wrap">
@@ -89,6 +91,7 @@ export default function Home() {
             </p>
           </div>
           <SolutionCards />
+          <VisualStory kind="blueprint" />
         </div>
       </section>
       <section className="section wrap">
@@ -128,6 +131,10 @@ export default function Home() {
       </section>
       <section className="section wrap">
         <SavingsPreview />
+      </section>
+      <FounderIntro />
+      <section className="section wrap">
+        <ProblemFinder />
       </section>
       <section className="section process-section">
         <div className="wrap">
@@ -202,7 +209,7 @@ export default function Home() {
           ))}
         </div>
       </section>
-      <FounderIntro />
+
       <DiscussCTA />
     </>
   );
