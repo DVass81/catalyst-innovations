@@ -1,5 +1,5 @@
 {
-  "status": "Completed and verified in local preview; not published",
+  "status": "Ken replacement verified locally; authorized for production release",
   "date": "2026-10-01",
   "estimatedCredits": {
     "painting": 7,
@@ -8,10 +8,10 @@
     "total": 21.4
   },
   "voice": {
-    "name": "Cillian",
-    "id": "d8ba9f14-8a24-44db-932b-99e16c45bd32",
+    "name": "Ken",
+    "id": "ceee41dc-0ee8-59a7-b3e8-2744116fcb5e",
     "type": "preset",
-    "model": "seed_audio"
+    "model": "voice_change_merge"
   },
   "format": {
     "width": 1920,
@@ -35,12 +35,12 @@
     "Stop Flooring before creating/sending a proposal; show the verified handoff action.",
     "Stop HOA on review without submitting.",
     "Review all final frames, narration, and caption timing before adding walkthrough definitions.",
-    "User topped up credits. Cillian narration completed. No hosting restored or production deployment performed."
+    "User selected Ken. Voice replacement completed; no hosting restored."
   ],
   "releaseGate": [
     "All three videos and captions exist and are reviewed.",
     "Selected preset voice is the same across all scripts.",
-    "Videos last 60–90 seconds, 1920x1080, with intelligible narration.",
+    "Videos last 60\u201390 seconds, 1920x1080, with intelligible narration.",
     "Posters use completed video frames. Video files are mounted only after visitors choose a walkthrough.",
     "Test player controls and error handling against real final files.",
     "Do not push incomplete preview to main."
@@ -50,17 +50,17 @@
     {
       "id": "painting",
       "durationSeconds": 76.5,
-      "bytes": 2896894
+      "bytes": 3228753
     },
     {
       "id": "flooring",
       "durationSeconds": 69.78,
-      "bytes": 2675667
+      "bytes": 2986758
     },
     {
       "id": "hoa",
       "durationSeconds": 63.48,
-      "bytes": 2426359
+      "bytes": 2705621
     }
   ],
   "captureNotes": "Actual browser interactions captured as timed screen frames, cropped locally and assembled at 1920x1080 / 30 fps. Source capture intervals vary; repeated frames provide narration holds. Application contents are not generated. No synthetic cursor. Editorial chapter fades and titles only. Flooring excludes all sidebar, account, catalog, notification and private entry content; Painting review excludes fictional names and addresses; HOA excludes resident sidebar. Source frames remain local in work, outside public assets.",
@@ -69,7 +69,7 @@
     "lint": "passed",
     "typecheck": "passed",
     "build": "passed; 86 routes generated",
-    "media": "All three H.264/AAC MP4s decode without errors; 1920x1080, faststart, 2.43–2.90 MB each. Caption cues have valid ordered times. Actual screen crops exclude account sidebar and unrelated records.",
+    "media": "Ken videos decode without errors. Video stream hashes match originals exactly; duration variation is under 0.03 seconds. Audio transcriptions contain the full scripts. Captions retimed from Ken word timestamps with original script spelling. All MP4s retain faststart.",
     "browser": "All three videos play. Keyboard open, pause, Escape close and focus restoration checked. Captions load. Transcript expands. Native seeking, volume and fullscreen controls available. Painting missing-file fallback and retry verified without changing production. Demo anchors open the correct player. No video elements are mounted before selection. Phone 390px, tablet 768px and desktop layouts have no horizontal overflow.",
     "performance": {
       "method": "Local production build, mobile viewport, unthrottled desktop browser. Local-only proxy injected buffered PerformanceObservers; no instrumentation ships. Not a real-device or field measurement.",
@@ -92,6 +92,72 @@
       },
       "gap": "Deployment network and actual mobile-device performance still need a field check."
     },
-    "release": "Preview only at http://127.0.0.1:3102/portfolio. Production unchanged."
+    "release": "Ken replacement authorized for production by user; deployment verification pending."
+  },
+  "kenVoiceChange": {
+    "creditsUsed": 22,
+    "balanceBefore": 962.94,
+    "balanceAfter": 940.94,
+    "jobs": [
+      {
+        "demo": "painting",
+        "id": "3871194d-57d1-4c1e-87fb-fd8dbaa00ffa",
+        "type": "video",
+        "status": "pending",
+        "model": "voice_change_merge",
+        "params": {
+          "prompt": "",
+          "voice_type": "preset",
+          "voice_id": "ceee41dc-0ee8-59a7-b3e8-2744116fcb5e"
+        }
+      },
+      {
+        "demo": "flooring",
+        "id": "021cff0e-a069-4eb7-bbab-b035366203da",
+        "type": "video",
+        "status": "pending",
+        "model": "voice_change_merge",
+        "params": {
+          "prompt": "",
+          "voice_type": "preset",
+          "voice_id": "ceee41dc-0ee8-59a7-b3e8-2744116fcb5e"
+        }
+      },
+      {
+        "demo": "hoa",
+        "id": "83894bc2-1811-4313-8ad5-c37425c1f39a",
+        "type": "video",
+        "status": "pending",
+        "model": "voice_change_merge",
+        "params": {
+          "prompt": "",
+          "voice_type": "preset",
+          "voice_id": "ceee41dc-0ee8-59a7-b3e8-2744116fcb5e"
+        }
+      }
+    ],
+    "verification": [
+      {
+        "demo": "painting",
+        "duration": "00:01:16.50",
+        "identicalVideoStream": true,
+        "decode": "passed",
+        "bytes": 3228753
+      },
+      {
+        "demo": "flooring",
+        "duration": "00:01:09.77",
+        "identicalVideoStream": true,
+        "decode": "passed",
+        "bytes": 2986758
+      },
+      {
+        "demo": "hoa",
+        "duration": "00:01:03.47",
+        "identicalVideoStream": true,
+        "decode": "passed",
+        "bytes": 2705621
+      }
+    ]
   }
 }
