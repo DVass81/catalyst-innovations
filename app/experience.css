@@ -95,10 +95,22 @@
   min-width: 0;
 }
 .catalyst-engine-hero { min-width: 0; margin: 0; align-self: center; }
-.catalyst-engine-art { aspect-ratio: 4 / 3; overflow: hidden; border-radius: 28px; background: #faf7f1; }
+.catalyst-engine-art { position: relative; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 28px; background: #faf7f1; }
+.engine-film { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; opacity: 0; pointer-events: none; }
+.engine-film-visible { opacity: 1; }
+.engine-controls { min-height: 44px; display: flex; gap: 16px; justify-content: center; }
+.engine-controls button { min-height: 44px; padding: 8px 12px; font-size: 13px; color: #2f5d8f; text-decoration: underline; text-underline-offset: 4px; cursor: pointer; }
+.engine-controls button:focus-visible, .engine-story-summary summary:focus-visible { outline: 3px solid #2f5d8f; outline-offset: 3px; border-radius: 4px; }
+@media (prefers-reduced-motion: reduce) { .engine-film, .engine-controls { visibility: hidden; } }
 .catalyst-engine-art img { display: block; width: 100%; height: 100%; object-fit: contain; }
 .catalyst-engine-hero figcaption { display: grid; gap: 10px; padding: 24px 8px 0; text-align: center; }
-.catalyst-engine-hero figcaption > span:last-child { font-size: 13px; line-height: 1.7; color: #52606d; }
+.catalyst-engine-hero .engine-stage { display: grid; place-items: center; min-height: 3lh; margin: 0; font-size: clamp(18px, 1.6vw, 22px); line-height: 1.45; font-weight: 600; color: #0a1628; text-wrap: balance; }
+.catalyst-engine-hero .engine-summary { margin: 0 auto; max-width: 48ch; font-size: 14px; line-height: 1.7; color: #52606d; }
+.engine-story-summary { font-size: 13px; color: #52606d; }
+.engine-story-summary summary { width: fit-content; margin: auto; min-height: 44px; padding: 12px; cursor: pointer; color: #2f5d8f; }
+.engine-story-summary ol { margin: 12px 0 0; padding: 22px 22px 22px 40px; display: grid; gap: 18px; border: 1px solid #d4dee5; border-radius: 14px; text-align: left; line-height: 1.6; }
+.engine-story-summary li strong, .engine-story-summary li span { display: block; }
+.engine-story-summary li strong { color: #0a1628; margin-bottom: 4px; }
 @media (max-width: 900px) {
   .catalyst-engine-hero { width: 100%; max-width: 700px; justify-self: center; }
 }

@@ -313,3 +313,200 @@ test("booking enables the reviewed Calendly event, rejects unreviewed overrides,
     else process.env.NEXT_PUBLIC_BOOKING_VERIFIED = before;
   }
 });
+
+const workarounds = load("lib/workaroundsStory.ts");
+function workaroundsHarness({ deferred = false, coordinator = createPlaybackCoordinator() } = {}) {
+  const listeners = new Map();
+  const attempts = [];
+  const video = {
+    paused: true, ended: false, currentTime: 0, src: "", preload: "none", plays: 0,
+    getAttribute() { return this.src; },
+    emit(event) { listeners.get(event)?.(); },
+    play() {
+      this.plays++;
+      this.paused = false;
+      this.ended = false;
+      if (deferred) return new Promise((resolve, reject) => attempts.push({ resolve, reject }));
+      this.emit("playing");
+      return Promise.resolve();
+    },
+    pause() { this.paused = true; this.emit("pause"); },
+    addEventListener(event, listener) { listeners.set(event, listener); },
+    removeEventListener(event) { listeners.delete(event); },
+  };
+  const p = workarounds.createWorkaroundsPlayer(video, coordinator, () => {});
+  return { p, video, attempts, ready() { p.setNearby(true); p.setVisible(true); p.setReady(true); } };
+}
+const flushMedia = async () => { await Promise.resolve(); await Promise.resolve(); };
+
+test("workarounds labels change at the approved film boundaries", () => {
+  for (const [time, stage] of [[-1, 0], [0, 0], [4.99, 0], [5, 1], [7.99, 1], [8, 2], [10.99, 2], [11, 3], [13.99, 3], [14, 4], [20, 4], [200, 4], [NaN, 0]]) {
+    assert.equal(workarounds.workaroundsStageAt(time), stage);
+  }
+  assert.deepEqual(workarounds.workaroundsStory.map(s => s.label), [
+    "Manual work and disconnected tools",
+    "Customer information—entered once",
+    "Approved jobs, schedules, and materials—connected",
+    "Completed work—ready for invoicing",
+    "Your business. Working together.",
+  ]);
+});
+
+test("workarounds media waits for page/poster readiness and proximity, then plays only when visible", async () => {
+  const { p, video } = workaroundsHarness();
+  p.setNearby(true);
+  p.setVisible(true);
+  assert.equal(video.src, "");
+  p.setVisible(false);
+  p.setNearby(false);
+  p.setReady(true);
+  assert.equal(video.src, "", "below-page film is not requested");
+  p.setNearby(true);
+  assert.equal(video.src, "/brand/catalyst-workarounds-v1.mp4");
+  assert.equal(video.preload, "metadata");
+  assert.equal(video.plays, 0);
+  p.setVisible(true);
+  await flushMedia();
+  assert.equal(video.plays, 1);
+  assert.equal(p.getSnapshot().showFilm, true);
+  for (const [time, event, stage] of [[5.5, "timeupdate", 1], [9, "seeking", 2], [12, "seeked", 3]]) {
+    video.currentTime = time;
+    video.emit(event);
+    assert.equal(p.getSnapshot().stage, stage);
+  }
+  video.paused = true; video.ended = true; video.emit("ended");
+  assert.equal(p.getSnapshot().stage, 4);
+  p.setVisible(false); p.setVisible(true);
+  assert.equal(video.plays, 1, "finished film does not loop");
+  p.replay();
+  assert.equal(video.currentTime, 0);
+  assert.equal(p.getSnapshot().stage, 0);
+  assert.equal(video.plays, 2);
+  p.dispose();
+});
+
+test("workarounds preserves resume intent across combined visibility pauses, but respects manual pause", async () => {
+  const { p, video, ready } = workaroundsHarness();
+  ready(); await flushMedia();
+  video.currentTime = 6;
+  p.setVisible(false);
+  p.setDocumentVisible(false);
+  p.setVisible(true);
+  assert.equal(video.paused, true);
+  p.setDocumentVisible(true);
+  await flushMedia();
+  assert.equal(video.plays, 2);
+  assert.equal(video.currentTime, 6);
+  p.toggle();
+  p.setVisible(false); p.setDocumentVisible(false); p.setVisible(true); p.setDocumentVisible(true);
+  assert.equal(video.plays, 2, "manual pause survives sensor changes");
+  assert.equal(p.getSnapshot().playing, false);
+  p.toggle();
+  assert.equal(video.plays, 3);
+  p.dispose();
+});
+
+test("workarounds reduced motion and media errors keep a static alternative without automatic retries", async () => {
+  const { p, video, ready } = workaroundsHarness();
+  p.setReduced(true); ready();
+  assert.equal(video.src, "");
+  p.toggle(); p.replay();
+  assert.equal(video.plays, 0);
+  assert.equal(p.getSnapshot().available, false);
+  p.setReduced(false);
+  assert.equal(video.plays, 0, "changing preference does not trigger a surprise animation");
+  p.toggle(); await flushMedia();
+  assert.equal(p.getSnapshot().showFilm, true);
+  p.setReduced(true);
+  assert.equal(video.paused, true);
+  assert.equal(p.getSnapshot().showFilm, false);
+  p.setReduced(false); p.toggle(); await flushMedia();
+  video.emit("error");
+  assert.equal(video.paused, true);
+  assert.equal(p.getSnapshot().showFilm, false);
+  assert.equal(p.getSnapshot().available, false);
+  const plays = video.plays;
+  p.toggle(); p.replay(); p.setVisible(false); p.setVisible(true);
+  assert.equal(video.plays, plays);
+  p.dispose();
+});
+
+test("Play and Replay queue intent while mobile controls bring the artwork back into view", async () => {
+  const { p, video, ready } = workaroundsHarness();
+  ready(); await flushMedia();
+  p.toggle();
+  video.currentTime = 12;
+  p.setVisible(false);
+  p.toggle();
+  assert.equal(video.paused, true, "offscreen play waits for the artwork to become visible");
+  p.setVisible(true); await flushMedia();
+  assert.equal(video.plays, 2);
+  assert.equal(video.currentTime, 12);
+  p.toggle(); p.setVisible(false);
+  p.replay();
+  assert.equal(video.currentTime, 0);
+  assert.equal(p.getSnapshot().stage, 0);
+  assert.equal(video.paused, true);
+  p.setVisible(true);
+  assert.equal(video.plays, 3);
+  p.dispose();
+});
+
+test("late play events cannot undo a pause, and stale rejections cannot stop a newer attempt", async () => {
+  const { p, video, attempts, ready } = workaroundsHarness({ deferred: true });
+  ready();
+  assert.equal(p.getSnapshot().playing, true, "loading media can be paused immediately");
+  p.toggle();
+  video.paused = false;
+  video.emit("playing");
+  attempts[0].resolve(); await flushMedia();
+  assert.equal(video.paused, true);
+  assert.equal(p.getSnapshot().showFilm, false);
+  p.toggle();
+  p.setVisible(false); p.setVisible(true);
+  assert.equal(video.plays, 3);
+  attempts[1].reject(new Error("Previous play interrupted")); await flushMedia();
+  assert.equal(p.getSnapshot().playing, true, "stale rejection does not overwrite a new play request");
+  video.emit("playing"); attempts[2].resolve(); await flushMedia();
+  assert.equal(p.getSnapshot().showFilm, true);
+  p.dispose();
+});
+
+test("an autoplay rejection offers manual play and the hero shares playback ownership with other stories", async () => {
+  const c = createPlaybackCoordinator();
+  const { p, video, attempts, ready } = workaroundsHarness({ deferred: true, coordinator: c });
+  ready();
+  video.paused = true;
+  attempts[0].reject(new Error("Autoplay blocked")); await flushMedia();
+  assert.equal(p.getSnapshot().playing, false);
+  assert.equal(p.getSnapshot().available, true);
+  p.setVisible(false); p.setVisible(true);
+  assert.equal(video.plays, 1);
+  p.toggle(); video.emit("playing"); attempts[1].resolve(); await flushMedia();
+  const other = createStoryPlayer(9000, true, c);
+  other.setVisible(true);
+  assert.equal(video.paused, true);
+  p.setVisible(false); p.setVisible(true);
+  assert.equal(video.plays, 2, "the hero does not reclaim playback after another story starts");
+  p.toggle(); video.emit("playing"); attempts[2].resolve(); await flushMedia();
+  assert.equal(other.getSnapshot().playing, false);
+  p.dispose(); other.dispose();
+});
+
+test("the server-rendered workarounds hero includes its full readable story and no video request", () => {
+  const React = require("react");
+  const { renderToStaticMarkup } = require("react-dom/server");
+  const { default: Hero } = load("components/CatalystEngineHero.tsx", {
+    "@/lib/storyPlayback": { storyCoordinator: createPlaybackCoordinator() },
+    "@/lib/workaroundsStory": workarounds,
+    "next/image": { default: ({ src, alt, width, height }) => React.createElement("img", { src, alt, width, height }) },
+  });
+  const html = renderToStaticMarkup(React.createElement(Hero));
+  assert.match(html, /catalyst-workarounds-poster-v1.webp/);
+  assert.match(html, /width="1920" height="1080"/);
+  assert.match(html, /preload="none"/);
+  assert.match(html, /Read the story/);
+  assert.match(html, /Custom software connects your customer information/);
+  for (const stage of workarounds.workaroundsStory) assert.ok(html.includes(stage.label));
+  assert.doesNotMatch(html, /\.mp4|catalyst-engine-concept|catalyst-engine-v1/);
+});
