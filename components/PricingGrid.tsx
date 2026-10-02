@@ -76,7 +76,7 @@ export default function PricingGrid({ tiers }: { tiers: PricingTier[] }) {
                 >
                   {tier.popular && (
                     <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 inline-flex items-center gap-1 rounded-full bg-steel-400 px-3.5 py-1 text-xs font-semibold tracking-wide text-white shadow-card">
-                      <Sparkles size={12} /> Most Popular
+                      <Sparkles size={12} /> Automation & AI
                     </span>
                   )}
                   <h3 className="font-display text-xl font-semibold text-navy-900">
@@ -120,6 +120,11 @@ export default function PricingGrid({ tiers }: { tiers: PricingTier[] }) {
                       </li>
                     ))}
                   </ul>
+                  <div className="package-year-total" aria-live="polite">
+                    <span>First-year base total</span>
+                    <strong>{formatPriceRange(tier.oneTimeLow + monthlyLow * 12, tier.oneTimeHigh + monthlyHigh * 12)}</strong>
+                    <small>Implementation + {annual ? "one annual payment" : "12 monthly payments"}.</small>
+                  </div>
 
                   <ButtonLink
                     href="/consultation"

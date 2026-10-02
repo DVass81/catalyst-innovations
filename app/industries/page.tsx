@@ -4,6 +4,7 @@ import { ArrowUpRight } from "lucide-react";
 import { industryList, groups } from "@/data/redesign";
 import { PageIntro, DiscussCTA } from "@/components/SiteSections";
 export const metadata: Metadata = {
+  alternates: { canonical: '/industries' },
   title: "Industries We Help",
   description:
     "Custom software for trades, manufacturing, warehouses, communities, nonprofits and growing businesses.",

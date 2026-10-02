@@ -292,18 +292,21 @@ test("ready walkthroughs offer viewing without preloading media and preserve inq
   assert.doesNotMatch(html, /<video|<source|\.mp4|\.vtt|in production/);
 });
 
-test("booking is hidden until a public URL is supplied and review is confirmed", () => {
+test("booking enables the reviewed Calendly event, rejects unreviewed overrides, and supports disabling", () => {
+  const booking = require("../data/booking.json");
   const React = require("react");
   const { renderToStaticMarkup } = require("react-dom/server");
   const before = process.env.NEXT_PUBLIC_BOOKING_VERIFIED;
   try {
-    for (const verified of ["false", "true"]) for (const url of ["", "https://outlook.office.com/bookwithme/test"]) {
-      process.env.NEXT_PUBLIC_BOOKING_VERIFIED = verified;
+    for (const verified of [undefined, "false", "true"]) for (const url of ["", booking.publicUrl, "https://calendly.com/example/unreviewed"]) {
+      if (verified === undefined) delete process.env.NEXT_PUBLIC_BOOKING_VERIFIED;
+      else process.env.NEXT_PUBLIC_BOOKING_VERIFIED = verified;
       const { default: BookingLink } = load("components/BookingLink.tsx", {
         "@/lib/site": { site: { schedulingUrl: url }, track: () => {} },
+        "@/data/booking.json": { default: booking },
       });
       const html = renderToStaticMarkup(React.createElement(BookingLink));
-      assert.equal(html.includes("Book a conversation"), verified === "true" && !!url);
+      assert.equal(html.includes("Book a conversation"), verified !== "false" && !!url && (url === booking.publicUrl || verified === "true"));
     }
   } finally {
     if (before === undefined) delete process.env.NEXT_PUBLIC_BOOKING_VERIFIED;

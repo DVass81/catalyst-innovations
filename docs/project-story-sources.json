@@ -1,0 +1,20 @@
+{
+  "reviewDate": "2026-10-02",
+  "source": "Daniel Vass, explicit instructions in this website redesign conversation",
+  "facts": {
+    "elevate": "Built by Catalyst; discussions about supporting USA Field Hockey are in progress.",
+    "hoa": "Early conversations with Tennessee HOA communities; no paying customer, deployment or comparative size claim.",
+    "painting": "Work with Oxendine Painting aims to improve field visibility and reduce manual processes; current demonstration is a prototype."
+  },
+  "externalContext": {
+    "url": "https://www.usafieldhockey.com/news/2025/december/11/we-are-in-u-s-national-teams-confirmed-to-return-to-la28-olympic-stage",
+    "verified": "2026-10-02",
+    "supports": "USA Field Hockey confirmed both national teams for LA28. Does not verify any Catalyst or Elevate partnership."
+  },
+  "publicationRules": [
+    "No official Olympic sponsorship or partnership claim.",
+    "No measured savings, deployment claim, or testimonial invented.",
+    "Existing client names are authorized by the user; no client logos added.",
+    "Daniel clarified Catalyst is a startup with no customers yet; do not publish filled pilot counts or testimonials."
+  ]
+}

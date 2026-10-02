@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Section, Heading } from "@/components/ui";
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/privacy' },
   title: "Privacy Policy",
   description: "How Catalyst Innovations collects, uses, and protects information.",
 };

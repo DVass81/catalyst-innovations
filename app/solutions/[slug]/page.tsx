@@ -14,7 +14,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const s = services.find((x) => x.slug === slug);
-  return { title: s?.title ?? "Solution not found", description: s?.tagline };
+  return { alternates: s ? { canonical: `/solutions/${s.slug}` } : undefined, title: s?.title ?? "Solution not found", description: s?.tagline };
 }
 export default async function Solution({
   params,

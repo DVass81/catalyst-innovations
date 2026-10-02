@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Section, Heading } from "@/components/ui";
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/terms' },
   title: "Terms of Use",
   description: "Terms governing use of the Catalyst Innovations website.",
 };

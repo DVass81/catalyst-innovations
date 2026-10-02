@@ -1,5 +1,5 @@
 import RealSoftwarePreview from "@/components/RealSoftwarePreview";
-import ProblemFinder from "@/components/ProblemFinder";
+import { LogoLockup } from "@/components/Logo";
 import FounderIntro from "@/components/FounderIntro";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -10,7 +10,8 @@ import IndustrySelector from "@/components/IndustrySelector";
 import { DiscussCTA, SolutionCards, Projects } from "@/components/SiteSections";
 import SavingsPreview from "@/components/SavingsPreview";
 export const metadata: Metadata = {
-  title: "Catalyst Innovations — Less busywork. A better-running business.",
+  alternates: { canonical: '/' },
+  title: "Catalyst Innovations — Custom software. A better-running business.",
   description:
     "Custom software that connects your customers, jobs, inventory, purchasing and accounting. Built around the way your business works.",
 };
@@ -19,29 +20,31 @@ export default function Home() {
     <>
       <section className="hero hero-editorial wrap">
         <div className="hero-copy">
+          <div className="hero-brand">
+            <LogoLockup variant="light-bg" hero />
+          </div>
           <p className="overline">
-            <span className="live-dot" /> Custom software. Real-world
-            experience.
+            <span className="live-dot" /> Custom business software & automation
           </p>
           <h1>
-            Less busywork.
+            Custom software.
             <br />A better-running <em>business.</em>
           </h1>
           <p className="hero-description">
-            We build custom software that connects your customers, jobs,
-            inventory, purchasing, and accounting—so your team can spend more
-            time doing the work.
+            We build the tools your business needs to manage customers, run jobs,
+            track inventory and bring your numbers together. Replace repeated
+            paperwork and disconnected spreadsheets with one clearer way to work.
           </p>
           <div className="hero-actions">
             <Link href="/consultation" className="button">
               Discuss my business <ArrowUpRight size={18} />
             </Link>
-            <Link href="/tools" className="text-link">
-              Calculate my savings <ArrowRight size={16} />
+            <Link href="/portfolio" className="text-link">
+              See the actual software <ArrowRight size={16} />
             </Link>
           </div>
           <p className="hero-footnote">
-            Built around your business. By people who understand operations.
+            For business owners and teams. Built around your process and the tools you already use.
           </p>
         </div>
         <RealSoftwarePreview />
@@ -91,31 +94,13 @@ export default function Home() {
             </p>
           </div>
           <SolutionCards />
-          <VisualStory kind="blueprint" />
         </div>
-      </section>
-      <section className="section wrap">
-        <div className="section-heading">
-          <div>
-            <p className="overline">03 / Made for your kind of work</p>
-            <h2>
-              Different businesses.
-              <br />
-              <em>Familiar challenges.</em>
-            </h2>
-          </div>
-          <p>
-            From a service crew to a warehouse to a community organization, we
-            start by understanding how you work.
-          </p>
-        </div>
-        <IndustrySelector />
       </section>
       <section className="section section-white">
         <div className="wrap">
           <div className="section-heading">
             <div>
-              <p className="overline">04 / From ideas to useful software</p>
+              <p className="overline">03 / From ideas to useful software</p>
               <h2>
                 Real work.
                 <br />
@@ -130,15 +115,29 @@ export default function Home() {
         </div>
       </section>
       <section className="section wrap">
+        <div className="section-heading">
+          <div>
+            <p className="overline">04 / Made for your kind of work</p>
+            <h2>
+              Different businesses.
+              <br />
+              <em>Familiar challenges.</em>
+            </h2>
+          </div>
+          <p>
+            From a service crew to a warehouse to a community organization, we
+            start by understanding how you work.
+          </p>
+        </div>
+        <IndustrySelector />
+      </section>
+      <section className="section wrap">
         <SavingsPreview />
       </section>
       <FounderIntro />
-      <section className="section wrap">
-        <ProblemFinder />
-      </section>
       <section className="section process-section">
         <div className="wrap">
-          <p className="overline">06 / How we work together</p>
+          <p className="overline">How we work together</p>
           <h2>
             We listen. We build.
             <br />
@@ -148,13 +147,13 @@ export default function Home() {
             {[
               [
                 "01",
-                "Understand your business.",
-                "We learn how your team works and where time, information or opportunities get lost.",
+                "Show us one sticking point.",
+                "Bring a repeated task, a spreadsheet or a process that slows your team down. We’ll talk through how it works today and what you want to improve.",
               ],
               [
                 "02",
-                "Build around your process.",
-                "We turn the right starting point into useful software, with your feedback along the way.",
+                "Agree on a useful first step.",
+                "We define what the system needs to do, what it should connect to and the proposed scope and cost before building. You can start with one process.",
               ],
               [
                 "03",

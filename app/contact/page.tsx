@@ -5,6 +5,7 @@ import EmailLink from "@/components/EmailLink";
 import { activeFounders } from "@/data/content";
 import { site } from "@/lib/site";
 export const metadata: Metadata = {
+  alternates: { canonical: '/contact' },
   title: "Contact",
   description:
     "Tell Catalyst Innovations what is slowing your business down. Start a conversation about custom software and automation.",

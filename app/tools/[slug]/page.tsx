@@ -15,6 +15,7 @@ export async function generateMetadata({
   return {
     title: c ? `${c.title} Calculator` : "Calculator not found",
     description: c?.description,
+    alternates: c ? { canonical: `/tools/${c.slug}` } : undefined,
   };
 }
 export default async function Tool({

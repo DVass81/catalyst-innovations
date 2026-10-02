@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { PageIntro, DiscussCTA } from "@/components/SiteSections";
 import ToolLibrary from "@/components/ToolLibrary";
 export const metadata: Metadata = {
+  alternates: { canonical: '/tools' },
   title: "24 Free Business Calculators & Savings Tools",
   description:
     "Explore time, costs, margins and automation opportunities with transparent calculators for your business. No email required.",

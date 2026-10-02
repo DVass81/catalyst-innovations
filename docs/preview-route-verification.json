@@ -1,0 +1,17 @@
+{
+  "date": "2026-10-02",
+  "preview": "http://127.0.0.1:3105",
+  "pages": 65,
+  "industryPages": 19,
+  "internalLinks": 162,
+  "issues": [],
+  "broken": [],
+  "demoLab": {
+    "status": 308,
+    "location": "/portfolio"
+  },
+  "sharingImage": {
+    "status": 200,
+    "type": "image/png"
+  }
+}

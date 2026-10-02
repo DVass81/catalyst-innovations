@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import DemoShowcase from "@/components/DemoShowcase";
+import ProjectStories from "@/components/ProjectStories";
 import { industryList } from "@/data/redesign";
 import { startingPoints } from "@/data/startingPoints";
 import { PageIntro, DiscussCTA } from "@/components/SiteSections";
 export const metadata: Metadata = {
+  alternates: { canonical: '/portfolio' },
   title: "See What We Build",
   description:
     "Watch narrated walkthroughs of Oxendine Painting, Knoxville Flooring and the HOA platform built by Catalyst Innovations.",
@@ -40,6 +42,7 @@ export default async function Work({
           demonstration prototype for a planned system.
         </p>
       </section>
+      <ProjectStories />
       <DiscussCTA />
     </>
   );

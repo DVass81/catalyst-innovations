@@ -8,6 +8,7 @@ export const links = [
   ["Solutions", "/solutions"],
   ["Industries", "/industries"],
   ["Demos", "/portfolio"],
+  ["Pricing", "/pricing"],
   ["Savings Tools", "/tools"],
   ["About", "/about"],
 ];

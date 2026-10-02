@@ -5,6 +5,7 @@ import ProblemFinder from "@/components/ProblemFinder";
 import { services } from "@/data/services";
 import { PageIntro, DiscussCTA } from "@/components/SiteSections";
 export const metadata: Metadata = {
+  alternates: { canonical: '/solutions' },
   title: "Custom Software, Connected Operations & Automation",
   description:
     "Practical tools for customers, operations and reporting. Find a starting point for your business.",

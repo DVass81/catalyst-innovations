@@ -3,6 +3,7 @@ import {activeFounders} from "@/data/content";
 import FounderIntro from "@/components/FounderIntro";
 import { PageIntro, DiscussCTA } from "@/components/SiteSections";
 export const metadata: Metadata = {
+  alternates: { canonical: '/founders' },
   title: "Founders — Josh Ogle and Daniel Vass",
   description:
     "The operations and technology backgrounds behind Catalyst Innovations.",

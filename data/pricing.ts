@@ -9,7 +9,7 @@ export type PricingTier = {
   monthlyHigh: number;
   idealFor: string;
   features: string[];
-  /** Featured in the standard 3-tier grid ("Most Popular"). */
+  /** Visually emphasized in the standard three-tier grid; not a popularity claim. */
   popular?: boolean;
   /** Standalone limited-availability spotlight, shown above the main grid. */
   limited?: string;
@@ -115,7 +115,7 @@ export const pricingFaqs: { q: string; a: string }[] = [
   },
   {
     q: "Can we change tiers later?",
-    a: "Yes. Most clients start at Essentials or Professional and upgrade as automation and AI needs grow — we'll credit what you've already paid in toward the difference.",
+    a: "Yes. You can start at Essentials or Professional and upgrade as your needs grow — we'll credit what you've already paid in toward the difference.",
   },
   {
     q: "Is there a contract or can we cancel anytime?",

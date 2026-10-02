@@ -3,18 +3,19 @@
  * TODO(founders): replace placeholder values before launch — see README
  * "Content-replacement checklist".
  */
+import booking from "@/data/booking.json";
 export const site = {
   name: "Catalyst Innovations",
   motto: "Less busywork. A better-running business.",
   positioning:
     "We build custom software that connects your customers, jobs, inventory, purchasing, and accounting so your team can spend more time doing the work.",
   // Set NEXT_PUBLIC_SITE_URL in production (e.g. https://catalystinnovations.com)
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://example.com",
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://mycatalystinnovations.com",
   // Contact placeholders — configure via env, never hardcoded personal info.
   contactEmail: process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? "",
   contactPhone: process.env.NEXT_PUBLIC_CONTACT_PHONE ?? "",
-  /** Daniel's public Microsoft Bookings URL; shown only after explicit review configuration. */
-  schedulingUrl: process.env.NEXT_PUBLIC_SCHEDULING_URL ?? "",
+  /** Reviewed public appointment link (Calendly); never a private calendar URL. */
+  schedulingUrl: process.env.NEXT_PUBLIC_SCHEDULING_URL || booking.publicUrl,
   location: "Knoxville, Tennessee",
 };
 

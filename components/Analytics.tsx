@@ -30,6 +30,17 @@ export default function Analytics() {
         /* analytics must never break the UI */
       }
     };
+    const recordInquiryClick = (event: MouseEvent) => {
+      if (!(event.target instanceof Element)) return;
+      const link = event.target.closest<HTMLAnchorElement>("a[href]");
+      if (!link) return;
+      const url = new URL(link.href, window.location.origin);
+      if (url.origin === window.location.origin && url.pathname === "/consultation") {
+        w.ciTrack?.("cta_consultation_click", { page: window.location.pathname });
+      }
+    };
+    document.addEventListener("click", recordInquiryClick);
+    return () => document.removeEventListener("click", recordInquiryClick);
   }, []);
 
   return (

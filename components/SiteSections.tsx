@@ -1,5 +1,6 @@
 import Link from "next/link";
 import DemoShowcase from "./DemoShowcase";
+import BookingLink from "./BookingLink";
 
 import {
   ArrowUpRight,
@@ -41,9 +42,12 @@ export function DiscussCTA() {
             want to improve—we’ll help you find a useful starting point.
           </p>
         </div>
-        <Link className="button button-light" href="/consultation">
-          Discuss my business <ArrowUpRight size={18} />
-        </Link>
+        <div className="contact-actions">
+          <Link className="button button-light" href="/consultation">
+            Discuss my business <ArrowUpRight size={18} />
+          </Link>
+          <BookingLink className="text-link booking-link-light" />
+        </div>
       </div>
     </section>
   );

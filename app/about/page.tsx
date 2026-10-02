@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import FounderIntro from "@/components/FounderIntro";
 import { PageIntro, DiscussCTA } from "@/components/SiteSections";
 export const metadata: Metadata = {
+  alternates: { canonical: '/about' },
   title: "Josh, Daniel & the Story Behind Catalyst",
   description:
     "Meet Daniel Vass and Josh Ogle: operations experience and technology expertise, brought together at Catalyst Innovations in Knoxville, Tennessee.",

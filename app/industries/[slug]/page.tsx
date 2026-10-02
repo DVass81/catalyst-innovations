@@ -16,6 +16,7 @@ export async function generateMetadata({
   const { slug } = await params;
   const i = industryList.find((x) => x.slug === slug);
   return {
+    alternates: i ? { canonical: `/industries/${i.slug}` } : undefined,
     title: i ? `Custom Software for ${i.name}` : "Industry not found",
     description: i
       ? `Connected workflows and practical automation for ${i.name.toLowerCase()}. Explore solutions and relevant savings calculators.`

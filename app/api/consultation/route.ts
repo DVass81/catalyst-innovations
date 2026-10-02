@@ -76,6 +76,7 @@ export async function POST(req: NextRequest) {
   if (webhook) {
     try {
       const res = await fetch(webhook, {
+        signal: AbortSignal.timeout(15000),
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -94,6 +95,7 @@ export async function POST(req: NextRequest) {
         .map(([k, v]) => `${k}: ${v || "—"}`)
         .join("\n");
       const res = await fetch("https://api.resend.com/emails", {
+        signal: AbortSignal.timeout(15000),
         method: "POST",
         headers: {
           Authorization: `Bearer ${resendKey}`,

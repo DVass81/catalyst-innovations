@@ -1,11 +1,13 @@
 import { startingPoints } from "@/data/startingPoints";
 import BookingLink from "@/components/BookingLink";
+import EngagementDetails from "@/components/EngagementDetails";
 import type { Metadata } from "next";
 import { PageIntro } from "@/components/SiteSections";
 import InquiryForm from "@/components/InquiryForm";
 import { industryList } from "@/data/redesign";
 import { getCalculator } from "@/lib/calculators";
 export const metadata: Metadata = {
+  alternates: { canonical: '/consultation' },
   title: "Discuss My Business",
   description:
     "Tell Catalyst what slows your business down. Start a conversation about custom software and automation.",
@@ -61,9 +63,11 @@ export default async function Consultation({
             problem, the people involved and what a useful next step could look
             like.
           </p>
-          <h3>You bring the business.</h3>
+          <h3>Bring one process you’d like to improve.</h3>
           <p>
-            We help connect the processes, information and software around it.
+            A spreadsheet, a repeated task or a description of your current tools
+            is enough to start. We’ll discuss a practical first step and define
+            the scope and cost before you decide to proceed.
           </p>
           <p>
             <a
@@ -76,6 +80,7 @@ export default async function Consultation({
           <p>No obligation. No need to choose a package before we talk.</p>
         </aside>
       </section>
+      <EngagementDetails />
     </>
   );
 }

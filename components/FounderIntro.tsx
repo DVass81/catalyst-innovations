@@ -5,7 +5,7 @@ import { activeFounders } from "@/data/content";
 export default function FounderIntro({ full = false }: { full?: boolean }) {
   return (
     <section
-      className="wrap content-section founder-intro"
+      className={`wrap content-section founder-intro${full ? "" : " founder-intro-compact"}`}
       data-section-track="founders"
     >
       <div className="founder-heading">
@@ -43,7 +43,7 @@ export default function FounderIntro({ full = false }: { full?: boolean }) {
               </p>
               <h3>{f.name}</h3>
               <p className="founder-role">{f.role}</p>
-              <p>{f.summary}</p>
+              {full && <p>{f.summary}</p>}
               {full ? (
                 f.bio.map((b, i) => <p key={i}>{b}</p>)
               ) : (

@@ -298,6 +298,19 @@ test("delivery is truthful and provider requests can be mocked without sending",
         status: String(url).includes("api.resend.com") ? 200 : 500,
       });
     assert.equal((await POST(request())).status, 200);
+    delete process.env.CONSULTATION_WEBHOOK_URL;
+    let sentEmail;
+    global.fetch = async (url, options) => {
+      assert.equal(url, "https://api.resend.com/emails");
+      assert.ok(options.signal instanceof AbortSignal);
+      sentEmail = JSON.parse(options.body);
+      return new Response("{}", { status: 200 });
+    };
+    assert.equal((await POST(request())).status, 200);
+    assert.equal(sentEmail.reply_to, valid.email);
+    assert.deepEqual(sentEmail.to, ["test@example.com"]);
+    global.fetch = async () => { throw new DOMException("Provider timed out", "TimeoutError"); };
+    assert.equal((await POST(request())).status, 502);
   } finally {
     global.fetch = fetchBefore;
     for (const k of keys) {
