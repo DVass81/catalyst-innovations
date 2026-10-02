@@ -1,15 +1,15 @@
-import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import DemoShowcase from "@/components/DemoShowcase";
 import ProjectStories from "@/components/ProjectStories";
 import { industryList } from "@/data/redesign";
 import { startingPoints } from "@/data/startingPoints";
 import { PageIntro, DiscussCTA } from "@/components/SiteSections";
-export const metadata: Metadata = {
-  alternates: { canonical: '/portfolio' },
+export const metadata = pageMetadata({
+  path: "/portfolio",
   title: "See What We Build",
   description:
     "Watch narrated walkthroughs of Oxendine Painting, Knoxville Flooring and the HOA platform built by Catalyst Innovations.",
-};
+});
 export default async function Work({
   searchParams,
 }: {

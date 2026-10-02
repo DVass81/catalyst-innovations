@@ -92,6 +92,7 @@ export default function InquiryForm({
         }),
       );
       setCopyMessage("");
+      track("inquiry_draft_created", { source: tool ? "calculator" : demo ? "demo" : "inquiry" });
       setPending(false);
       requestAnimationFrame(() => draftHeading.current?.focus());
       return;
@@ -110,7 +111,7 @@ export default function InquiryForm({
         }),
       });
       const result = await res.json();
-      if (!res.ok) {
+      if (!res.ok || result.ok !== true) {
         setIssues(result.issues ?? {});
         throw new Error(
           result.error ?? "Your request could not be sent. Please try again.",
@@ -132,7 +133,10 @@ export default function InquiryForm({
       );
       setSuggestions(form.getAll("struggleCategories").map(String));
       setSuccess(true);
-      track("form_complete", { source: tool ? "calculator" : "inquiry" });
+      // Honeypot responses deliberately look successful without delivering a lead.
+      if (!String(form.get("website") ?? "").trim()) {
+        track("form_complete", { source: tool ? "calculator" : "inquiry" });
+      }
       if (include) {
         try {
           sessionStorage.removeItem("catalyst-calculation");
@@ -462,6 +466,7 @@ export default function InquiryForm({
               onClick={async () => {
                 try {
                   await navigator.clipboard.writeText(emailDraft.body);
+                  track("inquiry_draft_copied", { source: "inquiry_draft" });
                   setCopyMessage(
                     "Copied. Paste these details into your email.",
                   );
@@ -477,7 +482,7 @@ export default function InquiryForm({
             <a
               className="button"
               href={emailDraft.href}
-              onClick={() => track("email_click", { source: "inquiry_draft" })}
+              onClick={() => track("inquiry_email_opened", { source: "inquiry_draft" })}
             >
               Open email app ↗
             </a>

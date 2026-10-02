@@ -315,7 +315,7 @@ test("booking enables the reviewed Calendly event, rejects unreviewed overrides,
 });
 
 const workarounds = load("lib/workaroundsStory.ts");
-function workaroundsHarness({ deferred = false, coordinator = createPlaybackCoordinator() } = {}) {
+function workaroundsHarness({ deferred = false, coordinator = createPlaybackCoordinator(), options = {} } = {}) {
   const listeners = new Map();
   const attempts = [];
   const video = {
@@ -334,7 +334,7 @@ function workaroundsHarness({ deferred = false, coordinator = createPlaybackCoor
     addEventListener(event, listener) { listeners.set(event, listener); },
     removeEventListener(event) { listeners.delete(event); },
   };
-  const p = workarounds.createWorkaroundsPlayer(video, coordinator, () => {});
+  const p = workarounds.createWorkaroundsPlayer(video, coordinator, () => {}, options);
   return { p, video, attempts, ready() { p.setNearby(true); p.setVisible(true); p.setReady(true); } };
 }
 const flushMedia = async () => { await Promise.resolve(); await Promise.resolve(); };
@@ -509,4 +509,31 @@ test("the server-rendered workarounds hero includes its full readable story and 
   assert.match(html, /Custom software connects your customer information/);
   for (const stage of workarounds.workaroundsStory) assert.ok(html.includes(stage.label));
   assert.doesNotMatch(html, /\.mp4|catalyst-engine-concept|catalyst-engine-v1/);
+});
+
+test("slow or data-saving connections load the selected mobile film only after explicit Play", async () => {
+  const { p, video, ready } = workaroundsHarness({ options: {
+    manualOnly: true, source: "/brand/catalyst-workarounds-mobile-v1.mp4",
+  } });
+  ready(); await flushMedia();
+  assert.equal(p.getSnapshot().available, true);
+  assert.ok(!video.getAttribute("src"));
+  assert.equal(video.plays, 0);
+  p.setVisible(false); p.setVisible(true); await flushMedia();
+  assert.equal(video.plays, 0);
+  p.toggle(); await flushMedia();
+  assert.equal(video.src, "/brand/catalyst-workarounds-mobile-v1.mp4");
+  assert.equal(video.plays, 1);
+  p.setVisible(false); assert.equal(video.paused, true);
+  p.setVisible(true); await flushMedia();
+  assert.equal(video.plays, 2, "visibility respects a visitor's explicit playback request");
+  p.dispose();
+});
+
+test("network hints are conservative without blocking browsers that do not expose them", () => {
+  assert.equal(workarounds.prefersManualStory(), false);
+  assert.equal(workarounds.prefersManualStory({ effectiveType: "4g", downlink: 10, rtt: 40 }), false);
+  for (const connection of [{saveData: true}, {effectiveType: "3g"}, {effectiveType: "slow-2g"}, {downlink: 1}, {rtt: 600}]) {
+    assert.equal(workarounds.prefersManualStory(connection), true);
+  }
 });

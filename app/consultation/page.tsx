@@ -1,17 +1,17 @@
 import { startingPoints } from "@/data/startingPoints";
 import BookingLink from "@/components/BookingLink";
 import EngagementDetails from "@/components/EngagementDetails";
-import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import { PageIntro } from "@/components/SiteSections";
 import InquiryForm from "@/components/InquiryForm";
 import { industryList } from "@/data/redesign";
 import { getCalculator } from "@/lib/calculators";
-export const metadata: Metadata = {
-  alternates: { canonical: '/consultation' },
+export const metadata = pageMetadata({
+  path: "/consultation",
   title: "Discuss My Business",
   description:
     "Tell Catalyst what slows your business down. Start a conversation about custom software and automation.",
-};
+});
 export default async function Consultation({
   searchParams,
 }: {

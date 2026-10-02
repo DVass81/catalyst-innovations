@@ -21,6 +21,7 @@ export type WorkaroundsSnapshot = {
   showFilm: boolean;
   available: boolean;
   stage: number;
+  manualOnly: boolean;
 };
 
 export const initialWorkaroundsSnapshot: WorkaroundsSnapshot = {
@@ -28,7 +29,23 @@ export const initialWorkaroundsSnapshot: WorkaroundsSnapshot = {
   showFilm: false,
   available: false,
   stage: 0,
+  manualOnly: false,
 };
+
+export type StoryConnection = {
+  saveData?: boolean;
+  effectiveType?: string;
+  downlink?: number;
+  rtt?: number;
+};
+
+/** Missing browser connection information should not block ordinary playback. */
+export function prefersManualStory(connection?: StoryConnection) {
+  return Boolean(connection && (connection.saveData ||
+    ["slow-2g", "2g", "3g"].includes(connection.effectiveType ?? "") ||
+    (typeof connection.downlink === "number" && connection.downlink <= 1.5) ||
+    (typeof connection.rtt === "number" && connection.rtt >= 500)));
+}
 
 type Coordinator = {
   claim(owner: object, stop: () => void): void;
@@ -40,9 +57,12 @@ export function createWorkaroundsPlayer(
   element: HTMLVideoElement,
   coordinator: Coordinator,
   onChange: (snapshot: WorkaroundsSnapshot) => void,
+  options: { source?: string; manualOnly?: boolean } = {},
 ) {
   const owner = {};
-  let snapshot = { ...initialWorkaroundsSnapshot };
+  let snapshot = { ...initialWorkaroundsSnapshot, manualOnly: Boolean(options.manualOnly) };
+  let manualOnly = Boolean(options.manualOnly);
+  let manuallyRequested = false;
   let ready = false;
   let nearby = false;
   let visible = false;
@@ -61,7 +81,7 @@ export function createWorkaroundsPlayer(
     onChange(snapshot);
   };
   const eligible = () => ready && !disposed && !failed && !reduced && documentVisible;
-  const canPlay = () => eligible() && visible;
+  const canPlay = () => eligible() && visible && (!manualOnly || manuallyRequested);
   const stop = (preserveIntent = false) => {
     if (!preserveIntent) wantsPlay = false;
     revision++;
@@ -93,9 +113,9 @@ export function createWorkaroundsPlayer(
   const reconcile = () => {
     if (disposed) return;
     if (eligible() && (nearby || visible)) {
-      if (!element.getAttribute("src")) {
+      if ((!manualOnly || manuallyRequested) && !element.getAttribute("src")) {
         element.preload = "metadata";
-        element.src = "/brand/catalyst-workarounds-v1.mp4";
+        element.src = options.source ?? "/brand/catalyst-workarounds-v1.mp4";
       }
       publish({ available: true });
     }
@@ -111,6 +131,7 @@ export function createWorkaroundsPlayer(
   };
   const play = () => {
     if (!eligible()) return;
+    manuallyRequested = true;
     if (element.ended) {
       element.currentTime = 0;
       syncStage();
@@ -162,6 +183,11 @@ export function createWorkaroundsPlayer(
     setNearby(value: boolean) { nearby = value; reconcile(); },
     setVisible(value: boolean) { visible = value; reconcile(); },
     setDocumentVisible(value: boolean) { documentVisible = value; reconcile(); },
+    setManualOnly(value: boolean) {
+      manualOnly = value;
+      publish({ manualOnly: value });
+      reconcile();
+    },
     setReduced(value: boolean) {
       if (reduced === value) return;
       reduced = value;

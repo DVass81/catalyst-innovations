@@ -3,6 +3,7 @@ import { site } from "@/lib/site";
 import { services } from "@/data/services";
 import { calculators } from "@/lib/calculators";
 import { industryList } from "@/data/redesign";
+import { insights } from "@/data/insights";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes = [
@@ -12,33 +13,39 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/portfolio",
     "/method",
     "/about",
-    "/founders",
     "/pricing",
     "/contact",
     "/consultation",
     "/tools",
+    "/insights",
     "/privacy",
     "/terms",
     "/accessibility",
   ];
   return [
+    ...insights.map((article) => ({
+      url: new URL(`/insights/${article.slug}`, site.url).toString(),
+      lastModified: article.updatedAt,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    })),
     ...calculators.map((c) => ({
-      url: `${site.url}/tools/${c.slug}`,
+      url: new URL(`/tools/${c.slug}`, site.url).toString(),
       changeFrequency: "monthly" as const,
       priority: 0.7,
     })),
     ...industryList.map((i) => ({
-      url: `${site.url}/industries/${i.slug}`,
+      url: new URL(`/industries/${i.slug}`, site.url).toString(),
       changeFrequency: "monthly" as const,
       priority: 0.7,
     })),
     ...staticRoutes.map((r) => ({
-      url: `${site.url}${r}`,
+      url: new URL(r || "/", site.url).toString(),
       changeFrequency: "monthly" as const,
       priority: r === "" ? 1 : 0.7,
     })),
     ...services.map((s) => ({
-      url: `${site.url}/solutions/${s.slug}`,
+      url: new URL(`/solutions/${s.slug}`, site.url).toString(),
       changeFrequency: "monthly" as const,
       priority: 0.8,
     })),

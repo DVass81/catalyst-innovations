@@ -1,13 +1,13 @@
-import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import { PageIntro, DiscussCTA } from "@/components/SiteSections";
 import EngagementDetails from "@/components/EngagementDetails";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/method" },
+export const metadata = pageMetadata({
+  path: "/method",
   title: "How We Work — From One Process to Useful Software",
   description: "Understand the process, agree the scope, build with your feedback, then launch and improve. How Catalyst works with your team.",
-};
+});
 export default function MethodPage() {
   return <>
     <PageIntro eyebrow="How we work" title="Start with one process. Build from there."

@@ -1,11 +1,11 @@
-import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import { Section, Heading } from "@/components/ui";
 
-export const metadata: Metadata = {
-  alternates: { canonical: '/accessibility' },
+export const metadata = pageMetadata({
+  path: "/accessibility",
   title: "Accessibility",
   description: "Catalyst Innovations' commitment to an accessible web experience (WCAG 2.2 AA target).",
-};
+});
 
 export default function AccessibilityPage() {
   return (

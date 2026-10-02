@@ -1,0 +1,3312 @@
+{
+  "checkedAt": "2026-10-02",
+  "provider": "Ubersuggest",
+  "note": "Provider estimates, not measured site visitors. Missing rows are unavailable, not zero. Local Knoxville estimates have older provider update dates; do not generalize to all Tennessee. No paid recalculation requested.",
+  "reports": [
+    {
+      "scope": "United States (English)",
+      "locId": 2840,
+      "result": {
+        "searched_keywords": [
+          {
+            "keyword": "custom business software",
+            "competition": 0.11,
+            "volume": 110,
+            "cpc": 41.195,
+            "cpcDollars": 41.195,
+            "sd": 23,
+            "updated_at": 1783892944,
+            "pd": 11,
+            "searchIntent": [
+              3
+            ]
+          },
+          {
+            "keyword": "hoa management software",
+            "competition": 0.42,
+            "volume": 1300,
+            "cpc": 69.72,
+            "cpcDollars": 69.72,
+            "sd": 27,
+            "updated_at": 1786074470,
+            "pd": 42,
+            "searchIntent": [
+              3
+            ]
+          },
+          {
+            "keyword": "business process automation",
+            "competition": 0.08,
+            "volume": 1300,
+            "cpc": 47.51,
+            "cpcDollars": 47.51,
+            "sd": 56,
+            "updated_at": 1789709456,
+            "pd": 8,
+            "searchIntent": [
+              3
+            ]
+          }
+        ],
+        "results": [
+          {
+            "keyword": "business process automation softwares",
+            "competition": 0.05,
+            "volume": 1600,
+            "cpc": 54.06,
+            "cpcDollars": 54.06,
+            "sd": 46,
+            "updated_at": 1782864179,
+            "pd": 5,
+            "searchIntent": [
+              3
+            ]
+          },
+          {
+            "keyword": "HOA management software",
+            "competition": 0.35,
+            "volume": 1300,
+            "cpc": 33.205,
+            "cpcDollars": 33.205,
+            "sd": 33,
+            "updated_at": 1786035000,
+            "pd": 35,
+            "searchIntent": null
+          },
+          {
+            "keyword": "Business Process Automation",
+            "competition": 0.15,
+            "volume": 1300,
+            "cpc": 34.32,
+            "cpcDollars": 34.32,
+            "sd": 57,
+            "updated_at": 1786353663,
+            "pd": 15,
+            "searchIntent": null
+          },
+          {
+            "keyword": "business process automation software",
+            "competition": 0.06,
+            "volume": 1300,
+            "cpc": 70.93,
+            "cpcDollars": 70.93,
+            "sd": 54,
+            "updated_at": 1786198912,
+            "pd": 6,
+            "searchIntent": [
+              3
+            ]
+          },
+          {
+            "keyword": "business process automation solution",
+            "competition": 0.02,
+            "volume": 390,
+            "cpc": 0,
+            "cpcDollars": 0,
+            "sd": 46,
+            "updated_at": 1786055160,
+            "pd": 2,
+            "searchIntent": [
+              3
+            ]
+          },
+          {
+            "keyword": "what is business process automation",
+            "competition": 0.06,
+            "volume": 390,
+            "cpc": 5.5,
+            "cpcDollars": 5.5,
+            "sd": 47,
+            "updated_at": 1786198906,
+            "pd": 6,
+            "searchIntent": [
+              1
+            ]
+          },
+          {
+            "keyword": "business process automation tools",
+            "competition": 0.1,
+            "volume": 390,
+            "cpc": 150.05,
+            "cpcDollars": 150.05,
+            "sd": 57,
+            "updated_at": 1786198905,
+            "pd": 10,
+            "searchIntent": [
+              3
+            ]
+          },
+          {
+            "keyword": "business process automation benefits",
+            "competition": 0.03,
+            "volume": 260,
+            "cpc": 3.06,
+            "cpcDollars": 3.06,
+            "sd": 41,
+            "updated_at": 1789263736,
+            "pd": 3,
+            "searchIntent": [
+              1
+            ]
+          },
+          {
+            "keyword": "business process automation service",
+            "competition": 0.14,
+            "volume": 260,
+            "cpc": 28.04,
+            "cpcDollars": 28.04,
+            "sd": 28,
+            "updated_at": 1786342143,
+            "pd": 14,
+            "searchIntent": [
+              3
+            ]
+          },
+          {
+            "keyword": "business process automation platform",
+            "competition": 0.05,
+            "volume": 210,
+            "cpc": 85.06,
+            "cpcDollars": 85.06,
+            "sd": 49,
+            "updated_at": 1789399447,
+            "pd": 5,
+            "searchIntent": [
+              3
+            ]
+          },
+          {
+            "keyword": "business process automation company",
+            "competition": 0.09,
+            "volume": 210,
+            "cpc": 53.54,
+            "cpcDollars": 53.54,
+            "sd": 39,
+            "updated_at": 1789406390,
+            "pd": 9,
+            "searchIntent": [
+              3
+            ]
+          },
+          {
+            "keyword": "business process automation services",
+            "competition": 0.09,
+            "volume": 210,
+            "cpc": 46.925,
+            "cpcDollars": 46.925,
+            "sd": 38,
+            "updated_at": 1789446546,
+            "pd": 9,
+            "searchIntent": [
+              3
+            ]
+          },
+          {
+            "keyword": "business process automation example",
+            "competition": 0.02,
+            "volume": 170,
+            "cpc": 5.83,
+            "cpcDollars": 5.83,
+            "sd": 38,
+            "updated_at": 1789564779,
+            "pd": 2,
+            "searchIntent": [
+              1,
+              3
+            ]
+          },
+          {
+            "keyword": "business process automation consultant",
+            "competition": 0.03,
+            "volume": 170,
+            "cpc": 44.61,
+            "cpcDollars": 44.61,
+            "sd": 24,
+            "updated_at": 1789553745,
+            "pd": 3,
+            "searchIntent": [
+              3
+            ]
+          },
+          {
+            "keyword": "ai business process automation",
+            "competition": 0.09,
+            "volume": 140,
+            "cpc": 62.81,
+            "cpcDollars": 62.81,
+            "sd": 29,
+            "updated_at": 1789742741,
+            "pd": 9,
+            "searchIntent": [
+              3
+            ]
+          },
+          {
+            "keyword": "workflow business process automation",
+            "competition": 0.02,
+            "volume": 140,
+            "cpc": 0,
+            "cpcDollars": 0,
+            "sd": 6,
+            "updated_at": 1774906882,
+            "pd": 2,
+            "searchIntent": null
+          },
+          {
+            "keyword": "hoa management software free",
+            "competition": 0.63,
+            "volume": 110,
+            "cpc": 26.85,
+            "cpcDollars": 26.85,
+            "sd": 36,
+            "updated_at": 1759771491,
+            "pd": 63,
+            "searchIntent": [
+              3
+            ]
+          },
+          {
+            "keyword": "business process automation bpa"
+          },
+          {
+            "keyword": "Custom Business Software"
+          },
+          {
+            "keyword": "business process automation workflow"
+          },
+          {
+            "keyword": "business process automation bpa software"
+          },
+          {
+            "keyword": "uipath business process automation"
+          },
+          {
+            "keyword": "best hoa management software"
+          },
+          {
+            "keyword": "business process automation meaning"
+          },
+          {
+            "keyword": "bpa business process automation"
+          },
+          {
+            "keyword": "custom business software development"
+          },
+          {
+            "keyword": "payhoa simple hoa management software"
+          },
+          {
+            "keyword": "low code business process automation"
+          },
+          {
+            "keyword": "salesforce business process automation"
+          },
+          {
+            "keyword": "business process automation ai"
+          },
+          {
+            "keyword": "vantaca hoa management software"
+          },
+          {
+            "keyword": "free hoa management software"
+          },
+          {
+            "keyword": "business process automation in healthcare"
+          },
+          {
+            "keyword": "business process automation solution company"
+          },
+          {
+            "keyword": "business process automation strategy"
+          },
+          {
+            "keyword": "open source business process automation"
+          },
+          {
+            "keyword": "no code business process automation"
+          },
+          {
+            "keyword": "business process automation software vendors"
+          },
+          {
+            "keyword": "intelligent business process automation"
+          },
+          {
+            "keyword": "business process automation sap"
+          },
+          {
+            "keyword": "small hoa management software"
+          },
+          {
+            "keyword": "best business process automation software"
+          },
+          {
+            "keyword": "business process automation course"
+          },
+          {
+            "keyword": "ai for business process automation"
+          },
+          {
+            "keyword": "business process automation vs robotic process automation"
+          },
+          {
+            "keyword": "business process automation use case"
+          },
+          {
+            "keyword": "best free hoa management software"
+          },
+          {
+            "keyword": "business process automation systems"
+          },
+          {
+            "keyword": "sap business process automation"
+          },
+          {
+            "keyword": "robotic business process automation"
+          },
+          {
+            "keyword": "best business process automation tools"
+          },
+          {
+            "keyword": "business process automation trends"
+          },
+          {
+            "keyword": "ai in business process automation"
+          },
+          {
+            "keyword": "hr business process automation"
+          },
+          {
+            "keyword": "business process automation training"
+          },
+          {
+            "keyword": "local business process automation services"
+          },
+          {
+            "keyword": "business process automation methodology"
+          },
+          {
+            "keyword": "custom business software development company"
+          },
+          {
+            "keyword": "business process automation software open source"
+          },
+          {
+            "keyword": "gartner business process automation"
+          },
+          {
+            "keyword": "ai powered business process automation"
+          },
+          {
+            "keyword": "business process automation jobs"
+          },
+          {
+            "keyword": "business process automation with ai"
+          },
+          {
+            "keyword": "business process automation vs rpa"
+          },
+          {
+            "keyword": "hoa management software reviews"
+          },
+          {
+            "keyword": "types of business process automation"
+          },
+          {
+            "keyword": "business process automation system"
+          },
+          {
+            "keyword": "digital business process automation"
+          },
+          {
+            "keyword": "business process automation case study"
+          },
+          {
+            "keyword": "future of business process automation"
+          },
+          {
+            "keyword": "business process automation vs workflow automation"
+          },
+          {
+            "keyword": "business process automation statistics"
+          },
+          {
+            "keyword": "business process automation applications"
+          },
+          {
+            "keyword": "business process automation vendors"
+          },
+          {
+            "keyword": "ibm business process automation"
+          },
+          {
+            "keyword": "business process automation vs business process management"
+          },
+          {
+            "keyword": "business process automation technology"
+          },
+          {
+            "keyword": "disadvantages of business process automation"
+          },
+          {
+            "keyword": "smart business process automation"
+          },
+          {
+            "keyword": "business process automation images"
+          },
+          {
+            "keyword": "challenges of business process automation"
+          },
+          {
+            "keyword": "business process automation steps"
+          },
+          {
+            "keyword": "business process automation microsoft"
+          },
+          {
+            "keyword": "custom business software solutions"
+          },
+          {
+            "keyword": "business process automation market"
+          },
+          {
+            "keyword": "oneit custom business software"
+          },
+          {
+            "keyword": "get started with business process automation"
+          },
+          {
+            "keyword": "zoho creator business process automation"
+          },
+          {
+            "keyword": "rpa in business process automation"
+          },
+          {
+            "keyword": "business process automation erp"
+          },
+          {
+            "keyword": "how does business process automation work"
+          },
+          {
+            "keyword": "business process automation small business"
+          },
+          {
+            "keyword": "modern business process automation"
+          },
+          {
+            "keyword": "cloud business process automation"
+          },
+          {
+            "keyword": "business process automation australia"
+          },
+          {
+            "keyword": "how to implement business process automation"
+          },
+          {
+            "keyword": "get started with business process automation salesforce"
+          },
+          {
+            "keyword": "microsoft business process automation"
+          },
+          {
+            "keyword": "business process automation software usa"
+          },
+          {
+            "keyword": "robotic process automation vs business process automation"
+          },
+          {
+            "keyword": "business process automation in salesforce"
+          },
+          {
+            "keyword": "Custom Business Software Solutions"
+          },
+          {
+            "keyword": "small business process automation"
+          },
+          {
+            "keyword": "meaning of business process automation"
+          },
+          {
+            "keyword": "what is business process automation software"
+          },
+          {
+            "keyword": "custom business software company"
+          },
+          {
+            "keyword": "business process automation books"
+          },
+          {
+            "keyword": "business process automation with salesforce flows"
+          },
+          {
+            "keyword": "business process automation research"
+          },
+          {
+            "keyword": "oracle business process automation"
+          },
+          {
+            "keyword": "cisco bpa business process automation"
+          },
+          {
+            "keyword": "modern business process automation pdf"
+          },
+          {
+            "keyword": "need for business process automation"
+          },
+          {
+            "keyword": "business process automation agency"
+          },
+          {
+            "keyword": "business process automation history"
+          },
+          {
+            "keyword": "business process automation best practices"
+          },
+          {
+            "keyword": "business process automation development"
+          },
+          {
+            "keyword": "business process automation pdf"
+          },
+          {
+            "keyword": "best business process automation"
+          },
+          {
+            "keyword": "business process automation specialist"
+          },
+          {
+            "keyword": "business process automation products"
+          },
+          {
+            "keyword": "business process automation advantages and disadvantages"
+          },
+          {
+            "keyword": "what is business process automation bpa"
+          },
+          {
+            "keyword": "one it custom business software"
+          },
+          {
+            "keyword": "business process automation blog"
+          },
+          {
+            "keyword": "business process automation through application software"
+          },
+          {
+            "keyword": "omega cst business process automation software company"
+          },
+          {
+            "keyword": "aws business process automation"
+          },
+          {
+            "keyword": "what does business process automation do"
+          },
+          {
+            "keyword": "introduction to business process automation"
+          },
+          {
+            "keyword": "why business process automation"
+          },
+          {
+            "keyword": "celonis business process automation"
+          },
+          {
+            "keyword": "custom business process automation"
+          },
+          {
+            "keyword": "get started with business process automation trailhead"
+          },
+          {
+            "keyword": "business process automation market size"
+          },
+          {
+            "keyword": "business process automation gartner prompt"
+          },
+          {
+            "keyword": "artificial intelligence and business process automation"
+          },
+          {
+            "keyword": "business process automation in pittsburgh"
+          },
+          {
+            "keyword": "property management business process automation"
+          },
+          {
+            "keyword": "business process automation software india"
+          },
+          {
+            "keyword": "business process automation for qa"
+          },
+          {
+            "keyword": "business process automation company las vegas"
+          },
+          {
+            "keyword": "indianapolis business process automation company"
+          },
+          {
+            "keyword": "ai business process automation examples"
+          },
+          {
+            "keyword": "business process automation solutions examples"
+          },
+          {
+            "keyword": "custom business software usa"
+          },
+          {
+            "keyword": "enhance business process automation"
+          },
+          {
+            "keyword": "business process automation mainly aims to"
+          },
+          {
+            "keyword": "business process automation company template"
+          },
+          {
+            "keyword": "business process automation company for hr"
+          },
+          {
+            "keyword": "business process automation saas"
+          },
+          {
+            "keyword": "custom business software development firm"
+          },
+          {
+            "keyword": "bpa business process automation tools"
+          },
+          {
+            "keyword": "business process automation software trends"
+          },
+          {
+            "keyword": "ai powered business process automation specialist"
+          },
+          {
+            "keyword": "business process automation strategy for ecommerce"
+          },
+          {
+            "keyword": "business process automation benefits for startups"
+          },
+          {
+            "keyword": "business process automation benefits for construction"
+          },
+          {
+            "keyword": "business process automation gartner pdf"
+          },
+          {
+            "keyword": "genai for business process automation specialization coursera"
+          },
+          {
+            "keyword": "business process automation company framework"
+          },
+          {
+            "keyword": "business process automation solutions for ecommerce"
+          },
+          {
+            "keyword": "business process automation strategy for construction"
+          },
+          {
+            "keyword": "business process automation ifs"
+          },
+          {
+            "keyword": "business process automation solutions company"
+          },
+          {
+            "keyword": "copilot studio business process automation"
+          },
+          {
+            "keyword": "business process automation platform pdf"
+          },
+          {
+            "keyword": "business process automation engineer salary"
+          },
+          {
+            "keyword": "business process automation benefits prompt"
+          },
+          {
+            "keyword": "business process automation for agencies"
+          },
+          {
+            "keyword": "business process automation for contracts"
+          },
+          {
+            "keyword": "artificial intelligence in business process automation"
+          },
+          {
+            "keyword": "how does agentic ai work for business process automation"
+          },
+          {
+            "keyword": "build custom business software"
+          },
+          {
+            "keyword": "business process automation services midwest"
+          },
+          {
+            "keyword": "business process automation certifications"
+          },
+          {
+            "keyword": "ai certification for business process automation"
+          },
+          {
+            "keyword": "business process automation 2026 deep dive"
+          },
+          {
+            "keyword": "business process automation copilot"
+          },
+          {
+            "keyword": "hoa management software development"
+          },
+          {
+            "keyword": "explain business process automation"
+          },
+          {
+            "keyword": "genai for business process automation specialization"
+          },
+          {
+            "keyword": "ai business process automation services"
+          },
+          {
+            "keyword": "100 free hoa management software"
+          },
+          {
+            "keyword": "business process automation for nonprofits"
+          },
+          {
+            "keyword": "business process automation benefits google docs"
+          },
+          {
+            "keyword": "what is a business process automation"
+          },
+          {
+            "keyword": "business process automation platform google docs"
+          },
+          {
+            "keyword": "business process automation sharepoint"
+          },
+          {
+            "keyword": "business process automation engineer adalah"
+          },
+          {
+            "keyword": "top tools for business process automation testing"
+          },
+          {
+            "keyword": "business process automation explained"
+          },
+          {
+            "keyword": "business process automation jordan"
+          },
+          {
+            "keyword": "business process automation forbes"
+          },
+          {
+            "keyword": "business process automation and robotic process automation"
+          },
+          {
+            "keyword": "business process automation software benefits"
+          },
+          {
+            "keyword": "opentext business process automation"
+          },
+          {
+            "keyword": "business process automation gartner framework"
+          },
+          {
+            "keyword": "business process automation gartner for law firms"
+          },
+          {
+            "keyword": "business process automation solutions for small business"
+          },
+          {
+            "keyword": "business process automation consulting image"
+          },
+          {
+            "keyword": "business process automation strategy template"
+          },
+          {
+            "keyword": "business process automation gartner for agencies"
+          },
+          {
+            "keyword": "pega consulting services for business process automation"
+          },
+          {
+            "keyword": "business process automation platform for hr"
+          },
+          {
+            "keyword": "business process automation strategy for logistics"
+          },
+          {
+            "keyword": "business process automation research paper"
+          },
+          {
+            "keyword": "workato experts for business process automation"
+          },
+          {
+            "keyword": "business process automation melbourne"
+          },
+          {
+            "keyword": "business process automation gartner sample"
+          },
+          {
+            "keyword": "business process automation company for saas"
+          },
+          {
+            "keyword": "business process automation company checklist"
+          },
+          {
+            "keyword": "business process automation solutions free download"
+          },
+          {
+            "keyword": "business process automation solutions for accounting firms"
+          },
+          {
+            "keyword": "business process automation btp"
+          },
+          {
+            "keyword": "business process automation pega"
+          },
+          {
+            "keyword": "business process automation company for nonprofits"
+          },
+          {
+            "keyword": "free business process automation software"
+          },
+          {
+            "keyword": "business process automation uiowa"
+          },
+          {
+            "keyword": "business process automation companies in south africa"
+          },
+          {
+            "keyword": "teams business process automation"
+          },
+          {
+            "keyword": "inexpensive custom business software"
+          },
+          {
+            "keyword": "ai business process automation or"
+          },
+          {
+            "keyword": "osservatorio intelligent business process automation"
+          },
+          {
+            "keyword": "coursera genai for business process automation"
+          },
+          {
+            "keyword": "how business process automation helps"
+          },
+          {
+            "keyword": "business process automation w"
+          },
+          {
+            "keyword": "business process automation middle east"
+          },
+          {
+            "keyword": "business process automation lowongan kerja"
+          },
+          {
+            "keyword": "business process automation consulting cost"
+          },
+          {
+            "keyword": "business process automation mississippi"
+          },
+          {
+            "keyword": "hoa management software development company"
+          },
+          {
+            "keyword": "tips for managing a successful business process automation"
+          },
+          {
+            "keyword": "o que é bpa business process automation"
+          },
+          {
+            "keyword": "business process automation excel"
+          },
+          {
+            "keyword": "business process automation sap btp"
+          },
+          {
+            "keyword": "business process automation in chicago"
+          },
+          {
+            "keyword": "business process automation benefits for saas"
+          },
+          {
+            "keyword": "business process automation benefits examples"
+          },
+          {
+            "keyword": "business process automation runbooks"
+          },
+          {
+            "keyword": "business process automation azure"
+          },
+          {
+            "keyword": "business process automation with power automate"
+          },
+          {
+            "keyword": "business process automation tool reviews"
+          },
+          {
+            "keyword": "business process automation in smes"
+          },
+          {
+            "keyword": "bpa business process automation framework"
+          },
+          {
+            "keyword": "business process automation free hd image url"
+          },
+          {
+            "keyword": "bpa business process automation solutions"
+          },
+          {
+            "keyword": "business process automation sap learning"
+          },
+          {
+            "keyword": "best practices for business process automation description a case study"
+          },
+          {
+            "keyword": "business process automation software reviews"
+          },
+          {
+            "keyword": "business process automation with python"
+          },
+          {
+            "keyword": "business process automation upwork"
+          },
+          {
+            "keyword": "what is business process automation explain with an example"
+          },
+          {
+            "keyword": "business process automation gartner for accounting firms"
+          },
+          {
+            "keyword": "user journey automation vs business process automation"
+          },
+          {
+            "keyword": "business process automation solutions for construction"
+          },
+          {
+            "keyword": "business process automation benefits for marketing"
+          },
+          {
+            "keyword": "business process automation ifs cloud"
+          },
+          {
+            "keyword": "business process automation gartner for hr"
+          },
+          {
+            "keyword": "business process automation for operations"
+          },
+          {
+            "keyword": "what is sap business process automation"
+          },
+          {
+            "keyword": "business process automation prompt"
+          },
+          {
+            "keyword": "sap business process automation tool"
+          },
+          {
+            "keyword": "business process automation platform for sales"
+          },
+          {
+            "keyword": "business process automation company for restaurants"
+          },
+          {
+            "keyword": "ai agents for business process automation"
+          },
+          {
+            "keyword": "application integration vs business process automation"
+          },
+          {
+            "keyword": "how benefits of business process automation"
+          },
+          {
+            "keyword": "question what does business process automation entail"
+          },
+          {
+            "keyword": "business process automation company for agencies"
+          },
+          {
+            "keyword": "business process automation benefits excel"
+          },
+          {
+            "keyword": "business process automation gartner for startups"
+          },
+          {
+            "keyword": "business process automation trailhead"
+          },
+          {
+            "keyword": "business process automation skills"
+          },
+          {
+            "keyword": "business process automation specialist jobs"
+          },
+          {
+            "keyword": "whatsapp business process automation"
+          },
+          {
+            "keyword": "business process automation tam"
+          },
+          {
+            "keyword": "business process automation with salesforce flows pdf"
+          },
+          {
+            "keyword": "hoa management software app development"
+          },
+          {
+            "keyword": "identify the benefit of business process automation bpa"
+          },
+          {
+            "keyword": "business process automation with ai 7"
+          },
+          {
+            "keyword": "business process automation cost"
+          },
+          {
+            "keyword": "business process automation jobs remote"
+          },
+          {
+            "keyword": "business process automation developer salary"
+          },
+          {
+            "keyword": "business process automation platform prompt"
+          },
+          {
+            "keyword": "business process automation gartner generator"
+          },
+          {
+            "keyword": "business process automation gartner for ecommerce"
+          },
+          {
+            "keyword": "business process automation strategy for dental"
+          },
+          {
+            "keyword": "business process automation api"
+          },
+          {
+            "keyword": "business process automation for smes uk"
+          },
+          {
+            "keyword": "business process automation solutions sample"
+          },
+          {
+            "keyword": "business process automation intern"
+          },
+          {
+            "keyword": "masters in business process automation"
+          },
+          {
+            "keyword": "business process automation in milwaukee"
+          },
+          {
+            "keyword": "business process automation u"
+          },
+          {
+            "keyword": "business process automation for startups"
+          },
+          {
+            "keyword": "oneit custom business software recruitment process"
+          },
+          {
+            "keyword": "business process automation strategy download"
+          },
+          {
+            "keyword": "business process automation hu berlin"
+          },
+          {
+            "keyword": "business process automation strategy for restaurants"
+          }
+        ],
+        "results_note": "Showing the first 300 suggestions; 168 omitted. Use match_keywords to page through the full set."
+      }
+    },
+    {
+      "scope": "United States (English): contractor, inventory, and Knoxville-qualified phrase",
+      "locId": 2840,
+      "result": {
+        "searched_keywords": [
+          {
+            "keyword": "custom software development Knoxville"
+          },
+          {
+            "keyword": "contractor management software",
+            "competition": 0.14,
+            "volume": 3600,
+            "cpc": 271.81,
+            "cpcDollars": 271.81,
+            "sd": 37,
+            "updated_at": 1788623329,
+            "pd": 14,
+            "searchIntent": [
+              3
+            ]
+          },
+          {
+            "keyword": "inventory management software",
+            "competition": 0.31,
+            "volume": 14800,
+            "cpc": 70.41,
+            "cpcDollars": 70.41,
+            "sd": 65,
+            "updated_at": 1790744661,
+            "pd": 31,
+            "searchIntent": [
+              3
+            ]
+          }
+        ],
+        "results": [
+          {
+            "keyword": "inventory management software software",
+            "competition": 0.2,
+            "volume": 22200,
+            "cpc": 38.555,
+            "cpcDollars": 38.555,
+            "sd": 18,
+            "updated_at": 1774913508,
+            "pd": 20,
+            "searchIntent": [
+              2,
+              3
+            ]
+          },
+          {
+            "keyword": "small business inventory management software",
+            "competition": 0.27,
+            "volume": 6600,
+            "cpc": 47.905,
+            "cpcDollars": 47.905,
+            "sd": 76,
+            "updated_at": 1777640772,
+            "pd": 27,
+            "searchIntent": null
+          },
+          {
+            "keyword": "inventory management software for small businesses",
+            "competition": 0.62,
+            "volume": 5400,
+            "cpc": 72.96,
+            "cpcDollars": 72.96,
+            "sd": 56,
+            "updated_at": 1773517341,
+            "pd": 62,
+            "searchIntent": [
+              3,
+              4
+            ]
+          },
+          {
+            "keyword": "cloud inventory management software",
+            "competition": 0.03,
+            "volume": 5400,
+            "cpc": 49.01,
+            "cpcDollars": 49.01,
+            "sd": 35,
+            "updated_at": 1788561857,
+            "pd": 3,
+            "searchIntent": [
+              3
+            ]
+          },
+          {
+            "keyword": "inventory management software for free",
+            "competition": 0.33,
+            "volume": 3600,
+            "cpc": 18.425,
+            "cpcDollars": 18.425,
+            "sd": 43,
+            "updated_at": 1783321440,
+            "pd": 33,
+            "searchIntent": [
+              3,
+              4
+            ]
+          },
+          {
+            "keyword": "inventory management software cloud",
+            "competition": 0.04,
+            "volume": 2900,
+            "cpc": 58.01,
+            "cpcDollars": 58.01,
+            "sd": 69,
+            "updated_at": 1772581265,
+            "pd": 4,
+            "searchIntent": [
+              3,
+              4
+            ]
+          },
+          {
+            "keyword": "free it inventory management software",
+            "competition": 0.64,
+            "volume": 2900,
+            "cpc": 22.14,
+            "cpcDollars": 22.14,
+            "sd": 46,
+            "updated_at": 1773573981,
+            "pd": 64,
+            "searchIntent": [
+              3,
+              4
+            ]
+          },
+          {
+            "keyword": "inventory management software small business",
+            "competition": 0.55,
+            "volume": 2900,
+            "cpc": 38.625,
+            "cpcDollars": 38.625,
+            "sd": 22,
+            "updated_at": 1774913508,
+            "pd": 55,
+            "searchIntent": null
+          },
+          {
+            "keyword": "zoho inventory inventory management software",
+            "competition": 0,
+            "volume": 2900,
+            "cpc": 0,
+            "cpcDollars": 0,
+            "sd": 5,
+            "updated_at": 1774913508,
+            "pd": 1,
+            "searchIntent": null
+          },
+          {
+            "keyword": "inventory management software warehouse",
+            "competition": 0.08,
+            "volume": 2400,
+            "cpc": 63.82,
+            "cpcDollars": 63.82,
+            "sd": 39,
+            "updated_at": 1778936995,
+            "pd": 8,
+            "searchIntent": [
+              4,
+              3
+            ]
+          },
+          {
+            "keyword": "inventory management software retail",
+            "competition": 0.08,
+            "volume": 2400,
+            "cpc": 53.73,
+            "cpcDollars": 53.73,
+            "sd": 54,
+            "updated_at": 1773592737,
+            "pd": 8,
+            "searchIntent": [
+              4
+            ]
+          },
+          {
+            "keyword": "inventory management software free",
+            "competition": 0.61,
+            "volume": 2400,
+            "cpc": 18.045,
+            "cpcDollars": 18.045,
+            "sd": 24,
+            "updated_at": 1774913508,
+            "pd": 61,
+            "searchIntent": null
+          },
+          {
+            "keyword": "best it inventory management software",
+            "competition": 0.52,
+            "volume": 1900,
+            "cpc": 69.94,
+            "cpcDollars": 69.94,
+            "sd": 48,
+            "updated_at": 1773622658,
+            "pd": 52,
+            "searchIntent": [
+              3,
+              4
+            ]
+          },
+          {
+            "keyword": "free inventory management software",
+            "competition": 0.59,
+            "volume": 1900,
+            "cpc": 21.38,
+            "cpcDollars": 21.38,
+            "sd": 43,
+            "updated_at": 1785966586,
+            "pd": 59,
+            "searchIntent": [
+              3
+            ]
+          },
+          {
+            "keyword": "retail inventory management software",
+            "competition": 0.08,
+            "volume": 1900,
+            "cpc": 49.29,
+            "cpcDollars": 49.29,
+            "sd": 47,
+            "updated_at": 1788712836,
+            "pd": 8,
+            "searchIntent": [
+              3
+            ]
+          },
+          {
+            "keyword": "inventory management software for retailers",
+            "competition": 0.11,
+            "volume": 1900,
+            "cpc": 90.66,
+            "cpcDollars": 90.66,
+            "sd": 44,
+            "updated_at": 1759067130,
+            "pd": 11,
+            "searchIntent": [
+              4
+            ]
+          },
+          {
+            "keyword": "quickbook inventory management software",
+            "competition": 0.5,
+            "volume": 1600,
+            "cpc": 30.75,
+            "cpcDollars": 30.75,
+            "sd": 36,
+            "updated_at": 1773635527,
+            "pd": 50,
+            "searchIntent": [
+              4,
+              3
+            ]
+          },
+          {
+            "keyword": "inventory management software for warehouse"
+          },
+          {
+            "keyword": "inventory management software ecommerce"
+          },
+          {
+            "keyword": "production inventory management software"
+          },
+          {
+            "keyword": "inventory management software app"
+          },
+          {
+            "keyword": "quickbooks inventory management software"
+          },
+          {
+            "keyword": "inventory management software for it"
+          },
+          {
+            "keyword": "inventory management software for restaurant"
+          },
+          {
+            "keyword": "best inventory management software"
+          },
+          {
+            "keyword": "inventory management software for manufacturing"
+          },
+          {
+            "keyword": "warehouse inventory management software"
+          },
+          {
+            "keyword": "inventory management software excel"
+          },
+          {
+            "keyword": "inventory management software shopify"
+          },
+          {
+            "keyword": "inventory management software amazon"
+          },
+          {
+            "keyword": "inventory management software restaurant"
+          },
+          {
+            "keyword": "inventory management software online"
+          },
+          {
+            "keyword": "inventory management software for e commerce"
+          },
+          {
+            "keyword": "inventory management software with barcode reader"
+          },
+          {
+            "keyword": "ebay inventory management software"
+          },
+          {
+            "keyword": "car dealership inventory management software"
+          },
+          {
+            "keyword": "manufacturing inventory management software"
+          },
+          {
+            "keyword": "inventory management software for excel"
+          },
+          {
+            "keyword": "restaurant inventory management software"
+          },
+          {
+            "keyword": "inventory management software solution"
+          },
+          {
+            "keyword": "laboratory inventory management software"
+          },
+          {
+            "keyword": "it inventory management software"
+          },
+          {
+            "keyword": "best small business inventory management software"
+          },
+          {
+            "keyword": "inventory management software barcode scanner"
+          },
+          {
+            "keyword": "inflow inventory management software"
+          },
+          {
+            "keyword": "asset inventory management software"
+          },
+          {
+            "keyword": "inventory management software with barcode scanner"
+          },
+          {
+            "keyword": "e commerce inventory management software"
+          },
+          {
+            "keyword": "asset and inventory management software"
+          },
+          {
+            "keyword": "inventory management software small business free"
+          },
+          {
+            "keyword": "zoho inventory management software"
+          },
+          {
+            "keyword": "inventory management software with barcode"
+          },
+          {
+            "keyword": "best contractor management software"
+          },
+          {
+            "keyword": "automotive inventory management software"
+          },
+          {
+            "keyword": "dealership inventory management software"
+          },
+          {
+            "keyword": "free small business inventory management software"
+          },
+          {
+            "keyword": "sales and inventory management software"
+          },
+          {
+            "keyword": "assets inventory management software"
+          },
+          {
+            "keyword": "food inventory management software"
+          },
+          {
+            "keyword": "part inventory management software"
+          },
+          {
+            "keyword": "chemical inventory management software"
+          },
+          {
+            "keyword": "lab inventory management software"
+          },
+          {
+            "keyword": "inventory management software solutions"
+          },
+          {
+            "keyword": "inventory management software for construction industry"
+          },
+          {
+            "keyword": "katana inventory management software"
+          },
+          {
+            "keyword": "stock and inventory management software"
+          },
+          {
+            "keyword": "free inventory management software excel"
+          },
+          {
+            "keyword": "best inventory management software for small business"
+          },
+          {
+            "keyword": "simple inventory management software"
+          },
+          {
+            "keyword": "quickbooks online inventory management software"
+          },
+          {
+            "keyword": "inventory management software development company uitop"
+          },
+          {
+            "keyword": "online inventory management software"
+          },
+          {
+            "keyword": "amazon inventory management software"
+          },
+          {
+            "keyword": "car inventory management software"
+          },
+          {
+            "keyword": "parts inventory management software"
+          },
+          {
+            "keyword": "shop inventory management software"
+          },
+          {
+            "keyword": "inventory management software barcode"
+          },
+          {
+            "keyword": "inventory management software ebay"
+          },
+          {
+            "keyword": "automotive parts inventory management software"
+          },
+          {
+            "keyword": "small business inventory management software free"
+          },
+          {
+            "keyword": "point of sale inventory management software"
+          },
+          {
+            "keyword": "sales inventory management software"
+          },
+          {
+            "keyword": "hardware inventory management software"
+          },
+          {
+            "keyword": "medical inventory management software"
+          },
+          {
+            "keyword": "real time inventory management software"
+          },
+          {
+            "keyword": "top inventory management software"
+          },
+          {
+            "keyword": "free inventory management software in excel"
+          },
+          {
+            "keyword": "pos inventory management software"
+          },
+          {
+            "keyword": "construction inventory management software"
+          },
+          {
+            "keyword": "free inventory management software for small business"
+          },
+          {
+            "keyword": "it asset and inventory management software"
+          },
+          {
+            "keyword": "bar inventory management software"
+          },
+          {
+            "keyword": "ai inventory management software"
+          },
+          {
+            "keyword": "inventory management software prices"
+          },
+          {
+            "keyword": "point of sale and inventory management software"
+          },
+          {
+            "keyword": "store inventory management software"
+          },
+          {
+            "keyword": "digital inventory management software"
+          },
+          {
+            "keyword": "inventory management software for auto parts"
+          },
+          {
+            "keyword": "qr code inventory management software"
+          },
+          {
+            "keyword": "automobile inventory management software"
+          },
+          {
+            "keyword": "inventory management software for ebay"
+          },
+          {
+            "keyword": "jewelry inventory management software"
+          },
+          {
+            "keyword": "company inventory management software"
+          },
+          {
+            "keyword": "just in time inventory management software"
+          },
+          {
+            "keyword": "inventory management software salesforce"
+          },
+          {
+            "keyword": "business inventory management software"
+          },
+          {
+            "keyword": "automated inventory management software"
+          },
+          {
+            "keyword": "pharmacy inventory management software"
+          },
+          {
+            "keyword": "material inventory management software"
+          },
+          {
+            "keyword": "auto parts inventory management software"
+          },
+          {
+            "keyword": "contractor management software free"
+          },
+          {
+            "keyword": "barcode inventory management software"
+          },
+          {
+            "keyword": "best inventory management software free"
+          },
+          {
+            "keyword": "home inventory management software"
+          },
+          {
+            "keyword": "inventory management software for hospitals"
+          },
+          {
+            "keyword": "inventory management software web based"
+          },
+          {
+            "keyword": "accounting and inventory management software"
+          },
+          {
+            "keyword": "inventory management software microsoft"
+          },
+          {
+            "keyword": "pos and inventory management software"
+          },
+          {
+            "keyword": "best ecommerce inventory management software"
+          },
+          {
+            "keyword": "inventory management software telecom"
+          },
+          {
+            "keyword": "best inventory management software for restaurants"
+          },
+          {
+            "keyword": "what is the best inventory management software"
+          },
+          {
+            "keyword": "order inventory management software"
+          },
+          {
+            "keyword": "inventory management software cheap"
+          },
+          {
+            "keyword": "sortly inventory management software"
+          },
+          {
+            "keyword": "equipment inventory management software"
+          },
+          {
+            "keyword": "best free inventory management software"
+          },
+          {
+            "keyword": "vehicle inventory management software"
+          },
+          {
+            "keyword": "free contractor management software"
+          },
+          {
+            "keyword": "crm inventory management software"
+          },
+          {
+            "keyword": "inventory management software online free"
+          },
+          {
+            "keyword": "convenience store inventory management software"
+          },
+          {
+            "keyword": "rfid inventory management software"
+          },
+          {
+            "keyword": "jewellery inventory management software"
+          },
+          {
+            "keyword": "product inventory management software"
+          },
+          {
+            "keyword": "contractor management software for small business"
+          },
+          {
+            "keyword": "inventory management software that works with quickbooks"
+          },
+          {
+            "keyword": "inventory management software woocommerce"
+          },
+          {
+            "keyword": "salesforce inventory management software"
+          },
+          {
+            "keyword": "network inventory management software"
+          },
+          {
+            "keyword": "accounting and inventory management software for small business"
+          },
+          {
+            "keyword": "garment inventory management software"
+          },
+          {
+            "keyword": "inventory management software cost"
+          },
+          {
+            "keyword": "hospital inventory management software"
+          },
+          {
+            "keyword": "restaurant inventory management software free"
+          },
+          {
+            "keyword": "inventory management software wholesale"
+          },
+          {
+            "keyword": "system inventory management software"
+          },
+          {
+            "keyword": "pos inventory management software free"
+          },
+          {
+            "keyword": "inventory management software open source"
+          },
+          {
+            "keyword": "computer inventory management software"
+          },
+          {
+            "keyword": "inventory management software xero"
+          },
+          {
+            "keyword": "mobile inventory management software"
+          },
+          {
+            "keyword": "cheap inventory management software"
+          },
+          {
+            "keyword": "rental inventory management software"
+          },
+          {
+            "keyword": "inventory management software for jewellery"
+          },
+          {
+            "keyword": "multi channel inventory management software"
+          },
+          {
+            "keyword": "square inventory management software"
+          },
+          {
+            "keyword": "amazon fba inventory management software"
+          },
+          {
+            "keyword": "freeware inventory management software download"
+          },
+          {
+            "keyword": "what is inventory management software"
+          },
+          {
+            "keyword": "best restaurant inventory management software"
+          },
+          {
+            "keyword": "custom inventory management software"
+          },
+          {
+            "keyword": "unleashed inventory management software"
+          },
+          {
+            "keyword": "grocery store inventory management software"
+          },
+          {
+            "keyword": "inventory management software system"
+          },
+          {
+            "keyword": "inventory management software for small retail business"
+          },
+          {
+            "keyword": "free inventory management software online"
+          },
+          {
+            "keyword": "sage inventory management software"
+          },
+          {
+            "keyword": "inventory management software features"
+          },
+          {
+            "keyword": "veterinary inventory management software"
+          },
+          {
+            "keyword": "free inventory management software for restaurants"
+          },
+          {
+            "keyword": "inventory management software dental"
+          },
+          {
+            "keyword": "inventory management software multiple locations"
+          },
+          {
+            "keyword": "inventory management software for wholesale"
+          },
+          {
+            "keyword": "apparel inventory management software"
+          },
+          {
+            "keyword": "spare parts inventory management software"
+          },
+          {
+            "keyword": "mro inventory management software"
+          },
+          {
+            "keyword": "warehouse inventory management software free"
+          },
+          {
+            "keyword": "inventory management software for hotels"
+          },
+          {
+            "keyword": "cannabis inventory management software"
+          },
+          {
+            "keyword": "woocommerce inventory management software"
+          },
+          {
+            "keyword": "healthcare inventory management software"
+          },
+          {
+            "keyword": "inventory management software list"
+          },
+          {
+            "keyword": "inventory management software magento"
+          },
+          {
+            "keyword": "cin7 inventory management software"
+          },
+          {
+            "keyword": "inventory management software for grocery store"
+          },
+          {
+            "keyword": "hvac inventory management software"
+          },
+          {
+            "keyword": "vending machine inventory management software"
+          },
+          {
+            "keyword": "odoo inventory management software"
+          },
+          {
+            "keyword": "3pl inventory management software"
+          },
+          {
+            "keyword": "fishbowl inventory management software"
+          },
+          {
+            "keyword": "car dealer inventory management software"
+          },
+          {
+            "keyword": "free online inventory management software"
+          },
+          {
+            "keyword": "vendor inventory management software"
+          },
+          {
+            "keyword": "inventory management software review"
+          },
+          {
+            "keyword": "free computer inventory management software"
+          },
+          {
+            "keyword": "inventory management software for amazon"
+          },
+          {
+            "keyword": "wholesale inventory management software"
+          },
+          {
+            "keyword": "jit inventory management software"
+          },
+          {
+            "keyword": "spare part inventory management software"
+          },
+          {
+            "keyword": "dealer inventory management software"
+          },
+          {
+            "keyword": "erp inventory management software"
+          },
+          {
+            "keyword": "inventory management software company"
+          },
+          {
+            "keyword": "parts inventory management software free"
+          },
+          {
+            "keyword": "clothing inventory management software"
+          },
+          {
+            "keyword": "amazon seller inventory management software"
+          },
+          {
+            "keyword": "free restaurant inventory management software"
+          },
+          {
+            "keyword": "stockpile inventory management software"
+          },
+          {
+            "keyword": "pharmaceutical inventory management software"
+          },
+          {
+            "keyword": "inventory management software free download excel"
+          },
+          {
+            "keyword": "xero inventory management software"
+          },
+          {
+            "keyword": "hotel inventory management software"
+          },
+          {
+            "keyword": "basic inventory management software"
+          },
+          {
+            "keyword": "inventory management software design"
+          },
+          {
+            "keyword": "government contractor management software"
+          },
+          {
+            "keyword": "b2b inventory management software"
+          },
+          {
+            "keyword": "small inventory management software"
+          },
+          {
+            "keyword": "inventory management software saas"
+          },
+          {
+            "keyword": "art inventory management software"
+          },
+          {
+            "keyword": "distribution inventory management software"
+          },
+          {
+            "keyword": "furniture inventory management software"
+          },
+          {
+            "keyword": "greenhouse inventory management software"
+          },
+          {
+            "keyword": "inventory management software project"
+          },
+          {
+            "keyword": "salon inventory management software"
+          },
+          {
+            "keyword": "inventory management software free download"
+          },
+          {
+            "keyword": "what is contractor management software"
+          },
+          {
+            "keyword": "simple inventory management software free"
+          },
+          {
+            "keyword": "free inventory management software download"
+          },
+          {
+            "keyword": "liquor inventory management software"
+          },
+          {
+            "keyword": "microsoft access inventory management software"
+          },
+          {
+            "keyword": "roofing contractor management software"
+          },
+          {
+            "keyword": "fuel inventory management software"
+          },
+          {
+            "keyword": "inventory management software mac"
+          },
+          {
+            "keyword": "inventory management software development"
+          },
+          {
+            "keyword": "inventory management software development company"
+          },
+          {
+            "keyword": "electronic inventory management software"
+          },
+          {
+            "keyword": "liquor store inventory management software"
+          },
+          {
+            "keyword": "retail inventory management software for small business"
+          },
+          {
+            "keyword": "integrated inventory management software"
+          },
+          {
+            "keyword": "wine inventory management software"
+          },
+          {
+            "keyword": "inventory management software for schools"
+          },
+          {
+            "keyword": "inventory management software for pharmacy"
+          },
+          {
+            "keyword": "excel inventory management software free download"
+          },
+          {
+            "keyword": "used vehicle inventory management software"
+          },
+          {
+            "keyword": "consignment inventory management software"
+          },
+          {
+            "keyword": "best retail inventory management software"
+          },
+          {
+            "keyword": "inventory management software programs"
+          },
+          {
+            "keyword": "raw material inventory management software"
+          },
+          {
+            "keyword": "best inventory management software for shopify"
+          },
+          {
+            "keyword": "free network inventory management software"
+          },
+          {
+            "keyword": "purchasing and inventory management software"
+          },
+          {
+            "keyword": "excel inventory management software"
+          },
+          {
+            "keyword": "best online inventory management software"
+          },
+          {
+            "keyword": "food service inventory management software"
+          },
+          {
+            "keyword": "inventory management software examples"
+          },
+          {
+            "keyword": "cloud inventory management software for small business"
+          },
+          {
+            "keyword": "food and beverage inventory management software"
+          },
+          {
+            "keyword": "farm inventory management software"
+          },
+          {
+            "keyword": "inventory management software for shopify"
+          },
+          {
+            "keyword": "inventory management software ebay amazon"
+          },
+          {
+            "keyword": "computer inventory management software free"
+          },
+          {
+            "keyword": "inventory management software for ipad"
+          },
+          {
+            "keyword": "how much does inventory management software cost"
+          },
+          {
+            "keyword": "free inventory management software open source"
+          },
+          {
+            "keyword": "fixed asset inventory management software"
+          },
+          {
+            "keyword": "it inventory management software free"
+          },
+          {
+            "keyword": "beverage inventory management software"
+          },
+          {
+            "keyword": "saas inventory management software"
+          },
+          {
+            "keyword": "inventory management software comparison"
+          },
+          {
+            "keyword": "multi store inventory management software"
+          },
+          {
+            "keyword": "inventory management software for construction"
+          },
+          {
+            "keyword": "bookstore inventory management software"
+          },
+          {
+            "keyword": "property inventory management software"
+          },
+          {
+            "keyword": "inventory management software demo"
+          },
+          {
+            "keyword": "best warehouse inventory management software"
+          },
+          {
+            "keyword": "shipping and inventory management software"
+          },
+          {
+            "keyword": "grocery inventory management software"
+          },
+          {
+            "keyword": "free hardware inventory management software"
+          },
+          {
+            "keyword": "dme inventory management software"
+          },
+          {
+            "keyword": "office supply inventory management software"
+          },
+          {
+            "keyword": "how does inventory management software work"
+          },
+          {
+            "keyword": "ai powered inventory management software"
+          },
+          {
+            "keyword": "book inventory management software"
+          },
+          {
+            "keyword": "office inventory management software"
+          },
+          {
+            "keyword": "inventory management software quickbooks"
+          },
+          {
+            "keyword": "free inventory management software with barcode scanner"
+          },
+          {
+            "keyword": "multi location inventory management software"
+          },
+          {
+            "keyword": "av inventory management software"
+          },
+          {
+            "keyword": "event inventory management software"
+          },
+          {
+            "keyword": "fleet inventory management software"
+          },
+          {
+            "keyword": "best construction inventory management software"
+          },
+          {
+            "keyword": "electrical inventory management software"
+          },
+          {
+            "keyword": "fba inventory management software"
+          },
+          {
+            "keyword": "inventory management software quickbooks integration"
+          },
+          {
+            "keyword": "asset tracking and inventory management software"
+          },
+          {
+            "keyword": "purchase order and inventory management software"
+          },
+          {
+            "keyword": "billing and inventory management software"
+          },
+          {
+            "keyword": "inventory management software with bill of materials"
+          },
+          {
+            "keyword": "benefits of inventory management software"
+          }
+        ],
+        "results_note": "Showing the first 300 suggestions; 139 omitted. Use match_keywords to page through the full set."
+      }
+    },
+    {
+      "scope": "Knoxville, Tennessee (English)",
+      "locId": 1026036,
+      "result": {
+        "searched_keywords": [
+          {
+            "keyword": "custom business software",
+            "competition": 0,
+            "volume": 0,
+            "cpc": 0,
+            "cpcDollars": 0,
+            "sd": 12,
+            "updated_at": 1774913523,
+            "pd": 1,
+            "searchIntent": null
+          },
+          {
+            "keyword": "business process automation",
+            "competition": 0,
+            "volume": 10,
+            "cpc": 0,
+            "cpcDollars": 0,
+            "sd": 13,
+            "updated_at": 1774913523,
+            "pd": 1,
+            "searchIntent": null
+          },
+          {
+            "keyword": "hoa management software",
+            "competition": 0.93,
+            "volume": 10,
+            "cpc": 0,
+            "cpcDollars": 0,
+            "sd": 41,
+            "updated_at": 1774913523,
+            "pd": 93,
+            "searchIntent": null
+          }
+        ],
+        "results": [
+          {
+            "keyword": "crm for small business",
+            "competition": 0.19,
+            "volume": 10,
+            "cpc": 0,
+            "cpcDollars": 0,
+            "sd": 11,
+            "updated_at": 1774913523,
+            "pd": 19,
+            "searchIntent": null
+          },
+          {
+            "keyword": "software development company",
+            "competition": 0,
+            "volume": 10,
+            "cpc": 0,
+            "cpcDollars": 0,
+            "sd": 13,
+            "updated_at": 1774913523,
+            "pd": 1,
+            "searchIntent": null
+          },
+          {
+            "keyword": "crm software for small businesses",
+            "competition": 0.05,
+            "volume": 10,
+            "cpc": 0,
+            "cpcDollars": 0,
+            "sd": 7,
+            "updated_at": 1774913523,
+            "pd": 5,
+            "searchIntent": null
+          },
+          {
+            "keyword": "process automation",
+            "competition": 0.1,
+            "volume": 10,
+            "cpc": 0,
+            "cpcDollars": 0,
+            "sd": 22,
+            "updated_at": 1774913523,
+            "pd": 10,
+            "searchIntent": null
+          },
+          {
+            "keyword": "hoa software",
+            "competition": 0.79,
+            "volume": 10,
+            "cpc": 0,
+            "cpcDollars": 0,
+            "sd": 42,
+            "updated_at": 1774913523,
+            "pd": 79,
+            "searchIntent": null
+          },
+          {
+            "keyword": "custom software development companies",
+            "competition": 0,
+            "volume": 10,
+            "cpc": 0,
+            "cpcDollars": 0,
+            "sd": 5,
+            "updated_at": 1774913523,
+            "pd": 1,
+            "searchIntent": null
+          },
+          {
+            "keyword": "top 10 crm software",
+            "competition": 0,
+            "volume": 10,
+            "cpc": 0,
+            "cpcDollars": 0,
+            "sd": 5,
+            "updated_at": 1774913523,
+            "pd": 1,
+            "searchIntent": null
+          },
+          {
+            "keyword": "client management software for small business",
+            "competition": 0.05,
+            "volume": 10,
+            "cpc": 0,
+            "cpcDollars": 0,
+            "sd": 7,
+            "updated_at": 1774913523,
+            "pd": 5,
+            "searchIntent": null
+          },
+          {
+            "keyword": "crm for service business",
+            "competition": 0,
+            "volume": 10,
+            "cpc": 0,
+            "cpcDollars": 0,
+            "sd": 5,
+            "updated_at": 1774913523,
+            "pd": 1,
+            "searchIntent": null
+          },
+          {
+            "keyword": "simple crm software",
+            "competition": 0,
+            "volume": 10,
+            "cpc": 0,
+            "cpcDollars": 0,
+            "sd": 13,
+            "updated_at": 1774913523,
+            "pd": 1,
+            "searchIntent": null
+          },
+          {
+            "keyword": "crm for business",
+            "competition": 0,
+            "volume": 10,
+            "cpc": 0,
+            "cpcDollars": 0,
+            "sd": 13,
+            "updated_at": 1774913523,
+            "pd": 1,
+            "searchIntent": null
+          },
+          {
+            "keyword": "business automation",
+            "competition": 0.14,
+            "volume": 10,
+            "cpc": 0,
+            "cpcDollars": 0,
+            "sd": 23,
+            "updated_at": 1774913523,
+            "pd": 14,
+            "searchIntent": null
+          },
+          {
+            "keyword": "contact management software for small business",
+            "competition": 0,
+            "volume": 10,
+            "cpc": 0,
+            "cpcDollars": 0,
+            "sd": 5,
+            "updated_at": 1774913523,
+            "pd": 1,
+            "searchIntent": null
+          },
+          {
+            "keyword": "bespoke software development company",
+            "competition": 0,
+            "volume": 10,
+            "cpc": 0,
+            "cpcDollars": 0,
+            "sd": 5,
+            "updated_at": 1774913523,
+            "pd": 1,
+            "searchIntent": null
+          },
+          {
+            "keyword": "bespoke software development",
+            "competition": 0,
+            "volume": 10,
+            "cpc": 0,
+            "cpcDollars": 0,
+            "sd": 13,
+            "updated_at": 1774913523,
+            "pd": 1,
+            "searchIntent": null
+          },
+          {
+            "keyword": "accounting crm",
+            "competition": 0,
+            "volume": 10,
+            "cpc": 0,
+            "cpcDollars": 0,
+            "sd": 18,
+            "updated_at": 1774913523,
+            "pd": 1,
+            "searchIntent": null
+          },
+          {
+            "keyword": "process automation software",
+            "competition": 0,
+            "volume": 10,
+            "cpc": 0,
+            "cpcDollars": 0,
+            "sd": 13,
+            "updated_at": 1774913523,
+            "pd": 1,
+            "searchIntent": null
+          },
+          {
+            "keyword": "best crm for wholesalers"
+          },
+          {
+            "keyword": "crm and project management software"
+          },
+          {
+            "keyword": "business process automation tools"
+          },
+          {
+            "keyword": "crm project management software"
+          },
+          {
+            "keyword": "best crm app"
+          },
+          {
+            "keyword": "business automation software"
+          },
+          {
+            "keyword": "client database software for small business"
+          },
+          {
+            "keyword": "best rpa software"
+          },
+          {
+            "keyword": "hoa software programs"
+          },
+          {
+            "keyword": "accounting crm software"
+          },
+          {
+            "keyword": "crm app for small business"
+          },
+          {
+            "keyword": "business process automation software"
+          },
+          {
+            "keyword": "most popular crm software"
+          },
+          {
+            "keyword": "crm for wholesalers"
+          },
+          {
+            "keyword": "business automation tools"
+          },
+          {
+            "keyword": "business workflow software"
+          },
+          {
+            "keyword": "process workflow software"
+          },
+          {
+            "keyword": "quickbooks online enterprise pricing"
+          },
+          {
+            "keyword": "small company crm"
+          },
+          {
+            "keyword": "best hoa management software"
+          },
+          {
+            "keyword": "b2b crm software"
+          },
+          {
+            "keyword": "best hoa software"
+          },
+          {
+            "keyword": "crm erp software"
+          },
+          {
+            "keyword": "top 5 crm software"
+          },
+          {
+            "keyword": "good crm software"
+          },
+          {
+            "keyword": "crm for business development"
+          },
+          {
+            "keyword": "quickbooks call center"
+          },
+          {
+            "keyword": "best free hoa management software"
+          },
+          {
+            "keyword": "business crm software"
+          },
+          {
+            "keyword": "hoa software free"
+          },
+          {
+            "keyword": "free hoa management software"
+          },
+          {
+            "keyword": "list of crm software"
+          },
+          {
+            "keyword": "hoa software quickbooks"
+          },
+          {
+            "keyword": "hoa management app"
+          },
+          {
+            "keyword": "customisable crm"
+          },
+          {
+            "keyword": "homeowners association software"
+          },
+          {
+            "keyword": "order to cash automation"
+          },
+          {
+            "keyword": "crm for b2c"
+          },
+          {
+            "keyword": "crm erp system"
+          },
+          {
+            "keyword": "crm software business"
+          },
+          {
+            "keyword": "best crm for business development"
+          },
+          {
+            "keyword": "small business helpdesk software"
+          },
+          {
+            "keyword": "hoa portal software"
+          },
+          {
+            "keyword": "crm for b2b sales"
+          },
+          {
+            "keyword": "crm restaurant"
+          },
+          {
+            "keyword": "condo association management software"
+          },
+          {
+            "keyword": "crm software cost for small business"
+          },
+          {
+            "keyword": "custom software development agency"
+          },
+          {
+            "keyword": "tops hoa software"
+          },
+          {
+            "keyword": "most common crm software"
+          },
+          {
+            "keyword": "sales and marketing crm software"
+          },
+          {
+            "keyword": "crm for software companies"
+          },
+          {
+            "keyword": "best small business crm software"
+          },
+          {
+            "keyword": "rpa business analyst"
+          },
+          {
+            "keyword": "business workflow"
+          },
+          {
+            "keyword": "crm system for business"
+          },
+          {
+            "keyword": "custom software development firms"
+          },
+          {
+            "keyword": "sage accounts payable automation"
+          },
+          {
+            "keyword": "homeowner association management software"
+          },
+          {
+            "keyword": "crm for small teams"
+          },
+          {
+            "keyword": "freeware crm software"
+          },
+          {
+            "keyword": "accounting and crm software"
+          },
+          {
+            "keyword": "crm and erp software"
+          },
+          {
+            "keyword": "custom crm system"
+          },
+          {
+            "keyword": "crm software accountants"
+          },
+          {
+            "keyword": "best crm management software"
+          },
+          {
+            "keyword": "business process workflow software"
+          },
+          {
+            "keyword": "hoa billing software"
+          },
+          {
+            "keyword": "business process automation tools gartner"
+          },
+          {
+            "keyword": "bpm automation"
+          },
+          {
+            "keyword": "crm development company"
+          },
+          {
+            "keyword": "appfolio hoa"
+          },
+          {
+            "keyword": "crm software for retail industry"
+          },
+          {
+            "keyword": "bpa software"
+          },
+          {
+            "keyword": "small business client database"
+          },
+          {
+            "keyword": "condominium association management software"
+          },
+          {
+            "keyword": "business process workflow"
+          },
+          {
+            "keyword": "client engagement software"
+          },
+          {
+            "keyword": "business automation companies"
+          },
+          {
+            "keyword": "custom application development services"
+          },
+          {
+            "keyword": "business process automation services"
+          },
+          {
+            "keyword": "b2c crm system"
+          },
+          {
+            "keyword": "business workflow management software"
+          },
+          {
+            "keyword": "quickbooks for hoa management"
+          },
+          {
+            "keyword": "cheap crm software for small business"
+          },
+          {
+            "keyword": "crm & erp"
+          },
+          {
+            "keyword": "bespoke software development service"
+          },
+          {
+            "keyword": "workday accounts payable automation"
+          },
+          {
+            "keyword": "crm for ecommerce business"
+          },
+          {
+            "keyword": "cinc hoa software"
+          },
+          {
+            "keyword": "company crm software"
+          },
+          {
+            "keyword": "home owners association management software"
+          },
+          {
+            "keyword": "best hoa website software"
+          },
+          {
+            "keyword": "hoa payment software"
+          },
+          {
+            "keyword": "bpa business process automation"
+          },
+          {
+            "keyword": "business workflow tools"
+          },
+          {
+            "keyword": "best crm management"
+          },
+          {
+            "keyword": "client relationship management software for small business"
+          },
+          {
+            "keyword": "caliber hoa software"
+          },
+          {
+            "keyword": "business process automation platform"
+          },
+          {
+            "keyword": "business process discovery"
+          },
+          {
+            "keyword": "workflow automation services"
+          },
+          {
+            "keyword": "best automation tool for salesforce testing"
+          },
+          {
+            "keyword": "best cheap crm software"
+          },
+          {
+            "keyword": "salesforce business process automation"
+          },
+          {
+            "keyword": "business process automation solutions"
+          },
+          {
+            "keyword": "customized software development"
+          },
+          {
+            "keyword": "rpa business"
+          },
+          {
+            "keyword": "crm analytics software"
+          },
+          {
+            "keyword": "business workflow management"
+          },
+          {
+            "keyword": "crm implementation companies"
+          },
+          {
+            "keyword": "business process management workflow"
+          },
+          {
+            "keyword": "workflow automation app"
+          },
+          {
+            "keyword": "business work flow"
+          },
+          {
+            "keyword": "crm software top"
+          },
+          {
+            "keyword": "business workflow automation software"
+          },
+          {
+            "keyword": "crm in e commerce"
+          },
+          {
+            "keyword": "homeowners association software free"
+          },
+          {
+            "keyword": "enterprise process automation"
+          },
+          {
+            "keyword": "quickbooks custom invoice"
+          },
+          {
+            "keyword": "condo hoa management software"
+          },
+          {
+            "keyword": "bpm automation tools"
+          },
+          {
+            "keyword": "custom saas development"
+          },
+          {
+            "keyword": "automate the process"
+          },
+          {
+            "keyword": "medium crm"
+          },
+          {
+            "keyword": "workflow process management"
+          },
+          {
+            "keyword": "business software automation"
+          },
+          {
+            "keyword": "crm software sage"
+          },
+          {
+            "keyword": "development company software"
+          },
+          {
+            "keyword": "pdd automation"
+          },
+          {
+            "keyword": "bautomate"
+          },
+          {
+            "keyword": "process workflow management software"
+          },
+          {
+            "keyword": "bpm workflow software"
+          },
+          {
+            "keyword": "best homeowners association software"
+          },
+          {
+            "keyword": "crm software for sales management"
+          },
+          {
+            "keyword": "automation of a process"
+          },
+          {
+            "keyword": "robotics process automation companies"
+          },
+          {
+            "keyword": "workflow management software small business"
+          },
+          {
+            "keyword": "automation digitalization"
+          },
+          {
+            "keyword": "uipath rpa software"
+          },
+          {
+            "keyword": "quickbooks online custom invoice"
+          },
+          {
+            "keyword": "automated bpo"
+          },
+          {
+            "keyword": "best software call center"
+          },
+          {
+            "keyword": "bpm automation software"
+          },
+          {
+            "keyword": "bpm business management process software"
+          },
+          {
+            "keyword": "bpm software workflow"
+          },
+          {
+            "keyword": "bpm work flow"
+          },
+          {
+            "keyword": "business process and workflow"
+          },
+          {
+            "keyword": "business process flows dynamics 365"
+          },
+          {
+            "keyword": "business process management workflow software"
+          },
+          {
+            "keyword": "cinc systems hoa"
+          },
+          {
+            "keyword": "client management system small business"
+          },
+          {
+            "keyword": "company rpa"
+          },
+          {
+            "keyword": "corporate automation"
+          },
+          {
+            "keyword": "crm & erp software"
+          },
+          {
+            "keyword": "crm and e commerce"
+          },
+          {
+            "keyword": "crm developments"
+          },
+          {
+            "keyword": "crm program for small business"
+          },
+          {
+            "keyword": "custom mobile software development"
+          },
+          {
+            "keyword": "custom software design companies"
+          },
+          {
+            "keyword": "developing bespoke software"
+          },
+          {
+            "keyword": "process and automation"
+          },
+          {
+            "keyword": "salesforce business processes"
+          },
+          {
+            "keyword": "workflow and bpm"
+          },
+          {
+            "keyword": "b2b crm"
+          },
+          {
+            "keyword": "basic crm software"
+          },
+          {
+            "keyword": "ibm business automation workflow"
+          },
+          {
+            "keyword": "best crm software 2022"
+          },
+          {
+            "keyword": "ibm baw"
+          },
+          {
+            "keyword": "self managed hoa software"
+          },
+          {
+            "keyword": "custom crm development"
+          },
+          {
+            "keyword": "business process software"
+          },
+          {
+            "keyword": "crm and project management for small business"
+          },
+          {
+            "keyword": "best crm for business"
+          },
+          {
+            "keyword": "custom software company"
+          },
+          {
+            "keyword": "sage crm system"
+          },
+          {
+            "keyword": "best crm and project management for small business"
+          },
+          {
+            "keyword": "business automation workflow"
+          },
+          {
+            "keyword": "small hoa management software"
+          },
+          {
+            "keyword": "marketing crm software"
+          },
+          {
+            "keyword": "community association management software"
+          },
+          {
+            "keyword": "best crm for client management"
+          },
+          {
+            "keyword": "crm software for service business"
+          },
+          {
+            "keyword": "best crm for sales small business"
+          },
+          {
+            "keyword": "best crm and marketing automation for small business"
+          },
+          {
+            "keyword": "automate your business"
+          },
+          {
+            "keyword": "crm for sme"
+          },
+          {
+            "keyword": "hoa property management software"
+          },
+          {
+            "keyword": "top custom software development companies"
+          },
+          {
+            "keyword": "crm for subscription business"
+          },
+          {
+            "keyword": "best crm for medium business"
+          },
+          {
+            "keyword": "customizable crm software"
+          },
+          {
+            "keyword": "workflow automation for small business"
+          },
+          {
+            "keyword": "gartner business process automation"
+          },
+          {
+            "keyword": "top rpa companies"
+          },
+          {
+            "keyword": "hoa website software"
+          },
+          {
+            "keyword": "rpa software companies"
+          },
+          {
+            "keyword": "condo association software"
+          },
+          {
+            "keyword": "bespoke software company"
+          },
+          {
+            "keyword": "business call center software"
+          },
+          {
+            "keyword": "crm for real estate wholesalers"
+          },
+          {
+            "keyword": "crm accounting and billing software"
+          },
+          {
+            "keyword": "top crm software for small business"
+          },
+          {
+            "keyword": "10 best crm software"
+          },
+          {
+            "keyword": "process automation in software project management"
+          },
+          {
+            "keyword": "business workflow automation"
+          },
+          {
+            "keyword": "crm software for startups"
+          },
+          {
+            "keyword": "small hoa software"
+          },
+          {
+            "keyword": "crm with accounting software"
+          },
+          {
+            "keyword": "crm for very small business"
+          },
+          {
+            "keyword": "cloud based crm software for small business"
+          },
+          {
+            "keyword": "build custom crm"
+          },
+          {
+            "keyword": "best client database for small business"
+          },
+          {
+            "keyword": "best crm for b2c"
+          },
+          {
+            "keyword": "crm database for small business"
+          },
+          {
+            "keyword": "best crm database for small business"
+          },
+          {
+            "keyword": "b2c crm software"
+          },
+          {
+            "keyword": "business process automation gartner magic quadrant"
+          },
+          {
+            "keyword": "leading crm software"
+          },
+          {
+            "keyword": "custom software development outsourcing"
+          },
+          {
+            "keyword": "crm for retail stores"
+          },
+          {
+            "keyword": "client account management software"
+          },
+          {
+            "keyword": "custom application development company"
+          },
+          {
+            "keyword": "top hoa management software"
+          },
+          {
+            "keyword": "home owners association software"
+          },
+          {
+            "keyword": "small business crm and project management"
+          },
+          {
+            "keyword": "bespoke crm"
+          },
+          {
+            "keyword": "best crm for large business"
+          },
+          {
+            "keyword": "best crm for retail stores"
+          },
+          {
+            "keyword": "custom invoice software"
+          },
+          {
+            "keyword": "customizable crm for small business"
+          },
+          {
+            "keyword": "business automation services"
+          },
+          {
+            "keyword": "best crm software for startups"
+          },
+          {
+            "keyword": "crm for b2b business"
+          },
+          {
+            "keyword": "business process automation companies"
+          },
+          {
+            "keyword": "sap business process automation"
+          },
+          {
+            "keyword": "ai business process automation"
+          },
+          {
+            "keyword": "rpa for small business"
+          },
+          {
+            "keyword": "crm for micro business"
+          },
+          {
+            "keyword": "bespoke app development"
+          },
+          {
+            "keyword": "easiest crm software"
+          },
+          {
+            "keyword": "top 10 custom software development companies"
+          },
+          {
+            "keyword": "crm for small consulting business"
+          },
+          {
+            "keyword": "business account management software"
+          },
+          {
+            "keyword": "crm for construction business"
+          },
+          {
+            "keyword": "workflow management software for small business"
+          },
+          {
+            "keyword": "crm software developer"
+          },
+          {
+            "keyword": "small biz crm"
+          },
+          {
+            "keyword": "small business contact management"
+          },
+          {
+            "keyword": "workflow automation companies"
+          },
+          {
+            "keyword": "workflow process automation"
+          },
+          {
+            "keyword": "automate customer onboarding"
+          },
+          {
+            "keyword": "best cx software"
+          },
+          {
+            "keyword": "signavio process intelligence"
+          },
+          {
+            "keyword": "restaurant crm software"
+          },
+          {
+            "keyword": "custom software for small business"
+          },
+          {
+            "keyword": "business contact management"
+          },
+          {
+            "keyword": "it process automation software"
+          },
+          {
+            "keyword": "best process automation software"
+          },
+          {
+            "keyword": "sales crm software for small business"
+          },
+          {
+            "keyword": "contact sage accounting"
+          },
+          {
+            "keyword": "customized accounting software"
+          },
+          {
+            "keyword": "real estate developer crm"
+          },
+          {
+            "keyword": "home owner association software"
+          },
+          {
+            "keyword": "business client management software"
+          },
+          {
+            "keyword": "community association software"
+          },
+          {
+            "keyword": "sme crm software"
+          },
+          {
+            "keyword": "crm for service based business"
+          },
+          {
+            "keyword": "business automation platform"
+          },
+          {
+            "keyword": "bespoke crm system"
+          },
+          {
+            "keyword": "easy hoa software"
+          },
+          {
+            "keyword": "hoa financial software"
+          },
+          {
+            "keyword": "best business automation software"
+          },
+          {
+            "keyword": "crm software development"
+          },
+          {
+            "keyword": "integrated crm and project management software"
+          },
+          {
+            "keyword": "crm software for large companies"
+          },
+          {
+            "keyword": "rpa business case"
+          },
+          {
+            "keyword": "hoa community management software"
+          },
+          {
+            "keyword": "crm for retail industry"
+          },
+          {
+            "keyword": "order to cash automation software"
+          },
+          {
+            "keyword": "business development crm software"
+          },
+          {
+            "keyword": "crm for online business"
+          },
+          {
+            "keyword": "automate hr processes"
+          }
+        ],
+        "results_note": "Showing the first 300 suggestions; 671 omitted. Use match_keywords to page through the full set."
+      }
+    }
+  ]
+}

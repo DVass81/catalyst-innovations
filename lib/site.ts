@@ -38,27 +38,11 @@ export const navLinks: NavLink[] = [
 ];
 
 /**
- * Analytics event hook. Wire to your provider (GA4, Plausible, PostHog…)
- * by defining window.ciTrack, or replace the body of this function.
- * Events are intentionally free of personal data.
+ * Consent-controlled hook. The analytics boundary allowlists event names and
+ * reviewed context identifiers; arbitrary properties never reach providers.
  */
-export type AnalyticsEvent =
-  | "cta_consultation_click"
-  | "form_start"
-  | "form_step"
-  | "form_complete"
-  | "roi_calculator_used"
-  | "assessment_start"
-  | "assessment_complete"
-  | "booking_click"
-  | "demo_interaction"
-  | "industry_select"
-  | "form_error"
-  | "section_view"
-  | "founder_profile_view"
-  | "roi_pdf_download"
-  | "phone_click"
-  | "email_click";
+import type { AnalyticsEvent } from "./analytics";
+export type { AnalyticsEvent } from "./analytics";
 
 export function track(
   event: AnalyticsEvent,

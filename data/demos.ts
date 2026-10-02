@@ -139,7 +139,7 @@ export const demos: Demo[] = [
       "A painting-system prototype connects measured areas, preparation scope and entered costs before the estimate goes to a customer.",
     industry: "painting",
     availability: "archived-guided",
-    status: "Planned system Â· recovered prototype",
+    status: "Planned system · recovered prototype",
     capabilities: [
       "Editable area-by-area scope",
       "Connected labor and material costing",

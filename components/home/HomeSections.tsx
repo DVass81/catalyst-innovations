@@ -283,7 +283,7 @@ export function FoundersPreview() {
         {founders.map((f) => (
           <RevealItem key={f.slug} className="h-full">
             <Link
-              href={`/founders#${f.slug}`}
+              href="/about#our-background"
               onClick={() => track("founder_profile_view", { founder: f.slug })}
               className="group flex h-full flex-col rounded-card border border-white/12 bg-navy-800/70 p-7 transition-colors hover:border-steel-400/50"
             >

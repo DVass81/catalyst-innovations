@@ -1,7 +1,44 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
-import type { ReactNode } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
+
+/** Enhance visible server-rendered content; scripts never determine readability. */
+function useReveal({ y, delay, once, stagger }: { y: number; delay: number; once: boolean; stagger?: number }) {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const element = ref.current;
+    if (!element || typeof IntersectionObserver === "undefined" || !element.animate) return;
+    const preference = matchMedia("(prefers-reduced-motion: reduce)");
+    const animations: Animation[] = [];
+    const observer = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        if (once) observer.unobserve(entry.target);
+        if (preference.matches) continue;
+        const targets = stagger === undefined
+          ? [element]
+          : Array.from(element.querySelectorAll<HTMLElement>("[data-reveal-item]"));
+        targets.forEach((target, index) => {
+          animations.push(target.animate(
+            [{ opacity: 0.75, transform: `translateY(${y}px)` }, { opacity: 1, transform: "none" }],
+            { duration: 550, delay: (delay + index * (stagger ?? 0)) * 1000, easing: "cubic-bezier(.21,.6,.35,1)" },
+          ));
+        });
+      }
+    }, { threshold: 0.1 });
+    const stop = () => {
+      if (preference.matches) animations.forEach((animation) => animation.cancel());
+    };
+    observer.observe(element);
+    preference.addEventListener("change", stop);
+    return () => {
+      observer.disconnect();
+      preference.removeEventListener("change", stop);
+      animations.forEach((animation) => animation.cancel());
+    };
+  }, [y, delay, once, stagger]);
+  return ref;
+}
 
 /** Scroll-triggered reveal with reduced-motion fallback. */
 export function Reveal({
@@ -17,17 +54,11 @@ export function Reveal({
   className?: string;
   once?: boolean;
 }) {
-  const reduce = useReducedMotion();
+  const ref = useReveal({ y, delay, once });
   return (
-    <motion.div
-      className={className}
-      initial={reduce ? false : { opacity: 0, y }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once, margin: "-80px" }}
-      transition={{ duration: 0.6, delay, ease: [0.21, 0.6, 0.35, 1] }}
-    >
+    <div className={className} ref={ref}>
       {children}
-    </motion.div>
+    </div>
   );
 }
 
@@ -41,30 +72,18 @@ export function RevealGroup({
   className?: string;
   stagger?: number;
 }) {
-  const reduce = useReducedMotion();
+  const ref = useReveal({ y: 24, delay: 0, once: true, stagger });
   return (
-    <motion.div
-      className={className}
-      initial={reduce ? false : "hidden"}
-      whileInView="show"
-      viewport={{ once: true, margin: "-60px" }}
-      variants={{ hidden: {}, show: { transition: { staggerChildren: stagger } } }}
-    >
+    <div className={className} ref={ref}>
       {children}
-    </motion.div>
+    </div>
   );
 }
 
 export function RevealItem({ children, className = "" }: { children: ReactNode; className?: string }) {
   return (
-    <motion.div
-      className={className}
-      variants={{
-        hidden: { opacity: 0, y: 24 },
-        show: { opacity: 1, y: 0, transition: { duration: 0.55, ease: [0.21, 0.6, 0.35, 1] } },
-      }}
-    >
+    <div className={className} data-reveal-item>
       {children}
-    </motion.div>
+    </div>
   );
 }

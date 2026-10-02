@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { LogoLockup } from "./Logo";
+import AnalyticsPreferences from "./AnalyticsPreferences";
 export default function Footer() {
   return (
     <footer className="site-footer">
@@ -18,6 +19,7 @@ export default function Footer() {
           <Link href="/solutions">Solutions</Link>
           <Link href="/industries">Industries</Link>
           <Link href="/portfolio">Demos</Link>
+          <Link href="/insights">Insights</Link>
         </div>
         <div>
           <span className="overline">Start a conversation</span>
@@ -33,6 +35,7 @@ export default function Footer() {
           <Link href="/privacy">Privacy</Link>
           <Link href="/terms">Terms</Link>
           <Link href="/accessibility">Accessibility</Link>
+          <AnalyticsPreferences />
         </div>
       </div>
     </footer>

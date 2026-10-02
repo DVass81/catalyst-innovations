@@ -82,10 +82,10 @@ export default function DemoShowcase({ detailed = false, context = "" }: { detai
             <ul>{demo.capabilities.map(capability => <li key={capability}>{capability}</li>)}</ul>
           </details>}
           {demo.walkthrough ? <button className="button video-watch"
-            onClick={e => watch(demo, e.currentTarget)} aria-haspopup="dialog"
-            aria-label={`Watch ${demo.displayName} walkthrough`}>
+            onClick={e => watch(demo, e.currentTarget)} aria-haspopup="dialog">
             <span aria-hidden="true">▶</span> Watch walkthrough
             <span className="video-duration">{Math.floor(demo.walkthrough.durationSeconds / 60)}:{String(Math.round(demo.walkthrough.durationSeconds % 60)).padStart(2, "0")}</span>
+            <span className="sr-only"> — {demo.displayName}</span>
           </button> : <p className="video-pending">Narrated walkthrough in production</p>}
           <div className="video-demo-links">
             <Link className="text-link" href={inquiry(demo)}>Discuss a system like this ↗</Link>

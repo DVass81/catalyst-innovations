@@ -6,6 +6,10 @@ import { notFound } from "next/navigation";
 import { industryList } from "@/data/redesign";
 import { getCalculator } from "@/lib/calculators";
 import { PageIntro } from "@/components/SiteSections";
+import { industryContent } from "@/data/seoContent";
+import { getInsight } from "@/data/insights";
+import { services } from "@/data/services";
+import { breadcrumbSchema, pageMetadata } from "@/lib/seo";
 export const generateStaticParams = () =>
   industryList.map((i) => ({ slug: i.slug }));
 export async function generateMetadata({
@@ -15,13 +19,8 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const i = industryList.find((x) => x.slug === slug);
-  return {
-    alternates: i ? { canonical: `/industries/${i.slug}` } : undefined,
-    title: i ? `Custom Software for ${i.name}` : "Industry not found",
-    description: i
-      ? `Connected workflows and practical automation for ${i.name.toLowerCase()}. Explore solutions and relevant savings calculators.`
-      : undefined,
-  };
+  if (!i) notFound();
+  return pageMetadata({ title: `Custom Software for ${i.name}`, description: `${i.problems[0]} Explore custom workflows for ${i.name.toLowerCase()}, practical starting points and relevant calculators.`, path: `/industries/${i.slug}` });
 }
 export default async function IndustryPage({
   params,
@@ -32,15 +31,23 @@ export default async function IndustryPage({
   const i = industryList.find((x) => x.slug === slug);
   if (!i) notFound();
   const demo = recommendedDemo(i.group, i.slug);
+  const content = industryContent[i.slug];
+  const guide = getInsight(content.guide)!;
+  const solution = services.find(service => service.slug === content.solution)!;
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Industries", path: "/industries" }, { name: i.name, path: `/industries/${i.slug}` }])).replace(/</g, "\\u003c") }} />
       <PageIntro
         eyebrow={i.group}
         title={i.name}
-        text={`Practical software for ${i.name.toLowerCase()}, shaped around the way your people work. Start with one problem and connect the right pieces.`}
+        text={content.introduction}
       />
       <section className="wrap content-section">
         <IndustryProblems industry={i} />
+      </section>
+      <section className="wrap content-section two-grid">
+        <div><p className="overline">A practical starting point</p><h2>Start with one complete process.</h2><p>{content.firstStep}</p><p style={{ marginTop: 20 }}>We begin with your current tools, the people responsible for each decision and the exceptions they handle. The scope is agreed around your operation.</p><Link className="text-link" href={`/solutions/${solution.slug}`}>Explore {solution.navLabel.toLowerCase()} ↗</Link></div>
+        <aside className="content-card"><p className="overline">Information worth connecting</p><ul className="check-list">{content.records.map(record => <li key={record}>— {record}</li>)}</ul><p style={{ marginTop: 20 }}>These are suggested records to discuss, not a claim that every capability is already present in the demonstration.</p></aside>
       </section>
       <section className="wrap content-section">
         <h2>A connected workflow.</h2>
@@ -60,6 +67,10 @@ export default async function IndustryPage({
             Explore the guided demo ↗
           </Link>
         </aside>
+      </section>
+      <section className="wrap content-section two-grid">
+        <div><p className="overline">Practical guide</p><h2>{guide.title}</h2><p>{guide.description}</p><Link className="text-link" href={`/insights/${guide.slug}`}>Read the guide ↗</Link></div>
+        <div className="content-card"><p className="overline">A question we should address</p><h2>{content.faq.question}</h2><p>{content.faq.answer}</p></div>
       </section>
       <section className="wrap content-section">
         <p className="overline">Explore your numbers</p>

@@ -1,0 +1,45 @@
+.insights-page { background: #faf7f1; color: #0a1628; }
+.insights-page .insights-intro h1 { max-width: 15ch; }
+.insights-page .insights-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px; }
+.insights-page .insight-card { display: flex; flex-direction: column; gap: 22px; padding: clamp(24px, 3.5vw, 42px); background: #fff; border: 1px solid #d4dee5; border-radius: 16px; }
+.insights-page .insight-card-top, .insights-page .insight-card-bottom { display: flex; justify-content: space-between; align-items: center; gap: 18px; }
+.insights-page .insight-card-top > span:last-child { color: #8198ae; font-size: 14px; }
+.insights-page .insight-card h2, .insights-page .insight-card h3 { margin: 0; font-size: clamp(24px, 2.6vw, 34px); line-height: 1.2; }
+.insights-page .insight-card p { margin: 0; line-height: 1.75; color: #52606d; }
+.insights-page .insight-card-bottom { margin-top: auto; padding-top: 12px; font-size: 13px; color: #52606d; }
+.insights-page .insights-note p { max-width: 800px; line-height: 1.75; font-size: 14px; }
+.insights-page .insight-header h1 { max-width: 22ch; font-size: clamp(36px, 4.6vw, 66px); }
+.insights-page .insight-byline { margin-top: 24px; font-size: 13px; line-height: 1.8; color: #52606d; }
+.insights-page .insight-layout { display: grid; grid-template-columns: minmax(180px, 0.65fr) minmax(0, 2fr); gap: clamp(32px, 6vw, 90px); padding-bottom: 80px; }
+.insights-page .insight-toc nav { position: sticky; top: 120px; }
+.insights-page .insight-toc ol { display: grid; gap: 18px; padding: 0; list-style: none; margin: 25px 0; }
+.insights-page .insight-toc a { color: #2f5d8f; font-size: 14px; line-height: 1.6; }
+.insights-page .insight-body { max-width: 760px; min-width: 0; }
+.insights-page .insight-body p, .insights-page .insight-body li { font-size: 16px; line-height: 1.9; color: #465765; }
+.insights-page .insight-body p { margin: 0 0 20px; }
+.insights-page .insight-body .insight-opening { font-size: 19px; color: #243d53; }
+.insights-page .insight-body section { margin-top: 48px; scroll-margin-top: 125px; }
+.insights-page .insight-body h2 { font-size: clamp(25px, 2.8vw, 34px); line-height: 1.25; margin-bottom: 22px; }
+.insights-page .insight-body ul { padding-left: 22px; margin: 20px 0; list-style: disc; }
+.insights-page .insight-body li + li { margin-top: 10px; }
+.insights-page .insight-takeaway, .insights-page .insight-example { padding: clamp(24px, 3vw, 36px); background: #edf3f8; border-left: 3px solid #2f5d8f; margin: 35px 0; }
+.insights-page .insight-body .overline { font-size: 11px; line-height: 1.5; color: #2f5d8f; }
+.insights-page .insight-takeaway p:last-child, .insights-page .insight-example p:last-child { margin-bottom: 0; }
+.insights-page .insight-body .insight-reference, .insights-page .insight-sources p, .insights-page .insight-sources li { font-size: 13px; }
+.insights-page .insight-reference a, .insights-page .insight-sources a { color: #2f5d8f; text-decoration: underline; text-underline-offset: 3px; }
+.insights-page .insight-tools { display: grid; gap: 14px; }
+.insights-page .insight-tools > a { display: grid; gap: 10px; padding: 24px; border: 1px solid #d4dee5; border-radius: 10px; background: #fff; }
+.insights-page .insight-tools > a > span { font-size: 14px; line-height: 1.7; color: #52606d; }
+.insights-page .insight-next { border-top: 1px solid #c6d3de; padding-top: 36px; }
+.insights-page .insight-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 20px; margin-top: 25px; }
+.insights-page .insight-sources { margin-top: 42px; padding-top: 26px; border-top: 1px solid #d4dee5; }
+.insights-page .insight-sources h2 { font-size: 20px; }
+.insights-page .insight-related > h2 { margin: 18px 0 32px; }
+.insights-page a:focus-visible { outline: 3px solid #2f5d8f; outline-offset: 4px; border-radius: 3px; }
+@media (max-width: 780px) {
+  .insights-page .insights-grid, .insights-page .insight-layout { grid-template-columns: 1fr; }
+  .insights-page .insight-toc nav { position: static; padding-bottom: 24px; border-bottom: 1px solid #d4dee5; }
+  .insights-page .insight-toc ol { gap: 12px; }
+  .insights-page .insight-body p, .insights-page .insight-body li { font-size: 16px; }
+  .insights-page .insight-body section { scroll-margin-top: 100px; }
+}

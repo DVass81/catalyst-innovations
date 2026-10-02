@@ -1,69 +1,52 @@
 "use client";
 
-import Script from "next/script";
 import { useEffect } from "react";
+import { usePathname } from "next/navigation";
+import {
+  configuredAnalytics, consentChangeEvent, createAnalyticsSession,
+  createBrowserAnalyticsTransport, getAnalyticsConsent, parseAnalyticsConsent,
+} from "@/lib/analytics";
+import { AnalyticsConsentNotice } from "./AnalyticsPreferences";
 
-/**
- * Provider-agnostic analytics loader. Activates automatically when env vars
- * are set — no code changes needed:
- *   NEXT_PUBLIC_PLAUSIBLE_DOMAIN=yourdomain.com   → loads Plausible
- *   NEXT_PUBLIC_GA_ID=G-XXXXXXX                   → loads GA4
- * All site events flow through window.ciTrack (see lib/site.ts) and are
- * forwarded to whichever providers are present. No personal data is sent.
- */
+let session: ReturnType<typeof createAnalyticsSession> | undefined;
 
-const PLAUSIBLE = process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN;
-const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
+function getSession() {
+  if (session) return session;
+  const providers = configuredAnalytics();
+  if (!providers.gaId && !providers.plausibleDomain) return undefined;
+  session = createAnalyticsSession(createBrowserAnalyticsTransport(providers));
+  session.navigate(window.location.pathname);
+  session.consent(getAnalyticsConsent());
+  const w = window as typeof window & { ciTrack?: (event: string, props?: Record<string, string | number>) => void };
+  w.ciTrack = (event, props) => session?.track(event, props);
+  window.addEventListener(consentChangeEvent, (event) => {
+    session?.consent(parseAnalyticsConsent((event as CustomEvent).detail));
+  });
+  window.addEventListener("storage", () => session?.consent(getAnalyticsConsent()));
+  // Cover consultation links without copying destination queries. Explicit CTA
+  // hooks and the delegated listener are deduplicated within a click dispatch.
+  let lastCtaAt = -100;
+  const track = w.ciTrack;
+  w.ciTrack = (event, props) => {
+    if (event === "cta_consultation_click") {
+      const now = performance.now();
+      if (now - lastCtaAt < 100) return;
+      lastCtaAt = now;
+    }
+    track(event, props);
+  };
+  document.addEventListener("click", (event) => {
+    if (!(event.target instanceof Element)) return;
+    const link = event.target.closest<HTMLAnchorElement>("a[href]");
+    if (!link) return;
+    const url = new URL(link.href, window.location.origin);
+    if (url.origin === window.location.origin && url.pathname === "/consultation") w.ciTrack?.("cta_consultation_click");
+  });
+  return session;
+}
 
 export default function Analytics() {
-  useEffect(() => {
-    const w = window as typeof window & {
-      ciTrack?: (e: string, p?: Record<string, string | number>) => void;
-      plausible?: (e: string, o?: { props?: Record<string, string | number> }) => void;
-      gtag?: (...args: unknown[]) => void;
-    };
-    w.ciTrack = (event, props) => {
-      try {
-        w.plausible?.(event, props ? { props } : undefined);
-        w.gtag?.("event", event, props ?? {});
-      } catch {
-        /* analytics must never break the UI */
-      }
-    };
-    const recordInquiryClick = (event: MouseEvent) => {
-      if (!(event.target instanceof Element)) return;
-      const link = event.target.closest<HTMLAnchorElement>("a[href]");
-      if (!link) return;
-      const url = new URL(link.href, window.location.origin);
-      if (url.origin === window.location.origin && url.pathname === "/consultation") {
-        w.ciTrack?.("cta_consultation_click", { page: window.location.pathname });
-      }
-    };
-    document.addEventListener("click", recordInquiryClick);
-    return () => document.removeEventListener("click", recordInquiryClick);
-  }, []);
-
-  return (
-    <>
-      {PLAUSIBLE && (
-        <Script
-          defer
-          data-domain={PLAUSIBLE}
-          src="https://plausible.io/js/script.js"
-          strategy="afterInteractive"
-        />
-      )}
-      {GA_ID && (
-        <>
-          <Script src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} strategy="afterInteractive" />
-          <Script id="ga4-init" strategy="afterInteractive">
-            {`window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', '${GA_ID}', { anonymize_ip: true });`}
-          </Script>
-        </>
-      )}
-    </>
-  );
+  const pathname = usePathname();
+  useEffect(() => { getSession()?.navigate(pathname); }, [pathname]);
+  return <AnalyticsConsentNotice />;
 }

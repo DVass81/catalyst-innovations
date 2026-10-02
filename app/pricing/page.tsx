@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import { Check, ArrowUpRight } from "lucide-react";
 import { PageIntro, DiscussCTA } from "@/components/SiteSections";
@@ -7,11 +7,11 @@ import EngagementDetails from "@/components/EngagementDetails";
 import BookingLink from "@/components/BookingLink";
 import { pricingTiers, pricingFaqs, formatPriceRange } from "@/data/pricing";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/pricing" },
+export const metadata = pageMetadata({
+  path: "/pricing",
   title: "Custom Software Pricing — Setup, Support & What’s Included",
   description: "Compare Catalyst’s Founding Partner, Essentials, Professional and Executive software packages. Clear implementation costs, monthly support and first-year totals.",
-};
+});
 const founding = pricingTiers.find(t => t.id === "founding-partner")!;
 const standard = pricingTiers.filter(t => t.id !== "founding-partner");
 export default function PricingPage() {

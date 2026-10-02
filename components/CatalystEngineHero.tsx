@@ -5,6 +5,8 @@ import { storyCoordinator } from "@/lib/storyPlayback";
 import {
   createWorkaroundsPlayer,
   initialWorkaroundsSnapshot,
+  prefersManualStory,
+  type StoryConnection,
   workaroundsStory,
 } from "@/lib/workaroundsStory";
 
@@ -19,11 +21,20 @@ export default function CatalystEngineHero() {
     const element = video.current;
     const container = frame.current;
     if (!element || !container || !loaded) return;
-    const player = createWorkaroundsPlayer(element, storyCoordinator, setSnapshot);
+    const connection = (navigator as Navigator & {
+      connection?: StoryConnection & EventTarget;
+    }).connection;
+    const player = createWorkaroundsPlayer(element, storyCoordinator, setSnapshot, {
+      source: matchMedia("(max-width: 900px)").matches
+        ? "/brand/catalyst-workarounds-mobile-v1.mp4"
+        : "/brand/catalyst-workarounds-v1.mp4",
+      manualOnly: prefersManualStory(connection),
+    });
     const preference = matchMedia("(prefers-reduced-motion: reduce)");
     let timer: ReturnType<typeof setTimeout>;
     const onVisibility = () => player.setDocumentVisible(!document.hidden);
     const onPreference = () => player.setReduced(preference.matches);
+    const onConnection = () => player.setManualOnly(prefersManualStory(connection));
     const onLoad = () => { timer = setTimeout(() => player.setReady(true), 250); };
     onVisibility();
     onPreference();
@@ -37,6 +48,7 @@ export default function CatalystEngineHero() {
     visibility.observe(container);
     document.addEventListener("visibilitychange", onVisibility);
     preference.addEventListener("change", onPreference);
+    connection?.addEventListener?.("change", onConnection);
     window.addEventListener("load", onLoad);
     if (document.readyState === "complete") onLoad();
     actions.current = player;
@@ -46,6 +58,7 @@ export default function CatalystEngineHero() {
       visibility.disconnect();
       document.removeEventListener("visibilitychange", onVisibility);
       preference.removeEventListener("change", onPreference);
+      connection?.removeEventListener?.("change", onConnection);
       window.removeEventListener("load", onLoad);
       player.dispose();
       actions.current = { toggle: () => {}, replay: () => {} };
@@ -76,6 +89,7 @@ export default function CatalystEngineHero() {
           height={1080}
           sizes="(max-width: 900px) 92vw, 48vw"
           loading="eager"
+          fetchPriority="high"
           onLoad={() => setLoaded(true)}
           alt="A beige 1980s computer in a warm cream studio, the starting point of an illustration about connecting business processes."
         />
@@ -89,7 +103,7 @@ export default function CatalystEngineHero() {
         <p className="engine-summary">Custom software connects your customer information, approved jobs, materials and invoicing in one workflow.</p>
         <div className="engine-controls">
           {snapshot.available && <>
-            <button type="button" onClick={toggle} aria-label={snapshot.playing ? "Pause Catalyst story" : "Play Catalyst story"}>{snapshot.playing ? "Pause motion" : "Play motion"}</button>
+            <button type="button" onClick={toggle} title={snapshot.manualOnly ? "Video loads only when you choose to play." : undefined} aria-label={snapshot.playing ? "Pause motion: Catalyst story" : "Play motion: Catalyst story"}>{snapshot.playing ? "Pause motion" : "Play motion"}</button>
             <button type="button" onClick={replay} aria-label="Replay Catalyst story">Replay</button>
           </>}
         </div>

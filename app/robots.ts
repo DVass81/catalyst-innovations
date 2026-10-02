@@ -3,7 +3,8 @@ import { site } from "@/lib/site";
 
 export default function robots(): MetadataRoute.Robots {
   return {
-    rules: { userAgent: "*", allow: "/", disallow: ["/portal", "/api/"] },
-    sitemap: `${site.url}/sitemap.xml`,
+    // The public portal placeholder must be crawlable for its noindex tag to work.
+    rules: { userAgent: "*", allow: "/", disallow: ["/api/"] },
+    sitemap: new URL("/sitemap.xml", site.url).toString(),
   };
 }

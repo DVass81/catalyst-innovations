@@ -1,13 +1,13 @@
 import VisualStory from "@/components/VisualStory";
-import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import { PageIntro, DiscussCTA } from "@/components/SiteSections";
 import ToolLibrary from "@/components/ToolLibrary";
-export const metadata: Metadata = {
-  alternates: { canonical: '/tools' },
+export const metadata = pageMetadata({
+  path: "/tools",
   title: "24 Free Business Calculators & Savings Tools",
   description:
     "Explore time, costs, margins and automation opportunities with transparent calculators for your business. No email required.",
-};
+});
 export default function Tools() {
   return (
     <>

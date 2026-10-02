@@ -1,22 +1,22 @@
-import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import { PageIntro } from "@/components/SiteSections";
 import EmailLink from "@/components/EmailLink";
 import { activeFounders } from "@/data/content";
 import { site } from "@/lib/site";
-export const metadata: Metadata = {
-  alternates: { canonical: '/contact' },
-  title: "Contact",
+export const metadata = pageMetadata({
+  path: "/contact",
+  title: "Contact Our Knoxville Software Team",
   description:
-    "Tell Catalyst Innovations what is slowing your business down. Start a conversation about custom software and automation.",
-};
+    "Talk with Catalyst Innovations in Knoxville, Tennessee about custom business software, workflow automation and the process you want to improve.",
+});
 export default function ContactPage() {
   return (
     <>
       <PageIntro
         eyebrow="Contact"
         title="Start with the work you want to make easier."
-        text="Tell us what you do, where things get stuck, and what a better day would look like."
+        text="Talk with Josh and Daniel in Knoxville, Tennessee. Tell us what you do, where things get stuck, and what a better day would look like."
       />
       <section className="wrap content-section two-grid">
         <div className="content-card">

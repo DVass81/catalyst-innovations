@@ -1,0 +1,1219 @@
+{
+  "startedAt": "2026-10-02T23:46:17.686Z",
+  "completedAt": "2026-10-02T23:46:18.791Z",
+  "baseUrl": "http://127.0.0.1:3111",
+  "scope": "Local production build; no browser execution or external requests. Canonical/social URLs checked against the sitemap. Images fetched through the local origin.",
+  "passed": true,
+  "totalPages": 71,
+  "failedPages": 0,
+  "duplicateTitles": [],
+  "duplicateDescriptions": [],
+  "images": [
+    {
+      "path": "/opengraph-image",
+      "status": 200,
+      "contentType": "image/png",
+      "passed": true
+    },
+    {
+      "path": "/solutions/custom-software/opengraph-image",
+      "status": 200,
+      "contentType": "image/png",
+      "passed": true
+    },
+    {
+      "path": "/solutions/ai-automation/opengraph-image",
+      "status": 200,
+      "contentType": "image/png",
+      "passed": true
+    },
+    {
+      "path": "/solutions/procurement/opengraph-image",
+      "status": 200,
+      "contentType": "image/png",
+      "passed": true
+    },
+    {
+      "path": "/solutions/manufacturing-operations/opengraph-image",
+      "status": 200,
+      "contentType": "image/png",
+      "passed": true
+    },
+    {
+      "path": "/solutions/supply-chain/opengraph-image",
+      "status": 200,
+      "contentType": "image/png",
+      "passed": true
+    },
+    {
+      "path": "/solutions/process-automation/opengraph-image",
+      "status": 200,
+      "contentType": "image/png",
+      "passed": true
+    },
+    {
+      "path": "/solutions/data-intelligence/opengraph-image",
+      "status": 200,
+      "contentType": "image/png",
+      "passed": true
+    },
+    {
+      "path": "/solutions/integrations-consulting/opengraph-image",
+      "status": 200,
+      "contentType": "image/png",
+      "passed": true
+    }
+  ],
+  "redirects": [
+    {
+      "path": "/founders",
+      "status": 308,
+      "location": "/about#our-background",
+      "finalStatus": 200,
+      "passed": true
+    },
+    {
+      "path": "/start",
+      "status": 308,
+      "location": "/tools/project-roi",
+      "finalStatus": 200,
+      "passed": true
+    },
+    {
+      "path": "/roi-estimator",
+      "status": 308,
+      "location": "/tools/project-roi",
+      "finalStatus": 200,
+      "passed": true
+    },
+    {
+      "path": "/demo-lab",
+      "status": 308,
+      "location": "/portfolio",
+      "finalStatus": 200,
+      "passed": true
+    }
+  ],
+  "missingPages": [
+    {
+      "path": "/not-a-real-page",
+      "status": 404,
+      "noindex": true,
+      "passed": true
+    },
+    {
+      "path": "/solutions/not-a-real-solution",
+      "status": 404,
+      "noindex": true,
+      "passed": true
+    },
+    {
+      "path": "/industries/not-a-real-industry",
+      "status": 404,
+      "noindex": true,
+      "passed": true
+    },
+    {
+      "path": "/tools/not-a-real-tool",
+      "status": 404,
+      "noindex": true,
+      "passed": true
+    },
+    {
+      "path": "/insights/not-a-real-guide",
+      "status": 404,
+      "noindex": true,
+      "passed": true
+    }
+  ],
+  "portal": {
+    "status": 200,
+    "noindex": true,
+    "disallowed": false,
+    "passed": true
+  },
+  "robots": {
+    "status": 200,
+    "excludesApi": true,
+    "referencesSitemap": true,
+    "passed": true
+  },
+  "bundles": [
+    {
+      "route": "/",
+      "baselineUncompressedBytes": 573048,
+      "currentUncompressedBytes": 568058,
+      "deltaBytes": -4990,
+      "calculatorDefinitionChunks": []
+    },
+    {
+      "route": "/tools",
+      "baselineUncompressedBytes": 550098,
+      "currentUncompressedBytes": 544294,
+      "deltaBytes": -5804,
+      "calculatorDefinitionChunks": []
+    }
+  ],
+  "pages": [
+    {
+      "path": "/",
+      "status": 200,
+      "title": "Catalyst Innovations — Custom software. A better-running business.",
+      "description": "Custom business software and workflow automation from Knoxville, Tennessee. Connect customers, jobs, inventory and accounting around the way you work.",
+      "canonical": "https://mycatalystinnovations.com",
+      "h1": "Custom software. A better-running business.",
+      "mainWordCount": 1201,
+      "schemaTypes": [
+        "Organization"
+      ],
+      "image": "https://mycatalystinnovations.com/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/about",
+      "status": 200,
+      "title": "Josh, Daniel & the Story Behind Catalyst | Catalyst Innovations",
+      "description": "Meet Daniel Vass and Josh Ogle: operations experience and technology expertise, brought together at Catalyst Innovations in Knoxville, Tennessee.",
+      "canonical": "https://mycatalystinnovations.com/about",
+      "h1": "Good software starts with understanding the work.",
+      "mainWordCount": 510,
+      "schemaTypes": [
+        "Organization",
+        "Person",
+        "Person"
+      ],
+      "image": "https://mycatalystinnovations.com/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/accessibility",
+      "status": 200,
+      "title": "Accessibility | Catalyst Innovations",
+      "description": "Catalyst Innovations' commitment to an accessible web experience (WCAG 2.2 AA target).",
+      "canonical": "https://mycatalystinnovations.com/accessibility",
+      "h1": "Accessibility Statement",
+      "mainWordCount": 131,
+      "schemaTypes": [
+        "Organization"
+      ],
+      "image": "https://mycatalystinnovations.com/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/consultation",
+      "status": 200,
+      "title": "Discuss My Business | Catalyst Innovations",
+      "description": "Tell Catalyst what slows your business down. Start a conversation about custom software and automation.",
+      "canonical": "https://mycatalystinnovations.com/consultation",
+      "h1": "What’s slowing you down?",
+      "mainWordCount": 406,
+      "schemaTypes": [
+        "Organization"
+      ],
+      "image": "https://mycatalystinnovations.com/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/contact",
+      "status": 200,
+      "title": "Contact Our Knoxville Software Team | Catalyst Innovations",
+      "description": "Talk with Catalyst Innovations in Knoxville, Tennessee about custom business software, workflow automation and the process you want to improve.",
+      "canonical": "https://mycatalystinnovations.com/contact",
+      "h1": "Start with the work you want to make easier.",
+      "mainWordCount": 70,
+      "schemaTypes": [
+        "Organization"
+      ],
+      "image": "https://mycatalystinnovations.com/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/industries",
+      "status": 200,
+      "title": "Industries We Help | Catalyst Innovations",
+      "description": "Custom software for trades, manufacturing, warehouses, communities, nonprofits and growing businesses.",
+      "canonical": "https://mycatalystinnovations.com/industries",
+      "h1": "Different work. The same need for a better way.",
+      "mainWordCount": 129,
+      "schemaTypes": [
+        "Organization"
+      ],
+      "image": "https://mycatalystinnovations.com/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/industries/churches-nonprofits",
+      "status": 200,
+      "title": "Custom Software for Churches & Nonprofits | Catalyst Innovations",
+      "description": "Small teams juggle programs and administrative work. Explore custom workflows for churches & nonprofits, practical starting points and relevant calculators.",
+      "canonical": "https://mycatalystinnovations.com/industries/churches-nonprofits",
+      "h1": "Churches & Nonprofits",
+      "mainWordCount": 394,
+      "schemaTypes": [
+        "Organization",
+        "BreadcrumbList"
+      ],
+      "image": "https://mycatalystinnovations.com/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/industries/construction",
+      "status": 200,
+      "title": "Custom Software for Construction | Catalyst Innovations",
+      "description": "Changing schedules leave crews working from old plans. Explore custom workflows for construction, practical starting points and relevant calculators.",
+      "canonical": "https://mycatalystinnovations.com/industries/construction",
+      "h1": "Construction",
+      "mainWordCount": 406,
+      "schemaTypes": [
+        "Organization",
+        "BreadcrumbList"
+      ],
+      "image": "https://mycatalystinnovations.com/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/industries/credit-unions",
+      "status": 200,
+      "title": "Custom Software for Credit Unions | Catalyst Innovations",
+      "description": "Member-service handoffs are hard to follow across teams. Explore custom workflows for credit unions, practical starting points and relevant calculators.",
+      "canonical": "https://mycatalystinnovations.com/industries/credit-unions",
+      "h1": "Credit Unions",
+      "mainWordCount": 381,
+      "schemaTypes": [
+        "Organization",
+        "BreadcrumbList"
+      ],
+      "image": "https://mycatalystinnovations.com/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/industries/electrical-contractors",
+      "status": 200,
+      "title": "Custom Software for Electrical Contractors | Catalyst Innovations",
+      "description": "Estimates depend on labor and material details in separate files. Explore custom workflows for electrical contractors, practical starting points and relevant calculators.",
+      "canonical": "https://mycatalystinnovations.com/industries/electrical-contractors",
+      "h1": "Electrical Contractors",
+      "mainWordCount": 391,
+      "schemaTypes": [
+        "Organization",
+        "BreadcrumbList"
+      ],
+      "image": "https://mycatalystinnovations.com/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/industries/field-service",
+      "status": 200,
+      "title": "Custom Software for Field-Service Businesses | Catalyst Innovations",
+      "description": "Dispatch changes do not always reach the technician. Explore custom workflows for field-service businesses, practical starting points and relevant calculators.",
+      "canonical": "https://mycatalystinnovations.com/industries/field-service",
+      "h1": "Field-Service Businesses",
+      "mainWordCount": 392,
+      "schemaTypes": [
+        "Organization",
+        "BreadcrumbList"
+      ],
+      "image": "https://mycatalystinnovations.com/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/industries/financial-institutions",
+      "status": 200,
+      "title": "Custom Software for Financial Institutions | Catalyst Innovations",
+      "description": "Vendor reviews involve scattered documents and deadlines. Explore custom workflows for financial institutions, practical starting points and relevant calculators.",
+      "canonical": "https://mycatalystinnovations.com/industries/financial-institutions",
+      "h1": "Financial Institutions",
+      "mainWordCount": 369,
+      "schemaTypes": [
+        "Organization",
+        "BreadcrumbList"
+      ],
+      "image": "https://mycatalystinnovations.com/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/industries/hoa",
+      "status": 200,
+      "title": "Custom Software for HOAs & community associations | Catalyst Innovations",
+      "description": "Resident requests arrive through too many channels. Explore custom workflows for hoas & community associations, practical starting points and relevant calculators.",
+      "canonical": "https://mycatalystinnovations.com/industries/hoa",
+      "h1": "HOAs & community associations",
+      "mainWordCount": 393,
+      "schemaTypes": [
+        "Organization",
+        "BreadcrumbList"
+      ],
+      "image": "https://mycatalystinnovations.com/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/industries/hvac",
+      "status": 200,
+      "title": "Custom Software for HVAC | Catalyst Innovations",
+      "description": "Busy seasons make scheduling and follow-up difficult. Explore custom workflows for hvac, practical starting points and relevant calculators.",
+      "canonical": "https://mycatalystinnovations.com/industries/hvac",
+      "h1": "HVAC",
+      "mainWordCount": 388,
+      "schemaTypes": [
+        "Organization",
+        "BreadcrumbList"
+      ],
+      "image": "https://mycatalystinnovations.com/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/industries/industrial-services",
+      "status": 200,
+      "title": "Custom Software for Industrial Service Companies | Catalyst Innovations",
+      "description": "Maintenance work competes for limited crew time. Explore custom workflows for industrial service companies, practical starting points and relevant calculators.",
+      "canonical": "https://mycatalystinnovations.com/industries/industrial-services",
+      "h1": "Industrial Service Companies",
+      "mainWordCount": 396,
+      "schemaTypes": [
+        "Organization",
+        "BreadcrumbList"
+      ],
+      "image": "https://mycatalystinnovations.com/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/industries/logistics",
+      "status": 200,
+      "title": "Custom Software for Supply Chain & Logistics | Catalyst Innovations",
+      "description": "Shipment updates live in several different systems. Explore custom workflows for supply chain & logistics, practical starting points and relevant calculators.",
+      "canonical": "https://mycatalystinnovations.com/industries/logistics",
+      "h1": "Supply Chain & Logistics",
+      "mainWordCount": 396,
+      "schemaTypes": [
+        "Organization",
+        "BreadcrumbList"
+      ],
+      "image": "https://mycatalystinnovations.com/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/industries/manufacturing",
+      "status": 200,
+      "title": "Custom Software for Manufacturing | Catalyst Innovations",
+      "description": "Production plans change before everyone gets the update. Explore custom workflows for manufacturing, practical starting points and relevant calculators.",
+      "canonical": "https://mycatalystinnovations.com/industries/manufacturing",
+      "h1": "Manufacturing",
+      "mainWordCount": 389,
+      "schemaTypes": [
+        "Organization",
+        "BreadcrumbList"
+      ],
+      "image": "https://mycatalystinnovations.com/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/industries/multi-location",
+      "status": 200,
+      "title": "Custom Software for Multi-Location Organizations | Catalyst Innovations",
+      "description": "Each location follows a slightly different process. Explore custom workflows for multi-location organizations, practical starting points and relevant calculators.",
+      "canonical": "https://mycatalystinnovations.com/industries/multi-location",
+      "h1": "Multi-Location Organizations",
+      "mainWordCount": 378,
+      "schemaTypes": [
+        "Organization",
+        "BreadcrumbList"
+      ],
+      "image": "https://mycatalystinnovations.com/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/industries/painting",
+      "status": 200,
+      "title": "Custom Software for Painting businesses | Catalyst Innovations",
+      "description": "Unclear preparation and surface scope create misunderstandings. Explore custom workflows for painting businesses, practical starting points and relevant calculators.",
+      "canonical": "https://mycatalystinnovations.com/industries/painting",
+      "h1": "Painting businesses",
+      "mainWordCount": 396,
+      "schemaTypes": [
+        "Organization",
+        "BreadcrumbList"
+      ],
+      "image": "https://mycatalystinnovations.com/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/industries/plumbing",
+      "status": 200,
+      "title": "Custom Software for Plumbing | Catalyst Innovations",
+      "description": "Urgent calls disrupt an already busy dispatch schedule. Explore custom workflows for plumbing, practical starting points and relevant calculators.",
+      "canonical": "https://mycatalystinnovations.com/industries/plumbing",
+      "h1": "Plumbing",
+      "mainWordCount": 398,
+      "schemaTypes": [
+        "Organization",
+        "BreadcrumbList"
+      ],
+      "image": "https://mycatalystinnovations.com/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/industries/professional-services",
+      "status": 200,
+      "title": "Custom Software for Professional Services | Catalyst Innovations",
+      "description": "Client information is repeatedly requested by different people. Explore custom workflows for professional services, practical starting points and relevant calculators.",
+      "canonical": "https://mycatalystinnovations.com/industries/professional-services",
+      "h1": "Professional Services",
+      "mainWordCount": 374,
+      "schemaTypes": [
+        "Organization",
+        "BreadcrumbList"
+      ],
+      "image": "https://mycatalystinnovations.com/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/industries/schools-athletics",
+      "status": 200,
+      "title": "Custom Software for Schools & Athletic Organizations | Catalyst Innovations",
+      "description": "Events require coordinating facilities, people and transport. Explore custom workflows for schools & athletic organizations, practical starting points and relevant calculators.",
+      "canonical": "https://mycatalystinnovations.com/industries/schools-athletics",
+      "h1": "Schools & Athletic Organizations",
+      "mainWordCount": 398,
+      "schemaTypes": [
+        "Organization",
+        "BreadcrumbList"
+      ],
+      "image": "https://mycatalystinnovations.com/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/industries/small-business",
+      "status": 200,
+      "title": "Custom Software for Growing Small Businesses | Catalyst Innovations",
+      "description": "The owner has to chase every next step. Explore custom workflows for growing small businesses, practical starting points and relevant calculators.",
+      "canonical": "https://mycatalystinnovations.com/industries/small-business",
+      "h1": "Growing Small Businesses",
+      "mainWordCount": 403,
+      "schemaTypes": [
+        "Organization",
+        "BreadcrumbList"
+      ],
+      "image": "https://mycatalystinnovations.com/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/industries/warehousing",
+      "status": 200,
+      "title": "Custom Software for Warehousing & distribution | Catalyst Innovations",
+      "description": "Stock records do not reflect what is available to pick. Explore custom workflows for warehousing & distribution, practical starting points and relevant calculators.",
+      "canonical": "https://mycatalystinnovations.com/industries/warehousing",
+      "h1": "Warehousing & distribution",
+      "mainWordCount": 393,
+      "schemaTypes": [
+        "Organization",
+        "BreadcrumbList"
+      ],
+      "image": "https://mycatalystinnovations.com/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/industries/welding-fabrication",
+      "status": 200,
+      "title": "Custom Software for Welding & Fabrication | Catalyst Innovations",
+      "description": "Shop teams need the current drawing and job requirements. Explore custom workflows for welding & fabrication, practical starting points and relevant calculators.",
+      "canonical": "https://mycatalystinnovations.com/industries/welding-fabrication",
+      "h1": "Welding & Fabrication",
+      "mainWordCount": 399,
+      "schemaTypes": [
+        "Organization",
+        "BreadcrumbList"
+      ],
+      "image": "https://mycatalystinnovations.com/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/insights",
+      "status": 200,
+      "title": "Practical Guides to Better Business Software | Catalyst Innovations",
+      "description": "Practical guides from Catalyst Innovations on field workflows, manufacturing, inventory, approvals, HOA requests and choosing business software.",
+      "canonical": "https://mycatalystinnovations.com/insights",
+      "h1": "Start with a clearer process.",
+      "mainWordCount": 385,
+      "schemaTypes": [
+        "Organization",
+        "BreadcrumbList"
+      ],
+      "image": "https://mycatalystinnovations.com/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/insights/custom-software-vs-off-the-shelf",
+      "status": 200,
+      "title": "Custom software or an off-the-shelf tool: how to decide | Catalyst Innovations",
+      "description": "Compare an existing software package, integration and custom development using your real workflow, total cost, data needs and a small practical trial.",
+      "canonical": "https://mycatalystinnovations.com/insights/custom-software-vs-off-the-shelf",
+      "h1": "Custom software or an off-the-shelf tool: how to decide",
+      "mainWordCount": 892,
+      "schemaTypes": [
+        "Organization",
+        "BreadcrumbList",
+        "Article"
+      ],
+      "image": "https://mycatalystinnovations.com/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/insights/estimate-to-invoice-field-office",
+      "status": 200,
+      "title": "From estimate to invoice: connecting the field and office | Catalyst Innovations",
+      "description": "A practical way to connect scope, approvals, field updates and invoice preparation without asking your team to enter every detail twice.",
+      "canonical": "https://mycatalystinnovations.com/insights/estimate-to-invoice-field-office",
+      "h1": "From estimate to invoice: connecting the field and office",
+      "mainWordCount": 815,
+      "schemaTypes": [
+        "Organization",
+        "BreadcrumbList",
+        "Article"
+      ],
+      "image": "https://mycatalystinnovations.com/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/insights/hoa-maintenance-requests",
+      "status": 200,
+      "title": "A clearer process for HOA maintenance requests | Catalyst Innovations",
+      "description": "Plan resident intake, responsibility, status updates and completion records for community maintenance without creating another confusing inbox.",
+      "canonical": "https://mycatalystinnovations.com/insights/hoa-maintenance-requests",
+      "h1": "A clearer process for HOA maintenance requests",
+      "mainWordCount": 808,
+      "schemaTypes": [
+        "Organization",
+        "BreadcrumbList",
+        "Article"
+      ],
+      "image": "https://mycatalystinnovations.com/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/insights/inventory-purchasing-stock",
+      "status": 200,
+      "title": "Connecting inventory and purchasing before stock runs short | Catalyst Innovations",
+      "description": "A practical starting point for linking item records, demand, purchase orders and receiving so stock decisions use the same information.",
+      "canonical": "https://mycatalystinnovations.com/insights/inventory-purchasing-stock",
+      "h1": "Connecting inventory and purchasing before stock runs short",
+      "mainWordCount": 799,
+      "schemaTypes": [
+        "Organization",
+        "BreadcrumbList",
+        "Article"
+      ],
+      "image": "https://mycatalystinnovations.com/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/insights/manufacturing-spreadsheets",
+      "status": 200,
+      "title": "When manufacturing spreadsheets stop keeping up | Catalyst Innovations",
+      "description": "Learn when shared spreadsheets need a connected production workflow, and how to start with orders, materials and status without replacing everything.",
+      "canonical": "https://mycatalystinnovations.com/insights/manufacturing-spreadsheets",
+      "h1": "When manufacturing spreadsheets stop keeping up",
+      "mainWordCount": 812,
+      "schemaTypes": [
+        "Organization",
+        "BreadcrumbList",
+        "Article"
+      ],
+      "image": "https://mycatalystinnovations.com/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/insights/trackable-approval-workflows",
+      "status": 200,
+      "title": "Replacing email approvals with a trackable workflow | Catalyst Innovations",
+      "description": "Define request details, reviewers, decisions and exceptions so approvals can be followed without searching through email threads.",
+      "canonical": "https://mycatalystinnovations.com/insights/trackable-approval-workflows",
+      "h1": "Replacing email approvals with a trackable workflow",
+      "mainWordCount": 783,
+      "schemaTypes": [
+        "Organization",
+        "BreadcrumbList",
+        "Article"
+      ],
+      "image": "https://mycatalystinnovations.com/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/method",
+      "status": 200,
+      "title": "How We Work — From One Process to Useful Software | Catalyst Innovations",
+      "description": "Understand the process, agree the scope, build with your feedback, then launch and improve. How Catalyst works with your team.",
+      "canonical": "https://mycatalystinnovations.com/method",
+      "h1": "Start with one process. Build from there.",
+      "mainWordCount": 294,
+      "schemaTypes": [
+        "Organization"
+      ],
+      "image": "https://mycatalystinnovations.com/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/portfolio",
+      "status": 200,
+      "title": "See What We Build | Catalyst Innovations",
+      "description": "Watch narrated walkthroughs of Oxendine Painting, Knoxville Flooring and the HOA platform built by Catalyst Innovations.",
+      "canonical": "https://mycatalystinnovations.com/portfolio",
+      "h1": "See the software do the work.",
+      "mainWordCount": 618,
+      "schemaTypes": [
+        "Organization"
+      ],
+      "image": "https://mycatalystinnovations.com/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/pricing",
+      "status": 200,
+      "title": "Custom Software Pricing — Setup, Support & What’s Included | Catalyst Innovations",
+      "description": "Compare Catalyst’s Founding Partner, Essentials, Professional and Executive software packages. Clear implementation costs, monthly support and first-year totals.",
+      "canonical": "https://mycatalystinnovations.com/pricing",
+      "h1": "Know the investment. Understand the work.",
+      "mainWordCount": 944,
+      "schemaTypes": [
+        "Organization"
+      ],
+      "image": "https://mycatalystinnovations.com/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/privacy",
+      "status": 200,
+      "title": "Privacy | Catalyst Innovations",
+      "description": "How this website handles inquiries, local calculator data and optional analytics, and how to change your analytics choice.",
+      "canonical": "https://mycatalystinnovations.com/privacy",
+      "h1": "Privacy",
+      "mainWordCount": 495,
+      "schemaTypes": [
+        "Organization"
+      ],
+      "image": "https://mycatalystinnovations.com/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/solutions",
+      "status": 200,
+      "title": "Custom Software, Connected Operations & Automation | Catalyst Innovations",
+      "description": "Custom software and workflow automation from Knoxville, Tennessee. Connect customer records, jobs, inventory, purchasing and reporting around your business.",
+      "canonical": "https://mycatalystinnovations.com/solutions",
+      "h1": "Start with the work you want to make easier.",
+      "mainWordCount": 354,
+      "schemaTypes": [
+        "Organization"
+      ],
+      "image": "https://mycatalystinnovations.com/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/solutions/ai-automation",
+      "status": 200,
+      "title": "AI & Intelligent Automation | Catalyst Innovations",
+      "description": "Practical AI assistance for documents, summaries and workflow preparation, with review steps defined around your business decisions.",
+      "canonical": "https://mycatalystinnovations.com/solutions/ai-automation",
+      "h1": "AI & Intelligent Automation",
+      "mainWordCount": 539,
+      "schemaTypes": [
+        "Organization",
+        "BreadcrumbList"
+      ],
+      "image": "https://mycatalystinnovations.com/solutions/ai-automation/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/solutions/custom-software",
+      "status": 200,
+      "title": "Custom Business Software | Catalyst Innovations",
+      "description": "Custom business software that connects customers, quotes, jobs, inventory and accounting around the way your team works.",
+      "canonical": "https://mycatalystinnovations.com/solutions/custom-software",
+      "h1": "Custom Business Software",
+      "mainWordCount": 565,
+      "schemaTypes": [
+        "Organization",
+        "BreadcrumbList"
+      ],
+      "image": "https://mycatalystinnovations.com/solutions/custom-software/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/solutions/data-intelligence",
+      "status": 200,
+      "title": "Data, Reporting & Executive Intelligence | Catalyst Innovations",
+      "description": "Business dashboards and reporting that connect approved source records and explain what needs attention.",
+      "canonical": "https://mycatalystinnovations.com/solutions/data-intelligence",
+      "h1": "Data, Reporting & Executive Intelligence",
+      "mainWordCount": 538,
+      "schemaTypes": [
+        "Organization",
+        "BreadcrumbList"
+      ],
+      "image": "https://mycatalystinnovations.com/solutions/data-intelligence/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/solutions/integrations-consulting",
+      "status": 200,
+      "title": "Integrations & Digital Transformation Consulting | Catalyst Innovations",
+      "description": "Assess, connect and improve the business systems you already use, with a practical plan for data ownership and reliable handoffs.",
+      "canonical": "https://mycatalystinnovations.com/solutions/integrations-consulting",
+      "h1": "Integrations & Digital Transformation Consulting",
+      "mainWordCount": 582,
+      "schemaTypes": [
+        "Organization",
+        "BreadcrumbList"
+      ],
+      "image": "https://mycatalystinnovations.com/solutions/integrations-consulting/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/solutions/manufacturing-operations",
+      "status": 200,
+      "title": "Manufacturing & Operations Systems | Catalyst Innovations",
+      "description": "Manufacturing software for connected work orders, materials, production status and quality review, built around your shop-floor process.",
+      "canonical": "https://mycatalystinnovations.com/solutions/manufacturing-operations",
+      "h1": "Manufacturing & Operations Systems",
+      "mainWordCount": 544,
+      "schemaTypes": [
+        "Organization",
+        "BreadcrumbList"
+      ],
+      "image": "https://mycatalystinnovations.com/solutions/manufacturing-operations/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/solutions/process-automation",
+      "status": 200,
+      "title": "Business Process Automation | Catalyst Innovations",
+      "description": "Business process automation for forms, approvals, reminders and handoffs, with clear ownership and reviewable decisions.",
+      "canonical": "https://mycatalystinnovations.com/solutions/process-automation",
+      "h1": "Business Process Automation",
+      "mainWordCount": 535,
+      "schemaTypes": [
+        "Organization",
+        "BreadcrumbList"
+      ],
+      "image": "https://mycatalystinnovations.com/solutions/process-automation/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/solutions/procurement",
+      "status": 200,
+      "title": "Procurement & Supply-Chain Technology | Catalyst Innovations",
+      "description": "Purchasing software that connects requests, approvals, suppliers, purchase orders and receiving in a reviewable workflow.",
+      "canonical": "https://mycatalystinnovations.com/solutions/procurement",
+      "h1": "Procurement & Supply-Chain Technology",
+      "mainWordCount": 538,
+      "schemaTypes": [
+        "Organization",
+        "BreadcrumbList"
+      ],
+      "image": "https://mycatalystinnovations.com/solutions/procurement/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/solutions/supply-chain",
+      "status": 200,
+      "title": "Supply-Chain Intelligence | Catalyst Innovations",
+      "description": "Connect demand, stock, supplier lead times and order status so your team can review supply risks and act on exceptions.",
+      "canonical": "https://mycatalystinnovations.com/solutions/supply-chain",
+      "h1": "Supply-Chain Intelligence",
+      "mainWordCount": 525,
+      "schemaTypes": [
+        "Organization",
+        "BreadcrumbList"
+      ],
+      "image": "https://mycatalystinnovations.com/solutions/supply-chain/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/terms",
+      "status": 200,
+      "title": "Terms of Use | Catalyst Innovations",
+      "description": "Terms governing use of the Catalyst Innovations website.",
+      "canonical": "https://mycatalystinnovations.com/terms",
+      "h1": "Terms of Use",
+      "mainWordCount": 147,
+      "schemaTypes": [
+        "Organization"
+      ],
+      "image": "https://mycatalystinnovations.com/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/tools",
+      "status": 200,
+      "title": "24 Free Business Calculators & Savings Tools | Catalyst Innovations",
+      "description": "Explore time, costs, margins and automation opportunities with transparent calculators for your business. No email required.",
+      "canonical": "https://mycatalystinnovations.com/tools",
+      "h1": "Your numbers. A clearer picture.",
+      "mainWordCount": 636,
+      "schemaTypes": [
+        "Organization"
+      ],
+      "image": "https://mycatalystinnovations.com/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/tools/campaign-proceeds",
+      "status": 200,
+      "title": "Campaign net proceeds Calculator | Catalyst Innovations",
+      "description": "Campaign net proceeds calculator. See what a fundraising campaign retains after fees and expenses. Use your own figures and review the assumptions.",
+      "canonical": "https://mycatalystinnovations.com/tools/campaign-proceeds",
+      "h1": "Campaign net proceeds",
+      "mainWordCount": 448,
+      "schemaTypes": [
+        "Organization",
+        "BreadcrumbList"
+      ],
+      "image": "https://mycatalystinnovations.com/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/tools/change-orders",
+      "status": 200,
+      "title": "Unbilled change orders Calculator | Catalyst Innovations",
+      "description": "Unbilled change orders calculator. See the revenue at risk when additional work never reaches an invoice. Use your own figures and review the assumptions.",
+      "canonical": "https://mycatalystinnovations.com/tools/change-orders",
+      "h1": "Unbilled change orders",
+      "mainWordCount": 428,
+      "schemaTypes": [
+        "Organization",
+        "BreadcrumbList"
+      ],
+      "image": "https://mycatalystinnovations.com/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/tools/crew-travel",
+      "status": 200,
+      "title": "Crew travel time Calculator | Catalyst Innovations",
+      "description": "Crew travel time calculator. Estimate labor capacity returned by reducing travel per worker. Use your own figures and review the assumptions.",
+      "canonical": "https://mycatalystinnovations.com/tools/crew-travel",
+      "h1": "Crew travel time",
+      "mainWordCount": 470,
+      "schemaTypes": [
+        "Organization",
+        "BreadcrumbList"
+      ],
+      "image": "https://mycatalystinnovations.com/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/tools/customer-onboarding",
+      "status": 200,
+      "title": "Customer onboarding Calculator | Catalyst Innovations",
+      "description": "Customer onboarding calculator. Explore the time spent setting up each new customer. Use your own figures and review the assumptions.",
+      "canonical": "https://mycatalystinnovations.com/tools/customer-onboarding",
+      "h1": "Customer onboarding",
+      "mainWordCount": 453,
+      "schemaTypes": [
+        "Organization",
+        "BreadcrumbList"
+      ],
+      "image": "https://mycatalystinnovations.com/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/tools/dispatch-admin",
+      "status": 200,
+      "title": "Dispatch administration Calculator | Catalyst Innovations",
+      "description": "Dispatch administration calculator. Explore time saved coordinating jobs and crews. Use your own figures and review the assumptions.",
+      "canonical": "https://mycatalystinnovations.com/tools/dispatch-admin",
+      "h1": "Dispatch administration",
+      "mainWordCount": 459,
+      "schemaTypes": [
+        "Organization",
+        "BreadcrumbList"
+      ],
+      "image": "https://mycatalystinnovations.com/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/tools/donor-follow-up",
+      "status": 200,
+      "title": "Donor follow-up opportunity Calculator | Catalyst Innovations",
+      "description": "Donor follow-up opportunity calculator. Explore the potential value of following through on more opportunities. Use your own figures and review the assumptions.",
+      "canonical": "https://mycatalystinnovations.com/tools/donor-follow-up",
+      "h1": "Donor follow-up opportunity",
+      "mainWordCount": 492,
+      "schemaTypes": [
+        "Organization",
+        "BreadcrumbList"
+      ],
+      "image": "https://mycatalystinnovations.com/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/tools/downtime-cost",
+      "status": 200,
+      "title": "Downtime cost Calculator | Catalyst Innovations",
+      "description": "Downtime cost calculator. Put a value on unplanned interruptions using your operation’s own costs. Use your own figures and review the assumptions.",
+      "canonical": "https://mycatalystinnovations.com/tools/downtime-cost",
+      "h1": "Downtime cost",
+      "mainWordCount": 430,
+      "schemaTypes": [
+        "Organization",
+        "BreadcrumbList"
+      ],
+      "image": "https://mycatalystinnovations.com/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/tools/duplicate-entry",
+      "status": 200,
+      "title": "Duplicate-entry savings Calculator | Catalyst Innovations",
+      "description": "Duplicate-entry savings calculator. Put a number on typing the same information twice. Use your own figures and review the assumptions.",
+      "canonical": "https://mycatalystinnovations.com/tools/duplicate-entry",
+      "h1": "Duplicate-entry savings",
+      "mainWordCount": 477,
+      "schemaTypes": [
+        "Organization",
+        "BreadcrumbList"
+      ],
+      "image": "https://mycatalystinnovations.com/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/tools/hoa-administration",
+      "status": 200,
+      "title": "HOA administration Calculator | Catalyst Innovations",
+      "description": "HOA administration calculator. Explore time returned from simpler community administration. Use your own figures and review the assumptions.",
+      "canonical": "https://mycatalystinnovations.com/tools/hoa-administration",
+      "h1": "HOA administration",
+      "mainWordCount": 442,
+      "schemaTypes": [
+        "Organization",
+        "BreadcrumbList"
+      ],
+      "image": "https://mycatalystinnovations.com/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/tools/inventory-carrying",
+      "status": 200,
+      "title": "Inventory carrying cost Calculator | Catalyst Innovations",
+      "description": "Inventory carrying cost calculator. Understand the yearly cost of holding inventory. Use your own figures and review the assumptions.",
+      "canonical": "https://mycatalystinnovations.com/tools/inventory-carrying",
+      "h1": "Inventory carrying cost",
+      "mainWordCount": 432,
+      "schemaTypes": [
+        "Organization",
+        "BreadcrumbList"
+      ],
+      "image": "https://mycatalystinnovations.com/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/tools/invoice-preparation",
+      "status": 200,
+      "title": "Invoice preparation Calculator | Catalyst Innovations",
+      "description": "Invoice preparation calculator. See the capacity tied up in assembling invoices. Use your own figures and review the assumptions.",
+      "canonical": "https://mycatalystinnovations.com/tools/invoice-preparation",
+      "h1": "Invoice preparation",
+      "mainWordCount": 450,
+      "schemaTypes": [
+        "Organization",
+        "BreadcrumbList"
+      ],
+      "image": "https://mycatalystinnovations.com/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/tools/job-margin",
+      "status": 200,
+      "title": "Job gross margin Calculator | Catalyst Innovations",
+      "description": "Job gross margin calculator. Understand what remains after the direct cost of a job. Use your own figures and review the assumptions.",
+      "canonical": "https://mycatalystinnovations.com/tools/job-margin",
+      "h1": "Job gross margin",
+      "mainWordCount": 453,
+      "schemaTypes": [
+        "Organization",
+        "BreadcrumbList"
+      ],
+      "image": "https://mycatalystinnovations.com/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/tools/maintenance-coordination",
+      "status": 200,
+      "title": "Maintenance coordination Calculator | Catalyst Innovations",
+      "description": "Maintenance coordination calculator. Estimate time saved on request intake, assignment and follow-up. Use your own figures and review the assumptions.",
+      "canonical": "https://mycatalystinnovations.com/tools/maintenance-coordination",
+      "h1": "Maintenance coordination",
+      "mainWordCount": 431,
+      "schemaTypes": [
+        "Organization",
+        "BreadcrumbList"
+      ],
+      "image": "https://mycatalystinnovations.com/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/tools/manual-work",
+      "status": 200,
+      "title": "Manual-work savings Calculator | Catalyst Innovations",
+      "description": "Manual-work savings calculator. What could your team do with fewer repetitive tasks? Use your own figures and review the assumptions.",
+      "canonical": "https://mycatalystinnovations.com/tools/manual-work",
+      "h1": "Manual-work savings",
+      "mainWordCount": 451,
+      "schemaTypes": [
+        "Organization",
+        "BreadcrumbList"
+      ],
+      "image": "https://mycatalystinnovations.com/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/tools/missed-inquiries",
+      "status": 200,
+      "title": "Missed-inquiry opportunity Calculator | Catalyst Innovations",
+      "description": "Missed-inquiry opportunity calculator. Explore the potential value of following through on more opportunities. Use your own figures and review the assumptions.",
+      "canonical": "https://mycatalystinnovations.com/tools/missed-inquiries",
+      "h1": "Missed-inquiry opportunity",
+      "mainWordCount": 475,
+      "schemaTypes": [
+        "Organization",
+        "BreadcrumbList"
+      ],
+      "image": "https://mycatalystinnovations.com/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/tools/project-roi",
+      "status": 200,
+      "title": "Project ROI & payback Calculator | Catalyst Innovations",
+      "description": "Project ROI & payback calculator. Weigh the benefits you expect against the full cost of a project. Use your own figures and review the assumptions.",
+      "canonical": "https://mycatalystinnovations.com/tools/project-roi",
+      "h1": "Project ROI & payback",
+      "mainWordCount": 524,
+      "schemaTypes": [
+        "Organization",
+        "BreadcrumbList"
+      ],
+      "image": "https://mycatalystinnovations.com/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/tools/purchase-orders",
+      "status": 200,
+      "title": "Purchase-order processing Calculator | Catalyst Innovations",
+      "description": "Purchase-order processing calculator. Estimate time saved on requests, approvals and purchase orders. Use your own figures and review the assumptions.",
+      "canonical": "https://mycatalystinnovations.com/tools/purchase-orders",
+      "h1": "Purchase-order processing",
+      "mainWordCount": 435,
+      "schemaTypes": [
+        "Organization",
+        "BreadcrumbList"
+      ],
+      "image": "https://mycatalystinnovations.com/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/tools/quoting-time",
+      "status": 200,
+      "title": "Quoting time Calculator | Catalyst Innovations",
+      "description": "Quoting time calculator. Estimate time returned by preparing quotes more efficiently. Use your own figures and review the assumptions.",
+      "canonical": "https://mycatalystinnovations.com/tools/quoting-time",
+      "h1": "Quoting time",
+      "mainWordCount": 452,
+      "schemaTypes": [
+        "Organization",
+        "BreadcrumbList"
+      ],
+      "image": "https://mycatalystinnovations.com/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/tools/reorder-point",
+      "status": 200,
+      "title": "Reorder point Calculator | Catalyst Innovations",
+      "description": "Reorder point calculator. Estimate when to reorder before your stock runs out. Use your own figures and review the assumptions.",
+      "canonical": "https://mycatalystinnovations.com/tools/reorder-point",
+      "h1": "Reorder point",
+      "mainWordCount": 433,
+      "schemaTypes": [
+        "Organization",
+        "BreadcrumbList"
+      ],
+      "image": "https://mycatalystinnovations.com/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/tools/reporting-time",
+      "status": 200,
+      "title": "Reporting time Calculator | Catalyst Innovations",
+      "description": "Reporting time calculator. Estimate capacity returned by connecting your reporting data. Use your own figures and review the assumptions.",
+      "canonical": "https://mycatalystinnovations.com/tools/reporting-time",
+      "h1": "Reporting time",
+      "mainWordCount": 449,
+      "schemaTypes": [
+        "Organization",
+        "BreadcrumbList"
+      ],
+      "image": "https://mycatalystinnovations.com/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/tools/sales-follow-up",
+      "status": 200,
+      "title": "Follow-up opportunity Calculator | Catalyst Innovations",
+      "description": "Follow-up opportunity calculator. Explore the potential value of following through on more opportunities. Use your own figures and review the assumptions.",
+      "canonical": "https://mycatalystinnovations.com/tools/sales-follow-up",
+      "h1": "Follow-up opportunity",
+      "mainWordCount": 472,
+      "schemaTypes": [
+        "Organization",
+        "BreadcrumbList"
+      ],
+      "image": "https://mycatalystinnovations.com/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/tools/scrap-rework",
+      "status": 200,
+      "title": "Scrap & rework Calculator | Catalyst Innovations",
+      "description": "Scrap & rework calculator. Understand the cost of discarded materials and repeated work. Use your own figures and review the assumptions.",
+      "canonical": "https://mycatalystinnovations.com/tools/scrap-rework",
+      "h1": "Scrap & rework",
+      "mainWordCount": 434,
+      "schemaTypes": [
+        "Organization",
+        "BreadcrumbList"
+      ],
+      "image": "https://mycatalystinnovations.com/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/tools/software-consolidation",
+      "status": 200,
+      "title": "Software consolidation Calculator | Catalyst Innovations",
+      "description": "Software consolidation calculator. Compare the recurring cost of your current tools with a connected alternative. Use your own figures and review the assumptions.",
+      "canonical": "https://mycatalystinnovations.com/tools/software-consolidation",
+      "h1": "Software consolidation",
+      "mainWordCount": 441,
+      "schemaTypes": [
+        "Organization",
+        "BreadcrumbList"
+      ],
+      "image": "https://mycatalystinnovations.com/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/tools/warehouse-picking",
+      "status": 200,
+      "title": "Warehouse picking time Calculator | Catalyst Innovations",
+      "description": "Warehouse picking time calculator. See the capacity returned by smoother picking workflows. Use your own figures and review the assumptions.",
+      "canonical": "https://mycatalystinnovations.com/tools/warehouse-picking",
+      "h1": "Warehouse picking time",
+      "mainWordCount": 467,
+      "schemaTypes": [
+        "Organization",
+        "BreadcrumbList"
+      ],
+      "image": "https://mycatalystinnovations.com/opengraph-image",
+      "failures": []
+    }
+  ]
+}

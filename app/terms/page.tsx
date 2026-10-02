@@ -1,11 +1,11 @@
-import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import { Section, Heading } from "@/components/ui";
 
-export const metadata: Metadata = {
-  alternates: { canonical: '/terms' },
+export const metadata = pageMetadata({
+  path: "/terms",
   title: "Terms of Use",
   description: "Terms governing use of the Catalyst Innovations website.",
-};
+});
 
 export default function TermsPage() {
   return (

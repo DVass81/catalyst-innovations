@@ -1,7 +1,7 @@
 import CatalystEngineHero from "@/components/CatalystEngineHero";
 import { LogoLockup } from "@/components/Logo";
 import FounderIntro from "@/components/FounderIntro";
-import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import { ArrowUpRight, ArrowRight } from "lucide-react";
 import VisualStory from "@/components/VisualStory";
@@ -9,12 +9,12 @@ import StoryFilm from "@/components/StoryFilm";
 import IndustrySelector from "@/components/IndustrySelector";
 import { DiscussCTA, SolutionCards, Projects } from "@/components/SiteSections";
 import SavingsPreview from "@/components/SavingsPreview";
-export const metadata: Metadata = {
-  alternates: { canonical: '/' },
+export const metadata = pageMetadata({
+  path: "/",
   title: "Catalyst Innovations — Custom software. A better-running business.",
   description:
-    "Custom software that connects your customers, jobs, inventory, purchasing and accounting. Built around the way your business works.",
-};
+    "Custom business software and workflow automation from Knoxville, Tennessee. Connect customers, jobs, inventory and accounting around the way you work.",
+});
 export default function Home() {
   return (
     <>
@@ -43,7 +43,7 @@ export default function Home() {
             </Link>
           </div>
           <p className="hero-footnote">
-            For business owners and teams. Built around your process and the tools you already use.
+            Based in Knoxville, Tennessee. Built around your team, your process and the tools you already use.
           </p>
         </div>
         <CatalystEngineHero />

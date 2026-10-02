@@ -11,7 +11,9 @@ try {
   bookingReady = url.protocol === 'https:' && url.hostname === 'calendly.com' && url.pathname !== '/' && process.env.NEXT_PUBLIC_BOOKING_VERIFIED !== 'false' && (url.href === booking.publicUrl || process.env.NEXT_PUBLIC_BOOKING_VERIFIED === 'true');
 } catch {}
 add('Reviewed public Calendly event', bookingReady);
-add('Analytics provider', process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN || /^G-[A-Z0-9]+$/.test(process.env.NEXT_PUBLIC_GA_ID ?? ''));
+const plausibleReady = /^(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z]{2,}$/i.test(process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN ?? '');
+const gaReady = /^G-[A-Z0-9]+$/.test(process.env.NEXT_PUBLIC_GA_ID ?? '') && process.env.NEXT_PUBLIC_GA_MANUAL_TRACKING_VERIFIED === 'true';
+add('Consent-controlled analytics provider ready', plausibleReady || gaReady);
 console.table(results);
 console.log('Configuration presence only. Verify delivery, bookings and analytics in their providers before release.');
 process.exitCode = results.every(result => result.ready) ? 0 : 1;

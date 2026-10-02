@@ -1,13 +1,14 @@
-import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import { Lock } from "lucide-react";
 import { Section, Eyebrow, Heading, Lead, ButtonLink } from "@/components/ui";
 import { Reveal } from "@/components/Reveal";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
+  path: "/portal",
   title: "Client Portal",
   description: "The Catalyst Innovations client portal — coming soon for active engagement partners.",
-  robots: { index: false },
-};
+  noIndex: true,
+});
 
 export default function PortalPage() {
   return (

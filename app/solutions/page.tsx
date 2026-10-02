@@ -1,22 +1,22 @@
-import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import VisualStory from "@/components/VisualStory";
 import ProblemFinder from "@/components/ProblemFinder";
 import { services } from "@/data/services";
 import { PageIntro, DiscussCTA } from "@/components/SiteSections";
-export const metadata: Metadata = {
-  alternates: { canonical: '/solutions' },
+export const metadata = pageMetadata({
+  path: "/solutions",
   title: "Custom Software, Connected Operations & Automation",
   description:
-    "Practical tools for customers, operations and reporting. Find a starting point for your business.",
-};
+    "Custom software and workflow automation from Knoxville, Tennessee. Connect customer records, jobs, inventory, purchasing and reporting around your business.",
+});
 export default function Solutions() {
   return (
     <>
       <PageIntro
         eyebrow="Solutions"
         title="Start with the work you want to make easier."
-        text="Manage customers. Keep operations moving. Understand your numbers. We connect the tools around the way your team works."
+        text="Manage customers. Keep operations moving. Understand your numbers. From Knoxville, Tennessee, we build software around the way your team works."
       />
       <section className="wrap content-section">
         <ProblemFinder />

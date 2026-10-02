@@ -12,21 +12,19 @@ import ErrorMonitoring from "@/components/ErrorMonitoring";
 import RouteProgress from "@/components/RouteProgress";
 import SectionMotion from "@/components/SectionMotion";
 import { site } from "@/lib/site";
+import { pageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = {
+  ...pageMetadata({
+    title: "Catalyst Innovations — Custom software. A better-running business.",
+    description: site.positioning,
+    path: "/",
+  }),
   metadataBase: new URL(site.url),
   title: {
-    default: "Catalyst Innovations — Less Busywork. A Better-Running Business.",
+    default: "Catalyst Innovations — Custom software. A better-running business.",
     template: "%s | Catalyst Innovations",
   },
-  description: site.positioning,
-  openGraph: {
-    siteName: site.name,
-    type: "website",
-    title: "Catalyst Innovations — Less Busywork. A Better-Running Business.",
-    description: site.positioning,
-  },
-  robots: { index: true, follow: true },
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
@@ -47,8 +45,10 @@ export const viewport: Viewport = {
 const orgSchema = {
   "@context": "https://schema.org",
   "@type": "Organization",
+  "@id": new URL("/#organization", site.url).toString(),
   name: site.name,
   url: site.url,
+  logo: new URL("/brand/catalyst-official.png", site.url).toString(),
   slogan: site.motto,
   description: site.positioning,
   address: {
@@ -76,7 +76,7 @@ export default function RootLayout({
       <body className="flex min-h-full flex-col">
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema).replace(/</g, "\\u003c") }}
         />
         <Suspense fallback={null}>
           <RouteProgress />
