@@ -35,7 +35,7 @@ export const demos: Demo[] = [
       "poster": "/demos/hoa-walkthrough.webp",
       "captions": "/demos/hoa-walkthrough.vtt",
       "transcript": "Here is the HOA platform's public sample experience, built by Catalyst Innovations. The communities and information in this demonstration are fictional. We will follow a resident request from the first description to the final review. Start by giving the request a clear title. Then describe what needs attention, so the community team has useful context from the beginning. In this example, the resident is reporting a problem with path lighting. \n\nNext, the form explains what supporting information could help the team understand the request. Clear guidance at this stage can make the handoff easier and reduce the need to chase missing details. \n\nContinue to the review screen. The resident can check the information before sending it, and go back if something needs changing. We are stopping here without submitting a request. Sending a request does not approve the work or reserve a date. This workflow gives the resident a clear starting point and the community team a more structured handoff. Talk with Catalyst about simplifying the everyday work in your community.",
-      "durationSeconds": 63.48
+      "durationSeconds": 77.28
 },
     title: "A clearer path from resident to community team.",
     purpose:
@@ -84,7 +84,7 @@ export const demos: Demo[] = [
       "poster": "/demos/flooring-walkthrough.webp",
       "captions": "/demos/flooring-walkthrough.vtt",
       "transcript": "This is Knoxville Flooring's application, built by Catalyst Innovations. We are using sample information to show how room measurements become an estimate. Start by choosing a room and entering its length and width. The estimator calculates the floor area, keeping the measurements and the quantity together. \n\nNext, review the assumptions around the work. Waste allowance, material costs, and labor all affect the estimate. Preparation matters too. The application includes options for work such as tear-out and subfloor repair, so those details can be considered alongside the flooring itself. \n\nAs the inputs change, review the updated summary. It brings the quantity, entered costs, suggested price, and estimated margin into one view. These are sample calculations, not a promise of profit. Finally, the proposal handoff provides a next step from the estimate. We are stopping before creating or sending anything to a customer. Measurements, job details, and pricing stay connected. Talk with Catalyst about building software around the way your team estimates and manages work.",
-      "durationSeconds": 69.78
+      "durationSeconds": 63.98
 },
     title: "Turn room measurements into a clearer estimate.",
     purpose:
@@ -132,7 +132,7 @@ export const demos: Demo[] = [
       "poster": "/demos/painting-walkthrough.webp",
       "captions": "/demos/painting-walkthrough.vtt",
       "transcript": "Welcome to the Oxendine Painting demonstration, built by Catalyst Innovations. This is the actual application running with fictional sample information. We will follow one estimate from its scope through pricing and review. Start with the areas of the job. Each room keeps its work, preparation, and estimated hours together, so the scope is easier to review. When the work changes, update the area rather than searching through a separate document. \n\nNext, open pricing. Here, the estimate connects labor and material costs with the work being quoted. Review the line items alongside the summary, and see how the entered assumptions affect the estimate. These figures are sample inputs, not promised business results. \n\nFinally, move to review. Check the costs and estimated margin before the customer handoff. This is a demonstration prototype for a planned system; approval and sending are simulated. The useful idea is simple: keep the scope, the costs, and the next step together. Talk with Catalyst about connecting the work in your business.",
-      "durationSeconds": 76.5
+      "durationSeconds": 67.0
 },
     title: "Keep the scope and the estimate together.",
     purpose:

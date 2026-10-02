@@ -1,5 +1,5 @@
 {
-  "status": "Ken replacement verified locally; authorized for production release",
+  "status": "Fresh Ken narration assembled; production release authorized",
   "date": "2026-10-01",
   "estimatedCredits": {
     "painting": 7,
@@ -11,7 +11,9 @@
     "name": "Ken",
     "id": "ceee41dc-0ee8-59a7-b3e8-2744116fcb5e",
     "type": "preset",
-    "model": "voice_change_merge"
+    "model": "seed_audio",
+    "direction": "Warm, clear teacher explaining software. General American English pronunciation, natural conversational delivery.",
+    "approvedSampleJob": "8fd89146-478d-4387-8a7f-cb4b0ca2b29f"
   },
   "format": {
     "width": 1920,
@@ -49,18 +51,18 @@
   "media": [
     {
       "id": "painting",
-      "durationSeconds": 76.5,
-      "bytes": 3228753
+      "durationSeconds": 67.0,
+      "bytes": 2658799
     },
     {
       "id": "flooring",
-      "durationSeconds": 69.78,
-      "bytes": 2986758
+      "durationSeconds": 63.98,
+      "bytes": 2510307
     },
     {
       "id": "hoa",
-      "durationSeconds": 63.48,
-      "bytes": 2705621
+      "durationSeconds": 77.28,
+      "bytes": 2895423
     }
   ],
   "captureNotes": "Actual browser interactions captured as timed screen frames, cropped locally and assembled at 1920x1080 / 30 fps. Source capture intervals vary; repeated frames provide narration holds. Application contents are not generated. No synthetic cursor. Editorial chapter fades and titles only. Flooring excludes all sidebar, account, catalog, notification and private entry content; Painting review excludes fictional names and addresses; HOA excludes resident sidebar. Source frames remain local in work, outside public assets.",
@@ -69,7 +71,7 @@
     "lint": "passed",
     "typecheck": "passed",
     "build": "passed; 86 routes generated",
-    "media": "Ken videos decode without errors. Video stream hashes match originals exactly; duration variation is under 0.03 seconds. Audio transcriptions contain the full scripts. Captions retimed from Ken word timestamps with original script spelling. All MP4s retain faststart.",
+    "media": "Fresh narration transcribed for script verification and word timing. Captions and existing captured frame timeline aligned to the new audio. H264/AAC with faststart; post-render verification recorded separately.",
     "browser": "All three videos play. Keyboard open, pause, Escape close and focus restoration checked. Captions load. Transcript expands. Native seeking, volume and fullscreen controls available. Painting missing-file fallback and retry verified without changing production. Demo anchors open the correct player. No video elements are mounted before selection. Phone 390px, tablet 768px and desktop layouts have no horizontal overflow.",
     "performance": {
       "method": "Local production build, mobile viewport, unthrottled desktop browser. Local-only proxy injected buffered PerformanceObservers; no instrumentation ships. Not a real-device or field measurement.",
@@ -159,5 +161,26 @@
         "bytes": 2705621
       }
     ]
+  },
+  "freshKenNarration": {
+    "jobs": [
+      {
+        "index": 0,
+        "job_id": "8647b07d-a65b-4106-8bb9-1ed4285969a5",
+        "status": "pending"
+      },
+      {
+        "index": 1,
+        "job_id": "090a7098-a337-41cd-b028-40bbe89fd554",
+        "status": "pending"
+      },
+      {
+        "index": 2,
+        "job_id": "97c7c910-e1fb-4a05-a483-6a3247932198",
+        "status": "pending"
+      }
+    ],
+    "estimatedCredits": 23.8,
+    "method": "Fresh text-to-speech using approved sample settings. Original captured frames retimed to matching spoken words; no audio time stretching."
   }
 }

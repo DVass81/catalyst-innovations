@@ -1,89 +1,81 @@
 WEBVTT
 
 1
-00:00:00.000 --> 00:00:03.970
+00:00:00.000 --> 00:00:04.390
 This is Knoxville Flooring's application,
-built by Catalyst
+built by Catalyst Innovations.
 
 2
-00:00:03.980 --> 00:00:08.450
-Innovations. We are using sample
-information to show how room measurements
+00:00:05.040 --> 00:00:08.590
+We are using sample information to show
+how room measurements become an
 
 3
-00:00:08.460 --> 00:00:12.910
-become an estimate. Start by choosing a
-room and entering its length
+00:00:08.600 --> 00:00:12.510
+estimate. Start by choosing a room and
+entering its length and width.
 
 4
-00:00:12.920 --> 00:00:17.390
-and width. The estimator calculates the
-floor area, keeping the measurements
+00:00:12.820 --> 00:00:16.650
+The estimator calculates the floor area,
+keeping the measurements and the
 
 5
-00:00:17.400 --> 00:00:21.870
-and the quantity together. Next, review
-the assumptions around the
+00:00:16.660 --> 00:00:20.190
+quantity together. Next, review the
+assumptions around the work.
 
 6
-00:00:21.880 --> 00:00:26.230
-work. Waste allowance, material costs, and
-labor all affect
+00:00:20.560 --> 00:00:24.570
+Waste allowance, material costs, and labor
+all affect the estimate.
 
 7
-00:00:26.240 --> 00:00:28.670
-the estimate. Preparation matters too.
+00:00:24.880 --> 00:00:29.090
+Preparation matters too. The application
+includes options for work such as
 
 8
-00:00:28.680 --> 00:00:32.750
-The application includes options for work
-such as tear-out and subfloor
+00:00:29.100 --> 00:00:33.370
+tear-out and subfloor repair, so those
+details can be considered alongside
 
 9
-00:00:32.760 --> 00:00:37.250
-repair, so those details can be considered
-alongside the flooring itself.
+00:00:33.380 --> 00:00:37.830
+the flooring itself. As the inputs change,
+review the updated summary.
 
 10
-00:00:37.520 --> 00:00:40.590
-As the inputs change, review the updated
-summary.
+00:00:38.320 --> 00:00:42.270
+It brings the quantity, entered costs,
+suggested price, and estimated margin
 
 11
-00:00:41.060 --> 00:00:45.250
-It brings the quantity, entered costs,
-suggested price, and
+00:00:42.280 --> 00:00:46.210
+into one view. These are sample
+calculations, not a promise of profit.
 
 12
-00:00:45.260 --> 00:00:47.470
-estimated margin into one view.
-
-13
-00:00:47.720 --> 00:00:51.030
-These are sample calculations, not a
-promise of profit.
-
-14
-00:00:51.320 --> 00:00:55.090
+00:00:46.600 --> 00:00:50.110
 Finally, the proposal handoff provides a
 next step from the estimate.
 
-15
-00:00:55.100 --> 00:00:59.210
+13
+00:00:50.560 --> 00:00:53.550
 We are stopping before creating or sending
 anything to a customer.
 
-16
-00:00:59.500 --> 00:01:03.270
+14
+00:00:53.560 --> 00:00:57.230
 Measurements, job details, and pricing
 stay connected.
 
-17
-00:01:03.740 --> 00:01:07.370
+15
+00:00:57.840 --> 00:01:01.430
 Talk with Catalyst about building software
 around the way your team estimates
 
-18
-00:01:07.380 --> 00:01:08.790
+16
+00:01:01.440 --> 00:01:02.690
 and manages work.
 
