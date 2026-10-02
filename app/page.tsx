@@ -1,4 +1,4 @@
-import RealSoftwarePreview from "@/components/RealSoftwarePreview";
+import CatalystEngineHero from "@/components/CatalystEngineHero";
 import { LogoLockup } from "@/components/Logo";
 import FounderIntro from "@/components/FounderIntro";
 import type { Metadata } from "next";
@@ -31,9 +31,8 @@ export default function Home() {
             <br />A better-running <em>business.</em>
           </h1>
           <p className="hero-description">
-            We build the tools your business needs to manage customers, run jobs,
-            track inventory and bring your numbers together. Replace repeated
-            paperwork and disconnected spreadsheets with one clearer way to work.
+            Connect your customers, jobs, inventory, and accounting—with software
+            built around the way you work.
           </p>
           <div className="hero-actions">
             <Link href="/consultation" className="button">
@@ -47,7 +46,7 @@ export default function Home() {
             For business owners and teams. Built around your process and the tools you already use.
           </p>
         </div>
-        <RealSoftwarePreview />
+        <CatalystEngineHero />
       </section>
       <div className="benefit-strip">
         <div className="wrap">
