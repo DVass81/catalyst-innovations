@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { LogoLockup } from "./Logo";
 import AnalyticsPreferences from "./AnalyticsPreferences";
+import { site } from "@/lib/site";
 export default function Footer() {
   return (
     <footer className="site-footer">
@@ -13,6 +14,7 @@ export default function Footer() {
             Work smarter.
           </p>
           <small>Knoxville, Tennessee</small>
+          <a href={`tel:${site.contactPhone}`}>{site.contactPhoneLabel}</a>
         </div>
         <div>
           <span className="overline">Explore</span>
@@ -27,6 +29,7 @@ export default function Footer() {
           <Link href="/tools">Savings tools</Link>
           <Link href="/pricing">Pricing</Link>
           <Link href="/about">About Catalyst</Link>
+          <Link href="/contact">Contact & hours</Link>
         </div>
       </div>
       <div className="wrap footer-bottom">

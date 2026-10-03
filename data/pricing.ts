@@ -1,3 +1,5 @@
+import { buyerFaqs } from "./buyerFaqs";
+
 export type PricingTier = {
   id: string;
   name: string;
@@ -102,16 +104,16 @@ export const pricingTiers: PricingTier[] = [
 
 export const pricingFaqs: { q: string; a: string }[] = [
   {
-    q: "Why is pricing shown as a range?",
-    a: "Where you land in the range depends on scope — number of integrations, data volume, and how much customization your workflows need. We'll give you an exact number before anything is signed.",
+    q: buyerFaqs.cost.question,
+    a: buyerFaqs.cost.answer,
   },
   {
     q: "What does the one-time implementation cost cover?",
     a: "Discovery, configuration, integration with your existing systems, data migration where applicable, and training your team to use what we build. Nothing goes live until it actually works the way your team works.",
   },
   {
-    q: "What's included in the monthly investment?",
-    a: "Hosting, security updates, ongoing support, and continued access to the features in your tier. Higher tiers add proactive account management and strategic time with our team, not just a bigger support queue.",
+    q: buyerFaqs.support.question,
+    a: buyerFaqs.support.answer,
   },
   {
     q: "Can we change tiers later?",

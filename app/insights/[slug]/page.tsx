@@ -20,6 +20,11 @@ export default async function InsightPage({ params }: { params: Promise<{ slug: 
   const article = getInsight((await params).slug);
   if (!article) notFound();
   const context = article.industry ? `?industry=${article.industry}` : "";
+  const relatedArticles = article.related
+    ? article.related.flatMap(slug => { const related = getInsight(slug); return related ? [related] : []; })
+    : insights.filter(item => item.slug !== article.slug).slice(0, 2);
+  const reviewedAt = article.sources.map(ref => ref.reviewedAt).sort().at(-1) ?? article.updatedAt;
+  const reviewedDate = new Date(`${reviewedAt}T12:00:00Z`).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric", timeZone: "UTC" });
   const inquiry = article.demo ? `/consultation?demo=${article.demo}${article.industry ? `&industry=${article.industry}` : ""}` : `/consultation${context}`;
   const articleUrl = new URL(`/insights/${article.slug}`, site.url).toString();
   const jsonLd = [breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Insights", path: "/insights" }, { name: article.title, path: `/insights/${article.slug}` }]), {
@@ -55,9 +60,9 @@ export default async function InsightPage({ params }: { params: Promise<{ slug: 
           return <Link href={`/tools/${slug}${context}`} key={slug}><strong>{tool.title}</strong><span>{tool.description}</span><span className="text-link">Try the calculator ↗</span></Link>;
         })}</div></section>
         <section className="insight-next"><p className="overline">A practical next step</p><h2>Bring the process you want to improve.</h2><p>{article.nextStep}</p><div className="insight-actions"><Link className="button" href={inquiry}>Discuss my business ↗</Link><Link className="text-link" href={`/solutions/${article.solution}`}>Explore the relevant solution ↗</Link>{article.demo && <Link className="text-link" href={`/portfolio${context}#${article.demo}`}>See the actual demonstration ↗</Link>}</div></section>
-        <footer className="insight-sources"><h2>Sources and editorial notes</h2><p>Sources reviewed October 2, 2026. Linked references support the attributed background; the workflow suggestions and fictional examples are Catalyst’s editorial guidance.</p><ul>{article.sources.map(ref => <li key={ref.url}><a href={ref.url} target="_blank" rel="noopener noreferrer">{ref.title} ↗</a></li>)}</ul></footer>
+        <footer className="insight-sources"><h2>Sources and editorial notes</h2><p>Latest source review: <time dateTime={reviewedAt}>{reviewedDate}</time>. Linked references support the attributed background; the workflow suggestions and fictional examples are Catalyst’s editorial guidance.</p><ul>{article.sources.map(ref => <li key={ref.url}><a href={ref.url} target="_blank" rel="noopener noreferrer">{ref.title} ↗</a></li>)}</ul></footer>
       </article>
     </div>
-    <section className="wrap content-section insight-related"><p className="overline">Keep exploring</p><h2>Another part of the process.</h2><div className="insights-grid">{insights.filter(item => item.slug !== article.slug).slice(0, 2).map(item => <article key={item.slug} className="insight-card"><p className="overline">{item.category}</p><h3><Link href={`/insights/${item.slug}`}>{item.title}</Link></h3><p>{item.description}</p><Link className="text-link" href={`/insights/${item.slug}`}>Read the guide ↗<span className="sr-only">: {item.title}</span></Link></article>)}</div></section>
+    <section className="wrap content-section insight-related"><p className="overline">Keep exploring</p><h2>Another part of the process.</h2><div className="insights-grid">{relatedArticles.map(item => <article key={item.slug} className="insight-card"><p className="overline">{item.category}</p><h3><Link href={`/insights/${item.slug}`}>{item.title}</Link></h3><p>{item.description}</p><Link className="text-link" href={`/insights/${item.slug}`}>Read the guide ↗<span className="sr-only">: {item.title}</span></Link></article>)}</div></section>
   </div>;
 }

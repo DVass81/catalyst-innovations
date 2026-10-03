@@ -1,0 +1,54 @@
+{
+  "date": "2026-10-03",
+  "releaseState": "Local preview on redesign/clearer-catalyst; not published to production",
+  "preview": "http://127.0.0.1:3111",
+  "content": {
+    "newBuyerFaqCount": 10,
+    "faqPages": ["/pricing", "/solutions/custom-software", "/solutions/integrations-consulting", "/about"],
+    "newGuidePaths": ["/insights/software-data-migration", "/insights/software-rollout-small-team"],
+    "totalGuides": 8,
+    "demos": "Verified intake, estimate and review explanations strengthened; prototype labels and media retained",
+    "contactDetails": "Both founder emails, business phone, daily 06:00–20:00 Eastern, separate 24/7 support, East Tennessee and worldwide service",
+    "privateAddressPublished": false,
+    "pricesTermsApisFormulasBookingAndFilmChanged": false
+  },
+  "checks": {
+    "testsPassed": 56,
+    "lint": "pass",
+    "typecheck": "pass",
+    "productionBuild": "pass; 95 generated routes",
+    "sitemapCrawl": "73/73 preview pages passed metadata, canonical, content and image checks; redirects and missing pages passed",
+    "responsive": "Phone contact and migration guide, tablet rollout guide, desktop contact and library inspected; no horizontal overflow in measured views",
+    "faqKeyboard": "Native summary Enter opens ownership answer",
+    "noJavaScript": "Article content, pricing, FAQs and metadata remain server-rendered; automated rendering tests passed",
+    "privacy": "11 analytics tests pass; public article paths allowlisted; raw live network payload inspection unavailable"
+  },
+  "mobileLab": {
+    "lcpSeconds": [2.846, 2.753, 2.744],
+    "medianLcpSeconds": 2.753,
+    "targetLcpSeconds": 2.5,
+    "targetMet": false,
+    "maxCls": 0.073,
+    "accessibilityScores": [100, 100, 100],
+    "seoScores": [100, 100, 100],
+    "additionalContactAndMigrationGuideAudits": "Accessibility 100; SEO 100",
+    "optimizationRetained": false,
+    "note": "Offscreen-rendering experiment reverted after accessibility failures. Local simulated measurements are not production field Core Web Vitals or proof of a speed improvement."
+  },
+  "google": {
+    "businessProfile": "Approved signed-in account has no attached businesses; name search found no matching listing. Profile copy prepared; no profile created or submitted.",
+    "businessProfileDependency": "Private verification address entered directly by Daniel and Google's verification; confirm Google's accepted local service-area selections before submission",
+    "searchConsole": "Ownership already verified. Performance says processing data; impressions and clicks pending. Sitemap row still Couldn't fetch; no repeated resubmission in this pass.",
+    "analytics": "Calculator use, draft creation, draft copy, email-link click and booking click observed in live rolling QA reports. External mail-app handoff blocked by browser policy; email-open event records the attempted click, not a sent message. No real inquiries or appointments.",
+    "consentWithdrawal": "Restored off, reloaded, fictional form cleared, zero Google tag script elements in DOM",
+    "delivery": "Direct delivery remains dependent on Resend/domain configuration; successful delivery only mocked; no confirmed lead claimed"
+  },
+  "promotion": {
+    "artifact": "../seo-growth-package.html (relative to repository root)",
+    "socialPosts": 3,
+    "introductionDrafts": 2,
+    "researchedOrganizations": 10,
+    "activityPlanDays": 30,
+    "status": "Review-ready drafts; no posts, messages, paid memberships, subscriptions or recurring monitoring"
+  }
+}

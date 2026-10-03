@@ -39,7 +39,7 @@ export const demos: Demo[] = [
 },
     title: "A clearer path from resident to community team.",
     purpose:
-      "Community software that gives a resident request a clear starting point, useful details and a review before sending.",
+      "A public sample showing how residents describe a request, understand what supporting information to include and check the details before sending.",
     industry: "hoa",
     availability: "public-sample",
     status: "Public sample experience",
@@ -52,7 +52,7 @@ export const demos: Demo[] = [
     steps: [
       {
         title: "Describe the request",
-        text: "A resident starts with a title and description. The guided form keeps the next step clear.",
+        text: "A resident gives the request a title and description. The walkthrough uses a fictional path-lighting issue to show the intake process.",
         image: "/demos/hoa-entry.webp",
         width: 830,
         height: 380,
@@ -67,8 +67,8 @@ export const demos: Demo[] = [
         alt: "Actual supporting-information step with back and continue controls.",
       },
       {
-        title: "Review, then send",
-        text: "The resident checks the request before sending it to the community team. Sending does not approve work or reserve a date.",
+        title: "Review before sending",
+        text: "The resident can check the details and go back to make changes. The walkthrough stops before submission; a request does not approve work or reserve a date.",
         image: "/demos/hoa-review.webp",
         width: 830,
         height: 560,
@@ -88,7 +88,7 @@ export const demos: Demo[] = [
 },
     title: "Turn room measurements into a clearer estimate.",
     purpose:
-      "A flooring estimator brings room dimensions, cost assumptions and proposal preparation into one connected workspace.",
+      "An estimating workflow that connects room measurements with waste, materials, labor and preparation costs, then shows the estimate and proposal handoff together.",
     industry: "construction",
     availability: "guided-only",
     status: "Guided preview",
@@ -100,7 +100,7 @@ export const demos: Demo[] = [
     steps: [
       {
         title: "Measure the work",
-        text: "Enter room length and width. The estimator totals the floor area for the quote.",
+        text: "Enter a room’s length and width and review the calculated floor area. The sample keeps measurements beside the quantity used for the estimate.",
         image: "/demos/flooring-measure.webp",
         width: 402,
         height: 217,
@@ -116,7 +116,7 @@ export const demos: Demo[] = [
       },
       {
         title: "Review the estimate",
-        text: "See the entered costs, suggested price and estimated margin before choosing the proposal handoff. These are sample inputs, not a customer result.",
+        text: "See the quantity, entered costs, suggested price and estimated margin in one summary. The walkthrough shows the proposal handoff but stops before creating or sending a proposal.",
         image: "/demos/flooring-summary.webp",
         width: 188,
         height: 456,
@@ -136,19 +136,19 @@ export const demos: Demo[] = [
 },
     title: "Keep the scope and the estimate together.",
     purpose:
-      "A painting-system prototype connects measured areas, preparation scope and entered costs before the estimate goes to a customer.",
+      "A demonstration prototype that keeps room-by-room scope, preparation work and labor and material pricing connected through estimate review.",
     industry: "painting",
     availability: "archived-guided",
     status: "Planned system · recovered prototype",
     capabilities: [
       "Editable area-by-area scope",
       "Connected labor and material costing",
-      "Customer-ready estimate review",
+      "Estimate review with a simulated customer handoff",
     ],
     steps: [
       {
         title: "Define the scope",
-        text: "Break the work into areas, with preparation, hours and amounts recorded together.",
+        text: "Define the work by room or area, keeping preparation and estimated hours with the scope. The recovered prototype uses fictional sample information.",
         image: "/demos/painting-scope.webp",
         width: 1118,
         height: 420,
@@ -156,7 +156,7 @@ export const demos: Demo[] = [
       },
       {
         title: "Check the pricing",
-        text: "Review line items alongside the connected estimate summary. All figures shown are fictional demo values.",
+        text: "Review labor and material line items alongside the estimate summary to see how entered assumptions affect the price. All figures shown are fictional demo values.",
         image: "/demos/painting-pricing.webp",
         width: 1118,
         height: 420,

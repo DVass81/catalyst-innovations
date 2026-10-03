@@ -16,11 +16,13 @@ export type Insight = {
   solution: string;
   industry?: string;
   demo?: "painting" | "flooring" | "hoa";
+  related?: string[];
   sources: InsightSource[];
 };
 
 const publishedAt = "2026-10-02";
-const source = (title: string, url: string): InsightSource => ({ title, url, reviewedAt: publishedAt });
+const growthPublishedAt = "2026-10-03";
+const source = (title: string, url: string, reviewedAt = publishedAt): InsightSource => ({ title, url, reviewedAt });
 
 /** Original editorial guidance. Examples are hypothetical; sources support the attributed background only. */
 export const insights: Insight[] = [
@@ -131,7 +133,56 @@ export const insights: Insight[] = [
     example: { title: "Keep accounting; improve the missing handoff", text: "A fictional service business likes its accounting package but prepares estimates in several files. It first tests standard estimating tools. If none fits the required workflow, it explores a focused estimating application with a reviewed accounting handoff instead of assuming it needs to rebuild accounting too." },
     nextStep: "Tell us which tools already work well and where the process breaks down. Catalyst can help assess an existing product, an integration or a focused custom build without assuming the largest project is the right one.",
     tools: ["software-consolidation", "duplicate-entry", "project-roi"], solution: "integrations-consulting",
+    related: ["software-data-migration", "software-rollout-small-team"],
     sources: [source("U.S. Small Business Administration: Checklist for Choosing Business Software", "https://www.sba.gov/blog/2018/2018-06/checklist-choosing-business-software/")],
+  },
+  {
+    slug: "software-data-migration",
+    title: "Preparing your business data for a software migration",
+    description: "Decide what to move, clean up duplicate records, map the important fields and rehearse the transfer before your team changes systems.",
+    category: "Software decisions", publishedAt: growthPublishedAt, updatedAt: growthPublishedAt,
+    introduction: "Moving to new software is also a decision about which information your team will trust. A customer list, open jobs and stock records may come from different places and use different names for the same thing. Before importing everything, define what people need on their first working day and how you will check that it arrived correctly.",
+    takeaway: "Move a clearly defined set of records, preserve their relationships, and prove that people can use them before switching over.",
+    sections: [
+      { id: "choose-the-records", heading: "1. Decide what needs to move", paragraphs: ["List the information used in the first workflow: customers, locations, open work, items or outstanding transactions. For each list, identify its current owner, where it is maintained and who can confirm its meaning. Distinguish active records from history that might remain in an accessible archive.", "Agree on the scope before anyone deletes or merges records. A file that looks obsolete may explain an open balance or an earlier decision. Keep the original export protected and unchanged while you prepare a working copy."] },
+      { id: "check-quality", heading: "2. Check meaning as well as missing fields", paragraphs: ["The UK Government Data Quality Framework distinguishes completeness from accuracy: a populated field can still be wrong. It also separates duplicate records, conflicting information, outdated values and invalid formats. Those distinctions make a useful review checklist for a business migration.", "Check a small sample with someone who uses the records. Two similar customer names could mean a duplicate, separate locations or two different customers. Flag the question for an owner instead of merging automatically. Record the rule used for each correction so the next export can be treated consistently."], source: 0 },
+      { id: "map-the-fields", heading: "3. Map fields and relationships explicitly", paragraphs: ["Write a simple mapping sheet: source field, destination field, meaning, conversion and reviewer. Confirm whether quantities are individual units or cases, dates include a time zone, and amounts include tax. Keep stable identifiers so a job still belongs to the right customer after names change.", "Microsoft’s staging-database guidance for complex Power Platform migrations separates preparation and validation from the final import. A small project may not need that architecture, but a separate test import provides a useful place to check your mappings without editing live records."], source: 1 },
+      { id: "rehearse-and-reconcile", heading: "4. Rehearse the transfer and the work", paragraphs: ["Microsoft’s go-live checklist calls for migration testing and business sign-off. For your project, agree on checks before the rehearsal: record counts, selected totals, missing relationships and a sample of individual records. Investigate differences rather than treating a successful file upload as proof of a successful migration.", "Then ask a team member to complete a normal task in the test system. Can they find an open job, see its correct location and continue from the right status? Include an awkward case, such as a customer with two sites or a partially completed order."], source: 2 },
+      { id: "plan-the-switch", heading: "5. Define the final switch and recovery plan", paragraphs: ["Name the person who can approve the switch. Decide when the old system stops accepting updates and how changes made since the rehearsal will be captured. Explain which system becomes authoritative, how staff report a missing record and when the team will review the result."], checklist: ["Keep an agreed backup and test the recovery approach.", "Restrict migration files and test access to the people who need them.", "Record unresolved issues and the criteria for postponing launch.", "Define how new work would be preserved if a rollback became necessary."] },
+    ],
+    example: { title: "Two locations, one customer", text: "In this fictional example, a service company has separate rows for a customer's office and warehouse. The migration team keeps one customer record with two location records, then checks that each open job points to the right site. A similar name is a reason to review the relationship, not proof that a row should be removed." },
+    nextStep: "Start with a list of the systems you use and a small, anonymized sample of the fields you need. Catalyst can help define the mapping, checks and first workflow before planning a full transfer. Include data preparation and training in the project cost estimate.",
+    tools: ["duplicate-entry", "reporting-time", "project-roi"], solution: "integrations-consulting",
+    related: ["software-rollout-small-team", "custom-software-vs-off-the-shelf"],
+    sources: [
+      source("UK Government Data Quality Hub: The Government Data Quality Framework", "https://www.gov.uk/government/publications/the-government-data-quality-framework/the-government-data-quality-framework", growthPublishedAt),
+      source("Microsoft Learn: Use a staging database for data migration", "https://learn.microsoft.com/en-us/power-platform/architecture/key-concepts/data-migration/staging-database-approach", growthPublishedAt),
+      source("Microsoft Learn: Go-live readiness checklist", "https://learn.microsoft.com/en-us/dynamics365/guidance/implementation-guide/prepare-go-live-checklist", growthPublishedAt),
+    ],
+  },
+  {
+    slug: "software-rollout-small-team",
+    title: "Introducing new software without disrupting your team",
+    description: "Plan a focused pilot, practical training and a clear handover so your team can learn new software while keeping everyday work moving.",
+    category: "People & process", publishedAt: growthPublishedAt, updatedAt: growthPublishedAt,
+    introduction: "A new system can look straightforward in a demonstration and still be difficult on a busy workday. People need to know what changes, where their current work belongs and who will help when something goes wrong. The aim is to limit disruption with a manageable transition; no rollout plan can promise that every interruption will disappear.",
+    takeaway: "Introduce one complete workflow to a small, representative group, practice the exceptions, and expand only when the team is ready.",
+    sections: [
+      { id: "choose-first-workflow", heading: "1. Choose a useful first workflow", paragraphs: ["Pick a bounded piece of work with a clear beginning and end, such as preparing an estimate for office review. Include the people on both sides of the handoff. A pilot limited to the person entering information will miss whether the next person can actually use it.", "Write down what changes and what stays in existing tools. Give the pilot an owner, a review date and a short definition of success. For example, an estimate can be found, corrected and reviewed without rebuilding it in another file. Avoid introducing unrelated features during this first trial."] },
+      { id: "practice-real-work", heading: "2. Practice a normal day, including exceptions", paragraphs: ["Microsoft’s change-management checklist recommends familiar data and day-in-the-life processes for acceptance testing. Use fictional or appropriately protected samples that resemble the work your team recognizes. Ask participants to complete the task themselves instead of only watching someone demonstrate it.", "Include a changed quantity, a returned request and a mistaken entry. Confirm who may correct each problem and what the next person sees. If people need a phone, keyboard access or a specific device, practice with that setup before calling the workflow ready."], source: 0 },
+      { id: "training-and-support", heading: "3. Make training short, practical and reusable", paragraphs: ["Create a brief guide for each role: start the task, check the result, correct a mistake and get help. Pair the guide with a practice session and time for questions. Keep the instructions beside the work, using the same labels people see on screen.", "Microsoft’s training guidance emphasizes audience needs and feedback about difficult tasks. Use that feedback to improve both the instructions and the software. An unclear button or missing field may need a product change rather than another training session."], source: 1 },
+      { id: "clear-handover", heading: "4. Make the handover explicit", paragraphs: ["Agree which jobs enter the new process and how unfinished work in the old process will be completed. If both systems operate during a trial, define the official record for each job and who reconciles differences. Leaving everyone to choose creates uncertainty about which version to trust.", "Microsoft’s cutover guidance recommends an ordered transition plan with owners, checks and recovery decisions. Scale that discipline to the size of your team: name the support contact, specify what would delay the switch, and explain how work continues if the new system is unavailable."], source: 2 },
+      { id: "review-before-expansion", heading: "5. Review the work before expanding access", paragraphs: ["Meet with the pilot team to review a few completed and unfinished examples. Ask where they needed help, which details were missing and whether the next person had enough information. Separate a software defect from a process decision nobody has made yet.", "Use those findings to decide the next small improvement. Compare the time spent on the same kind of work and check the quality of the handoff. Login counts alone do not show that a process improved, and time returned to the team is not automatically a reduction in payroll."], checklist: ["Keep one visible list of problems with an owner and status.", "Resolve blocking issues before expanding to another team.", "Update the guide when a workflow changes.", "Include training and support time in the project budget."] },
+    ],
+    example: { title: "A small estimating pilot", text: "A fictional contractor starts with one estimator and one office reviewer using sample jobs. They discover that changed preparation work is difficult to spot. The team improves that handoff and practices it again before using the process for a selected group of live jobs. This is an illustrative rollout approach, not a claim about a Catalyst customer deployment." },
+    nextStep: "Tell us who starts the work, who receives it and which tools your team needs to keep using. Catalyst can help define a first workflow, a practical pilot and the support needed to introduce it at a pace your business can manage.",
+    tools: ["manual-work", "reporting-time", "project-roi"], solution: "custom-software",
+    related: ["software-data-migration", "estimate-to-invoice-field-office"],
+    sources: [
+      source("Microsoft Learn: Change management checklist", "https://learn.microsoft.com/en-us/dynamics365/guidance/implementation-guide/change-management-checklist", growthPublishedAt),
+      source("Microsoft Learn: Training process and best practices", "https://learn.microsoft.com/en-us/dynamics365/guidance/implementation-guide/training-strategy-process-and-best-practices", growthPublishedAt),
+      source("Microsoft Learn: Prepare a cutover strategy", "https://learn.microsoft.com/en-us/dynamics365/guidance/implementation-guide/prepare-go-live-cutover-strategy", growthPublishedAt),
+    ],
   },
 ];
 

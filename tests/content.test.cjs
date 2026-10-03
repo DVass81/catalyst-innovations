@@ -21,7 +21,8 @@ function load(file, mocks = {}) {
   return mod.exports;
 }
 const insights = load("data/insights.ts");
-const content = load("data/seoContent.ts");
+const analytics = load("lib/analytics.ts");
+const content = load("data/seoContent.ts", { "./buyerFaqs": load("data/buyerFaqs.ts") });
 const calculators = load("lib/calculators.ts");
 const services = load("data/services.ts");
 const redesign = load("data/redesign.ts", { "./industries": load("data/industries.ts"), "./industryNeeds": load("data/industryNeeds.ts") });
@@ -34,10 +35,11 @@ const common = {
   "@/data/services": services, "@/data/redesign": redesign, "@/lib/seo": seo, "@/lib/site": { site },
 };
 
-test("six practical guides have complete sections, primary references and valid contextual links", () => {
-  assert.equal(insights.insights.length, 6);
-  assert.equal(new Set(insights.insights.map(a => a.slug)).size, 6);
-  const domains = ["nist.gov", "ascm.org", "microsoft.com", "caionline.org", "sba.gov", "aiacontracts.com"];
+test("eight practical guides have complete sections, primary references and valid contextual links", () => {
+  assert.equal(insights.insights.length, 8);
+  assert.equal(new Set(insights.insights.map(a => a.slug)).size, 8);
+  assert.deepEqual([...analytics.analyticsArticleIds].sort(), insights.insights.map(a => a.slug).sort());
+  const domains = ["nist.gov", "ascm.org", "microsoft.com", "caionline.org", "sba.gov", "aiacontracts.com", "gov.uk"];
   for (const article of insights.insights) {
     assert.ok(article.sections.length >= 4);
     assert.equal(new Set(article.sections.map(s => s.id)).size, article.sections.length);
@@ -56,6 +58,14 @@ test("six practical guides have complete sections, primary references and valid 
     for (const tool of article.tools) assert.ok(calculators.getCalculator(tool), `${article.slug}: missing calculator ${tool}`);
     assert.ok(services.services.some(s => s.slug === article.solution));
     if (article.industry) assert.ok(redesign.industryList.some(i => i.slug === article.industry));
+    if (article.related) {
+      assert.equal(new Set(article.related).size, article.related.length);
+      for (const slug of article.related) {
+        assert.notEqual(slug, article.slug);
+        assert.ok(insights.getInsight(slug), `${article.slug}: missing related guide ${slug}`);
+      }
+    }
+    assert.equal(analytics.analyticsPath(`/insights/${article.slug}?email=private`), `/insights/${article.slug}`);
   }
 });
 
@@ -83,6 +93,9 @@ test("guide pages expose complete readable content, organization attribution and
     assert.match(html, /Read the guide/);
     for (const section of article.sections) assert.ok(html.includes(`id="${section.id}"`));
     for (const tool of article.tools) assert.ok(html.includes(`/tools/${tool}`));
+    for (const slug of article.related ?? []) assert.ok(html.includes(`/insights/${slug}`));
+    const reviewedAt = article.sources.map(source => source.reviewedAt).sort().at(-1);
+    assert.ok(html.includes(`Latest source review: <time dateTime="${reviewedAt}"`), `${article.slug}: source review date must come from its references`);
     const script = html.match(/<script type="application\/ld\+json">(.*?)<\/script>/s)[1];
     const schemas = JSON.parse(script);
     const schema = schemas.find(item => item["@type"] === "Article");

@@ -44,7 +44,15 @@ Production evidence so far:
 - **Prior isolated evidence:** 11 focused analytics tests passed using mocks, and the actual-component fixture passed sanitization, route-view deduplication, decline and loaded/delayed-tag withdrawal checks without external traffic. These do not replace live payload inspection.
 - **Public HTTP and crawl:** 71/71 sitemap pages passed the live crawler, along with four redirects, five unknown-route 404/noindex checks, portal/robots checks and health HTTP 200. Sitemap GET and HEAD returned HTTP 200 with XML containing 71 URLs for both normal and Googlebot-labelled requests. These successful checks do not override Search Console's unresolved sitemap-processing status.
 
-Search Console sitemap processing, broader provider-event verification, complete live payload inspection and representative reporting baselines remain open.
+Search Console sitemap processing, broader provider-event verification, complete live payload inspection and representative reporting baselines remain open. See the October 3 growth-package follow-up below for later event checks.
+
+## October 3 growth-package follow-up
+
+- Search Console Performance explicitly reports “Processing data, please check again in a day or so.” Search impressions, clicks and query baseline remain pending, not zero. The sitemap list still reports Couldn't fetch; no additional resubmission was made in this pass.
+- GA4 Realtime subsequently displayed `roi_calculator_used` (1). A controlled fictional inquiry prepared in the existing email-draft flow produced `inquiry_draft_created` (1), and the booking link produced `booking_click` (1). `form_start` was also observed. These are QA events in a rolling report, not customers or completed appointments. No email or real inquiry was sent.
+- Copy inquiry displayed its copied confirmation. GA4 Realtime subsequently reported `inquiry_draft_copied` (1) and `inquiry_email_opened` (1). The latter is a link-click event: the browser security policy blocked the external mail-app navigation, so the end-to-end mail-application handoff is not verified. No workaround or message sending was attempted. Another draft check raised the rolling `inquiry_draft_created` and `form_start` counts to 2; counts from separate snapshots must not be added together.
+- Withdrawal refreshed the page, cleared the fictional form, and left zero Google tag script elements in the document. Live raw request payloads remain unavailable to the browser tool; unit tests verify the allowlist strips personal details and entered figures.
+- All 56 tests passed, including 11 focused analytics tests. New article paths are explicitly allowlisted. Direct-delivery success/failure remains tested with mocks only while Resend/domain configuration is unresolved; no production `form_complete` or confirmed lead is claimed.
 
 | Baseline item | Current status |
 | --- | --- |

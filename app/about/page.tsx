@@ -1,5 +1,7 @@
 import { pageMetadata } from "@/lib/seo";
 import { activeFounders } from "@/data/content";
+import Link from "next/link";
+import { buyerFaqs } from "@/data/buyerFaqs";
 import { site } from "@/lib/site";
 import FounderIntro from "@/components/FounderIntro";
 import { PageIntro, DiscussCTA } from "@/components/SiteSections";
@@ -30,6 +32,13 @@ export default function About() {
       <div id="our-background">
         <FounderIntro full />
       </div>
+      <section className="wrap content-section faq-section" aria-labelledby="working-together-questions">
+        <div><p className="overline">Working together</p><h2 id="working-together-questions">Know what to expect.</h2></div>
+        <div>
+          {[buyerFaqs.security, buyerFaqs.ownership, buyerFaqs.training].map(faq => <details key={faq.question}><summary>{faq.question}<span aria-hidden="true">+</span></summary><p>{faq.answer}</p></details>)}
+          <p style={{ marginTop: 24 }}><Link className="text-link" href="/insights/software-rollout-small-team">Read our guide to introducing software to your team ↗</Link></p>
+        </div>
+      </section>
       <DiscussCTA />
     </>
   );

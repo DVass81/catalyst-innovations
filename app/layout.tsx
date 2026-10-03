@@ -13,6 +13,7 @@ import RouteProgress from "@/components/RouteProgress";
 import SectionMotion from "@/components/SectionMotion";
 import { site } from "@/lib/site";
 import { pageMetadata } from "@/lib/seo";
+import { activeFounders } from "@/data/content";
 
 export const metadata: Metadata = {
   ...pageMetadata({
@@ -51,6 +52,9 @@ const orgSchema = {
   logo: new URL("/brand/catalyst-official.png", site.url).toString(),
   slogan: site.motto,
   description: site.positioning,
+  telephone: site.contactPhone,
+  email: activeFounders.map((founder) => founder.email),
+  areaServed: "Worldwide",
   address: {
     "@type": "PostalAddress",
     addressLocality: "Knoxville",

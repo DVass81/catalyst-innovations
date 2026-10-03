@@ -8,7 +8,7 @@ export const metadata = pageMetadata({
   path: "/contact",
   title: "Contact Our Knoxville Software Team",
   description:
-    "Talk with Catalyst Innovations in Knoxville, Tennessee about custom business software, workflow automation and the process you want to improve.",
+    "Call (865) 348-3137 or email Josh and Daniel about custom business software. Serving East Tennessee and businesses worldwide. Open daily, 6 a.m.–8 p.m. Eastern.",
 });
 export default function ContactPage() {
   return (
@@ -34,14 +34,27 @@ export default function ContactPage() {
           </Link>
         </div>
         <div className="content-card">
-          <h2>Prefer email?</h2>
-          <p>{site.location}</p>
+          <h2>Call or email us.</h2>
+          <p><a href={`tel:${site.contactPhone}`}>{site.contactPhoneLabel}</a></p>
           {activeFounders.map((f) => (
             <div key={f.slug} style={{ marginTop: 24 }}>
               <p>{f.name}</p>
               <EmailLink email={f.email} context={`contact_page_${f.slug}`} />
             </div>
           ))}
+        </div>
+      </section>
+      <section className="wrap content-section two-grid" aria-label="Hours and service area">
+        <div className="content-card">
+          <h2>Business hours</h2>
+          <p>{site.businessHours}.</p>
+          <h3 style={{ marginTop: 24 }}>Support</h3>
+          <p>{site.supportHours}. Your service agreement defines the support scope and any response commitments.</p>
+        </div>
+        <div className="content-card">
+          <h2>East Tennessee roots. A wider reach.</h2>
+          <p>Based in Knoxville, we serve businesses throughout East Tennessee and work with teams worldwide.</p>
+          <p>We meet clients at their businesses or online. We do not operate a walk-in office.</p>
         </div>
       </section>
     </>

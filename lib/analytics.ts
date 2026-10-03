@@ -31,6 +31,7 @@ export const analyticsArticleIds = [
   "estimate-to-invoice-field-office", "manufacturing-spreadsheets",
   "inventory-purchasing-stock", "trackable-approval-workflows",
   "hoa-maintenance-requests", "custom-software-vs-off-the-shelf",
+  "software-data-migration", "software-rollout-small-team",
 ] as const;
 export const analyticsPaths = new Set([
   "/", "/solutions", "/industries", "/portfolio", "/method", "/about",

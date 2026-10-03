@@ -1,3 +1,4 @@
+import { buyerFaqs } from "./buyerFaqs";
 export type FAQ = { question: string; answer: string };
 export type SolutionContent = { summary: string; introduction: string; example: string; firstSteps: string[]; tools: string[]; guide: string; faqs: FAQ[] };
 
@@ -8,7 +9,7 @@ export const solutionContent: Record<string, SolutionContent> = {
     example: "An illustrative service workflow carries the same customer and job reference from inquiry through an approved quote, scheduled work and invoice preparation. Each handoff has an owner, and existing accounting software can remain the financial system of record where integration is feasible.",
     firstSteps: ["Map one complete workflow, including exceptions.", "Agree on the records, permissions and review steps.", "Test a focused version with the people who will use it."],
     tools: ["manual-work", "quoting-time", "project-roi"], guide: "custom-software-vs-off-the-shelf",
-    faqs: [{ question: "Do we need to replace all our software?", answer: "No. We first identify which tools already work well. A focused application or connection between existing tools may solve the problem with less change than a full replacement." }, { question: "What is the difference between CRM, ERP and WMS?", answer: "A CRM organizes customer and sales information. An ERP connects broader business operations such as jobs, purchasing and accounting. A WMS organizes warehouse work such as receiving, locations and picking. We scope the capabilities you need rather than assume you need every module." }],
+    faqs: [buyerFaqs.existingSoftware, buyerFaqs.timeline, buyerFaqs.startingSmall, { question: "What is the difference between CRM, ERP and WMS?", answer: "A CRM organizes customer and sales information. An ERP connects broader business operations such as jobs, purchasing and accounting. A WMS organizes warehouse work such as receiving, locations and picking. We scope the capabilities you need rather than assume you need every module." }],
   },
   "ai-automation": {
     summary: "Practical AI assistance for documents, summaries and workflow preparation, with review steps defined around your business decisions.",
@@ -64,7 +65,7 @@ export const solutionContent: Record<string, SolutionContent> = {
     example: "An illustrative customer-to-accounting handoff carries an approved job into a draft invoice. Matching rules, duplicate handling and failed transfers are defined before launch. A reviewer can confirm the result rather than assume a successful connection means every record is correct.",
     firstSteps: ["Inventory the tools, owners and supported interfaces.", "Choose the system of record for each important field.", "Test normal transfers, duplicates, updates and failure recovery."],
     tools: ["duplicate-entry", "software-consolidation", "project-roi"], guide: "custom-software-vs-off-the-shelf",
-    faqs: [{ question: "Can you connect any system?", answer: "We first check whether the system offers an appropriate API, supported connector or controlled export. Vendor restrictions, access rights and data quality can limit the options. Feasibility is assessed before a connection is promised." }, { question: "What should we bring to an initial discussion?", answer: "A list of current tools, the records copied between them and one example of the desired handoff are enough to start. Use fictional or redacted examples rather than sharing passwords or private customer records." }],
+    faqs: [buyerFaqs.integrations, buyerFaqs.migration, { question: "What should we bring to an initial discussion?", answer: "A list of current tools, the records copied between them and one example of the desired handoff are enough to start. Use fictional or redacted examples rather than sharing passwords or private customer records." }],
   },
 };
 
