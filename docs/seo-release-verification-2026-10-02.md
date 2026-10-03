@@ -27,7 +27,7 @@ A final button-label accessibility adjustment followed these three runs. The foc
 
 ## Open dependencies and limits
 
-- Create the free Google account using Daniel’s existing email address, or supply an existing account. Search Console ownership verification, sitemap submission and actual GA visits/leads remain unverified. Analytics configuration fails closed and stays disabled until configured and consented.
+- Use Daniel’s approved existing Google account; do not create another Google account or change Outlook. Google recognizes that account, and Daniel must complete sign-in/security checks. Search Console ownership verification, sitemap submission and actual GA visits/leads remain unverified. Analytics configuration fails closed and stays disabled until configured and consented.
 - Push and deploy the reviewed changes, then verify the actual production domain, crawl responses, consent behavior and mobile performance. Neither ranking improvements nor indexing have been demonstrated. Existing Ubersuggest baseline records remain separate from these local checks.
 - Further mobile LCP improvement needs measured changes that preserve the approved design. Remaining framework JavaScript and render-critical CSS are candidates for investigation, not proven causes from these scores alone.
 - Optional ErrorMonitoring diagnostics remain outside the analytics consent flow and are not enabled. Review their behavior and consent requirements before enabling them.

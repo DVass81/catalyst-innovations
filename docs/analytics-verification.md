@@ -6,7 +6,7 @@ The site has consent-controlled GA4 and Plausible integrations. Source configura
 
 ## GA4 configuration required before activation
 
-1. In an account controlled by Catalyst, create or select the GA4 property and the web data stream for the final public domain. Record the stream's measurement ID (`G-…`).
+1. Use Daniel’s approved existing Google account. Reuse an existing Catalyst property and web stream if present; otherwise create **Catalyst Innovations**, with **Eastern time** and **USD**, for `https://mycatalystinnovations.com/`. Daniel completes sign-in, security checks and any required terms. Record the stream's measurement ID (`G-…`). Outlook remains the customer email service.
 2. In **Admin → Data collection and modification → Data streams → the web stream**, turn **Enhanced measurement off**. This includes history-based page views, scroll, outbound clicks, site search, video, file download and form-interaction collection. The site emits its own reviewed events. In particular, `send_page_view: false` alone does not disable history-based enhanced page views.
 3. Keep **Google signals**, advertising personalization and user-provided data collection off. Do not add a second Google tag, Google Tag Manager container or automatic tracking plugin to this site. Site code denies advertising storage, advertising user data and advertising personalization; it also disables Google signals and ad-personalization signals.
 4. Set `NEXT_PUBLIC_GA_ID` to the stream ID. Only after step 2 is confirmed, set `NEXT_PUBLIC_GA_MANUAL_TRACKING_VERIFIED=true`. Build/redeploy is required because these public settings are embedded at build time. The second flag intentionally keeps an unfinished setup inactive.
@@ -17,6 +17,24 @@ The site has consent-controlled GA4 and Plausible integrations. Source configura
 ## Optional Plausible setup
 
 Set `NEXT_PUBLIC_PLAUSIBLE_DOMAIN` to the domain registered in Plausible. It uses the documented Events API after the same explicit consent choice. There is no automatically capturing Plausible script. The payload contains a reviewed page URL, event name, approved feature identifiers and the safe `entry_source` category. Requests omit credentials and the HTTP referrer. Register desired custom-event goals in Plausible and verify receipt there; an HTTP success response alone does not establish that a provider accepted the event into reports.
+
+## Google connection and release status — October 2, 2026
+
+The current connection task uses free Search Console and Google Analytics only. Do not enable Plausible, buy a subscription, create a new Google account or change Outlook as part of it. The chosen existing account is recognized by Google; completing sign-in is pending Daniel. No real Google settings are configured locally yet.
+
+For Search Console, check accessible existing properties first. If needed, add the URL-prefix property `https://mycatalystinnovations.com/` and obtain its HTML-tag content value for `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION`. Prepare the value on the redesign branch/local build. Production publication requires review; do not change production build settings if that triggers an unapproved deployment. After the approved deployment, verify ownership, submit `https://mycatalystinnovations.com/sitemap.xml` and inspect the homepage, pricing, solutions, industries and calculators.
+
+| Baseline item | Initial status |
+| --- | --- |
+| Search Console ownership and property reuse | Pending authenticated account inspection |
+| Sitemap submission and indexed-page count | Pending ownership and approved deployment |
+| Search queries, impressions, clicks and position | Pending Search Console access; unavailable is not zero |
+| GA4 property, stream, timezone and currency | Pending authenticated account inspection |
+| Enhanced measurement and advertising settings | Pending provider verification; activation gate remains off |
+| Actual visitor counts and delivered-inquiry events | Pending configured deployment and provider receipt; unavailable is not zero |
+| Consent acceptance, decline and withdrawal | Passed local fixture checks; real-provider verification pending |
+
+Existing Ubersuggest estimates are recorded separately in `seo-keyword-map-2026-10-02.md`; they are not a substitute for observed Google reporting. Do not classify email-draft actions or booking-link clicks as confirmed leads.
 
 ## Browser verification without sending live analytics
 
