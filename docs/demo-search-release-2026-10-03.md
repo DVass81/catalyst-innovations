@@ -1,5 +1,7 @@
 # Searchable software demonstrations — October 3, 2026
 
+> Production update: the demo release and shared-CSS follow-up are now live. See the final deployment record below. The original preparation and measurements are retained as dated evidence; the latest performance results are in `shared-css-performance-2026-10-03.md`.
+
 ## Prepared release
 
 Three dedicated pages explain the existing real application recordings for buyers who search for a workflow rather than Catalyst's name:
@@ -36,6 +38,25 @@ One flooring-page audit scores 94 performance, 100 accessibility/SEO/best practi
 
 The existing production sitemap now reports **Sitemap processed successfully**, last read October 3, with **71 discovered pages** and 0 discovered videos. The earlier fetch warning has cleared. This count is discovery, not indexed pages. Search Console Performance still says it is processing data; impressions, clicks and query/position baseline remain pending.
 
-Prepared on `redesign/clearer-catalyst`, preview `http://127.0.0.1:3113/portfolio/flooring`. No production push, deployment, sitemap resubmission or indexing request was performed for this release. The current live site remains in place for review. After an approved deployment, verify the three live pages/media URLs and the video sitemap, then assess discovery/indexing through Search Console once reporting is available. Google Business Profile verification was not changed or advanced during this work.
+Originally prepared on `redesign/clearer-catalyst` for review, then published under Daniel's explicit instruction to push and deploy. The final rollout and search follow-up are recorded below. Google Business Profile verification was not changed or advanced during this work.
 
 Preview screenshot: `../../outputs/demo-search-desktop-preview.png`. Search Console evidence: `../../outputs/sitemap-success-2026-10-03.png`.
+
+## Final deployment and search follow-up
+
+- Demo release `af897160297fdfc8ea864d00552b3bfb789dba86` reached DigitalOcean Success / Live Deployment at 7:38:47 p.m. Eastern on October 3. Deployment ID: `c3487894-a980-4eab-bccf-22145f62589d`.
+- Shared-CSS follow-up `71ce6798273e25ab1fef4b4d3f60cceee0e7822c` reached Success / Live Deployment at 7:48:16 p.m. Eastern. Deployment ID: `496d2fbf-c560-4025-8172-7181fc186a16`. Both production `main` and the redesign branch received the tested code.
+- Final read-only production crawl passed **76/76 pages**, all nine demo media assets, metadata/canonicals/social images, redirects, missing-page responses, robots and portal handling. No forms, appointments or analytics events were sent by the crawler. Evidence: `../../work/seo-live-crawl-71ce679.json` and `.md`.
+- The live flooring page was inspected in the browser; its content, complete framed player and inquiry action render correctly. No browser errors or warnings were reported. Live screenshot: `../../outputs/catalyst-demo-live-2026-10-03.png`.
+- Google accepted one sitemap resubmission. The live sitemap has **76 page entries and three video entries**. Its existing report still showed Success / 71 discovered pages / zero videos from the earlier read; processing the new entries remains pending.
+- Each of `/portfolio/flooring`, `/portfolio/hoa` and `/portfolio/painting` was inspected as unknown to Google. One indexing request per URL completed successfully after Google's live eligibility test; all three were added to its priority crawl queue. This is not confirmation of indexing or ranking. Confirmation screenshot: `../../outputs/google-indexing-requested-2026-10-03.png`.
+- Search Console Performance still says it is processing data. Representative impressions, clicks, queries and positions remain pending rather than zero. No recurring monitoring was enabled.
+- Latest local lab medians are **2.823 seconds homepage LCP** and **3.383 seconds flooring LCP**, both above the 2.5-second target; CLS remains below 0.1. Homepage CSS transfer is 10.5% lower. The host slowed during testing, so no LCP improvement is claimed. See the shared-CSS report for all six results and limitations.
+
+## External dependencies and prepared promotion
+
+Resend remains pending. Public DNS checks found all three required sending records absent. The accessible Cloudflare account only contains `cbssolutions.app`, not the Catalyst domain, so no DNS was changed. The Microsoft MX and root SPF remain intact. The exact handoff is `../../outputs/catalyst-resend-dns-handoff.html`; server secret configuration and a controlled delivery check follow successful DNS verification.
+
+The updated `../../outputs/seo-growth-package.html` contains three finished demo posts, two tailored introduction drafts, ten researched Tennessee organizations and a 30-day checklist. Proposed recipients are Knoxville Entrepreneur Center (`info@knoxec.net`) and Tennessee MEP East Tennessee's Harold Booker (`harold.booker@tennessee.edu`), from Daniel's Outlook account. Specific sending approval has been requested. Nothing has been posted or emailed.
+
+A public Catalyst Innovations LLC LinkedIn post is a candidate, but company-domain matching and administrator access remain unverified. LinkedIn presented a security check/sign-in; Daniel has been asked to complete it. No duplicate profile was created, no CAPTCHA was solved, and the user's Google Business Profile verification tab was left untouched.
