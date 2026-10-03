@@ -1,67 +1,93 @@
 import { buyerFaqs } from "./buyerFaqs";
 export type FAQ = { question: string; answer: string };
-export type SolutionContent = { summary: string; introduction: string; example: string; firstSteps: string[]; tools: string[]; guide: string; faqs: FAQ[] };
+export type SolutionContent = {
+  title: string;
+  summary: string;
+  introduction: string;
+  industryLinks: { label: string; slug: string }[];
+  example: string;
+  firstSteps: string[];
+  tools: string[];
+  guide: string;
+  faqs: FAQ[];
+};
 
 export const solutionContent: Record<string, SolutionContent> = {
   "custom-software": {
-    summary: "Custom business software that connects customers, quotes, jobs, inventory and accounting around the way your team works.",
-    introduction: "A custom application is useful when an important workflow does not fit the tools you have. We start with the people doing that work, the information they need and the decisions they make. A focused quoting tool, customer portal or operations system can be the first step; a full ERP is not the default.",
+    title: "Custom Software Development in Knoxville",
+    summary: "Custom business software from Knoxville, Tennessee. Connect customers, quotes, jobs, inventory and accounting around the way your team works.",
+    introduction: "If your team copies the same customer details into several tools or uses spreadsheets to bridge missing steps, a custom business application may help. We build quoting tools, customer portals and operations systems around those specific gaps. Start with one useful workflow; a full ERP is not the default, and tools that already work can stay in place.",
+    industryLinks: [{ label: "Software for construction and contractors", slug: "construction" }, { label: "Software for growing small businesses", slug: "small-business" }],
     example: "An illustrative service workflow carries the same customer and job reference from inquiry through an approved quote, scheduled work and invoice preparation. Each handoff has an owner, and existing accounting software can remain the financial system of record where integration is feasible.",
     firstSteps: ["Map one complete workflow, including exceptions.", "Agree on the records, permissions and review steps.", "Test a focused version with the people who will use it."],
     tools: ["manual-work", "quoting-time", "project-roi"], guide: "custom-software-vs-off-the-shelf",
     faqs: [buyerFaqs.existingSoftware, buyerFaqs.timeline, buyerFaqs.startingSmall, { question: "What is the difference between CRM, ERP and WMS?", answer: "A CRM organizes customer and sales information. An ERP connects broader business operations such as jobs, purchasing and accounting. A WMS organizes warehouse work such as receiving, locations and picking. We scope the capabilities you need rather than assume you need every module." }],
   },
   "ai-automation": {
-    summary: "Practical AI assistance for documents, summaries and workflow preparation, with review steps defined around your business decisions.",
-    introduction: "AI can assist with reading incoming information, preparing a draft or finding relevant records. The useful question is where that assistance fits a repeatable process. We define the source information, what the system may suggest, who reviews it and what happens when the answer is uncertain.",
+    title: "AI Workflow Automation",
+    summary: "AI workflow automation for document processing, summaries and draft preparation, with human review around your business decisions.",
+    introduction: "When employees spend time reading supplier documents, finding information or preparing repetitive summaries, AI may assist with the first draft. We assess a defined task, the source information it needs and how someone checks the output. Fixed rules and ordinary workflow automation remain the better choice for predictable calculations, routing and reminders.",
+    industryLinks: [{ label: "Administrative workflows for professional services", slug: "professional-services" }, { label: "Operational workflows for manufacturers", slug: "manufacturing" }],
     example: "In an illustrative purchasing workflow, an assistant extracts details from a supplier document into a draft request. A person checks the quantities, price and source before approving the next action. A missing or ambiguous field returns for review rather than becoming an assumed fact.",
     firstSteps: ["Choose one information task with a clear review standard.", "Test representative documents and difficult exceptions.", "Define access, human approval and a fallback for uncertain output."],
     tools: ["manual-work", "duplicate-entry", "reporting-time"], guide: "trackable-approval-workflows",
     faqs: [{ question: "Does every automation need AI?", answer: "No. A fixed calculation, routing rule or reminder is often better handled with ordinary software. AI is considered when interpreting varied information adds useful assistance and its output can be checked." }, { question: "Will AI make decisions without our team?", answer: "The permitted actions are agreed during scoping. Consequential decisions can require human approval, with source material and the proposed action visible to the reviewer. We do not assume unrestricted autonomy." }],
   },
   procurement: {
-    summary: "Purchasing software that connects requests, approvals, suppliers, purchase orders and receiving in a reviewable workflow.",
-    introduction: "Purchasing works better when the requester, approver and buyer can see the same need. We can build requisition and purchase-order workflows around your approval rules, budgets and supplier records. The starting point is a clear path from requested material to a checked receipt.",
+    title: "Purchasing & Inventory Software",
+    summary: "Custom purchasing and inventory software connecting stock needs, approvals, suppliers, purchase orders and receiving.",
+    introduction: "When stock needs sit in one spreadsheet and open purchase orders sit in another, buyers have to reconcile the gap. We can connect material requests, inventory records and purchase-order approvals around your budget and supplier rules. The starting point is a clear path from the item needed to a checked receipt, including partial deliveries and returns.",
+    industryLinks: [{ label: "Inventory workflows for warehousing", slug: "warehousing" }, { label: "Materials and purchasing for manufacturers", slug: "manufacturing" }],
     example: "An illustrative request includes the item, quantity and job or department. After review and approval, purchasing creates the order. A partial delivery records only the quantity received, leaving the remaining amount visible for follow-up instead of closing the entire order.",
     firstSteps: ["Agree on item, supplier and department records.", "Map approval limits and exception ownership.", "Test request, approval, order and partial receipt together."],
     tools: ["purchase-orders", "reorder-point", "inventory-carrying"], guide: "inventory-purchasing-stock",
     faqs: [{ question: "Can purchasing stay connected to our accounting system?", answer: "That depends on the system’s interface, permissions and data quality. We assess the supported integration and agree which system owns suppliers, purchase orders and financial postings before building the connection." }, { question: "Can approvals reflect our own rules?", answer: "Yes, rules such as department ownership, amount thresholds and sequential reviews can be scoped. We also define returned requests, absences and failed downstream actions so the normal path is not the only one that works." }],
   },
   "manufacturing-operations": {
-    summary: "Manufacturing software for connected work orders, materials, production status and quality review, built around your shop-floor process.",
-    introduction: "A production dashboard is useful only if the underlying records mean the same thing to planning, the floor and management. We begin with one order flow and define quantities, statuses, holds and responsibilities. The software then helps the team find the next action and understand what is blocking it.",
+    title: "Manufacturing Operations Software",
+    summary: "Custom manufacturing operations software for work-order tracking, material availability, production status and quality review.",
+    introduction: "If planners need phone calls and several spreadsheets to find a job’s status, start by connecting the work order to the floor’s latest update. We define material requirements, production quantities, holds and responsibilities for one order flow. A dashboard can then show the next action and what is blocking it, using records the team can check.",
+    industryLinks: [{ label: "Production workflows for manufacturers", slug: "manufacturing" }, { label: "Job tracking for welding and fabrication", slug: "welding-fabrication" }],
     example: "An illustrative work order connects its material needs and current operation. A shortage creates a visible hold with an owner; completed production moves to the required quality review before release. This is a possible workflow, not a claim of an existing Catalyst deployment.",
     firstSteps: ["Map one product family from order to dispatch.", "Define quantity units, operation states and quality holds.", "Pilot normal work and exceptions before expanding."],
     tools: ["downtime-cost", "scrap-rework", "reporting-time"], guide: "manufacturing-spreadsheets",
     faqs: [{ question: "Does this replace machine controls?", answer: "The starting scope is normally operational information and coordination. Machine connectivity, control changes and safety-related functions require their own assessment and are not implied by a production dashboard." }, { question: "Can we start while keeping our ERP?", answer: "Often the useful first step is a focused workflow alongside the existing ERP. We assess how orders, item records and production updates can move between systems without creating competing records." }],
   },
   "supply-chain": {
+    title: "Supply Chain & Inventory Visibility",
     summary: "Connect demand, stock, supplier lead times and order status so your team can review supply risks and act on exceptions.",
     introduction: "A supply-chain view should show which decision needs attention and why. We can connect item demand, stock, outstanding orders and supplier updates into a shared picture. Alerts need an owner and a review step; a prediction alone does not resolve a delayed delivery.",
+    industryLinks: [{ label: "Order and delivery workflows for logistics", slug: "logistics" }, { label: "Stock and receiving workflows for warehousing", slug: "warehousing" }],
     example: "For an illustrative late purchase order, the system identifies the material and affected work. The buyer can review the expected receipt, contact the supplier and record the next action. Alternative sourcing remains a reviewed decision with its own cost and suitability checks.",
     firstSteps: ["Identify the orders and materials that matter most.", "Confirm source data, lead-time meaning and update frequency.", "Define exception owners and follow-up decisions."],
     tools: ["reorder-point", "inventory-carrying", "purchase-orders"], guide: "inventory-purchasing-stock",
     faqs: [{ question: "Can software prevent every shortage?", answer: "No. It can help make demand, open orders and exceptions easier to review. Availability still depends on suppliers, demand variation, inventory accuracy and the decisions your team makes." }, { question: "Do we need a forecasting model first?", answer: "Not necessarily. Consistent item records, receiving updates and lead-time tracking may be a more useful first step. Forecasting is considered once its purpose and input quality are clear." }],
   },
   "process-automation": {
-    summary: "Business process automation for forms, approvals, reminders and handoffs, with clear ownership and reviewable decisions.",
-    introduction: "Start with the repeated activity people have to chase: a request waiting for review, details retyped into another tool or a report assembled every week. We map the actual process and then automate the repeatable parts. People retain the decisions that require their judgment.",
+    title: "Business Process Automation Consulting",
+    summary: "Business process automation consulting from Knoxville, Tennessee. Connect forms, approvals, reminders and handoffs while keeping people in control.",
+    introduction: "Start with the repeated activity people have to chase: an approval lost in email, details retyped into another tool or a report assembled every week. Our consulting starts by mapping that process with the people who use it. We then build and test the repeatable steps, with clear owners for decisions and exceptions. A useful automation does not need AI to move work forward.",
+    industryLinks: [{ label: "Client and approval workflows for professional services", slug: "professional-services" }, { label: "Request coordination for HOAs", slug: "hoa" }],
     example: "An illustrative request enters a shared queue, goes to the right reviewer and returns for clarification if information is missing. Once approved, the next task is created. A failed integration stays visible for follow-up instead of being reported as completed.",
     firstSteps: ["Choose a repeated process with a named owner.", "Agree on required information, decisions and exception paths.", "Measure the current effort and test a contained pilot."],
     tools: ["manual-work", "purchase-orders", "customer-onboarding"], guide: "trackable-approval-workflows",
     faqs: [{ question: "Can automation work with email?", answer: "Email can remain a notification or reply channel. The request itself should have a clear record and status so an acknowledgment is not mistaken for approval and a forwarded message does not become a duplicate task." }, { question: "What happens when a step fails?", answer: "We define failure handling as part of the workflow: preserve the request, show the failed step, assign an owner and make retry behavior deliberate. The implementation depends on the systems involved." }],
   },
   "data-intelligence": {
+    title: "Business Dashboards & Reporting",
     summary: "Business dashboards and reporting that connect approved source records and explain what needs attention.",
     introduction: "Useful reporting starts with a question and a consistent definition. We identify the records behind a figure, how current they are and who is responsible for corrections. Reports can then connect operational and financial information without hiding differences in timing or meaning.",
+    industryLinks: [{ label: "Reporting across multiple locations", slug: "multi-location" }, { label: "Production visibility for manufacturing", slug: "manufacturing" }],
     example: "An illustrative job report compares the approved estimate with entered direct labor and material costs. It identifies missing cost records before presenting a margin. A date and source note show which period is included so a draft operational estimate is not confused with finalized accounting.",
     firstSteps: ["Choose the decisions the report should support.", "Define each measure, source and update frequency.", "Reconcile sample results with the people who own the records."],
     tools: ["reporting-time", "job-margin", "project-roi"], guide: "manufacturing-spreadsheets",
     faqs: [{ question: "Will every dashboard be real time?", answer: "Only when the source systems and workflow support it. We agree an appropriate refresh schedule and display freshness clearly. A reliable daily figure may be more useful than an apparently live figure with incomplete inputs." }, { question: "Can different departments use the same report?", answer: "Yes, when definitions, permissions and source ownership are agreed. We can provide views for different roles while keeping the underlying calculation consistent." }],
   },
   "integrations-consulting": {
-    summary: "Assess, connect and improve the business systems you already use, with a practical plan for data ownership and reliable handoffs.",
-    introduction: "An integration should remove a specific handoff without creating a second set of conflicting records. We assess your current tools, available interfaces, permissions and data quality. Sometimes a supported connector is enough; sometimes a focused custom application or a phased replacement is the better fit.",
+    title: "Business Software Integration Services",
+    summary: "Business software integration services for CRM, accounting, inventory and operations tools. Assess supported connections and reduce duplicate entry.",
+    introduction: "If the same customer, job or stock information is entered into separate systems, a software integration may remove that handoff. We assess your CRM, accounting and operations tools, their supported interfaces, permissions and data quality. Sometimes an existing connector is enough; sometimes a custom connection or a phased replacement is the better fit. Each record needs one agreed owner and a way to recover failed transfers.",
+    industryLinks: [{ label: "Connected tools for growing small businesses", slug: "small-business" }, { label: "Field-to-office handoffs for service businesses", slug: "field-service" }],
     example: "An illustrative customer-to-accounting handoff carries an approved job into a draft invoice. Matching rules, duplicate handling and failed transfers are defined before launch. A reviewer can confirm the result rather than assume a successful connection means every record is correct.",
     firstSteps: ["Inventory the tools, owners and supported interfaces.", "Choose the system of record for each important field.", "Test normal transfers, duplicates, updates and failure recovery."],
     tools: ["duplicate-entry", "software-consolidation", "project-roi"], guide: "custom-software-vs-off-the-shelf",

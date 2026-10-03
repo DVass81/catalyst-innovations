@@ -16,14 +16,14 @@ The companion JSON preserves research responses with separate locations and sour
 | --- | --- | --- | --- |
 | 1 | custom business software | /solutions/custom-software | US: 110 monthly searches, difficulty 23. Strong fit for the actual offer. |
 | 1 | custom software development Knoxville; custom software Tennessee | Homepage and /solutions/custom-software | Knoxville-qualified seed had no metric row. Use natural location context; do not create duplicate city pages. |
-| 1 | business process automation consultant | /solutions/ai-automation | US suggestion: 170 monthly searches, difficulty 24. Explain human-reviewed workflow work rather than broad AI claims. |
+| 1 | business process automation consultant | /solutions/process-automation | US suggestion: 170 monthly searches, difficulty 24. This page owns workflow consulting; /solutions/ai-automation separately covers AI-assisted document and draft preparation. |
 | 1 | HOA management software; resident maintenance request workflow | /industries/hoa | US HOA seed: 1,300 monthly searches, difficulty 27; Knoxville: 10, difficulty 41. Explain custom development and the fictional public sample clearly. |
 | 2 | contractor management software; field-to-office handoff | /industries/construction and related trade pages | US broad seed: 3,600, difficulty 37. Each trade page owns its actual workflow; avoid interchangeable duplicated copy. |
 | 2 | inventory and purchasing workflows | /solutions/procurement and /industries/warehousing | US inventory management software: 14,800, difficulty 65. Use specific operational needs rather than competing as a generic software marketplace. |
 | 2 | manufacturing spreadsheets and production visibility | /industries/manufacturing | Editorial problem cluster supported by the service and NIST MEP references; no search volume claimed. |
 | 2 | email approval workflow | /industries/professional-services | Practical approval and handoff needs; no search volume claimed. |
 | 2 | custom versus off-the-shelf software | /insights/custom-software-vs-off-the-shelf | Decision guide supporting the custom software service; no search volume claimed. |
-| 3 | business process automation | /solutions/ai-automation | US: 1,300, difficulty 56; Knoxville: 10, difficulty 13. Broad phrase is secondary to more specific buying needs. |
+| 3 | business process automation | /solutions/process-automation | US: 1,300, difficulty 56; Knoxville: 10, difficulty 13. Broad phrase is secondary to more specific buying needs. |
 | 3 | task-specific savings / ROI calculators | Existing /tools pages | Preserve one topic per calculator, transparent formulas and assumptions, and appropriate service links. No revenue guarantees. |
 
 ## Content and measurement rules

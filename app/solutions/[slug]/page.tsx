@@ -19,7 +19,8 @@ export async function generateMetadata({
   const { slug } = await params;
   const s = services.find((x) => x.slug === slug);
   if (!s) notFound();
-  return pageMetadata({ title: s.title, description: solutionContent[s.slug].summary, path: `/solutions/${s.slug}` });
+  const content = solutionContent[s.slug];
+  return pageMetadata({ title: content.title, description: content.summary, path: `/solutions/${s.slug}` });
 }
 export default async function Solution({
   params,
@@ -34,14 +35,15 @@ export default async function Solution({
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Solutions", path: "/solutions" }, { name: s.title, path: `/solutions/${s.slug}` }])).replace(/</g, "\\u003c") }} />
-      <PageIntro eyebrow="What we build" title={s.title} text={content.summary} />
+      <PageIntro eyebrow="What we build" title={content.title} text={content.summary} />
       <section className="wrap content-section two-grid">
         <div>
           <h2>Start with the work.</h2>
           <p>{content.introduction}</p>
           <p style={{ marginTop: 20 }}>
-            Based in Knoxville, Tennessee, we work with you to define a useful
-            first version and the evidence needed to evaluate it.
+            Based in Knoxville, we work with businesses across East Tennessee
+            and remotely worldwide. We define a useful first version together
+            and agree how to evaluate it before expanding.
           </p>
           <Link className="text-link" href="/consultation">
             Discuss your process ↗
@@ -56,6 +58,16 @@ export default async function Solution({
             ))}
           </ul>
           <p style={{ marginTop: 20 }}>These are capabilities we can scope around your requirements, not a claim that every feature is included in one package.</p>
+          <p className="overline" style={{ marginTop: 28 }}>Explore the work in your industry</p>
+          <ul className="check-list">
+            {content.industryLinks.map((industry) => (
+              <li key={industry.slug}>
+                <Link className="text-link" href={`/industries/${industry.slug}`}>
+                  {industry.label} ↗
+                </Link>
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
       <section className="wrap content-section">
@@ -70,7 +82,7 @@ export default async function Solution({
       </section>
       <section className="wrap content-section two-grid">
         <div><p className="overline">A focused first step</p><h2>Define the work before the build.</h2><ol className="check-list">{content.firstSteps.map((step, index) => <li key={step}>{index + 1}. {step}</li>)}</ol></div>
-        <aside className="content-card"><p className="overline">Practical guide</p><h2>{guide.title}</h2><p>{guide.description}</p><Link className="text-link" href={`/insights/${guide.slug}`}>Read the guide ↗</Link></aside>
+        <aside className="content-card"><p className="overline">Practical guide</p><h2>{guide.title}</h2><p>{guide.description}</p><Link className="text-link" href={`/insights/${guide.slug}`}>Read: {guide.title} ↗</Link></aside>
       </section>
       <section className="wrap content-section">
         <p className="overline">Use your own figures</p><h2>Explore the potential value.</h2>

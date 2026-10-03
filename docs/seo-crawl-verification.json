@@ -1,7 +1,7 @@
 {
-  "startedAt": "2026-10-03T12:22:22.949Z",
-  "completedAt": "2026-10-03T12:22:24.168Z",
-  "baseUrl": "http://127.0.0.1:3111",
+  "startedAt": "2026-10-03T12:55:04.656Z",
+  "completedAt": "2026-10-03T12:55:05.798Z",
+  "baseUrl": "http://127.0.0.1:3112",
   "scope": "Local production build; no browser execution or external requests. Canonical/social URLs checked against the sitemap. Images fetched through the local origin.",
   "passed": true,
   "totalPages": 73,
@@ -22,12 +22,6 @@
       "passed": true
     },
     {
-      "path": "/solutions/ai-automation/opengraph-image",
-      "status": 200,
-      "contentType": "image/png",
-      "passed": true
-    },
-    {
       "path": "/solutions/procurement/opengraph-image",
       "status": 200,
       "contentType": "image/png",
@@ -40,7 +34,7 @@
       "passed": true
     },
     {
-      "path": "/solutions/supply-chain/opengraph-image",
+      "path": "/solutions/process-automation/opengraph-image",
       "status": 200,
       "contentType": "image/png",
       "passed": true
@@ -58,7 +52,13 @@
       "passed": true
     },
     {
-      "path": "/solutions/process-automation/opengraph-image",
+      "path": "/solutions/supply-chain/opengraph-image",
+      "status": 200,
+      "contentType": "image/png",
+      "passed": true
+    },
+    {
+      "path": "/solutions/ai-automation/opengraph-image",
       "status": 200,
       "contentType": "image/png",
       "passed": true
@@ -732,7 +732,7 @@
       "description": "Custom software and workflow automation from Knoxville, Tennessee. Connect customer records, jobs, inventory, purchasing and reporting around your business.",
       "canonical": "https://mycatalystinnovations.com/solutions",
       "h1": "Start with the work you want to make easier.",
-      "mainWordCount": 354,
+      "mainWordCount": 437,
       "schemaTypes": [
         "Organization"
       ],
@@ -742,11 +742,11 @@
     {
       "path": "/solutions/ai-automation",
       "status": 200,
-      "title": "AI & Intelligent Automation | Catalyst Innovations",
-      "description": "Practical AI assistance for documents, summaries and workflow preparation, with review steps defined around your business decisions.",
+      "title": "AI Workflow Automation | Catalyst Innovations",
+      "description": "AI workflow automation for document processing, summaries and draft preparation, with human review around your business decisions.",
       "canonical": "https://mycatalystinnovations.com/solutions/ai-automation",
-      "h1": "AI & Intelligent Automation",
-      "mainWordCount": 539,
+      "h1": "AI Workflow Automation",
+      "mainWordCount": 573,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList"
@@ -757,11 +757,11 @@
     {
       "path": "/solutions/custom-software",
       "status": 200,
-      "title": "Custom Business Software | Catalyst Innovations",
-      "description": "Custom business software that connects customers, quotes, jobs, inventory and accounting around the way your team works.",
+      "title": "Custom Software Development in Knoxville | Catalyst Innovations",
+      "description": "Custom business software from Knoxville, Tennessee. Connect customers, quotes, jobs, inventory and accounting around the way your team works.",
       "canonical": "https://mycatalystinnovations.com/solutions/custom-software",
-      "h1": "Custom Business Software",
-      "mainWordCount": 717,
+      "h1": "Custom Software Development in Knoxville",
+      "mainWordCount": 757,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList"
@@ -772,11 +772,11 @@
     {
       "path": "/solutions/data-intelligence",
       "status": 200,
-      "title": "Data, Reporting & Executive Intelligence | Catalyst Innovations",
+      "title": "Business Dashboards & Reporting | Catalyst Innovations",
       "description": "Business dashboards and reporting that connect approved source records and explain what needs attention.",
       "canonical": "https://mycatalystinnovations.com/solutions/data-intelligence",
-      "h1": "Data, Reporting & Executive Intelligence",
-      "mainWordCount": 538,
+      "h1": "Business Dashboards & Reporting",
+      "mainWordCount": 564,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList"
@@ -787,11 +787,11 @@
     {
       "path": "/solutions/integrations-consulting",
       "status": 200,
-      "title": "Integrations & Digital Transformation Consulting | Catalyst Innovations",
-      "description": "Assess, connect and improve the business systems you already use, with a practical plan for data ownership and reliable handoffs.",
+      "title": "Business Software Integration Services | Catalyst Innovations",
+      "description": "Business software integration services for CRM, accounting, inventory and operations tools. Assess supported connections and reduce duplicate entry.",
       "canonical": "https://mycatalystinnovations.com/solutions/integrations-consulting",
-      "h1": "Integrations & Digital Transformation Consulting",
-      "mainWordCount": 675,
+      "h1": "Business Software Integration Services",
+      "mainWordCount": 726,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList"
@@ -802,11 +802,11 @@
     {
       "path": "/solutions/manufacturing-operations",
       "status": 200,
-      "title": "Manufacturing & Operations Systems | Catalyst Innovations",
-      "description": "Manufacturing software for connected work orders, materials, production status and quality review, built around your shop-floor process.",
+      "title": "Manufacturing Operations Software | Catalyst Innovations",
+      "description": "Custom manufacturing operations software for work-order tracking, material availability, production status and quality review.",
       "canonical": "https://mycatalystinnovations.com/solutions/manufacturing-operations",
-      "h1": "Manufacturing & Operations Systems",
-      "mainWordCount": 544,
+      "h1": "Manufacturing Operations Software",
+      "mainWordCount": 576,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList"
@@ -817,11 +817,11 @@
     {
       "path": "/solutions/process-automation",
       "status": 200,
-      "title": "Business Process Automation | Catalyst Innovations",
-      "description": "Business process automation for forms, approvals, reminders and handoffs, with clear ownership and reviewable decisions.",
+      "title": "Business Process Automation Consulting | Catalyst Innovations",
+      "description": "Business process automation consulting from Knoxville, Tennessee. Connect forms, approvals, reminders and handoffs while keeping people in control.",
       "canonical": "https://mycatalystinnovations.com/solutions/process-automation",
-      "h1": "Business Process Automation",
-      "mainWordCount": 535,
+      "h1": "Business Process Automation Consulting",
+      "mainWordCount": 590,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList"
@@ -832,11 +832,11 @@
     {
       "path": "/solutions/procurement",
       "status": 200,
-      "title": "Procurement & Supply-Chain Technology | Catalyst Innovations",
-      "description": "Purchasing software that connects requests, approvals, suppliers, purchase orders and receiving in a reviewable workflow.",
+      "title": "Purchasing & Inventory Software | Catalyst Innovations",
+      "description": "Custom purchasing and inventory software connecting stock needs, approvals, suppliers, purchase orders and receiving.",
       "canonical": "https://mycatalystinnovations.com/solutions/procurement",
-      "h1": "Procurement & Supply-Chain Technology",
-      "mainWordCount": 538,
+      "h1": "Purchasing & Inventory Software",
+      "mainWordCount": 580,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList"
@@ -847,11 +847,11 @@
     {
       "path": "/solutions/supply-chain",
       "status": 200,
-      "title": "Supply-Chain Intelligence | Catalyst Innovations",
+      "title": "Supply Chain & Inventory Visibility | Catalyst Innovations",
       "description": "Connect demand, stock, supplier lead times and order status so your team can review supply risks and act on exceptions.",
       "canonical": "https://mycatalystinnovations.com/solutions/supply-chain",
-      "h1": "Supply-Chain Intelligence",
-      "mainWordCount": 525,
+      "h1": "Supply Chain & Inventory Visibility",
+      "mainWordCount": 561,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList"

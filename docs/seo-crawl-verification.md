@@ -1,6 +1,6 @@
 # SEO crawl verification
 
-Run: 2026-10-03T12:22:24.168Z on http://127.0.0.1:3111.
+Run: 2026-10-03T12:55:05.798Z on http://127.0.0.1:3112.
 
 Result: **PASS**. 73/73 sitemap pages passed their individual checks.
 

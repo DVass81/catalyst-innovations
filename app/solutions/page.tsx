@@ -3,6 +3,7 @@ import Link from "next/link";
 import VisualStory from "@/components/VisualStory";
 import ProblemFinder from "@/components/ProblemFinder";
 import { services } from "@/data/services";
+import { solutionContent } from "@/data/seoContent";
 import { PageIntro, DiscussCTA } from "@/components/SiteSections";
 export const metadata = pageMetadata({
   path: "/solutions",
@@ -58,8 +59,8 @@ export default function Solutions() {
                 )
                 .map((s) => (
                   <Link key={s.slug} href={`/solutions/${s.slug}`}>
-                    <strong>{s.navLabel} ↗</strong>
-                    <span>{s.tagline}</span>
+                    <strong>{solutionContent[s.slug].title} ↗</strong>
+                    <span>{solutionContent[s.slug].summary}</span>
                   </Link>
                 ))}
             </div>
