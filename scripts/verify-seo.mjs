@@ -52,6 +52,7 @@ const urls = [...sitemapText.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => de
 if (!urls.length) throw new Error("No sitemap URLs found");
 const pages = [];
 const images = new Set();
+const demoMedia = [];
 let next = 0;
 await Promise.all(Array.from({ length: 5 }, async () => {
   while (next < urls.length) {
@@ -81,11 +82,36 @@ await Promise.all(Array.from({ length: 5 }, async () => {
       check(found.words >= 25, "Insufficient server-rendered main content");
       check(!found.meta.robots?.some((value) => /noindex/i.test(value)), "Sitemap page is noindex");
       check(found.schemas.length > 0 && found.schemaErrors.length === 0, "Missing or invalid JSON-LD");
+      if (/^\/portfolio\/(hoa|flooring|painting)$/.test(path)) {
+        const video = text.match(/<video\b([^>]*)>([\s\S]*?)<\/video>/i);
+        const attributes = attrs(video?.[1] ?? "");
+        const source = attrs(video?.[2].match(/<source\b[^>]*>/i)?.[0] ?? "");
+        const captions = attrs(video?.[2].match(/<track\b[^>]*>/i)?.[0] ?? "");
+        check(Boolean(video && /\bcontrols(?:\s|=|$)/i.test(video[1])), "Native video controls missing from initial HTML");
+        check(attributes.preload === "none" && !/\bautoplay(?:\s|=|$)/i.test(video?.[1] ?? ""), "Direct visit preloads or autoplays demo");
+        check(Boolean(source.src?.startsWith("/demos/") && source.type === "video/mp4"), "Initial HTML lacks local video source");
+        check(captions.kind === "captions" && captions.srclang === "en" && Boolean(captions.src), "English captions missing");
+        check(/id="transcript"/.test(text) && /Full video transcript/.test(text), "Visible transcript missing");
+        check(found.schemas.includes("BreadcrumbList"), "Demo breadcrumbs missing");
+        for (const [kind, asset] of [["video", source.src], ["poster", attributes.poster], ["captions", captions.src]]) {
+          if (asset) demoMedia.push({ page: path, kind, asset });
+          else check(false, `Missing ${kind} asset`);
+        }
+      }
       pages.push({ path, status: response.status, title: found.titles[0], description: first("description"), canonical: canonicals[0]?.href, h1: found.h1[0], mainWordCount: found.words, schemaTypes: found.schemas, image: first("og:image"), failures });
     } catch (error) { pages.push({ path, failures: [error.message] }); }
   }
 }));
 pages.sort((left, right) => left.path.localeCompare(right.path));
+
+const demoMediaChecks = await Promise.all(demoMedia.map(async (item) => {
+  try {
+    const response = await fetch(localUrl(item.asset), { method: "HEAD", signal: AbortSignal.timeout(30000) });
+    const contentType = response.headers.get("content-type") ?? "";
+    const validType = item.kind === "video" ? /^video\/mp4/.test(contentType) : item.kind === "poster" ? /^image\//.test(contentType) : /^text\/vtt/.test(contentType);
+    return { ...item, status: response.status, contentType, passed: response.status === 200 && validType };
+  } catch (error) { return { ...item, passed: false, error: error.message }; }
+}));
 
 const imageChecks = [];
 for (const url of images) {
@@ -104,7 +130,7 @@ for (const [path, destination] of [["/founders", "/about#our-background"], ["/st
   redirects.push({ path, status: response.status, location, finalStatus: final, passed: response.status === 308 && target && `${target.pathname}${target.hash}` === destination && final === 200 });
 }
 const missingPages = [];
-for (const path of ["/not-a-real-page", "/solutions/not-a-real-solution", "/industries/not-a-real-industry", "/tools/not-a-real-tool", "/insights/not-a-real-guide"]) {
+for (const path of ["/not-a-real-page", "/solutions/not-a-real-solution", "/industries/not-a-real-industry", "/tools/not-a-real-tool", "/insights/not-a-real-guide", "/portfolio/not-a-real-demo"]) {
   const { response, text } = await get(path);
   const noindex = inspect(text).meta.robots?.some((value) => /noindex/i.test(value)) ?? false;
   missingPages.push({ path, status: response.status, noindex, passed: response.status === 404 && noindex });
@@ -132,11 +158,11 @@ try {
   }));
 } catch (error) { bundles = { error: error.message }; }
 const failedPages = pages.filter((page) => page.failures.length);
-const passed = !failedPages.length && !duplicateTitles.length && !duplicateDescriptions.length && imageChecks.every((image) => image.passed) && redirects.every((redirect) => redirect.passed) && missingPages.every((page) => page.passed) && portal.passed && robots.passed;
-const result = { startedAt, completedAt: new Date().toISOString(), baseUrl: base.origin, scope: "Local production build; no browser execution or external requests. Canonical/social URLs checked against the sitemap. Images fetched through the local origin.", passed, totalPages: pages.length, failedPages: failedPages.length, duplicateTitles, duplicateDescriptions, images: imageChecks, redirects, missingPages, portal, robots, bundles, pages };
+const passed = !failedPages.length && !duplicateTitles.length && !duplicateDescriptions.length && imageChecks.every((image) => image.passed) && demoMediaChecks.length === 9 && demoMediaChecks.every((asset) => asset.passed) && redirects.every((redirect) => redirect.passed) && missingPages.every((page) => page.passed) && portal.passed && robots.passed;
+const result = { startedAt, completedAt: new Date().toISOString(), baseUrl: base.origin, scope: "Local production build; no browser execution or external requests. Canonical/social URLs checked against the sitemap. Images and demo media checked through the local origin.", passed, totalPages: pages.length, failedPages: failedPages.length, duplicateTitles, duplicateDescriptions, images: imageChecks, demoMedia: demoMediaChecks, redirects, missingPages, portal, robots, bundles, pages };
 await writeFile(resolve("docs/seo-crawl-verification.json"), JSON.stringify(result, null, 2) + "\n");
 const bundleLines = Array.isArray(bundles) ? bundles.map((entry) => `| ${entry.route} | ${entry.baselineUncompressedBytes ?? "unavailable"} | ${entry.currentUncompressedBytes ?? "unavailable"} | ${entry.deltaBytes ?? "unavailable"} | ${entry.calculatorDefinitionChunks?.length ?? "unavailable"} |`) : ["Bundle diagnostics unavailable."];
 const markdown = `# SEO crawl verification\n\nRun: ${result.completedAt} on ${base.origin}.\n\nResult: **${passed ? "PASS" : "FAIL"}**. ${pages.length - failedPages.length}/${pages.length} sitemap pages passed their individual checks.\n\n- Every sitemap page: HTTP 200, matching canonical and OpenGraph URL, matching search/OpenGraph/Twitter titles and descriptions, matching social images, one meaningful H1, at least 25 words in server-rendered main content, and parseable JSON-LD with a type or graph.\n- Unique titles: ${duplicateTitles.length ? "FAIL" : "PASS"}; unique descriptions: ${duplicateDescriptions.length ? "FAIL" : "PASS"}.\n- Social image responses: ${imageChecks.filter((image) => image.passed).length}/${imageChecks.length} passed.\n- Permanent redirects: ${redirects.filter((redirect) => redirect.passed).length}/${redirects.length} passed.\n- Unknown routes: ${missingPages.filter((page) => page.passed).length}/${missingPages.length} returned HTTP 404 with noindex.\n- Public portal: ${portal.passed ? "PASS" : "FAIL"} (HTTP 200, noindex, crawl allowed). Robots/API/sitemap checks: ${robots.passed ? "PASS" : "FAIL"}.\n\n## Initial JavaScript\n\n| Route | Prior build bytes | Current bytes | Difference | Calculator-definition chunks remaining |\n| --- | ---: | ---: | ---: | ---: |\n${bundleLines.join("\n")}\n\nValues are uncompressed initial JavaScript from Next build diagnostics. The prior build predates the combined SEO/analytics/content changes, so the overall difference is not attributable to one change. Absence of calculator field strings checks the intended IndustrySelector/ToolLibrary boundary reduction. This is not a mobile performance score.\n\n## Limits\n\nThis checks raw responses from the local production build; browser interaction, actual indexing, real-user performance and rich-result eligibility are separate checks. Parseable JSON-LD is not a guarantee of search-engine eligibility. No production traffic, forms or analytics events were sent.\n${failedPages.length || duplicateTitles.length || duplicateDescriptions.length ? `\n## Findings\n\n${failedPages.map((page) => `- ${page.path}: ${page.failures.join("; ")}`).join("\n")}\n${duplicateTitles.map((item) => `- Duplicate title: ${item.paths.join(", ")}`).join("\n")}\n${duplicateDescriptions.map((item) => `- Duplicate description: ${item.paths.join(", ")}`).join("\n")}\n` : ""}`;
-await writeFile(resolve("docs/seo-crawl-verification.md"), markdown);
-console.log(JSON.stringify({ passed, totalPages: pages.length, failedPages: failedPages.map(({ path, failures }) => ({ path, failures })), duplicateTitles, duplicateDescriptions, imageFailures: imageChecks.filter((image) => !image.passed), redirectFailures: redirects.filter((redirect) => !redirect.passed), missingPageFailures: missingPages.filter((page) => !page.passed), portal, robots, bundles }, null, 2));
+await writeFile(resolve("docs/seo-crawl-verification.md"), markdown + `\n## Searchable demonstrations\n\nAll three watch pages checked for a native player with preload disabled, no autoplay, local video source, English captions, visible transcript and breadcrumbs in initial HTML. ${demoMediaChecks.filter(asset => asset.passed).length}/${demoMediaChecks.length} video/poster/caption assets returned HTTP 200 with the expected content type.\n`);
+console.log(JSON.stringify({ passed, totalPages: pages.length, failedPages: failedPages.map(({ path, failures }) => ({ path, failures })), duplicateTitles, duplicateDescriptions, imageFailures: imageChecks.filter((image) => !image.passed), demoMediaFailures: demoMediaChecks.filter((asset) => !asset.passed), redirectFailures: redirects.filter((redirect) => !redirect.passed), missingPageFailures: missingPages.filter((page) => !page.passed), portal, robots, bundles }, null, 2));
 process.exitCode = passed ? 0 : 1;

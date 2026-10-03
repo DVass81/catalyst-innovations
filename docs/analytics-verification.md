@@ -1,5 +1,13 @@
 # Analytics setup and verification
 
+## Later Search Console check — October 3, 2026
+
+The sitemap detail report now says **Sitemap processed successfully**, with **Last read 10/3/26**, **71 discovered pages** and **0 discovered videos**. This supersedes the earlier fetch warning recorded below. No repeated resubmission or indexing request was needed for this check. Discovered pages are not the number indexed or ranked.
+
+The Performance report still says **Processing data, please check again in a day or so**. Search impressions, clicks, positions and non-brand query totals remain pending, not zero. The prepared three-demo-page release adds video sitemap entries; those entries are not live or discovered yet.
+
+Evidence: `../../outputs/sitemap-success-2026-10-03.png` (Search Console screenshot).
+
 ## Current state
 
 As of **October 3, 2026**, approved commit `0999693` is live on DigitalOcean deployment `d5d101c7-e169-4b93-8899-7ac0adbb28d6`; the dashboard shows Healthy/Success and Live Deployment. Search Console HTML-tag ownership is verified, and GA4 has received the controlled production test events described below. These are QA counts, not a customer-traffic baseline. Plausible remains off, and local previews keep real analytics disabled.

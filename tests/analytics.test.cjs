@@ -43,6 +43,10 @@ test("analytics rejects unknown events, arbitrary field values and personal/calc
 test("analytics only permits reviewed public routes and removes queries, fragments and referrers", () => {
   assert.equal(analytics.analyticsPath("/consultation?email=private#answer"), "/consultation");
   assert.equal(analytics.analyticsPath("/tools/manual-work#154321"), "/tools/manual-work");
+  for (const id of ["hoa", "flooring", "painting"]) {
+    assert.equal(analytics.analyticsPath(`/portfolio/${id}?email=private#answer`), `/portfolio/${id}`);
+  }
+  assert.equal(analytics.analyticsPath("/portfolio/private-customer"), null);
   for (const input of ["https://private.test/about", "//private.test", "/users/person@example.test", "/insights/private", "/portal", "/founders", "/api/health", "/about/private", null]) {
     assert.equal(analytics.analyticsPath(input), null);
   }

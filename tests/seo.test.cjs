@@ -82,8 +82,9 @@ test("all standard pricing packages and their costs are visible in server-render
   assert.match(html, /First-year base total/);
 });
 
-test("the sitemap includes every published guide, canonical URLs and no retired or private destinations", () => {
+test("the sitemap includes published guides and playable demo pages without retired or private destinations", () => {
   const insights = load("data/insights.ts");
+  const demos = load("data/demos.ts");
   const redesign = load("data/redesign.ts", {
     "./industries": load("data/industries.ts"),
     "./industryNeeds": load("data/industryNeeds.ts"),
@@ -91,6 +92,7 @@ test("the sitemap includes every published guide, canonical URLs and no retired 
   const sitemap = load("app/sitemap.ts", {
     "@/lib/site": { site: { ...site, url: `${site.url}/` } },
     "@/data/insights": insights,
+    "@/data/demos": demos,
     "@/data/services": load("data/services.ts"),
     "@/lib/calculators": load("lib/calculators.ts"),
     "@/data/redesign": redesign,
@@ -103,6 +105,16 @@ test("the sitemap includes every published guide, canonical URLs and no retired 
     assert.equal(entry.lastModified, article.updatedAt);
   }
   assert.ok(urls.includes(`${site.url}/insights`));
+  for (const demo of demos.demos) {
+    const entry = sitemap.find((entry) => entry.url === `${site.url}/portfolio/${demo.id}`);
+    assert.ok(entry, demo.id);
+    assert.equal(entry.videos.length, 1);
+    assert.equal(entry.videos[0].content_loc, `${site.url}${demo.walkthrough.video}`);
+    assert.equal(entry.videos[0].thumbnail_loc, `${site.url}${demo.walkthrough.poster}`);
+    assert.ok(entry.videos[0].duration >= 60 && entry.videos[0].duration <= 90);
+    assert.ok(!entry.url.includes("#"));
+  }
+  assert.ok(!JSON.stringify(sitemap).includes("ondigitalocean.app"));
   for (const url of urls) {
     const pathname = new URL(url).pathname;
     assert.ok(!pathname.includes("//"));
@@ -125,11 +137,18 @@ test("industry and tool-library client props omit calculator definitions while p
   });
   const { default: IndustrySelector } = load("components/IndustrySelector.tsx", {
     "@/lib/calculators": calculators,
+    "@/data/redesign": redesign,
+    "@/data/startingPoints": load("data/startingPoints.ts"),
     "./IndustrySelectorClient": { default: IndustrySelectorClient },
   });
   const selector = IndustrySelector();
   const plumbing = redesign.industryList.find((industry) => industry.slug === "plumbing");
   assert.ok(Object.values(selector.props.toolTitles).every((title) => typeof title === "string"));
+  assert.deepEqual(selector.props.industries.map(({ slug }) => slug), redesign.industryList.map(({ slug }) => slug));
+  for (const industry of selector.props.industries) {
+    assert.deepEqual(Object.keys(industry).sort(), ["example", "group", "name", "problems", "slug", "solutions", "tools"]);
+    assert.ok(["hoa", "flooring", "painting"].includes(industry.example.id));
+  }
   for (const industry of redesign.industryList) {
     for (const slug of industry.tools) assert.equal(selector.props.toolTitles[slug], calculators.getCalculator(slug).title);
   }

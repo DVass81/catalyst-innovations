@@ -1,5 +1,5 @@
 import type { Industry } from "@/data/redesign";
-export default function IndustryProblems({ industry }: { industry: Industry }) {
+export default function IndustryProblems({ industry }: { industry: Pick<Industry, "problems" | "solutions"> }) {
   return (
     <ul className="problem-pairs">
       {industry.problems.map((problem, index) => (

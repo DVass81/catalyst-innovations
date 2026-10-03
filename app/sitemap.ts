@@ -4,6 +4,7 @@ import { services } from "@/data/services";
 import { calculators } from "@/lib/calculators";
 import { industryList } from "@/data/redesign";
 import { insights } from "@/data/insights";
+import { demos } from "@/data/demos";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes = [
@@ -23,6 +24,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/accessibility",
   ];
   return [
+    ...demos.flatMap((demo) => demo.walkthrough ? [{
+      url: new URL(`/portfolio/${demo.id}`, site.url).toString(),
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+      videos: [{
+        title: `${demo.displayName} software walkthrough`,
+        description: demo.purpose,
+        thumbnail_loc: new URL(demo.walkthrough.poster, site.url).toString(),
+        content_loc: new URL(demo.walkthrough.video, site.url).toString(),
+        duration: Math.round(demo.walkthrough.durationSeconds),
+      }],
+    }] : []),
     ...insights.map((article) => ({
       url: new URL(`/insights/${article.slug}`, site.url).toString(),
       lastModified: article.updatedAt,

@@ -1,16 +1,23 @@
 "use client";
 import { track } from "@/lib/site";
-import { recommendedDemo } from "@/data/startingPoints";
 import { useState } from "react";
 import IndustryProblems from "./IndustryProblems";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { industryList, groups } from "@/data/redesign";
+import type { Industry } from "@/data/redesign";
 
-export default function IndustrySelectorClient({ toolTitles }: { toolTitles: Record<string, string> }) {
+type SelectorIndustry = Omit<Industry, "workflow"> & {
+  example: { id: string; reason: string };
+};
+
+export default function IndustrySelectorClient({ industries, groups, toolTitles }: {
+  industries: SelectorIndustry[];
+  groups: readonly string[];
+  toolTitles: Record<string, string>;
+}) {
   const [slug, setSlug] = useState("plumbing");
-  const i = industryList.find((x) => x.slug === slug) ?? industryList[0];
-  const example = recommendedDemo(i.group, i.slug);
+  const i = industries.find((x) => x.slug === slug) ?? industries[0];
+  const example = i.example;
   return (
     <div className="industry-selector">
       <div className="industry-select-row">
@@ -27,7 +34,7 @@ export default function IndustrySelectorClient({ toolTitles }: { toolTitles: Rec
         >
           {groups.map((g) => (
             <optgroup label={g} key={g}>
-              {industryList
+              {industries
                 .filter((x) => x.group === g)
                 .map((x) => (
                   <option value={x.slug} key={x.slug}>

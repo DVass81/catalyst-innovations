@@ -33,6 +33,7 @@ export const analyticsArticleIds = [
   "hoa-maintenance-requests", "custom-software-vs-off-the-shelf",
   "software-data-migration", "software-rollout-small-team",
 ] as const;
+export const analyticsDemoIds = ["hoa", "flooring", "painting"] as const;
 export const analyticsPaths = new Set([
   "/", "/solutions", "/industries", "/portfolio", "/method", "/about",
   "/pricing", "/contact", "/consultation", "/tools", "/insights",
@@ -40,6 +41,7 @@ export const analyticsPaths = new Set([
   ...analyticsToolIds.map((id) => `/tools/${id}`),
   ...analyticsIndustryIds.map((id) => `/industries/${id}`),
   ...analyticsArticleIds.map((id) => `/insights/${id}`),
+  ...analyticsDemoIds.map((id) => `/portfolio/${id}`),
   ...["custom-software", "ai-automation", "procurement", "manufacturing-operations",
     "supply-chain", "process-automation", "data-intelligence", "integrations-consulting"]
     .map((id) => `/solutions/${id}`),
@@ -56,7 +58,7 @@ const identifiers: Record<string, readonly string[]> = {
   tool: analyticsToolIds,
   industry: analyticsIndustryIds,
   source: ["calculator", "inquiry", "demo", "inquiry_draft"],
-  demo: ["hoa", "flooring", "painting"],
+  demo: analyticsDemoIds,
   location: ["hero", "portal_hero", "value_hero", "assessment_result", "roi_calculator", "industry_explorer"],
   problem: ["quoting", "scheduling", "inventory", "reporting", "administration"],
   section: ["founders", "problem-finder"],

@@ -1,10 +1,10 @@
 {
-  "startedAt": "2026-10-03T12:55:04.656Z",
-  "completedAt": "2026-10-03T12:55:05.798Z",
-  "baseUrl": "http://127.0.0.1:3112",
-  "scope": "Local production build; no browser execution or external requests. Canonical/social URLs checked against the sitemap. Images fetched through the local origin.",
+  "startedAt": "2026-10-03T21:46:39.641Z",
+  "completedAt": "2026-10-03T21:46:40.759Z",
+  "baseUrl": "http://127.0.0.1:3113",
+  "scope": "Local production build; no browser execution or external requests. Canonical/social URLs checked against the sitemap. Images and demo media checked through the local origin.",
   "passed": true,
-  "totalPages": 73,
+  "totalPages": 76,
   "failedPages": 0,
   "duplicateTitles": [],
   "duplicateDescriptions": [],
@@ -16,7 +16,7 @@
       "passed": true
     },
     {
-      "path": "/solutions/custom-software/opengraph-image",
+      "path": "/solutions/ai-automation/opengraph-image",
       "status": 200,
       "contentType": "image/png",
       "passed": true
@@ -40,13 +40,13 @@
       "passed": true
     },
     {
-      "path": "/solutions/data-intelligence/opengraph-image",
+      "path": "/solutions/custom-software/opengraph-image",
       "status": 200,
       "contentType": "image/png",
       "passed": true
     },
     {
-      "path": "/solutions/integrations-consulting/opengraph-image",
+      "path": "/solutions/data-intelligence/opengraph-image",
       "status": 200,
       "contentType": "image/png",
       "passed": true
@@ -58,9 +58,83 @@
       "passed": true
     },
     {
-      "path": "/solutions/ai-automation/opengraph-image",
+      "path": "/solutions/integrations-consulting/opengraph-image",
       "status": 200,
       "contentType": "image/png",
+      "passed": true
+    }
+  ],
+  "demoMedia": [
+    {
+      "page": "/portfolio/painting",
+      "kind": "video",
+      "asset": "/demos/painting-walkthrough.mp4",
+      "status": 200,
+      "contentType": "video/mp4",
+      "passed": true
+    },
+    {
+      "page": "/portfolio/painting",
+      "kind": "poster",
+      "asset": "/demos/painting-walkthrough.webp",
+      "status": 200,
+      "contentType": "image/webp",
+      "passed": true
+    },
+    {
+      "page": "/portfolio/painting",
+      "kind": "captions",
+      "asset": "/demos/painting-walkthrough.vtt",
+      "status": 200,
+      "contentType": "text/vtt; charset=UTF-8",
+      "passed": true
+    },
+    {
+      "page": "/portfolio/hoa",
+      "kind": "video",
+      "asset": "/demos/hoa-walkthrough.mp4",
+      "status": 200,
+      "contentType": "video/mp4",
+      "passed": true
+    },
+    {
+      "page": "/portfolio/hoa",
+      "kind": "poster",
+      "asset": "/demos/hoa-walkthrough.webp",
+      "status": 200,
+      "contentType": "image/webp",
+      "passed": true
+    },
+    {
+      "page": "/portfolio/hoa",
+      "kind": "captions",
+      "asset": "/demos/hoa-walkthrough.vtt",
+      "status": 200,
+      "contentType": "text/vtt; charset=UTF-8",
+      "passed": true
+    },
+    {
+      "page": "/portfolio/flooring",
+      "kind": "video",
+      "asset": "/demos/flooring-walkthrough.mp4",
+      "status": 200,
+      "contentType": "video/mp4",
+      "passed": true
+    },
+    {
+      "page": "/portfolio/flooring",
+      "kind": "poster",
+      "asset": "/demos/flooring-walkthrough.webp",
+      "status": 200,
+      "contentType": "image/webp",
+      "passed": true
+    },
+    {
+      "page": "/portfolio/flooring",
+      "kind": "captions",
+      "asset": "/demos/flooring-walkthrough.vtt",
+      "status": 200,
+      "contentType": "text/vtt; charset=UTF-8",
       "passed": true
     }
   ],
@@ -124,6 +198,12 @@
       "status": 404,
       "noindex": true,
       "passed": true
+    },
+    {
+      "path": "/portfolio/not-a-real-demo",
+      "status": 404,
+      "noindex": true,
+      "passed": true
     }
   ],
   "portal": {
@@ -142,15 +222,15 @@
     {
       "route": "/",
       "baselineUncompressedBytes": 573048,
-      "currentUncompressedBytes": 568468,
-      "deltaBytes": -4580,
+      "currentUncompressedBytes": 549028,
+      "deltaBytes": -24020,
       "calculatorDefinitionChunks": []
     },
     {
       "route": "/tools",
       "baselineUncompressedBytes": 550098,
-      "currentUncompressedBytes": 544704,
-      "deltaBytes": -5394,
+      "currentUncompressedBytes": 544914,
+      "deltaBytes": -5184,
       "calculatorDefinitionChunks": []
     }
   ],
@@ -162,7 +242,7 @@
       "description": "Custom business software and workflow automation from Knoxville, Tennessee. Connect customers, jobs, inventory and accounting around the way you work.",
       "canonical": "https://mycatalystinnovations.com",
       "h1": "Custom software. A better-running business.",
-      "mainWordCount": 1220,
+      "mainWordCount": 1244,
       "schemaTypes": [
         "Organization"
       ],
@@ -690,9 +770,54 @@
       "description": "Watch narrated walkthroughs of Oxendine Painting, Knoxville Flooring and the HOA platform built by Catalyst Innovations.",
       "canonical": "https://mycatalystinnovations.com/portfolio",
       "h1": "See the software do the work.",
-      "mainWordCount": 641,
+      "mainWordCount": 665,
       "schemaTypes": [
         "Organization"
+      ],
+      "image": "https://mycatalystinnovations.com/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/portfolio/flooring",
+      "status": 200,
+      "title": "Flooring Estimating Software Demo — Knoxville Flooring | Catalyst Innovations",
+      "description": "See the Knoxville Flooring application connect room measurements, waste, labor, preparation costs and an estimate summary in a narrated software demo.",
+      "canonical": "https://mycatalystinnovations.com/portfolio/flooring",
+      "h1": "Flooring estimating software, from room size to proposal handoff.",
+      "mainWordCount": 673,
+      "schemaTypes": [
+        "Organization",
+        "BreadcrumbList"
+      ],
+      "image": "https://mycatalystinnovations.com/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/portfolio/hoa",
+      "status": 200,
+      "title": "HOA Maintenance Request Software Demo | Catalyst Innovations",
+      "description": "Watch Catalyst’s HOA platform guide a resident through a maintenance request, supporting information and review using fictional sample communities.",
+      "canonical": "https://mycatalystinnovations.com/portfolio/hoa",
+      "h1": "HOA maintenance requests, from description to review.",
+      "mainWordCount": 675,
+      "schemaTypes": [
+        "Organization",
+        "BreadcrumbList"
+      ],
+      "image": "https://mycatalystinnovations.com/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/portfolio/painting",
+      "status": 200,
+      "title": "Painting Estimating Software Demo — Oxendine Painting | Catalyst Innovations",
+      "description": "Watch the Oxendine Painting demonstration prototype connect room scope, preparation, labor and material costs with estimate review using fictional data.",
+      "canonical": "https://mycatalystinnovations.com/portfolio/painting",
+      "h1": "Painting estimating software, from room-by-room scope to review.",
+      "mainWordCount": 690,
+      "schemaTypes": [
+        "Organization",
+        "BreadcrumbList"
       ],
       "image": "https://mycatalystinnovations.com/opengraph-image",
       "failures": []

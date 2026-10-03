@@ -88,6 +88,7 @@ export default function DemoShowcase({ detailed = false, context = "" }: { detai
             <span className="sr-only"> — {demo.displayName}</span>
           </button> : <p className="video-pending">Narrated walkthrough in production</p>}
           <div className="video-demo-links">
+            <Link className="text-link" href={`/portfolio/${demo.id}`}>View demo and transcript ↗<span className="sr-only"> — {demo.displayName}</span></Link>
             <Link className="text-link" href={inquiry(demo)}>Discuss a system like this ↗</Link>
             {detailed && demo.availability === "public-sample" && demo.publicUrl &&
               <a className="text-link" href={demo.publicUrl} target="_blank" rel="noopener noreferrer"
