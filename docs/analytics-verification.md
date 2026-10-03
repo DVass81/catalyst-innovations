@@ -20,16 +20,20 @@ Set `NEXT_PUBLIC_PLAUSIBLE_DOMAIN` to the domain registered in Plausible. It use
 
 ## Google connection and release status — October 2, 2026
 
-The current connection task uses free Search Console and Google Analytics only. Do not enable Plausible, buy a subscription, create a new Google account or change Outlook as part of it. The chosen existing account is recognized by Google; completing sign-in is pending Daniel. No real Google settings are configured locally yet.
+The current connection task uses free Search Console and Google Analytics only. Do not enable Plausible, buy a subscription, create a new Google account or change Outlook as part of it. Daniel completed sign-in and the security check with the chosen existing account. No existing Search Console property was available; the HTTPS URL-prefix property has been added. Analytics opened its first-use setup, so no existing Analytics account/property was available there.
+
+The Search Console HTML tag is prepared in the ignored local preview configuration and the `.do/app.yaml` deployment template. A production build passed (93 routes), and a local HTTP check found exactly one matching verification tag in the homepage HTML. No Google script was present in the server response. GA and Plausible remain disabled locally; the manual-tracking activation gate is false.
+
+Analytics setup is prepared with account and property name **Catalyst Innovations**, **New York time** (Eastern), **US Dollar**, Computers & Electronics, and the small-business category. Reporting objectives are leads and website traffic; all optional account data-sharing boxes are off. Creation is paused at Google's Terms of Service for Daniel's own review and acceptance. No measurement ID exists in this record yet, and property-level measurement/advertising settings have not been verified.
 
 For Search Console, check accessible existing properties first. If needed, add the URL-prefix property `https://mycatalystinnovations.com/` and obtain its HTML-tag content value for `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION`. Prepare the value on the redesign branch/local build. Production publication requires review; do not change production build settings if that triggers an unapproved deployment. After the approved deployment, verify ownership, submit `https://mycatalystinnovations.com/sitemap.xml` and inspect the homepage, pricing, solutions, industries and calculators.
 
 | Baseline item | Initial status |
 | --- | --- |
-| Search Console ownership and property reuse | Pending authenticated account inspection |
+| Search Console ownership and property reuse | No existing property; HTTPS URL-prefix property added, HTML tag prepared, live ownership verification pending |
 | Sitemap submission and indexed-page count | Pending ownership and approved deployment |
 | Search queries, impressions, clicks and position | Pending Search Console access; unavailable is not zero |
-| GA4 property, stream, timezone and currency | Pending authenticated account inspection |
+| GA4 property, stream, timezone and currency | First-use setup prepared with Eastern/USD; Daniel's terms acceptance pending, web stream not yet created |
 | Enhanced measurement and advertising settings | Pending provider verification; activation gate remains off |
 | Actual visitor counts and delivered-inquiry events | Pending configured deployment and provider receipt; unavailable is not zero |
 | Consent acceptance, decline and withdrawal | Passed local fixture checks; real-provider verification pending |
