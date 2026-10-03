@@ -1,5 +1,7 @@
 # Demo search release: mobile performance — October 3, 2026
 
+**Later follow-up:** the shared CSS cleanup and latest final-build timings are recorded in [shared-css-performance-2026-10-03.md](shared-css-performance-2026-10-03.md). The measurements below describe the preceding demo-page release, not that later build.
+
 The updated homepage's three-run median largest contentful paint (LCP) is **2.682 seconds**, compared with **2.750 seconds** for the existing production build tested immediately before it. The **2.5-second target is not yet met**: the current gap is 182 ms. All three updated runs measured **0 layout shift (CLS)**, within the 0.1 target, and scored **100 for accessibility, SEO and best practices**.
 
 These are local, simulated mobile measurements, not real-user Core Web Vitals or proof of Google rankings. The full release includes new demo links as well as the selector change, and a 68 ms difference is small enough that machine variation matters. It should not be presented as a guaranteed visitor-speed improvement attributable to one change.

@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Suspense } from "react";
 import "./globals.css";
 import "./redesign.css";
-import "./motion-story.css";
+import "./motion-shared.css";
 import "./visual-story.css";
 import "./experience.css";
 import Navbar from "@/components/Navbar";

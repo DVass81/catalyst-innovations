@@ -1,0 +1,29 @@
+/* Preserve shared layout rules without loading the unused software mockup UI. */
+.industry-content:has(+ .industry-motion) {
+  padding-bottom: 30px;
+}
+.story-film {
+  margin-top: 20px;
+}
+.story-film video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16/9;
+  background: #0a1628;
+  border-radius: 12px;
+}
+@media (min-width: 1450px) {
+  .hero {
+    gap: 60px;
+  }
+}
+@media (max-width: 1100px) {
+  .hero {
+    gap: 25px;
+  }
+}
+@media print {
+  .story-film {
+    display: none;
+  }
+}

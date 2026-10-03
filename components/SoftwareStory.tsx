@@ -1,4 +1,5 @@
 "use client";
+import "@/app/motion-story.css";
 import {
   useEffect,
   useId,

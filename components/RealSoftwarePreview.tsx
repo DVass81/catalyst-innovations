@@ -1,4 +1,5 @@
 import Image from "next/image";
+import "@/app/motion-story.css";
 import Link from "next/link";
 export default function RealSoftwarePreview() {
   return (

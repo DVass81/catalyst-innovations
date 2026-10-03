@@ -1,7 +1,7 @@
 {
-  "startedAt": "2026-10-03T21:46:39.641Z",
-  "completedAt": "2026-10-03T21:46:40.759Z",
-  "baseUrl": "http://127.0.0.1:3113",
+  "startedAt": "2026-10-03T23:38:39.781Z",
+  "completedAt": "2026-10-03T23:38:41.340Z",
+  "baseUrl": "http://127.0.0.1:3115",
   "scope": "Local production build; no browser execution or external requests. Canonical/social URLs checked against the sitemap. Images and demo media checked through the local origin.",
   "passed": true,
   "totalPages": 76,
@@ -16,7 +16,7 @@
       "passed": true
     },
     {
-      "path": "/solutions/ai-automation/opengraph-image",
+      "path": "/solutions/custom-software/opengraph-image",
       "status": 200,
       "contentType": "image/png",
       "passed": true
@@ -28,7 +28,19 @@
       "passed": true
     },
     {
+      "path": "/solutions/ai-automation/opengraph-image",
+      "status": 200,
+      "contentType": "image/png",
+      "passed": true
+    },
+    {
       "path": "/solutions/manufacturing-operations/opengraph-image",
+      "status": 200,
+      "contentType": "image/png",
+      "passed": true
+    },
+    {
+      "path": "/solutions/supply-chain/opengraph-image",
       "status": 200,
       "contentType": "image/png",
       "passed": true
@@ -40,19 +52,7 @@
       "passed": true
     },
     {
-      "path": "/solutions/custom-software/opengraph-image",
-      "status": 200,
-      "contentType": "image/png",
-      "passed": true
-    },
-    {
       "path": "/solutions/data-intelligence/opengraph-image",
-      "status": 200,
-      "contentType": "image/png",
-      "passed": true
-    },
-    {
-      "path": "/solutions/supply-chain/opengraph-image",
       "status": 200,
       "contentType": "image/png",
       "passed": true

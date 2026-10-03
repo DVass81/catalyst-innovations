@@ -177,6 +177,7 @@ test("illustrations render meaningful content with no running JavaScript", () =>
   const { renderToStaticMarkup } = require("react-dom/server");
   const player = load("lib/storyPlayback.ts");
   const { default: SoftwareStory } = load("components/SoftwareStory.tsx", {
+    "@/app/motion-story.css": {},
     "@/lib/storyPlayback": player,
   });
   const html = renderToStaticMarkup(
