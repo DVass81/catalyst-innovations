@@ -42,11 +42,11 @@ services:
         value: ""
         scope: RUN_AND_BUILD_TIME
       - key: NEXT_PUBLIC_GA_ID
-        value: ""
+        value: "G-X1CZXDD7JC"
         scope: RUN_AND_BUILD_TIME
-      # Keep disabled until the GA4 stream exists and manual tracking is reviewed.
+      # Provider manual-tracking review performed 2026-10-02; release template only.
       - key: NEXT_PUBLIC_GA_MANUAL_TRACKING_VERIFIED
-        value: "false"
+        value: "true"
         scope: RUN_AND_BUILD_TIME
       - key: CONSULTATION_WEBHOOK_URL
         value: ""
