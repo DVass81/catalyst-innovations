@@ -1,6 +1,6 @@
 {
   "date": "2026-10-03",
-  "releaseState": "Local preview on redesign/clearer-catalyst; not published to production",
+  "releaseState": "Published with explicitly approved release 691a116 on October 3; DigitalOcean deployment 0bce847d-0607-4fa5-b009-5ac17b69bf08 Success / Live Deployment; 73/73 production pages pass. See nonbrand-search-release-2026-10-03.md.",
   "preview": "http://127.0.0.1:3111",
   "content": {
     "newBuyerFaqCount": 10,
