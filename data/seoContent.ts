@@ -1,4 +1,5 @@
 import { buyerFaqs } from "./buyerFaqs";
+import type { DemoId } from "./demos";
 export type FAQ = { question: string; answer: string };
 export type SolutionContent = {
   title: string;
@@ -10,6 +11,8 @@ export type SolutionContent = {
   tools: string[];
   guide: string;
   faqs: FAQ[];
+  demoEvidence?: DemoId[];
+  costGuidance?: FAQ;
 };
 
 export const solutionContent: Record<string, SolutionContent> = {
@@ -21,6 +24,8 @@ export const solutionContent: Record<string, SolutionContent> = {
     example: "An illustrative service workflow carries the same customer and job reference from inquiry through an approved quote, scheduled work and invoice preparation. Each handoff has an owner, and existing accounting software can remain the financial system of record where integration is feasible.",
     firstSteps: ["Map one complete workflow, including exceptions.", "Agree on the records, permissions and review steps.", "Test a focused version with the people who will use it."],
     tools: ["manual-work", "quoting-time", "project-roi"], guide: "custom-software-vs-off-the-shelf",
+    demoEvidence: ["flooring", "painting"],
+    costGuidance: buyerFaqs.cost,
     faqs: [buyerFaqs.existingSoftware, buyerFaqs.timeline, buyerFaqs.startingSmall, { question: "What is the difference between CRM, ERP and WMS?", answer: "A CRM organizes customer and sales information. An ERP connects broader business operations such as jobs, purchasing and accounting. A WMS organizes warehouse work such as receiving, locations and picking. We scope the capabilities you need rather than assume you need every module." }],
   },
   "ai-automation": {

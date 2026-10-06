@@ -83,6 +83,49 @@ test("every existing industry, solution and calculator has distinct useful conte
   }
 });
 
+test("custom-software evidence and cost guidance are readable without JavaScript and use reviewed records", async () => {
+  const demos = load("data/demos.ts");
+  const demoPages = load("data/demoPages.ts");
+  const { buyerFaqs } = load("data/buyerFaqs.ts");
+  const custom = content.solutionContent["custom-software"];
+  assert.deepEqual(custom.demoEvidence, ["flooring", "painting"]);
+  assert.deepEqual(custom.costGuidance, buyerFaqs.cost);
+  const page = load("app/solutions/[slug]/page.tsx", {
+    ...common,
+    "@/data/demos": demos,
+    "@/data/demoPages": demoPages,
+    "@/data/motionStories": load("data/motionStories.ts"),
+    "@/components/VisualStory": { default: () => React.createElement("div") },
+    "@/components/SiteSections": {
+      PageIntro: ({ title, text }) => React.createElement("header", null, React.createElement("h1", null, title), React.createElement("p", null, text)),
+      DiscussCTA: () => React.createElement("aside"),
+    },
+    "./solution.module.css": { default: {} },
+  });
+  const html = renderToStaticMarkup(await page.default({ params: Promise.resolve({ slug: "custom-software" }) }));
+  const evidence = html.match(/<section\b[^>]*aria-labelledby="software-evidence-heading"[^>]*>([\s\S]*?)<\/section>/)?.[1];
+  assert.ok(evidence, "actual examples have their own named section");
+  for (const id of custom.demoEvidence) {
+    const demo = demos.demos.find(item => item.id === id);
+    const context = demoPages.getDemoPage(id);
+    assert.ok(demo?.walkthrough && context, `${id}: playable watch page and reviewed context exist`);
+    assert.ok(evidence.includes(`href="/portfolio/${id}"`));
+    assert.ok(evidence.includes(renderToStaticMarkup(React.createElement("p", null, context.boundary))), `${id}: full sample/prototype boundary remains visible`);
+    assert.ok(evidence.includes(`alt="${demo.steps[0].alt}"`));
+    assert.ok(fs.existsSync(path.join(__dirname, "..", "public", demo.steps[0].image)));
+  }
+  assert.equal((evidence.match(/loading="lazy"/g) || []).length, 2);
+  assert.match(evidence, /Demonstration prototype/);
+  assert.doesNotMatch(evidence, /<video\b|<iframe\b|<details\b|ondigitalocean\.app/);
+  const cost = html.match(/<section\b[^>]*aria-labelledby="software-cost-heading"[^>]*>([\s\S]*?)<\/section>/)?.[1];
+  assert.ok(cost.includes(renderToStaticMarkup(React.createElement("p", null, buyerFaqs.cost.answer))));
+  assert.match(cost, /href="\/pricing">View custom software implementation and monthly pricing/);
+  for (const service of services.services.filter(item => item.slug !== "custom-software")) {
+    const otherHtml = renderToStaticMarkup(await page.default({ params: Promise.resolve({ slug: service.slug }) }));
+    assert.doesNotMatch(otherHtml, /software-evidence-heading|software-cost-heading/, `${service.slug}: optional sections do not alter other solution pages`);
+  }
+});
+
 test("guide pages expose complete readable content, organization attribution and matching metadata without JavaScript", async () => {
   const page = load("app/insights/[slug]/page.tsx", { ...common, "../insights.css": {} });
   for (const article of insights.insights) {
