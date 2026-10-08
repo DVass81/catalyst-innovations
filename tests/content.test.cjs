@@ -90,7 +90,7 @@ test("custom-software evidence and cost guidance are readable without JavaScript
   const custom = content.solutionContent["custom-software"];
   assert.deepEqual(custom.demoEvidence, ["flooring", "painting"]);
   assert.deepEqual(custom.costGuidance, buyerFaqs.cost);
-  const page = load("app/solutions/[slug]/page.tsx", {
+  const pageMocks = {
     ...common,
     "@/data/demos": demos,
     "@/data/demoPages": demoPages,
@@ -101,7 +101,8 @@ test("custom-software evidence and cost guidance are readable without JavaScript
       DiscussCTA: () => React.createElement("aside"),
     },
     "./solution.module.css": { default: {} },
-  });
+  };
+  const page = load("app/solutions/[slug]/page.tsx", pageMocks);
   const html = renderToStaticMarkup(await page.default({ params: Promise.resolve({ slug: "custom-software" }) }));
   const evidence = html.match(/<section\b[^>]*aria-labelledby="software-evidence-heading"[^>]*>([\s\S]*?)<\/section>/)?.[1];
   assert.ok(evidence, "actual examples have their own named section");
@@ -117,6 +118,13 @@ test("custom-software evidence and cost guidance are readable without JavaScript
   assert.equal((evidence.match(/loading="lazy"/g) || []).length, 2);
   assert.match(evidence, /Demonstration prototype/);
   assert.doesNotMatch(evidence, /<video\b|<iframe\b|<details\b|ondigitalocean\.app/);
+  const publicPrototypePage = load("app/solutions/[slug]/page.tsx", {
+    ...pageMocks,
+    "@/data/demos": { demos: demos.demos.map(demo => demo.id === "painting" ? { ...demo, availability: "public-sample", status: "Public sample", publicUrl: "https://painting-sample.example/" } : demo) },
+  });
+  const publicPrototypeHtml = renderToStaticMarkup(await publicPrototypePage.default({ params: Promise.resolve({ slug: "custom-software" }) }));
+  const publicEvidence = publicPrototypeHtml.match(/<section\b[^>]*aria-labelledby="software-evidence-heading"[^>]*>([\s\S]*?)<\/section>/)?.[1];
+  assert.match(publicEvidence, /Demonstration prototype/, "making the public sample available must not imply a completed painting deployment");
   const cost = html.match(/<section\b[^>]*aria-labelledby="software-cost-heading"[^>]*>([\s\S]*?)<\/section>/)?.[1];
   assert.ok(cost.includes(renderToStaticMarkup(React.createElement("p", null, buyerFaqs.cost.answer))));
   assert.match(cost, /href="\/pricing">View custom software implementation and monthly pricing/);

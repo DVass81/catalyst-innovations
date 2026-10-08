@@ -235,7 +235,7 @@ test("all three visual concepts expose readable initial stories and contextual w
   }
 });
 
-test("video gallery preserves actual demo assets and only the public HOA can link out", () => {
+test("video gallery preserves actual demo assets and links only verified public samples", () => {
   const { demos } = load("data/demos.ts");
   assert.equal(demos.length, 3);
   for (const demo of demos) {
@@ -245,7 +245,9 @@ test("video gallery preserves actual demo assets and only the public HOA can lin
       assert.ok(fs.existsSync(path.join(__dirname, "../public", step.image)));
       assert.ok(step.alt && step.text && step.width > 0 && step.height > 0);
     }
-    if (demo.id !== "hoa") assert.equal(demo.publicUrl, undefined);
+    if (demo.availability === "public-sample") {
+      assert.equal(new URL(demo.publicUrl).protocol, "https:");
+    } else assert.equal(demo.publicUrl, undefined);
     if (demo.walkthrough) {
       assert.ok(demo.walkthrough.durationSeconds >= 60 && demo.walkthrough.durationSeconds <= 90);
       assert.ok(demo.walkthrough.transcript.trim().length > 100);
@@ -255,7 +257,7 @@ test("video gallery preserves actual demo assets and only the public HOA can lin
       }
     }
   }
-  assert.equal(demos.find(d => d.id === "painting").availability, "archived-guided");
+  assert.match(demos.find(d => d.id === "painting").status, /Demonstration prototype/);
   const React = require("react");
   const { renderToStaticMarkup } = require("react-dom/server");
   const { default: DemoShowcase } = load("components/DemoShowcase.tsx", {
@@ -265,7 +267,7 @@ test("video gallery preserves actual demo assets and only the public HOA can lin
     "next/link": { default: ({ children, ...props }) => React.createElement("a", props, children) },
   });
   const html = renderToStaticMarkup(React.createElement(DemoShowcase, { detailed: true }));
-  assert.equal((html.match(/Explore the public sample/g) || []).length, 1);
+  assert.equal((html.match(/Explore the public sample/g) || []).length, demos.filter(demo => demo.availability === "public-sample" && demo.publicUrl).length);
   assert.match(html, /demo=flooring&amp;industry=construction/);
   assert.match(html, /Planned system/);
   assert.match(html, /Oxendine Painting/);

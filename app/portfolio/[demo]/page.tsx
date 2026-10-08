@@ -50,7 +50,7 @@ export default async function DemoWatchPage({ params }: Props) {
         <h2 id="demo-capabilities-heading">What you’ll see</h2>
         <ul>{demo.capabilities.map(capability => <li key={capability}>{capability}</li>)}</ul>
         <Link className="button" href={inquiry}>Discuss a system like this ↗</Link>
-        {demo.availability === "public-sample" && demo.publicUrl && <a className="text-link" href={demo.publicUrl} target="_blank" rel="noopener noreferrer">Explore the public sample ↗</a>}
+        {demo.availability === "public-sample" && demo.publicUrl && <a className="text-link" href={demo.publicUrl} target="_blank" rel="noopener noreferrer">Explore the public sample ↗<span className="sr-only"> (opens in a new tab)</span></a>}
       </aside>
     </section>
 

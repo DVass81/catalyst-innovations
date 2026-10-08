@@ -87,7 +87,7 @@ export default async function Solution({
               <Image src={screen.image} width={screen.width} height={screen.height} alt={screen.alt} sizes="(max-width: 700px) 88vw, (max-width: 1100px) 43vw, 520px" />
             </div>
             <div className={styles.copy}>
-              <p className="overline">{demo.availability === "archived-guided" ? "Demonstration prototype" : demo.status}</p>
+              <p className="overline">{demo.id === "painting" ? "Demonstration prototype" : demo.status}</p>
               <h3>{demo.displayName}</h3>
               <p>{demo.purpose}</p>
               <p className={styles.boundary}>{page.boundary}</p>

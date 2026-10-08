@@ -90,13 +90,14 @@ export const demos: Demo[] = [
     purpose:
       "An estimating workflow that connects room measurements with waste, materials, labor and preparation costs, then shows the estimate and proposal handoff together.",
     industry: "construction",
-    availability: "guided-only",
-    status: "Guided preview",
+    availability: "public-sample",
+    status: "Public interactive sample",
     capabilities: [
       "Room measurements and area totals",
       "Editable waste, labor and preparation costs",
       "Estimate summary with proposal handoff",
     ],
+    publicUrl: "https://catalyst-flooring-public-sample-6kvkd.ondigitalocean.app/",
     steps: [
       {
         title: "Measure the work",
@@ -138,13 +139,14 @@ export const demos: Demo[] = [
     purpose:
       "A demonstration prototype that keeps room-by-room scope, preparation work and labor and material pricing connected through estimate review.",
     industry: "painting",
-    availability: "archived-guided",
-    status: "Planned system · recovered prototype",
+    availability: "public-sample",
+    status: "Public sample · Demonstration prototype",
     capabilities: [
       "Editable area-by-area scope",
       "Connected labor and material costing",
       "Estimate review with a simulated customer handoff",
     ],
+    publicUrl: "https://catalyst-painting-public-demo-euchg.ondigitalocean.app/",
     steps: [
       {
         title: "Define the scope",

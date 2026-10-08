@@ -94,6 +94,7 @@ export default function DemoShowcase({ detailed = false, context = "" }: { detai
               <a className="text-link" href={demo.publicUrl} target="_blank" rel="noopener noreferrer"
                 onClick={() => track("demo_interaction", { demo: demo.id, action: "open_public" })}>
                 Explore the public sample ↗
+                <span className="sr-only"> (opens in a new tab)</span>
               </a>}
           </div>
         </div>

@@ -90,7 +90,7 @@ test("all three watch pages expose real playable media and the full transcript i
   }
 });
 
-test("watch pages preserve sample/prototype boundaries and publish only the HOA public environment", async () => {
+test("watch pages preserve sample/prototype boundaries and link only verified public sample environments", async () => {
   for (const demo of demos.demos) {
     const html = renderToStaticMarkup(await watch.default(props(demo.id)));
     const page = pages.getDemoPage(demo.id);
@@ -99,7 +99,8 @@ test("watch pages preserve sample/prototype boundaries and publish only the HOA 
     assert.match(html, /Synthetic narration/);
     for (const capability of demo.capabilities) assert.ok(html.includes(capability));
     const externalLinks = [...html.matchAll(/href="(https?:\/\/[^\"]+)"/g)].map(match => match[1]);
-    assert.deepEqual(externalLinks, demo.id === "hoa" ? [demo.publicUrl] : [], "private/archived environments have no live entry link");
+    assert.deepEqual(externalLinks, demo.availability === "public-sample" && demo.publicUrl ? [demo.publicUrl] : [], "private/archived environments have no live entry link");
+    assert.doesNotMatch(html, /knox-flooring-operations-gf5x3|oxendine-operations-demo-vkceu/, "private and archived original destinations are never published");
     if (demo.id === "painting") {
       assert.match(html, /Planned system · Demonstration prototype/);
       assert.match(html, /Approval and sending are simulated/);
@@ -182,5 +183,9 @@ test("demo cards expose watch-page links while retaining existing anchor and mod
     assert.match(card, /aria-haspopup="dialog"/);
     assert.match(card, /Watch walkthrough/);
     assert.ok(card.includes(`/consultation?industry=plumbing&amp;problem=quoting&amp;demo=${demo.id}`));
+    if (demo.availability === "public-sample" && demo.publicUrl) {
+      assert.ok(card.includes(`href="${demo.publicUrl}"`), `${demo.id}: verified public sample is available`);
+      assert.match(card, /opens in a new tab/);
+    }
   }
 });
