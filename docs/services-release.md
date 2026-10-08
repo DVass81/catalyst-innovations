@@ -1,6 +1,10 @@
-# Services release — review package
+# Services release — published
 
 Prepared October 8, 2026. Website branch: `redesign/clearer-catalyst`.
+
+Daniel approved website publication on October 8, 2026. The approved code was pushed to `main` as `1174e13dae25d357b4ec935f7aaa3ba2a4c7f375`. DigitalOcean deployment `1618d283-29b9-46db-9f78-932cef489ff4` went live at 2:27:25 p.m. Eastern. The production application is healthy.
+
+Shareable production page: https://mycatalystinnovations.com/services
 
 ## Preview
 
@@ -9,7 +13,7 @@ Prepared October 8, 2026. Website branch: `redesign/clearer-catalyst`.
 - Painting demonstration prototype: https://catalyst-painting-public-demo-euchg.ondigitalocean.app/
 - Existing public HOA sample: https://commonplace-public-hp2b7.ondigitalocean.app/
 
-The public samples have been activated following Daniel's explicit $20/month hosting approval. The Services page remains on the redesign branch for Daniel's finished-page review before website publication. Development-only loopback preview settings remain available; verified public URLs take precedence.
+The public samples were activated following Daniel's explicit $20/month hosting approval, and the Services page was published after his final page approval. Development-only loopback preview settings remain available; verified public URLs take precedence.
 
 ## Exact additional hosting configuration
 
@@ -41,7 +45,7 @@ Flooring uses its public branch's default Dockerfile, which is identical to `Doc
 1. Completed: cost approval, demo branches pushed, and separate public apps activated.
 2. Completed: production builds, browser workflows, own reset, public branding, and readiness checks.
 3. Completed: deployed API verification, verified public URLs integrated throughout the website, and final checks.
-4. Show the completed page with its final public links. After Daniel approves publication, release the website through its existing deployment process and check the production Services route, navigation, links, canonical and sitemap.
+4. Completed: Daniel reviewed and approved publication. The website release is live, with the production Services route, navigation, links, canonical and sitemap verified.
 
 ## Verification completed while preparing the package
 
@@ -57,3 +61,16 @@ Flooring uses its public branch's default Dockerfile, which is identical to `Doc
 - Two-hour expiry and concurrency limits are covered by deterministic local tests rather than waiting two hours in production.
 
 No messages, invoices, payments, appointments or real customer records were created during verification.
+
+## Production checks
+
+- `/services` returns 200 with all ten offerings and no local preview URLs.
+- Website Design, Elevate, HOA, Flooring and Painting destinations match the approved links and return 200. All eight internal solution destinations return 200.
+- Navigation places Services before Solutions; the footer also links to Services. Canonical is `https://mycatalystinnovations.com/services`, and the live sitemap includes the page.
+- Prototype, fictional-data and disabled/simulated-action disclosures remain visible.
+- At a 390-pixel phone viewport, there is no horizontal overflow; keyboard Enter opens and closes the mobile menu. No browser warnings or errors appeared. Temporary viewport override was reset afterward.
+- Production screenshot: `outputs/services-preview/services-live-opening.jpg` in the parent workspace.
+
+## Separate maintenance follow-up
+
+The production build reported an existing high-severity transitive dependency advisory in `source-map-js` 1.2.1: [GHSA-68fv-2mgg-jv7q](https://github.com/advisories/GHSA-68fv-2mgg-jv7q), fixed in 1.2.2. Read-only triage found no public route that accepts or parses attacker-supplied source maps, and no reference in compiled server routes. This was not a demonstrated release blocker. A transitive lockfile update, audit, tests and build remain a separate maintenance item; no dependency changes were included in this approved release.
