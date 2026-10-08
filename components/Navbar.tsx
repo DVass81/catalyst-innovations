@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { Menu, X, ArrowUpRight } from "lucide-react";
 import { LogoLockup } from "./Logo";
 export const links = [
+  ["Services", "/services"],
   ["Solutions", "/solutions"],
   ["Industries", "/industries"],
   ["Demos", "/portfolio"],
@@ -65,7 +66,12 @@ export default function Navbar() {
       {open && (
         <nav id="mobile-nav" className="mobile-nav" aria-label="Mobile">
           {links.map(([label, href]) => (
-            <Link key={href} href={href} onClick={() => setOpen(false)}>
+            <Link
+              key={href}
+              href={href}
+              aria-current={path.startsWith(href) ? "page" : undefined}
+              onClick={() => setOpen(false)}
+            >
               {label}
             </Link>
           ))}

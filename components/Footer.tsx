@@ -18,6 +18,7 @@ export default function Footer() {
         </div>
         <div>
           <span className="overline">Explore</span>
+          <Link href="/services">Services</Link>
           <Link href="/solutions">Solutions</Link>
           <Link href="/industries">Industries</Link>
           <Link href="/portfolio">Demos</Link>

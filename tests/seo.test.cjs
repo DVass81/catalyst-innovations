@@ -105,6 +105,7 @@ test("the sitemap includes published guides and playable demo pages without reti
     assert.equal(entry.lastModified, article.updatedAt);
   }
   assert.ok(urls.includes(`${site.url}/insights`));
+  assert.ok(urls.includes(`${site.url}/services`));
   for (const demo of demos.demos) {
     const entry = sitemap.find((entry) => entry.url === `${site.url}/portfolio/${demo.id}`);
     assert.ok(entry, demo.id);

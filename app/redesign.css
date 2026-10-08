@@ -180,7 +180,7 @@ p {
 }
 .mobile-nav {
   padding: 15px 25px;
-  display: grid;
+  display: none;
   gap: 4px;
   border-top: 1px solid var(--line);
 }
@@ -1355,15 +1355,18 @@ p {
   .wrap {
     width: calc(100% - 48px);
   }
-  .desktop-nav {
-    gap: 16px;
-  }
-  .desktop-nav a {
-    font-size: 11px;
-  }
+  .desktop-nav,
   .nav-cta {
-    font-size: 10px;
-    padding: 11px;
+    display: none;
+  }
+  .mobile-toggle {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+  }
+  .mobile-nav {
+    display: grid;
   }
   .site-nav {
     gap: 15px;
@@ -1407,16 +1410,6 @@ p {
   }
 }
 @media (max-width: 850px) {
-  .desktop-nav,
-  .nav-cta {
-    display: none;
-  }
-  .mobile-toggle {
-    display: grid;
-    place-items: center;
-    width: 44px;
-    height: 44px;
-  }
   .site-nav {
     height: 76px;
   }

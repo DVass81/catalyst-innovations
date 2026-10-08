@@ -9,6 +9,7 @@ import { demos } from "@/data/demos";
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes = [
     "",
+    "/services",
     "/solutions",
     "/industries",
     "/portfolio",

@@ -41,13 +41,14 @@ test("analytics rejects unknown events, arbitrary field values and personal/calc
 });
 
 test("analytics only permits reviewed public routes and removes queries, fragments and referrers", () => {
+  assert.equal(analytics.analyticsPath("/services?email=private#answer"), "/services");
   assert.equal(analytics.analyticsPath("/consultation?email=private#answer"), "/consultation");
   assert.equal(analytics.analyticsPath("/tools/manual-work#154321"), "/tools/manual-work");
   for (const id of ["hoa", "flooring", "painting"]) {
     assert.equal(analytics.analyticsPath(`/portfolio/${id}?email=private#answer`), `/portfolio/${id}`);
   }
   assert.equal(analytics.analyticsPath("/portfolio/private-customer"), null);
-  for (const input of ["https://private.test/about", "//private.test", "/users/person@example.test", "/insights/private", "/portal", "/founders", "/api/health", "/about/private", null]) {
+  for (const input of ["https://private.test/about", "//private.test", "/users/person@example.test", "/services/private", "/insights/private", "/portal", "/founders", "/api/health", "/about/private", null]) {
     assert.equal(analytics.analyticsPath(input), null);
   }
   assert.deepEqual(analytics.analyticsPageFields("https://site.example/?email=private", "/contact?email=private#secret"), {
@@ -113,6 +114,20 @@ test("unknown routes neither leak paths nor inherit the previous page context", 
   assert.equal(calls.pages.at(-1), null);
   session.navigate("/about");
   assert.equal(calls.sends.length, 2);
+});
+
+test("services visits remain consent-controlled and exclude email-link parameters", () => {
+  const { calls, session } = sessionFixture();
+  session.navigate("/services?recipient=person@example.test#software");
+  session.consent("denied");
+  assert.equal(calls.sends.length, 0);
+  session.consent("granted");
+  session.navigate("/services?campaign=private#examples");
+  assert.deepEqual(calls.sends, [{ name: "page_view", path: "/services", props: {} }]);
+  session.consent("denied");
+  session.navigate("/services");
+  assert.equal(calls.stops, 1);
+  assert.equal(calls.sends.length, 1);
 });
 
 test("GA cannot activate until its manual-measurement configuration is confirmed", () => {
