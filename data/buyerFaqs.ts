@@ -1,3 +1,5 @@
+import { catalystTimelineAnswer } from "./catalystProcess";
+
 /** Buyer guidance, not additional contract terms or delivery guarantees. */
 export type BuyerFAQ = { question: string; answer: string };
 
@@ -8,7 +10,7 @@ export const buyerFaqs = {
   },
   timeline: {
     question: "How long does it take to build and launch a system?",
-    answer: "The timeline depends on the agreed scope, access to existing systems, data readiness and time for your team to review the work. We define milestones and responsibilities in the proposal. A focused first workflow can be scoped separately from a larger rollout; we do not promise a fixed launch date before understanding the work.",
+    answer: catalystTimelineAnswer,
   },
   existingSoftware: {
     question: "Do we need to replace all our software?",

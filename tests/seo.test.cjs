@@ -64,7 +64,7 @@ test("founder and retired-tool links redirect permanently to the existing public
 test("all standard pricing packages and their costs are visible in server-rendered HTML", () => {
   const React = require("react");
   const { renderToStaticMarkup } = require("react-dom/server");
-  const pricing = load("data/pricing.ts", { "./buyerFaqs": load("data/buyerFaqs.ts") });
+  const pricing = load("data/pricing.ts", { "./buyerFaqs": load("data/buyerFaqs.ts", { "./catalystProcess": load("data/catalystProcess.ts") }) });
   const reveal = load("components/Reveal.tsx");
   const { default: PricingGrid } = load("components/PricingGrid.tsx", {
     "./Reveal": reveal,

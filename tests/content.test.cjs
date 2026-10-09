@@ -22,7 +22,8 @@ function load(file, mocks = {}) {
 }
 const insights = load("data/insights.ts");
 const analytics = load("lib/analytics.ts");
-const content = load("data/seoContent.ts", { "./buyerFaqs": load("data/buyerFaqs.ts") });
+const buyerContent = load("data/buyerFaqs.ts", { "./catalystProcess": load("data/catalystProcess.ts") });
+const content = load("data/seoContent.ts", { "./buyerFaqs": buyerContent });
 const calculators = load("lib/calculators.ts");
 const services = load("data/services.ts");
 const redesign = load("data/redesign.ts", { "./industries": load("data/industries.ts"), "./industryNeeds": load("data/industryNeeds.ts") });
@@ -86,7 +87,7 @@ test("every existing industry, solution and calculator has distinct useful conte
 test("custom-software evidence and cost guidance are readable without JavaScript and use reviewed records", async () => {
   const demos = load("data/demos.ts");
   const demoPages = load("data/demoPages.ts");
-  const { buyerFaqs } = load("data/buyerFaqs.ts");
+  const { buyerFaqs } = buyerContent;
   const custom = content.solutionContent["custom-software"];
   assert.deepEqual(custom.demoEvidence, ["flooring", "painting"]);
   assert.deepEqual(custom.costGuidance, buyerFaqs.cost);

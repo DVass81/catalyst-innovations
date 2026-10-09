@@ -9,6 +9,8 @@ import StoryFilm from "@/components/StoryFilm";
 import IndustrySelector from "@/components/IndustrySelector";
 import { DiscussCTA, SolutionCards, Projects } from "@/components/SiteSections";
 import SavingsPreview from "@/components/SavingsPreview";
+import CatalystProcess from "@/components/CatalystProcess";
+import { catalystProcess } from "@/data/catalystProcess";
 export const metadata = pageMetadata({
   path: "/",
   title: "Catalyst Innovations — Custom software. A better-running business.",
@@ -42,6 +44,7 @@ export default function Home() {
               See the actual software <ArrowRight size={16} />
             </Link>
           </div>
+          <p className="hero-discovery">{catalystProcess.discoveryInvitation}</p>
           <p className="hero-footnote">
             Based in Knoxville, Tennessee. Built around your team, your process and the tools you already use.
           </p>
@@ -58,6 +61,7 @@ export default function Home() {
           <span>Your numbers</span>
         </div>
       </div>
+      <CatalystProcess />
       <section className="section wrap" id="how-it-works">
         <div className="section-heading">
           <div>
@@ -134,41 +138,6 @@ export default function Home() {
         <SavingsPreview />
       </section>
       <FounderIntro />
-      <section className="section process-section">
-        <div className="wrap">
-          <p className="overline">How we work together</p>
-          <h2>
-            We listen. We build.
-            <br />
-            <em>We make it work.</em>
-          </h2>
-          <div className="three-grid process-grid">
-            {[
-              [
-                "01",
-                "Show us one sticking point.",
-                "Bring a repeated task, a spreadsheet or a process that slows your team down. We’ll talk through how it works today and what you want to improve.",
-              ],
-              [
-                "02",
-                "Agree on a useful first step.",
-                "We define what the system needs to do, what it should connect to and the proposed scope and cost before building. You can start with one process.",
-              ],
-              [
-                "03",
-                "Launch and improve.",
-                "We help your team put it to work and refine the system as your business evolves.",
-              ],
-            ].map(([n, h, p]) => (
-              <div key={n}>
-                <span>{n}</span>
-                <h3>{h}</h3>
-                <p>{p}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
       <section className="section wrap faq-section">
         <div>
           <p className="overline">A few good questions</p>

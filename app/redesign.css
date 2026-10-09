@@ -217,6 +217,14 @@ p {
   color: #657079;
   margin-top: 25px;
 }
+.hero-discovery {
+  margin-top: 18px;
+  font-size: 13px;
+  color: var(--blue);
+}
+.hero-discovery + .hero-footnote {
+  margin-top: 10px;
+}
 .hero-visual {
   position: relative;
   min-height: 490px;
@@ -890,6 +898,127 @@ p {
 .process-grid p {
   font-size: 13px;
   color: var(--muted);
+}
+.catalyst-process {
+  border-bottom: 1px solid var(--line);
+  background: var(--cream);
+}
+.catalyst-process-heading {
+  margin-bottom: 46px;
+}
+.catalyst-process-heading > p {
+  max-width: 470px;
+}
+.catalyst-process-grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 32px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.catalyst-process-grid::before {
+  content: "";
+  position: absolute;
+  top: 26px;
+  left: 26px;
+  right: calc(25% - 18px);
+  height: 1px;
+  background: linear-gradient(90deg, #4a8fd4, #bbcddd);
+}
+.catalyst-process-grid > li {
+  position: relative;
+  min-width: 0;
+}
+.catalyst-process-number {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border: 1px solid #b3c9dc;
+  border-radius: 50%;
+  background: var(--cream);
+  color: var(--blue);
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
+.catalyst-process-step {
+  padding-top: 24px;
+}
+.catalyst-process-step h3,
+.catalyst-process-step h4 {
+  font-size: 22px;
+  line-height: 1.3;
+  margin: 0 0 16px;
+}
+.catalyst-process-grid > li:nth-child(3) h3,
+.catalyst-process-grid > li:nth-child(3) h4 {
+  color: var(--blue);
+}
+.catalyst-process-step p {
+  color: var(--muted);
+  font-size: 14px;
+  margin: 0;
+}
+.catalyst-process-actions {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  flex-wrap: wrap;
+  margin-top: 42px;
+  padding-top: 30px;
+  border-top: 1px solid var(--line);
+}
+.catalyst-process-note {
+  max-width: 830px;
+  margin-top: 20px;
+  font-size: 12px;
+  color: var(--muted);
+}
+@media (max-width: 1100px) {
+  .catalyst-process-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: 36px;
+  }
+  .catalyst-process-grid::before {
+    display: none;
+  }
+}
+@media (max-width: 700px) {
+  .catalyst-process-grid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  .catalyst-process-grid > li {
+    display: grid;
+    grid-template-columns: 52px minmax(0, 1fr);
+    gap: 20px;
+  }
+  .catalyst-process-grid > li:not(:last-child)::before {
+    content: "";
+    position: absolute;
+    top: 52px;
+    bottom: -30px;
+    left: 26px;
+    width: 1px;
+    background: #bbcddd;
+  }
+  .catalyst-process-step {
+    padding-top: 10px;
+  }
+  .catalyst-process-step h3,
+  .catalyst-process-step h4 {
+    font-size: 20px;
+    margin-bottom: 12px;
+  }
+  .catalyst-process-heading {
+    margin-bottom: 32px;
+  }
+  .catalyst-process-actions {
+    gap: 16px;
+  }
 }
 .team-note {
   border-top: 1px solid #cad4db;
