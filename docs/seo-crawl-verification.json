@@ -1,10 +1,10 @@
 {
-  "startedAt": "2026-10-03T23:38:39.781Z",
-  "completedAt": "2026-10-03T23:38:41.340Z",
-  "baseUrl": "http://127.0.0.1:3115",
+  "startedAt": "2026-10-12T11:00:53.866Z",
+  "completedAt": "2026-10-12T11:00:55.320Z",
+  "baseUrl": "http://127.0.0.1:3121",
   "scope": "Local production build; no browser execution or external requests. Canonical/social URLs checked against the sitemap. Images and demo media checked through the local origin.",
   "passed": true,
-  "totalPages": 76,
+  "totalPages": 77,
   "failedPages": 0,
   "duplicateTitles": [],
   "duplicateDescriptions": [],
@@ -28,6 +28,12 @@
       "passed": true
     },
     {
+      "path": "/solutions/process-automation/opengraph-image",
+      "status": 200,
+      "contentType": "image/png",
+      "passed": true
+    },
+    {
       "path": "/solutions/ai-automation/opengraph-image",
       "status": 200,
       "contentType": "image/png",
@@ -46,7 +52,7 @@
       "passed": true
     },
     {
-      "path": "/solutions/process-automation/opengraph-image",
+      "path": "/solutions/integrations-consulting/opengraph-image",
       "status": 200,
       "contentType": "image/png",
       "passed": true
@@ -56,39 +62,9 @@
       "status": 200,
       "contentType": "image/png",
       "passed": true
-    },
-    {
-      "path": "/solutions/integrations-consulting/opengraph-image",
-      "status": 200,
-      "contentType": "image/png",
-      "passed": true
     }
   ],
   "demoMedia": [
-    {
-      "page": "/portfolio/painting",
-      "kind": "video",
-      "asset": "/demos/painting-walkthrough.mp4",
-      "status": 200,
-      "contentType": "video/mp4",
-      "passed": true
-    },
-    {
-      "page": "/portfolio/painting",
-      "kind": "poster",
-      "asset": "/demos/painting-walkthrough.webp",
-      "status": 200,
-      "contentType": "image/webp",
-      "passed": true
-    },
-    {
-      "page": "/portfolio/painting",
-      "kind": "captions",
-      "asset": "/demos/painting-walkthrough.vtt",
-      "status": 200,
-      "contentType": "text/vtt; charset=UTF-8",
-      "passed": true
-    },
     {
       "page": "/portfolio/hoa",
       "kind": "video",
@@ -133,6 +109,30 @@
       "page": "/portfolio/flooring",
       "kind": "captions",
       "asset": "/demos/flooring-walkthrough.vtt",
+      "status": 200,
+      "contentType": "text/vtt; charset=UTF-8",
+      "passed": true
+    },
+    {
+      "page": "/portfolio/painting",
+      "kind": "video",
+      "asset": "/demos/painting-walkthrough.mp4",
+      "status": 200,
+      "contentType": "video/mp4",
+      "passed": true
+    },
+    {
+      "page": "/portfolio/painting",
+      "kind": "poster",
+      "asset": "/demos/painting-walkthrough.webp",
+      "status": 200,
+      "contentType": "image/webp",
+      "passed": true
+    },
+    {
+      "page": "/portfolio/painting",
+      "kind": "captions",
+      "asset": "/demos/painting-walkthrough.vtt",
       "status": 200,
       "contentType": "text/vtt; charset=UTF-8",
       "passed": true
@@ -222,15 +222,15 @@
     {
       "route": "/",
       "baselineUncompressedBytes": 573048,
-      "currentUncompressedBytes": 549028,
-      "deltaBytes": -24020,
+      "currentUncompressedBytes": 549331,
+      "deltaBytes": -23717,
       "calculatorDefinitionChunks": []
     },
     {
       "route": "/tools",
       "baselineUncompressedBytes": 550098,
-      "currentUncompressedBytes": 544914,
-      "deltaBytes": -5184,
+      "currentUncompressedBytes": 545217,
+      "deltaBytes": -4881,
       "calculatorDefinitionChunks": []
     }
   ],
@@ -242,7 +242,7 @@
       "description": "Custom business software and workflow automation from Knoxville, Tennessee. Connect customers, jobs, inventory and accounting around the way you work.",
       "canonical": "https://mycatalystinnovations.com",
       "h1": "Custom software. A better-running business.",
-      "mainWordCount": 1244,
+      "mainWordCount": 1372,
       "schemaTypes": [
         "Organization"
       ],
@@ -418,7 +418,7 @@
       "description": "Resident requests arrive through too many channels. Explore custom workflows for hoas & community associations, practical starting points and relevant calculators.",
       "canonical": "https://mycatalystinnovations.com/industries/hoa",
       "h1": "HOAs & community associations",
-      "mainWordCount": 393,
+      "mainWordCount": 399,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList"
@@ -613,7 +613,7 @@
       "description": "Practical guides from Catalyst Innovations on field workflows, manufacturing, inventory, approvals, HOA requests and choosing business software.",
       "canonical": "https://mycatalystinnovations.com/insights",
       "h1": "Start with a clearer process.",
-      "mainWordCount": 483,
+      "mainWordCount": 489,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList"
@@ -656,11 +656,11 @@
     {
       "path": "/insights/hoa-maintenance-requests",
       "status": 200,
-      "title": "A clearer process for HOA maintenance requests | Catalyst Innovations",
-      "description": "Plan resident intake, responsibility, status updates and completion records for community maintenance without creating another confusing inbox.",
+      "title": "HOA maintenance request management: a practical workflow | Catalyst Innovations",
+      "description": "Plan HOA maintenance requests with a reusable intake template, clear handoffs and honest status updates. Explore a public sample with fictional community information.",
       "canonical": "https://mycatalystinnovations.com/insights/hoa-maintenance-requests",
-      "h1": "A clearer process for HOA maintenance requests",
-      "mainWordCount": 810,
+      "h1": "HOA maintenance request management: a practical workflow",
+      "mainWordCount": 1160,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList",
@@ -752,11 +752,11 @@
     {
       "path": "/method",
       "status": 200,
-      "title": "How We Work — From One Process to Useful Software | Catalyst Innovations",
-      "description": "Understand the process, agree the scope, build with your feedback, then launch and improve. How Catalyst works with your team.",
+      "title": "The Catalyst Process — On-Site Discovery, Build & Launch | Catalyst Innovations",
+      "description": "Start with a complimentary 45-minute discovery. Agree a 4–6-week on-site system build, keep learning your workflow, then train, launch and improve.",
       "canonical": "https://mycatalystinnovations.com/method",
-      "h1": "Start with one process. Build from there.",
-      "mainWordCount": 294,
+      "h1": "We learn your business. We build around it.",
+      "mainWordCount": 405,
       "schemaTypes": [
         "Organization"
       ],
@@ -770,7 +770,7 @@
       "description": "Watch narrated walkthroughs of Oxendine Painting, Knoxville Flooring and the HOA platform built by Catalyst Innovations.",
       "canonical": "https://mycatalystinnovations.com/portfolio",
       "h1": "See the software do the work.",
-      "mainWordCount": 665,
+      "mainWordCount": 690,
       "schemaTypes": [
         "Organization"
       ],
@@ -784,7 +784,7 @@
       "description": "See the Knoxville Flooring application connect room measurements, waste, labor, preparation costs and an estimate summary in a narrated software demo.",
       "canonical": "https://mycatalystinnovations.com/portfolio/flooring",
       "h1": "Flooring estimating software, from room size to proposal handoff.",
-      "mainWordCount": 673,
+      "mainWordCount": 722,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList"
@@ -799,7 +799,7 @@
       "description": "Watch Catalyst’s HOA platform guide a resident through a maintenance request, supporting information and review using fictional sample communities.",
       "canonical": "https://mycatalystinnovations.com/portfolio/hoa",
       "h1": "HOA maintenance requests, from description to review.",
-      "mainWordCount": 675,
+      "mainWordCount": 680,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList"
@@ -814,7 +814,7 @@
       "description": "Watch the Oxendine Painting demonstration prototype connect room scope, preparation, labor and material costs with estimate review using fictional data.",
       "canonical": "https://mycatalystinnovations.com/portfolio/painting",
       "h1": "Painting estimating software, from room-by-room scope to review.",
-      "mainWordCount": 690,
+      "mainWordCount": 781,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList"
@@ -846,6 +846,21 @@
       "mainWordCount": 495,
       "schemaTypes": [
         "Organization"
+      ],
+      "image": "https://mycatalystinnovations.com/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/services",
+      "status": 200,
+      "title": "Website Design, Fundraising & Custom Software Services | Catalyst Innovations",
+      "description": "Explore Catalyst Innovations services: website design, Elevate fundraising, custom business software, automation, inventory, reporting, and integrations. Based in Knoxville, Tennessee.",
+      "canonical": "https://mycatalystinnovations.com/services",
+      "h1": "Services built around your business.",
+      "mainWordCount": 544,
+      "schemaTypes": [
+        "Organization",
+        "BreadcrumbList"
       ],
       "image": "https://mycatalystinnovations.com/opengraph-image",
       "failures": []
@@ -886,7 +901,7 @@
       "description": "Custom business software from Knoxville, Tennessee. Connect customers, quotes, jobs, inventory and accounting around the way your team works.",
       "canonical": "https://mycatalystinnovations.com/solutions/custom-software",
       "h1": "Custom Software Development in Knoxville",
-      "mainWordCount": 757,
+      "mainWordCount": 1050,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList"
@@ -1019,7 +1034,7 @@
       "description": "Campaign net proceeds calculator. See what a fundraising campaign retains after fees and expenses. Use your own figures and review the assumptions.",
       "canonical": "https://mycatalystinnovations.com/tools/campaign-proceeds",
       "h1": "Campaign net proceeds",
-      "mainWordCount": 448,
+      "mainWordCount": 459,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList"
@@ -1034,7 +1049,7 @@
       "description": "Unbilled change orders calculator. See the revenue at risk when additional work never reaches an invoice. Use your own figures and review the assumptions.",
       "canonical": "https://mycatalystinnovations.com/tools/change-orders",
       "h1": "Unbilled change orders",
-      "mainWordCount": 428,
+      "mainWordCount": 439,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList"
@@ -1049,7 +1064,7 @@
       "description": "Crew travel time calculator. Estimate labor capacity returned by reducing travel per worker. Use your own figures and review the assumptions.",
       "canonical": "https://mycatalystinnovations.com/tools/crew-travel",
       "h1": "Crew travel time",
-      "mainWordCount": 470,
+      "mainWordCount": 481,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList"
@@ -1064,7 +1079,7 @@
       "description": "Customer onboarding calculator. Explore the time spent setting up each new customer. Use your own figures and review the assumptions.",
       "canonical": "https://mycatalystinnovations.com/tools/customer-onboarding",
       "h1": "Customer onboarding",
-      "mainWordCount": 453,
+      "mainWordCount": 464,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList"
@@ -1079,7 +1094,7 @@
       "description": "Dispatch administration calculator. Explore time saved coordinating jobs and crews. Use your own figures and review the assumptions.",
       "canonical": "https://mycatalystinnovations.com/tools/dispatch-admin",
       "h1": "Dispatch administration",
-      "mainWordCount": 459,
+      "mainWordCount": 470,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList"
@@ -1094,7 +1109,7 @@
       "description": "Donor follow-up opportunity calculator. Explore the potential value of following through on more opportunities. Use your own figures and review the assumptions.",
       "canonical": "https://mycatalystinnovations.com/tools/donor-follow-up",
       "h1": "Donor follow-up opportunity",
-      "mainWordCount": 492,
+      "mainWordCount": 503,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList"
@@ -1109,7 +1124,7 @@
       "description": "Downtime cost calculator. Put a value on unplanned interruptions using your operation’s own costs. Use your own figures and review the assumptions.",
       "canonical": "https://mycatalystinnovations.com/tools/downtime-cost",
       "h1": "Downtime cost",
-      "mainWordCount": 430,
+      "mainWordCount": 441,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList"
@@ -1124,7 +1139,7 @@
       "description": "Duplicate-entry savings calculator. Put a number on typing the same information twice. Use your own figures and review the assumptions.",
       "canonical": "https://mycatalystinnovations.com/tools/duplicate-entry",
       "h1": "Duplicate-entry savings",
-      "mainWordCount": 477,
+      "mainWordCount": 488,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList"
@@ -1139,7 +1154,7 @@
       "description": "HOA administration calculator. Explore time returned from simpler community administration. Use your own figures and review the assumptions.",
       "canonical": "https://mycatalystinnovations.com/tools/hoa-administration",
       "h1": "HOA administration",
-      "mainWordCount": 442,
+      "mainWordCount": 459,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList"
@@ -1154,7 +1169,7 @@
       "description": "Inventory carrying cost calculator. Understand the yearly cost of holding inventory. Use your own figures and review the assumptions.",
       "canonical": "https://mycatalystinnovations.com/tools/inventory-carrying",
       "h1": "Inventory carrying cost",
-      "mainWordCount": 432,
+      "mainWordCount": 443,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList"
@@ -1169,7 +1184,7 @@
       "description": "Invoice preparation calculator. See the capacity tied up in assembling invoices. Use your own figures and review the assumptions.",
       "canonical": "https://mycatalystinnovations.com/tools/invoice-preparation",
       "h1": "Invoice preparation",
-      "mainWordCount": 450,
+      "mainWordCount": 461,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList"
@@ -1184,7 +1199,7 @@
       "description": "Job gross margin calculator. Understand what remains after the direct cost of a job. Use your own figures and review the assumptions.",
       "canonical": "https://mycatalystinnovations.com/tools/job-margin",
       "h1": "Job gross margin",
-      "mainWordCount": 453,
+      "mainWordCount": 464,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList"
@@ -1199,7 +1214,7 @@
       "description": "Maintenance coordination calculator. Estimate time saved on request intake, assignment and follow-up. Use your own figures and review the assumptions.",
       "canonical": "https://mycatalystinnovations.com/tools/maintenance-coordination",
       "h1": "Maintenance coordination",
-      "mainWordCount": 431,
+      "mainWordCount": 448,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList"
@@ -1214,7 +1229,7 @@
       "description": "Manual-work savings calculator. What could your team do with fewer repetitive tasks? Use your own figures and review the assumptions.",
       "canonical": "https://mycatalystinnovations.com/tools/manual-work",
       "h1": "Manual-work savings",
-      "mainWordCount": 451,
+      "mainWordCount": 462,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList"
@@ -1229,7 +1244,7 @@
       "description": "Missed-inquiry opportunity calculator. Explore the potential value of following through on more opportunities. Use your own figures and review the assumptions.",
       "canonical": "https://mycatalystinnovations.com/tools/missed-inquiries",
       "h1": "Missed-inquiry opportunity",
-      "mainWordCount": 475,
+      "mainWordCount": 486,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList"
@@ -1244,7 +1259,7 @@
       "description": "Project ROI & payback calculator. Weigh the benefits you expect against the full cost of a project. Use your own figures and review the assumptions.",
       "canonical": "https://mycatalystinnovations.com/tools/project-roi",
       "h1": "Project ROI & payback",
-      "mainWordCount": 524,
+      "mainWordCount": 535,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList"
@@ -1259,7 +1274,7 @@
       "description": "Purchase-order processing calculator. Estimate time saved on requests, approvals and purchase orders. Use your own figures and review the assumptions.",
       "canonical": "https://mycatalystinnovations.com/tools/purchase-orders",
       "h1": "Purchase-order processing",
-      "mainWordCount": 435,
+      "mainWordCount": 446,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList"
@@ -1274,7 +1289,7 @@
       "description": "Quoting time calculator. Estimate time returned by preparing quotes more efficiently. Use your own figures and review the assumptions.",
       "canonical": "https://mycatalystinnovations.com/tools/quoting-time",
       "h1": "Quoting time",
-      "mainWordCount": 452,
+      "mainWordCount": 463,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList"
@@ -1285,11 +1300,11 @@
     {
       "path": "/tools/reorder-point",
       "status": 200,
-      "title": "Reorder point Calculator | Catalyst Innovations",
-      "description": "Reorder point calculator. Estimate when to reorder before your stock runs out. Use your own figures and review the assumptions.",
+      "title": "Reorder Point Calculator | Catalyst Innovations",
+      "description": "Reorder point calculator using daily demand, lead time and safety stock. Learn when to review replenishment, how to choose inputs and what to check before ordering.",
       "canonical": "https://mycatalystinnovations.com/tools/reorder-point",
-      "h1": "Reorder point",
-      "mainWordCount": 433,
+      "h1": "Reorder Point Calculator",
+      "mainWordCount": 735,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList"
@@ -1304,7 +1319,7 @@
       "description": "Reporting time calculator. Estimate capacity returned by connecting your reporting data. Use your own figures and review the assumptions.",
       "canonical": "https://mycatalystinnovations.com/tools/reporting-time",
       "h1": "Reporting time",
-      "mainWordCount": 449,
+      "mainWordCount": 460,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList"
@@ -1319,7 +1334,7 @@
       "description": "Follow-up opportunity calculator. Explore the potential value of following through on more opportunities. Use your own figures and review the assumptions.",
       "canonical": "https://mycatalystinnovations.com/tools/sales-follow-up",
       "h1": "Follow-up opportunity",
-      "mainWordCount": 472,
+      "mainWordCount": 483,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList"
@@ -1334,7 +1349,7 @@
       "description": "Scrap & rework calculator. Understand the cost of discarded materials and repeated work. Use your own figures and review the assumptions.",
       "canonical": "https://mycatalystinnovations.com/tools/scrap-rework",
       "h1": "Scrap & rework",
-      "mainWordCount": 434,
+      "mainWordCount": 445,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList"
@@ -1349,7 +1364,7 @@
       "description": "Software consolidation calculator. Compare the recurring cost of your current tools with a connected alternative. Use your own figures and review the assumptions.",
       "canonical": "https://mycatalystinnovations.com/tools/software-consolidation",
       "h1": "Software consolidation",
-      "mainWordCount": 441,
+      "mainWordCount": 452,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList"
@@ -1364,7 +1379,7 @@
       "description": "Warehouse picking time calculator. See the capacity returned by smoother picking workflows. Use your own figures and review the assumptions.",
       "canonical": "https://mycatalystinnovations.com/tools/warehouse-picking",
       "h1": "Warehouse picking time",
-      "mainWordCount": 467,
+      "mainWordCount": 478,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList"

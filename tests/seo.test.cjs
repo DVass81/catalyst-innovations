@@ -84,6 +84,9 @@ test("all standard pricing packages and their costs are visible in server-render
 
 test("the sitemap includes published guides and playable demo pages without retired or private destinations", () => {
   const insights = load("data/insights.ts");
+  const content = load("data/seoContent.ts", {
+    "./buyerFaqs": load("data/buyerFaqs.ts", { "./catalystProcess": load("data/catalystProcess.ts") }),
+  });
   const demos = load("data/demos.ts");
   const redesign = load("data/redesign.ts", {
     "./industries": load("data/industries.ts"),
@@ -92,6 +95,7 @@ test("the sitemap includes published guides and playable demo pages without reti
   const sitemap = load("app/sitemap.ts", {
     "@/lib/site": { site: { ...site, url: `${site.url}/` } },
     "@/data/insights": insights,
+    "@/data/seoContent": content,
     "@/data/demos": demos,
     "@/data/services": load("data/services.ts"),
     "@/lib/calculators": load("lib/calculators.ts"),

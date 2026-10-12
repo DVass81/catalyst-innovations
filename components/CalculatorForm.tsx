@@ -140,7 +140,10 @@ export default function CalculatorForm({
           <h2>Keep in mind</h2>
           <p>{c.caveat}</p>
           <p>
-            All figures use USD. Your inputs stay in this browser unless you
+            {c.fields.some(field => field.unit.includes("$"))
+              ? "Money amounts use USD. Other figures use the units shown beside each field and result."
+              : "Use the units shown beside each field and result."}{" "}
+            Your inputs stay in this browser unless you
             choose to attach them to an inquiry. Related tools may measure
             overlapping benefits; do not simply add their totals.
           </p>

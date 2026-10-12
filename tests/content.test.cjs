@@ -192,8 +192,37 @@ test("calculator additions retain the original calculator definitions and valida
     assert.equal(received.at(-1).industry, "painting");
     assert.match(html, /Read the result carefully/);
     assert.ok(html.includes(`/insights/${content.calculatorContent[calculator.slug].guide}`));
+    if (calculator.slug === "reorder-point") {
+      assert.match(html, /<h1>Reorder Point Calculator<\/h1>/);
+      assert.equal(metadata.title.absolute, "Reorder Point Calculator | Catalyst Innovations");
+      for (const question of content.calculatorContent[calculator.slug].questions) {
+        assert.ok(html.includes(question.question));
+        assert.ok(html.includes(question.answer), "practical answers remain in the initial HTML");
+      }
+      assert.match(html, /href="\/solutions\/procurement">Explore purchasing &amp; inventory software/);
+      assert.ok(html.includes("https://docs.oracle.com/"));
+    }
   }
   assert.equal(new Set(descriptions).size, calculators.calculators.length, "each tool has a distinct search description, including opportunity tools");
   renderToStaticMarkup(await page.default({ params: Promise.resolve({ slug: "manual-work" }), searchParams: Promise.resolve({ industry: "unknown" }) }));
   assert.equal(received.at(-1).industry, undefined);
+});
+
+test("all calculators describe money and non-money units accurately in the rendered form", () => {
+  const form = load("components/CalculatorForm.tsx", {
+    "next/link": common["next/link"],
+    "next/navigation": { useRouter: () => ({ push() {} }) },
+    "@/lib/calculators": calculators,
+    "@/lib/site": { track() {} },
+  }).default;
+  for (const calculator of calculators.calculators) {
+    const html = renderToStaticMarkup(React.createElement(form, { calculator }));
+    assert.doesNotMatch(html, /All figures use USD/, `${calculator.slug}: values must retain their own units`);
+    if (calculator.fields.some(field => field.unit.includes("$"))) {
+      assert.match(html, /Money amounts use USD\. Other figures use the units shown beside each field and result\./);
+    } else {
+      assert.doesNotMatch(html, /USD/, `${calculator.slug}: units-only calculations are not currency`);
+      assert.match(html, /Use the units shown beside each field and result\./);
+    }
+  }
 });

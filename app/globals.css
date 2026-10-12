@@ -1,4 +1,7 @@
 @import "tailwindcss";
+/* Retired homepage concepts are not imported by any route. Restore scanning
+   here before reusing one of those components in the current website. */
+@source not "../components/home";
 @custom-variant dark (&:where(.dark, .dark *));
 
 /* ============================================================

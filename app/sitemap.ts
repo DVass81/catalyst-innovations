@@ -5,6 +5,7 @@ import { calculators } from "@/lib/calculators";
 import { industryList } from "@/data/redesign";
 import { insights } from "@/data/insights";
 import { demos } from "@/data/demos";
+import { calculatorContent } from "@/data/seoContent";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes = [
@@ -45,6 +46,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })),
     ...calculators.map((c) => ({
       url: new URL(`/tools/${c.slug}`, site.url).toString(),
+      lastModified: calculatorContent[c.slug]?.updatedAt,
       changeFrequency: "monthly" as const,
       priority: 0.7,
     })),

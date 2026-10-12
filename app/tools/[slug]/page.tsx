@@ -17,7 +17,8 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const c = getCalculator((await params).slug);
   if (!c) notFound();
-  return pageMetadata({ title: `${c.title} Calculator`, description: `${c.title} calculator. ${c.description} Use your own figures and review the assumptions.`, path: `/tools/${c.slug}` });
+  const content = calculatorContent[c.slug];
+  return pageMetadata({ title: content.heading ?? `${c.title} Calculator`, description: content.description ?? `${c.title} calculator. ${c.description} Use your own figures and review the assumptions.`, path: `/tools/${c.slug}` });
 }
 export default async function Tool({
   params,
@@ -44,7 +45,7 @@ export default async function Tool({
           ← All calculators
         </Link>
         <p className="overline">{c.category}</p>
-        <h1>{c.title}</h1>
+        <h1>{content.heading ?? c.title}</h1>
         <p className="intro-copy">{content.introduction}</p>
       </section>
       <section className="wrap content-section">
@@ -54,8 +55,9 @@ export default async function Tool({
         </p>
         <CalculatorForm calculator={c} industry={valid} />
       </section>
-      <section className="wrap content-section faq-section no-print"><div><p className="overline">Read the result carefully</p><h2>Useful questions.</h2></div><div><details><summary>{content.faq.question}<span aria-hidden="true">+</span></summary><p>{content.faq.answer}</p></details><details><summary>Does Catalyst receive the figures I enter?<span aria-hidden="true">+</span></summary><p>The calculation runs in your browser. You can choose to attach your figures to an inquiry, and that choice is not selected automatically. You can also print or save your result as a PDF.</p></details><details><summary>Is this a quote or a guaranteed result?<span aria-hidden="true">+</span></summary><p>No. The result follows your inputs and the displayed formula. A project needs its own scope, costs and evidence; the calculator does not promise a specific improvement.</p></details></div></section>
-      <section className="wrap content-section two-grid no-print"><article className="content-card"><p className="overline">Put the numbers in context</p><h2>{guide.title}</h2><p>{guide.description}</p><Link className="text-link" href={`/insights/${guide.slug}`}>Read the guide ↗</Link></article><article className="content-card"><p className="overline">Explore the process</p><h2>{solution.title}</h2><p>A clearer workflow starts with the records, decisions and people behind these figures. Explore what Catalyst can help you connect.</p><Link className="text-link" href={`/solutions/${solution.slug}`}>Explore the solution ↗</Link></article></section>
+      <section className="wrap content-section faq-section no-print"><div><p className="overline">Read the result carefully</p><h2>Useful questions.</h2></div><div>{[...(content.questions ?? []), content.faq].map(question => <details key={question.question}><summary>{question.question}<span aria-hidden="true">+</span></summary><p>{question.answer}</p></details>)}<details><summary>Does Catalyst receive the figures I enter?<span aria-hidden="true">+</span></summary><p>The calculation runs in your browser. You can choose to attach your figures to an inquiry, and that choice is not selected automatically. You can also print or save your result as a PDF.</p></details><details><summary>Is this a quote or a guaranteed result?<span aria-hidden="true">+</span></summary><p>No. The result follows your inputs and the displayed formula. A project needs its own scope, costs and evidence; the calculator does not promise a specific improvement.</p></details></div></section>
+      {content.references && <section className="wrap content-section no-print"><h2>Background reference</h2><ul>{content.references.map(reference => <li key={reference.url}><a href={reference.url} target="_blank" rel="noopener noreferrer">{reference.title} ↗<span className="sr-only"> (opens in a new tab)</span></a> · Reviewed <time dateTime={reference.reviewedAt}>{reference.reviewedAt}</time></li>)}</ul><p>This source explains replenishment planning; the practical guidance above is Catalyst’s editorial advice.</p></section>}
+      <section className="wrap content-section two-grid no-print"><article className="content-card"><p className="overline">Put the numbers in context</p><h2>{guide.title}</h2><p>{guide.description}</p><Link className="text-link" href={`/insights/${guide.slug}`}>Read the guide ↗</Link></article><article className="content-card"><p className="overline">Explore the process</p><h2>{solution.title}</h2><p>{content.serviceExplanation ?? "A clearer workflow starts with the records, decisions and people behind these figures. Explore what Catalyst can help you connect."}</p><Link className="text-link" href={`/solutions/${solution.slug}`}>{content.serviceLinkLabel ?? "Explore the solution"} ↗</Link></article></section>
       <section className="wrap content-section no-print"><p className="overline">Related tools</p><h2>Explore another part of the work.</h2><div className="three-grid">{guide.tools.filter(slug => slug !== c.slug).slice(0, 3).map(slug => { const related = getCalculator(slug)!; return <article className="tool-card" key={slug}><h3>{related.title}</h3><p>{related.description}</p><Link className="text-link" href={`/tools/${slug}${context}`}>Try the calculator ↗</Link></article>; })}</div></section>
     </>
   );
