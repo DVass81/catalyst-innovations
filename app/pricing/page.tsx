@@ -70,7 +70,7 @@ export default function PricingPage() {
         <article><Workflow size={26} aria-hidden="true" /><h3>Practice the actual work.</h3><p>We check agreed workflows and train your team in the context of their tasks before helping put the system into everyday use.</p></article>
       </div>
     </section>
-    <CatalystProcess />
+    <CatalystProcess showDiscoveryPricing />
     <section className="wrap section pricing-help"><div><p className="overline">Start with a conversation</p><h2>You don’t need to choose<br /><em>a package first.</em></h2><p>Bring one task that takes too long or one process that loses information. We’ll discuss a useful first version and what it would involve. The 30-minute introductory conversation is separate from the paid {discoveryOffer.durationMinutes}-minute discovery visit.</p></div><div className="pricing-help-actions"><BookingLink /><Link className="text-link" href="/consultation">Tell us about your business ↗</Link><Link className="text-link" href="/tools/project-roi">Explore costs and potential benefits ↗</Link></div></section>
     <EngagementDetails />
     <section className="wrap section faq-section"><div><p className="overline">Pricing questions</p><h2>The details,<br /><em>plainly explained.</em></h2></div><div>{pricingFaqs.map(f => <details key={f.q}><summary>{f.q}<span aria-hidden="true">+</span></summary><p>{f.a}</p></details>)}</div></section>

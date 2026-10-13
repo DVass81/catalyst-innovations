@@ -160,8 +160,8 @@ export default function Home() {
               "We work across a range of businesses and organizations. If your team has repetitive tasks, scattered information or disconnected tools, there may be a useful place to start.",
             ],
             [
-              "What does a project cost?",
-              "The scope determines the investment. Discuss your needs with us or visit our pricing page for the current packages. Calculator examples are not project quotes.",
+              "How do we get started?",
+              "Tell us about one process you want to improve. A 45-minute discovery visit lets us meet your team, follow a real example and outline practical opportunities before agreeing what to build.",
             ],
             [
               "Are the calculator results guaranteed?",

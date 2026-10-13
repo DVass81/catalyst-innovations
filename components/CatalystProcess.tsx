@@ -3,7 +3,7 @@ import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { catalystProcess } from "@/data/catalystProcess";
 
 /** All stages are server-rendered; reading the process never depends on playback or scripts. */
-export default function CatalystProcess({ headingLevel = 2 }: { headingLevel?: 2 | 3 }) {
+export default function CatalystProcess({ headingLevel = 2, showDiscoveryPricing = false }: { headingLevel?: 2 | 3; showDiscoveryPricing?: boolean }) {
   const Heading = headingLevel === 2 ? "h2" : "h3";
   const StepHeading = headingLevel === 2 ? "h3" : "h4";
 
@@ -23,7 +23,7 @@ export default function CatalystProcess({ headingLevel = 2 }: { headingLevel?: 2
               <span className="catalyst-process-number" aria-hidden="true">{step.number}</span>
               <div className="catalyst-process-step">
                 <StepHeading>{step.title}</StepHeading>
-                <p>{step.description}</p>
+                <p>{showDiscoveryPricing && "pricingDescription" in step ? step.pricingDescription : step.description}</p>
               </div>
             </li>
           ))}
@@ -36,7 +36,7 @@ export default function CatalystProcess({ headingLevel = 2 }: { headingLevel?: 2
             Explore our services <ArrowRight size={16} aria-hidden="true" />
           </Link>
         </div>
-        <p className="catalyst-process-note">{catalystProcess.proposalNote}</p>
+        <p className="catalyst-process-note">{catalystProcess.proposalNote}{showDiscoveryPricing && <> {catalystProcess.discoveryPricingNote}</>}</p>
       </div>
     </section>
   );

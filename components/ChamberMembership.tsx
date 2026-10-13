@@ -39,7 +39,7 @@ export default function ChamberMembership({ compact = false }: { compact?: boole
             Proud member of the <span>Blount Partnership</span> Chamber of Commerce.
           </h2>
           <p className={styles.description}>
-            Based in Knoxville. Connected to the East Tennessee business community.
+            The Blount Chamber is based in Maryville, Tennessee, and connects our East Tennessee business community.
           </p>
         </div>
         <a href={chamberUrl} target="_blank" rel="noopener noreferrer" className={styles.badgeLink}>
