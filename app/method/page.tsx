@@ -3,11 +3,12 @@ import Link from "next/link";
 import { PageIntro, DiscussCTA } from "@/components/SiteSections";
 import EngagementDetails from "@/components/EngagementDetails";
 import CatalystProcess from "@/components/CatalystProcess";
+import { discoveryOffer } from "@/data/catalystProcess";
 
 export const metadata = pageMetadata({
   path: "/method",
   title: "The Catalyst Process — On-Site Discovery, Build & Launch",
-  description: "Start with a complimentary 45-minute discovery. Agree a 4–6-week on-site system build, keep learning your workflow, then train, launch and improve.",
+  description: `Start with a $${discoveryOffer.fee}, ${discoveryOffer.durationMinutes}-minute discovery visit. Agree a 4–6-week on-site build, test with your team, then train and launch.`,
 });
 export default function MethodPage() {
   return <>

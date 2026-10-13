@@ -8,8 +8,11 @@ import { Reveal, RevealGroup, RevealItem } from "./Reveal";
 import {
   ANNUAL_DISCOUNT,
   formatPriceRange,
+  discoveryFeeLabel,
+  firstYearTotal,
   type PricingTier,
 } from "@/data/pricing";
+import { discoveryOffer } from "@/data/catalystProcess";
 
 export default function PricingGrid({ tiers }: { tiers: PricingTier[] }) {
   const [annual, setAnnual] = useState(false);
@@ -64,6 +67,7 @@ export default function PricingGrid({ tiers }: { tiers: PricingTier[] }) {
           const monthlyHigh = tier.monthlyHigh * factor;
           const annualLow = tier.monthlyLow * 12 * (1 - ANNUAL_DISCOUNT);
           const annualHigh = tier.monthlyHigh * 12 * (1 - ANNUAL_DISCOUNT);
+          const total = firstYearTotal(tier, annual);
           return (
             <RevealItem key={tier.id} className="h-full">
               <div className="h-full rounded-card">
@@ -82,16 +86,22 @@ export default function PricingGrid({ tiers }: { tiers: PricingTier[] }) {
                   <h3 className="font-display text-xl font-semibold text-navy-900">
                     {tier.name}
                   </h3>
-                  <p className="mt-1.5 text-sm leading-snug text-silver-500">
+                  <p className="mt-1.5 text-sm leading-snug text-navy-600">
                     {tier.idealFor}
                   </p>
+
+                  <div className="package-discovery">
+                    <span>{discoveryOffer.durationMinutes}-minute discovery visit</span>
+                    <strong>{discoveryFeeLabel}<small>one time</small></strong>
+                    <p>Separate from implementation and support.</p>
+                  </div>
 
                   <div className="mt-6 flex items-baseline gap-2">
                     <span className="font-display text-2xl font-semibold text-navy-900 sm:text-3xl">
                       {formatPriceRange(tier.oneTimeLow, tier.oneTimeHigh)}
                     </span>
                   </div>
-                  <p className="text-xs text-silver-500">
+                  <p className="text-xs text-navy-600">
                     one-time implementation
                   </p>
 
@@ -100,7 +110,7 @@ export default function PricingGrid({ tiers }: { tiers: PricingTier[] }) {
                       {formatPriceRange(monthlyLow, monthlyHigh)}/mo
                     </span>
                   </div>
-                  <p className="text-xs text-silver-500">
+                  <p className="text-xs text-navy-600">
                     {annual
                       ? `billed annually · ${formatPriceRange(annualLow, annualHigh)}/year`
                       : "billed monthly"}
@@ -122,8 +132,8 @@ export default function PricingGrid({ tiers }: { tiers: PricingTier[] }) {
                   </ul>
                   <div className="package-year-total" aria-live="polite">
                     <span>First-year base total</span>
-                    <strong>{formatPriceRange(tier.oneTimeLow + monthlyLow * 12, tier.oneTimeHigh + monthlyHigh * 12)}</strong>
-                    <small>Implementation + {annual ? "one annual payment" : "12 monthly payments"}.</small>
+                    <strong>{formatPriceRange(total.low, total.high)}</strong>
+                    <small>Discovery + implementation + {annual ? "one annual payment" : "12 monthly payments"}.</small>
                   </div>
 
                   <ButtonLink

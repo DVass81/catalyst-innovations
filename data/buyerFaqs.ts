@@ -1,4 +1,4 @@
-import { catalystTimelineAnswer } from "./catalystProcess";
+import { catalystTimelineAnswer, discoveryOffer } from "./catalystProcess";
 
 /** Buyer guidance, not additional contract terms or delivery guarantees. */
 export type BuyerFAQ = { question: string; answer: string };
@@ -6,7 +6,7 @@ export type BuyerFAQ = { question: string; answer: string };
 export const buyerFaqs = {
   cost: {
     question: "What determines the cost of a custom software project?",
-    answer: "The workflow, integrations, data migration and level of customization determine the scope. Our published packages provide implementation and monthly price ranges; your written proposal sets the exact price, included work and any third-party charges before you commit. Bring one process you want to improve rather than trying to choose a package on your own.",
+    answer: `The workflow, integrations, data migration and level of customization determine the scope. A ${discoveryOffer.durationMinutes}-minute discovery visit costs $${discoveryOffer.fee}, separately from implementation; this fee is waived for the first ${discoveryOffer.foundingPartnerLimit} founding partners. Our published packages provide implementation and monthly price ranges; your written proposal sets the exact price, included work and any third-party charges before you commit. Bring one process you want to improve rather than trying to choose a package on your own.`,
   },
   timeline: {
     question: "How long does it take to build and launch a system?",

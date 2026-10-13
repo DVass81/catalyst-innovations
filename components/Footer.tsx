@@ -2,6 +2,7 @@ import Link from "next/link";
 import { LogoLockup } from "./Logo";
 import AnalyticsPreferences from "./AnalyticsPreferences";
 import { site } from "@/lib/site";
+import ChamberMembership from "./ChamberMembership";
 export default function Footer() {
   return (
     <footer className="site-footer">
@@ -15,6 +16,7 @@ export default function Footer() {
           </p>
           <small>Knoxville, Tennessee</small>
           <a href={`tel:${site.contactPhone}`}>{site.contactPhoneLabel}</a>
+          <ChamberMembership compact />
         </div>
         <div>
           <span className="overline">Explore</span>

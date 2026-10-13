@@ -1,0 +1,133 @@
+.membership {
+  scroll-margin-top: 110px;
+  border-bottom: 1px solid #dedfdc;
+  background: #fffdf8;
+}
+
+.inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 246px;
+  align-items: center;
+  gap: 48px;
+  padding-block: 34px;
+}
+
+.copy {
+  max-width: 710px;
+}
+
+.eyebrow {
+  margin: 0 0 12px;
+  color: #2f5d8f;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.eyebrow::before {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-right: 10px;
+  border-radius: 50%;
+  background: #de7927;
+  content: "";
+}
+
+.copy h2 {
+  margin: 0;
+  color: #0a1628;
+  font-size: clamp(1.55rem, 2.7vw, 2.25rem);
+  line-height: 1.2;
+  letter-spacing: -0.035em;
+}
+
+.copy h2 span {
+  color: #2f5d8f;
+}
+
+.description {
+  margin: 13px 0 0;
+  color: #52606d;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.badgeLink {
+  display: block;
+  padding: 12px 12px 10px;
+  border: 1px solid #e6e1d7;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 8px 28px #0a162807;
+  text-align: center;
+  text-decoration: none;
+}
+
+.badge {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.linkLabel {
+  display: inline-block;
+  margin-top: 10px;
+  color: #2f5d8f;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.badgeLink:hover .linkLabel,
+.compactLink:hover .compactText {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.badgeLink:focus-visible,
+.compactLink:focus-visible {
+  outline: 3px solid #4a8fd4;
+  outline-offset: 5px;
+}
+
+.compact {
+  max-width: 192px;
+  margin-top: 26px;
+}
+
+.compactLink {
+  display: block;
+  text-decoration: none;
+}
+
+.compact .badge {
+  width: 180px;
+  max-width: 100%;
+}
+
+.compactText {
+  display: block;
+  margin-top: 10px;
+  color: #c2d2df;
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+@media (max-width: 700px) {
+  .inner {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+    padding-block: 30px;
+  }
+
+  .badgeLink {
+    width: 222px;
+    max-width: 100%;
+  }
+
+  .copy h2 {
+    max-width: 520px;
+  }
+}

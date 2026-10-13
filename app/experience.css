@@ -4,6 +4,7 @@
 .pricing-overview h2 { font-size: 25px; margin: 16px 0 12px; }
 .pricing-overview p { line-height: 1.7; }
 .founding-price-panel { display: grid; grid-template-columns: 1.5fr 1fr; gap: 60px; border-radius: 22px; padding: clamp(28px,5vw,60px); background: #0a1628; color: #faf7f1; }
+#founding-partners { scroll-margin-top: 110px; }
 .founding-price-panel h2, .founding-price-panel h3, .founding-price-panel strong { color: #fff; }
 .founding-price-panel .overline { color: #a7c9e9; }
 .founding-price-panel h2 { font-size: clamp(30px,3.8vw,46px); margin: 18px 0; }
@@ -19,6 +20,35 @@
 .founding-inclusions li { display: flex; align-items: flex-start; gap: 12px; }
 .founding-inclusions svg { flex-shrink: 0; color: #a7c9e9; }
 .founding-inclusions p { font-size: 13px; }
+.founding-discovery-offer {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 24px;
+  align-items: center;
+  margin-top: 28px;
+  padding: 24px;
+  border: 1px solid #c8d9e7;
+  border-radius: 14px;
+  background: #faf7f1;
+}
+.founding-discovery-price { display: grid; gap: 3px; border-right: 1px solid #d4dee5; padding-right: 24px; }
+.founding-discovery-price > span { color: #52606d; font-size: 11px; }
+.founding-discovery-price del { color: #b33931; font-size: 24px; font-weight: 600; text-decoration-thickness: 2px; }
+.founding-discovery-price strong { color: #2f5d8f; font-size: 40px; font-weight: 650; letter-spacing: -0.055em; line-height: 1.15; }
+.founding-discovery-offer .founding-offer-label { margin-bottom: 6px; color: #2f5d8f; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; }
+.founding-discovery-offer h3 { color: #0a1628; font-size: 21px; line-height: 1.25; }
+.founding-discovery-offer p { margin-top: 7px; color: #52606d; font-size: 12px; line-height: 1.6; }
+.package-discovery { display: grid; gap: 7px; margin-top: 22px; padding: 16px; border: 1px solid #d5e1eb; border-radius: 10px; background: #f1f6fa; }
+.package-discovery > span { color: #24466f; font-size: 12px; font-weight: 600; }
+.package-discovery strong { display: flex; flex-wrap: wrap; gap: 9px; align-items: baseline; color: #0a1628; font-size: 23px; }
+.package-discovery small { color: #52606d; font-size: 11px; font-weight: 400; }
+.package-discovery p { color: #52606d; font-size: 11px; line-height: 1.5; }
+.pricing-on-site { padding-bottom: 32px; }
+.pricing-on-site-benefits { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+.pricing-on-site-benefits article { padding: 28px; background: #fff; border: 1px solid #d8e2ea; border-radius: 12px; }
+.pricing-on-site-benefits svg { color: #2f5d8f; }
+.pricing-on-site-benefits h3 { margin: 22px 0 12px; font-size: 21px; }
+.pricing-on-site-benefits p { color: #52606d; font-size: 14px; line-height: 1.7; }
 .package-year-total { display: grid; gap: 6px; margin-top: 28px; padding-top: 20px; border-top: 1px solid #d4dee5; }
 .package-year-total span, .package-year-total small { font-size: 12px; color: #52606d; }
 .package-year-total strong { font-size: 21px; color: #0a1628; }
@@ -29,9 +59,15 @@
 .pricing-help p { margin-top: 20px; max-width: 640px; }
 .pricing-help-actions { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
 @media (max-width: 800px) {
-  .pricing-overview, .founding-price-panel, .pricing-help { grid-template-columns: 1fr; gap: 30px; }
+  .pricing-overview, .founding-price-panel, .pricing-help, .pricing-on-site-benefits { grid-template-columns: 1fr; gap: 30px; }
   .founding-inclusions { border-left: 0; border-top: 1px solid #465667; padding: 28px 0 0; }
   .founding-costs { gap: 15px; }
+}
+@media (max-width: 540px) {
+  .founding-discovery-offer { grid-template-columns: 1fr; gap: 18px; padding: 20px; }
+  .founding-discovery-price { border-right: 0; border-bottom: 1px solid #d4dee5; padding: 0 0 18px; }
+  .founding-discovery-price strong { font-size: 38px; }
+  .founding-costs { flex-wrap: wrap; }
 }
 .stories-intro { max-width: 680px; margin: 24px 0 36px; }
 .contact-actions { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }

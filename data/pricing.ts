@@ -1,8 +1,11 @@
 import { buyerFaqs } from "./buyerFaqs";
+import { discoveryOffer } from "./catalystProcess";
 
 export type PricingTier = {
   id: string;
   name: string;
+  /** One-time discovery visit; separate from implementation and monthly support. */
+  discoveryFee: number;
   /** Raw one-time implementation range in dollars (equal low/high renders as a single price). */
   oneTimeLow: number;
   oneTimeHigh: number;
@@ -20,6 +23,21 @@ export type PricingTier = {
 /** Discount applied to the monthly price when a client chooses annual billing. */
 export const ANNUAL_DISCOUNT = 0.1;
 
+export const discoveryFeeLabel = discoveryOffer.fee.toLocaleString("en-US", {
+  style: "currency",
+  currency: "USD",
+  minimumFractionDigits: 2,
+});
+
+/** Annual savings apply only to standard recurring support, never discovery or implementation. */
+export function firstYearTotal(tier: PricingTier, annual = false) {
+  const factor = annual && tier.id !== "founding-partner" ? 1 - ANNUAL_DISCOUNT : 1;
+  return {
+    low: tier.discoveryFee + tier.oneTimeLow + tier.monthlyLow * factor * 12,
+    high: tier.discoveryFee + tier.oneTimeHigh + tier.monthlyHigh * factor * 12,
+  };
+}
+
 /** Formats a single price, or a range when low and high differ. */
 export function formatPriceRange(low: number, high: number): string {
   const fmt = (n: number) => `$${Math.round(n).toLocaleString()}`;
@@ -30,6 +48,7 @@ export const pricingTiers: PricingTier[] = [
   {
     id: "founding-partner",
     name: "Founding Partner",
+    discoveryFee: 0,
     oneTimeLow: 7500,
     oneTimeHigh: 7500,
     monthlyLow: 1200,
@@ -37,6 +56,7 @@ export const pricingTiers: PricingTier[] = [
     idealFor: "The first 10 strategic partners",
     limited: "First 10 Only",
     features: [
+      `Discovery fee waived for the first ${discoveryOffer.foundingPartnerLimit} founding partners`,
       "Everything in Professional",
       "Priority development",
       "Direct access to founders",
@@ -47,6 +67,7 @@ export const pricingTiers: PricingTier[] = [
   {
     id: "essentials",
     name: "Essentials",
+    discoveryFee: discoveryOffer.fee,
     oneTimeLow: 10000,
     oneTimeHigh: 15000,
     monthlyLow: 1500,
@@ -64,6 +85,7 @@ export const pricingTiers: PricingTier[] = [
   {
     id: "professional",
     name: "Professional",
+    discoveryFee: discoveryOffer.fee,
     oneTimeLow: 15000,
     oneTimeHigh: 30000,
     monthlyLow: 2500,
@@ -83,6 +105,7 @@ export const pricingTiers: PricingTier[] = [
   {
     id: "executive",
     name: "Executive",
+    discoveryFee: discoveryOffer.fee,
     oneTimeLow: 30000,
     oneTimeHigh: 70000,
     monthlyLow: 5000,
@@ -104,12 +127,20 @@ export const pricingTiers: PricingTier[] = [
 
 export const pricingFaqs: { q: string; a: string }[] = [
   {
+    q: "What happens during discovery, and what does it cost?",
+    a: `The ${discoveryOffer.durationMinutes}-minute discovery visit costs ${discoveryFeeLabel}. We walk through a process with your team, follow a real example and provide a one-page summary of practical improvement opportunities. It is separate from implementation and monthly support. The fee is waived for our first ${discoveryOffer.foundingPartnerLimit} founding partners; implementation and support remain paid engagements.`,
+  },
+  {
+    q: buyerFaqs.timeline.question,
+    a: buyerFaqs.timeline.answer,
+  },
+  {
     q: buyerFaqs.cost.question,
     a: buyerFaqs.cost.answer,
   },
   {
     q: "What does the one-time implementation cost cover?",
-    a: "Discovery, configuration, integration with your existing systems, data migration where applicable, and training your team to use what we build. Nothing goes live until it actually works the way your team works.",
+    a: "Agreed development, configuration, integration with your existing systems, data migration where applicable, and training your team to use what we build. The initial discovery visit is priced separately. Nothing goes live until it actually works the way your team works.",
   },
   {
     q: buyerFaqs.support.question,
@@ -133,6 +164,6 @@ export const pricingFaqs: { q: string; a: string }[] = [
   },
   {
     q: "Is annual billing actually cheaper?",
-    a: "Yes — choosing annual billing takes 10% off the monthly investment on every standard package, billed as one upfront annual payment. The one-time implementation cost is the same either way.",
+    a: "Yes — choosing annual billing takes 10% off the monthly investment on every standard package, billed as one upfront annual payment. The one-time discovery and implementation costs are the same either way.",
   },
 ];

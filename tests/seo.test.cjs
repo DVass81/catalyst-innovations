@@ -64,11 +64,13 @@ test("founder and retired-tool links redirect permanently to the existing public
 test("all standard pricing packages and their costs are visible in server-rendered HTML", () => {
   const React = require("react");
   const { renderToStaticMarkup } = require("react-dom/server");
-  const pricing = load("data/pricing.ts", { "./buyerFaqs": load("data/buyerFaqs.ts", { "./catalystProcess": load("data/catalystProcess.ts") }) });
+  const process = load("data/catalystProcess.ts");
+  const pricing = load("data/pricing.ts", { "./buyerFaqs": load("data/buyerFaqs.ts", { "./catalystProcess": process }), "./catalystProcess": process });
   const reveal = load("components/Reveal.tsx");
   const { default: PricingGrid } = load("components/PricingGrid.tsx", {
     "./Reveal": reveal,
     "@/data/pricing": pricing,
+    "@/data/catalystProcess": process,
     "./ui": { ButtonLink: ({ href, children }) => React.createElement("a", { href }, children) },
   });
   const tiers = pricing.pricingTiers.filter((tier) => tier.id !== "founding-partner");
@@ -80,6 +82,31 @@ test("all standard pricing packages and their costs are visible in server-render
   }
   assert.doesNotMatch(html, /opacity:\s*0(?:[;"\s])|visibility:\s*hidden|display:\s*none/);
   assert.match(html, /First-year base total/);
+  assert.equal((html.match(/45-minute discovery visit/g) ?? []).length, 3);
+  assert.equal((html.match(/\$250\.00/g) ?? []).length, 3);
+  for (const range of ["$28,250 – $45,250", "$45,250 – $90,250", "$90,250 – $250,250"]) assert.ok(html.includes(range), range);
+});
+
+test("discovery is a separate fixed fee; the founding waiver and annual totals preserve package prices", () => {
+  const process = load("data/catalystProcess.ts");
+  const pricing = load("data/pricing.ts", { "./catalystProcess": process, "./buyerFaqs": load("data/buyerFaqs.ts", { "./catalystProcess": process }) });
+  const expected = {
+    "founding-partner": { prices: [7500, 7500, 1200, 1200], discovery: 0, monthly: [21900, 21900], annual: [21900, 21900] },
+    essentials: { prices: [10000, 15000, 1500, 2500], discovery: 250, monthly: [28250, 45250], annual: [26450, 42250] },
+    professional: { prices: [15000, 30000, 2500, 5000], discovery: 250, monthly: [45250, 90250], annual: [42250, 84250] },
+    executive: { prices: [30000, 70000, 5000, 15000], discovery: 250, monthly: [90250, 250250], annual: [84250, 232250] },
+  };
+  for (const tier of pricing.pricingTiers) {
+    const e = expected[tier.id];
+    assert.deepEqual([tier.oneTimeLow, tier.oneTimeHigh, tier.monthlyLow, tier.monthlyHigh], e.prices);
+    assert.equal(tier.discoveryFee, e.discovery);
+    assert.deepEqual(Object.values(pricing.firstYearTotal(tier)), e.monthly);
+    assert.deepEqual(Object.values(pricing.firstYearTotal(tier, true)), e.annual);
+  }
+  assert.equal(process.discoveryOffer.fee, 250);
+  assert.equal(process.discoveryOffer.durationMinutes, 45);
+  assert.equal(process.discoveryOffer.foundingPartnerLimit, 10);
+  assert.doesNotMatch(JSON.stringify(process), /complimentary/i);
 });
 
 test("the sitemap includes published guides and playable demo pages without retired or private destinations", () => {

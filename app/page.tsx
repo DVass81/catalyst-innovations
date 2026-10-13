@@ -10,6 +10,7 @@ import IndustrySelector from "@/components/IndustrySelector";
 import { DiscussCTA, SolutionCards, Projects } from "@/components/SiteSections";
 import SavingsPreview from "@/components/SavingsPreview";
 import CatalystProcess from "@/components/CatalystProcess";
+import ChamberMembership from "@/components/ChamberMembership";
 import { catalystProcess } from "@/data/catalystProcess";
 export const metadata = pageMetadata({
   path: "/",
@@ -61,6 +62,7 @@ export default function Home() {
           <span>Your numbers</span>
         </div>
       </div>
+      <ChamberMembership />
       <CatalystProcess />
       <section className="section wrap" id="how-it-works">
         <div className="section-heading">
