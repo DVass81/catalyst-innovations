@@ -73,7 +73,7 @@ test("all standard pricing packages and their costs are visible in server-render
     "@/data/catalystProcess": process,
     "./ui": { ButtonLink: ({ href, children }) => React.createElement("a", { href }, children) },
   });
-  const tiers = pricing.pricingTiers.filter((tier) => tier.id !== "founding-partner");
+  const tiers = pricing.pricingTiers;
   const html = renderToStaticMarkup(React.createElement(PricingGrid, { tiers }));
   for (const tier of tiers) {
     assert.ok(html.includes(tier.name));
@@ -87,15 +87,15 @@ test("all standard pricing packages and their costs are visible in server-render
   for (const range of ["$28,250 – $45,250", "$45,250 – $90,250", "$90,250 – $250,250"]) assert.ok(html.includes(range), range);
 });
 
-test("discovery is a separate fixed fee; the founding waiver and annual totals preserve package prices", () => {
+test("discovery is a separate fixed fee and annual totals preserve all three package prices", () => {
   const process = load("data/catalystProcess.ts");
   const pricing = load("data/pricing.ts", { "./catalystProcess": process, "./buyerFaqs": load("data/buyerFaqs.ts", { "./catalystProcess": process }) });
   const expected = {
-    "founding-partner": { prices: [7500, 7500, 1200, 1200], discovery: 0, monthly: [21900, 21900], annual: [21900, 21900] },
     essentials: { prices: [10000, 15000, 1500, 2500], discovery: 250, monthly: [28250, 45250], annual: [26450, 42250] },
     professional: { prices: [15000, 30000, 2500, 5000], discovery: 250, monthly: [45250, 90250], annual: [42250, 84250] },
     executive: { prices: [30000, 70000, 5000, 15000], discovery: 250, monthly: [90250, 250250], annual: [84250, 232250] },
   };
+  assert.deepEqual(pricing.pricingTiers.map((tier) => tier.id), Object.keys(expected));
   for (const tier of pricing.pricingTiers) {
     const e = expected[tier.id];
     assert.deepEqual([tier.oneTimeLow, tier.oneTimeHigh, tier.monthlyLow, tier.monthlyHigh], e.prices);
@@ -105,7 +105,6 @@ test("discovery is a separate fixed fee; the founding waiver and annual totals p
   }
   assert.equal(process.discoveryOffer.fee, 250);
   assert.equal(process.discoveryOffer.durationMinutes, 45);
-  assert.equal(process.discoveryOffer.foundingPartnerLimit, 10);
   assert.doesNotMatch(JSON.stringify(process), /complimentary/i);
 });
 

@@ -36,7 +36,7 @@ export default function CatalystProcess({ headingLevel = 2, showDiscoveryPricing
             Explore our services <ArrowRight size={16} aria-hidden="true" />
           </Link>
         </div>
-        <p className="catalyst-process-note">{catalystProcess.proposalNote}{showDiscoveryPricing && <> {catalystProcess.discoveryPricingNote}</>}</p>
+        <p className="catalyst-process-note">{catalystProcess.proposalNote}</p>
       </div>
     </section>
   );

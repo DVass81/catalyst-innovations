@@ -2,7 +2,6 @@
 export const discoveryOffer = {
   fee: 250,
   durationMinutes: 45,
-  foundingPartnerLimit: 10,
 } as const;
 
 /** Confirmed custom-software engagement approach. */
@@ -21,8 +20,6 @@ export const catalystProcess = {
   discoveryInvitation: `Start with a ${discoveryOffer.durationMinutes}-minute discovery visit.`,
   proposalNote:
     "For custom software engagements. The 4–6-week build begins after the scope, access and delivery arrangements are agreed. Your written proposal confirms the schedule, on-site arrangements and project responsibilities. Discovery includes a visit and recommendations; implementation is a separate engagement.",
-  discoveryPricingNote:
-    `The $${discoveryOffer.fee} discovery fee is waived for the first ${discoveryOffer.foundingPartnerLimit} founding partners.`,
   steps: [
     {
       id: "discovery",

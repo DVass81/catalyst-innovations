@@ -16,8 +16,6 @@ export type PricingTier = {
   features: string[];
   /** Visually emphasized in the standard three-tier grid; not a popularity claim. */
   popular?: boolean;
-  /** Standalone limited-availability spotlight, shown above the main grid. */
-  limited?: string;
 };
 
 /** Discount applied to the monthly price when a client chooses annual billing. */
@@ -31,7 +29,7 @@ export const discoveryFeeLabel = discoveryOffer.fee.toLocaleString("en-US", {
 
 /** Annual savings apply only to standard recurring support, never discovery or implementation. */
 export function firstYearTotal(tier: PricingTier, annual = false) {
-  const factor = annual && tier.id !== "founding-partner" ? 1 - ANNUAL_DISCOUNT : 1;
+  const factor = annual ? 1 - ANNUAL_DISCOUNT : 1;
   return {
     low: tier.discoveryFee + tier.oneTimeLow + tier.monthlyLow * factor * 12,
     high: tier.discoveryFee + tier.oneTimeHigh + tier.monthlyHigh * factor * 12,
@@ -45,25 +43,6 @@ export function formatPriceRange(low: number, high: number): string {
 }
 
 export const pricingTiers: PricingTier[] = [
-  {
-    id: "founding-partner",
-    name: "Founding Partner",
-    discoveryFee: 0,
-    oneTimeLow: 7500,
-    oneTimeHigh: 7500,
-    monthlyLow: 1200,
-    monthlyHigh: 1200,
-    idealFor: "The first 10 strategic partners",
-    limited: "First 10 Only",
-    features: [
-      `Discovery fee waived for the first ${discoveryOffer.foundingPartnerLimit} founding partners`,
-      "Everything in Professional",
-      "Priority development",
-      "Direct access to founders",
-      "Influence over product roadmap",
-      "Discounted lifetime pricing",
-    ],
-  },
   {
     id: "essentials",
     name: "Essentials",
@@ -128,7 +107,7 @@ export const pricingTiers: PricingTier[] = [
 export const pricingFaqs: { q: string; a: string }[] = [
   {
     q: "What happens during discovery, and what does it cost?",
-    a: `The ${discoveryOffer.durationMinutes}-minute discovery visit costs ${discoveryFeeLabel}. We walk through a process with your team, follow a real example and provide a one-page summary of practical improvement opportunities. It is separate from implementation and monthly support. The fee is waived for our first ${discoveryOffer.foundingPartnerLimit} founding partners; implementation and support remain paid engagements.`,
+    a: `The ${discoveryOffer.durationMinutes}-minute discovery visit costs ${discoveryFeeLabel}. We walk through a process with your team, follow a real example and provide a one-page summary of practical improvement opportunities. It is separate from implementation and monthly support.`,
   },
   {
     q: buyerFaqs.timeline.question,
