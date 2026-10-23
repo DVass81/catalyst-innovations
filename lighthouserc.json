@@ -1,0 +1,9 @@
+{
+  "ci": {
+    "collect": {
+      "startServerCommand": "npm start",
+      "startServerReadyPattern": "Ready in",
+      "startServerReadyTimeout": 30000
+    }
+  }
+}

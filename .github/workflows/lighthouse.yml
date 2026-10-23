@@ -1,8 +1,7 @@
 name: Lighthouse CI
 
-# Informational only — reports scores as a PR comment / workflow summary,
-# never blocks merges or deploys. Tighten `assert` in lighthouserc.json
-# once baseline scores are known if you want it to start failing builds.
+# Lighthouse scores are reported without score thresholds.
+# Collection and upload errors still fail this workflow.
 on:
   pull_request:
     branches: [main]
@@ -30,7 +29,6 @@ jobs:
             http://localhost:3000/
             http://localhost:3000/solutions
             http://localhost:3000/industries
-          startServerCommand: npm start
-          startServerReadyPattern: "Ready in"
+          configPath: ./lighthouserc.json
           uploadArtifacts: true
           temporaryPublicStorage: true
