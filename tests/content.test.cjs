@@ -128,7 +128,7 @@ test("custom-software evidence and cost guidance are readable without JavaScript
   assert.match(publicEvidence, /Demonstration prototype/, "making the public sample available must not imply a completed painting deployment");
   const cost = html.match(/<section\b[^>]*aria-labelledby="software-cost-heading"[^>]*>([\s\S]*?)<\/section>/)?.[1];
   assert.ok(cost.includes(renderToStaticMarkup(React.createElement("p", null, buyerFaqs.cost.answer))));
-  assert.match(cost, /href="\/pricing">View custom software implementation and monthly pricing/);
+  assert.match(cost, /href="\/discovery">See discovery call details and the custom quote process/);
   for (const service of services.services.filter(item => item.slug !== "custom-software")) {
     const otherHtml = renderToStaticMarkup(await page.default({ params: Promise.resolve({ slug: service.slug }) }));
     assert.doesNotMatch(otherHtml, /software-evidence-heading|software-cost-heading/, `${service.slug}: optional sections do not alter other solution pages`);

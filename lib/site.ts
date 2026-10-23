@@ -30,9 +30,9 @@ export const navLinks: NavLink[] = [
   { href: "/industries", label: "Industries" },
   { href: "/method", label: "The Catalyst Method" },
   {
-    label: "Pricing",
+    label: "Discovery",
     children: [
-      { href: "/pricing", label: "Pricing" },
+      { href: "/discovery", label: "Discovery" },
       { href: "/tools", label: "Savings Tools" },
     ],
   },

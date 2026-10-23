@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { startingPoints } from "@/data/startingPoints";
 import BookingLink from "@/components/BookingLink";
 import EngagementDetails from "@/components/EngagementDetails";
@@ -53,6 +54,11 @@ export default async function Consultation({
         />
         <aside className="inquiry-aside">
           <BookingLink />
+          <p>
+            The booking link is for a 30-minute introductory Calendly conversation.
+            The paid 45-minute discovery call is a separate step. {" "}
+            <Link className="text-link" href="/discovery">Review discovery details ↗</Link>
+          </p>
           <p className="overline">What happens next</p>
           <h2>
             A conversation.
@@ -77,7 +83,7 @@ export default async function Consultation({
               Email Daniel directly ↗
             </a>
           </p>
-          <p>No obligation. No need to choose a package before we talk.</p>
+          <p>The introductory conversation helps us decide whether a discovery call is a useful next step.</p>
         </aside>
       </section>
       <EngagementDetails />

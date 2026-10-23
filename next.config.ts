@@ -40,6 +40,7 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
+      { source: "/pricing", destination: "/discovery", permanent: true },
       { source: "/founders", destination: "/about#our-background", permanent: true },
       { source: "/demo-lab", destination: "/portfolio", permanent: true },
       { source: "/start", destination: "/tools/project-roi", permanent: true },

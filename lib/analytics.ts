@@ -36,7 +36,7 @@ export const analyticsArticleIds = [
 export const analyticsDemoIds = ["hoa", "flooring", "painting"] as const;
 export const analyticsPaths = new Set([
   "/", "/services", "/solutions", "/industries", "/portfolio", "/method", "/about",
-  "/pricing", "/contact", "/consultation", "/tools", "/insights",
+  "/discovery", "/contact", "/consultation", "/tools", "/insights",
   "/privacy", "/terms", "/accessibility",
   ...analyticsToolIds.map((id) => `/tools/${id}`),
   ...analyticsIndustryIds.map((id) => `/industries/${id}`),

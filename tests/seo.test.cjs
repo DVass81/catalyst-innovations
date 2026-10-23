@@ -23,13 +23,13 @@ const site = { name: "Catalyst Innovations", url: "https://mycatalystinnovations
 const seo = load("lib/seo.ts", { "@/lib/site": { site } });
 
 test("search and social metadata share canonical identity and retain existing generated image routes", () => {
-  const metadata = seo.pageMetadata({ title: "Custom Software Pricing", description: "Understand implementation and monthly support costs.", path: "/pricing" });
-  assert.equal(metadata.title.absolute, "Custom Software Pricing | Catalyst Innovations");
+  const metadata = seo.pageMetadata({ title: "Discovery Call & Custom Software Quotes", description: "Understand discovery and a quote based on your needs.", path: "/discovery" });
+  assert.equal(metadata.title.absolute, "Discovery Call & Custom Software Quotes | Catalyst Innovations");
   assert.equal(metadata.openGraph.title, metadata.title.absolute);
   assert.equal(metadata.twitter.title, metadata.title.absolute);
   assert.equal(metadata.openGraph.description, metadata.description);
   assert.equal(metadata.twitter.description, metadata.description);
-  assert.equal(metadata.openGraph.url, "https://mycatalystinnovations.com/pricing");
+  assert.equal(metadata.openGraph.url, "https://mycatalystinnovations.com/discovery");
   assert.equal(metadata.alternates.canonical, metadata.openGraph.url);
   assert.equal(metadata.openGraph.images[0].url, "https://mycatalystinnovations.com/opengraph-image");
   assert.deepEqual(metadata.twitter.images, metadata.openGraph.images);
@@ -50,59 +50,73 @@ test("the public portal can be crawled to read its noindex directive", () => {
   assert.ok(robots.rules.disallow.includes("/api/"));
 });
 
-test("founder and retired-tool links redirect permanently to the existing public destinations", async () => {
+test("retired pricing, founder and tool links redirect permanently to their public replacements", async () => {
   const config = load("next.config.ts").default;
   const redirects = await config.redirects();
   assert.deepEqual(redirects.find((route) => route.source === "/founders"), {
     source: "/founders", destination: "/about#our-background", permanent: true,
+  });
+  assert.deepEqual(redirects.find((route) => route.source === "/pricing"), {
+    source: "/pricing", destination: "/discovery", permanent: true,
   });
   for (const source of ["/start", "/roi-estimator"]) {
     assert.ok(redirects.some((route) => route.source === source && route.destination === "/tools/project-roi" && route.permanent));
   }
 });
 
-test("all standard pricing packages and their costs are visible in server-rendered HTML", () => {
+test("discovery fee, conditional credit and arrangement action are readable without JavaScript", () => {
   const React = require("react");
   const { renderToStaticMarkup } = require("react-dom/server");
   const process = load("data/catalystProcess.ts");
-  const pricing = load("data/pricing.ts", { "./buyerFaqs": load("data/buyerFaqs.ts", { "./catalystProcess": process }), "./catalystProcess": process });
-  const reveal = load("components/Reveal.tsx");
-  const { default: PricingGrid } = load("components/PricingGrid.tsx", {
-    "./Reveal": reveal,
-    "@/data/pricing": pricing,
-    "@/data/catalystProcess": process,
-    "./ui": { ButtonLink: ({ href, children }) => React.createElement("a", { href }, children) },
+  const discovery = load("data/discovery.ts", {
+    "./buyerFaqs": load("data/buyerFaqs.ts", { "./catalystProcess": process }),
+    "./catalystProcess": process,
   });
-  const tiers = pricing.pricingTiers;
-  const html = renderToStaticMarkup(React.createElement(PricingGrid, { tiers }));
-  for (const tier of tiers) {
-    assert.ok(html.includes(tier.name));
-    assert.ok(html.includes(pricing.formatPriceRange(tier.oneTimeLow, tier.oneTimeHigh)));
-    assert.ok(html.includes(pricing.formatPriceRange(tier.monthlyLow, tier.monthlyHigh)));
-  }
+  const link = { default: ({ href, children, ...props }) => React.createElement("a", { href, ...props }, children) };
+  const reveal = load("components/Reveal.tsx");
+  const { default: CatalystProcess } = load("components/CatalystProcess.tsx", {
+    "next/link": link,
+    "@/data/catalystProcess": process,
+  });
+  const page = load("app/discovery/page.tsx", {
+    "next/link": link,
+    "@/lib/seo": seo,
+    "@/data/catalystProcess": process,
+    "@/data/discovery": discovery,
+    "@/components/CatalystProcess": { default: CatalystProcess },
+    "@/components/Reveal": reveal,
+    "./Discovery.module.css": { default: new Proxy({}, { get: (_, key) => key }) },
+  });
+  const html = renderToStaticMarkup(React.createElement(page.default));
+  assert.match(html, /\$250/);
+  assert.match(html, /45 minutes/);
+  assert.match(html, /If you choose Catalyst to build your software/);
+  assert.match(html, /credited toward implementation fees/);
+  assert.match(html, /<a[^>]+href="\/consultation"[^>]*>Set up a discovery/);
+  assert.match(html, /<details><summary>/);
+  assert.match(html, /quoted for your project/);
+  assert.doesNotMatch(html, /First-year base total|Standard packages|Annual billing|Founding Partner|\$10,000|\$15,000|\$70,000/);
+  assert.doesNotMatch(html, /href="https:\/\/calendly\.com/);
   assert.doesNotMatch(html, /opacity:\s*0(?:[;"\s])|visibility:\s*hidden|display:\s*none/);
-  assert.match(html, /First-year base total/);
-  assert.equal((html.match(/45-minute discovery visit/g) ?? []).length, 3);
-  assert.equal((html.match(/\$250\.00/g) ?? []).length, 3);
-  for (const range of ["$28,250 – $45,250", "$45,250 – $90,250", "$90,250 – $250,250"]) assert.ok(html.includes(range), range);
+  assert.equal(page.metadata.alternates.canonical, `${site.url}/discovery`);
 });
 
-test("discovery is a separate fixed fee and annual totals preserve all three package prices", () => {
+test("shared process keeps the homepage price-free and explains the credit only when requested", () => {
+  const React = require("react");
+  const { renderToStaticMarkup } = require("react-dom/server");
   const process = load("data/catalystProcess.ts");
-  const pricing = load("data/pricing.ts", { "./catalystProcess": process, "./buyerFaqs": load("data/buyerFaqs.ts", { "./catalystProcess": process }) });
-  const expected = {
-    essentials: { prices: [10000, 15000, 1500, 2500], discovery: 250, monthly: [28250, 45250], annual: [26450, 42250] },
-    professional: { prices: [15000, 30000, 2500, 5000], discovery: 250, monthly: [45250, 90250], annual: [42250, 84250] },
-    executive: { prices: [30000, 70000, 5000, 15000], discovery: 250, monthly: [90250, 250250], annual: [84250, 232250] },
-  };
-  assert.deepEqual(pricing.pricingTiers.map((tier) => tier.id), Object.keys(expected));
-  for (const tier of pricing.pricingTiers) {
-    const e = expected[tier.id];
-    assert.deepEqual([tier.oneTimeLow, tier.oneTimeHigh, tier.monthlyLow, tier.monthlyHigh], e.prices);
-    assert.equal(tier.discoveryFee, e.discovery);
-    assert.deepEqual(Object.values(pricing.firstYearTotal(tier)), e.monthly);
-    assert.deepEqual(Object.values(pricing.firstYearTotal(tier, true)), e.annual);
-  }
+  const { default: CatalystProcess } = load("components/CatalystProcess.tsx", {
+    "next/link": { default: ({ href, children }) => React.createElement("a", { href }, children) },
+    "@/data/catalystProcess": process,
+  });
+  const neutral = renderToStaticMarkup(React.createElement(CatalystProcess));
+  const paid = renderToStaticMarkup(React.createElement(CatalystProcess, { showDiscoveryPricing: true }));
+  assert.match(neutral, /45-minute discovery call/);
+  assert.match(neutral, /custom implementation plan and quote/);
+  assert.doesNotMatch(neutral, /\$250|complimentary/i);
+  assert.match(paid, /\$250/);
+  assert.match(paid, /If you choose Catalyst to build the system/);
+  assert.match(paid, /credited toward implementation/);
   assert.equal(process.discoveryOffer.fee, 250);
   assert.equal(process.discoveryOffer.durationMinutes, 45);
   assert.doesNotMatch(JSON.stringify(process), /complimentary/i);
@@ -136,6 +150,7 @@ test("the sitemap includes published guides and playable demo pages without reti
   }
   assert.ok(urls.includes(`${site.url}/insights`));
   assert.ok(urls.includes(`${site.url}/services`));
+  assert.ok(urls.includes(`${site.url}/discovery`));
   for (const demo of demos.demos) {
     const entry = sitemap.find((entry) => entry.url === `${site.url}/portfolio/${demo.id}`);
     assert.ok(entry, demo.id);
@@ -149,7 +164,7 @@ test("the sitemap includes published guides and playable demo pages without reti
   for (const url of urls) {
     const pathname = new URL(url).pathname;
     assert.ok(!pathname.includes("//"));
-    assert.ok(!["/founders", "/portal", "/demo-lab", "/start", "/roi-estimator"].includes(pathname));
+    assert.ok(!["/pricing", "/founders", "/portal", "/demo-lab", "/start", "/roi-estimator"].includes(pathname));
   }
 });
 

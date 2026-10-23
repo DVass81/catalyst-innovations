@@ -6,7 +6,7 @@ export type BuyerFAQ = { question: string; answer: string };
 export const buyerFaqs = {
   cost: {
     question: "What determines the cost of a custom software project?",
-    answer: "The workflow, integrations, data migration and level of customization determine the scope. Our pricing page provides discovery, implementation and monthly support details; your written proposal sets the exact price, included work and any third-party charges before you commit. Bring one process you want to improve rather than trying to choose a package on your own.",
+    answer: "Implementation and ongoing support are custom-quoted based on discovery and your needs. The workflow, integrations, data migration and level of customization determine the scope. Your written proposal sets the price, included work and any third-party charges before you commit. Bring one process you want to improve to the discovery call.",
   },
   timeline: {
     question: "How long does it take to build and launch a system?",
@@ -30,11 +30,11 @@ export const buyerFaqs = {
   },
   ownership: {
     question: "Who owns the software, and can we export our business data?",
-    answer: "Your agreement defines software ownership and licensing, third-party components, access to source code where applicable, and the arrangements for exporting your business data. We discuss those points before building, including what happens if support ends. Do not assume a particular ownership or export arrangement from a package name; it belongs in the written scope and terms.",
+    answer: "Your agreement defines software ownership and licensing, third-party components, access to source code where applicable, and the arrangements for exporting your business data. We discuss those points before building, including what happens if support ends. These arrangements belong in the written scope and terms.",
   },
   support: {
     question: "What support is included after launch?",
-    answer: "The monthly investment includes hosting, security updates, ongoing support and continued access to the features in your tier. The selected package and written proposal define the support scope and responsibilities. We also clarify how new feature requests, third-party costs and future changes will be handled, so routine support and additional development are understood before launch.",
+    answer: "Ongoing support is custom-quoted based on your needs. Your written proposal defines the support scope, hosting and maintenance arrangements, costs and responsibilities. We also clarify how new feature requests, third-party costs and future changes will be handled, so routine support and additional development are understood before launch.",
   },
   training: {
     question: "How will our team learn to use the new software?",

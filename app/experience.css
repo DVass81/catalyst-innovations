@@ -1,31 +1,4 @@
 /* A quieter visual system: readable software, deliberate blue accents, fewer repeating cards. */
-.pricing-overview { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; padding-bottom: 20px; }
-.pricing-overview article { border-top: 2px solid #b4cce0; padding-top: 24px; }
-.pricing-overview h2 { font-size: 25px; margin: 16px 0 12px; }
-.pricing-overview p { line-height: 1.7; }
-.package-discovery { display: grid; gap: 7px; margin-top: 22px; padding: 16px; border: 1px solid #d5e1eb; border-radius: 10px; background: #f1f6fa; }
-.package-discovery > span { color: #24466f; font-size: 12px; font-weight: 600; }
-.package-discovery strong { display: flex; flex-wrap: wrap; gap: 9px; align-items: baseline; color: #0a1628; font-size: 23px; }
-.package-discovery small { color: #52606d; font-size: 11px; font-weight: 400; }
-.package-discovery p { color: #52606d; font-size: 11px; line-height: 1.5; }
-.pricing-on-site { padding-bottom: 32px; }
-.pricing-on-site-benefits { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
-.pricing-on-site-benefits article { padding: 28px; background: #fff; border: 1px solid #d8e2ea; border-radius: 12px; }
-.pricing-on-site-benefits svg { color: #2f5d8f; }
-.pricing-on-site-benefits h3 { margin: 22px 0 12px; font-size: 21px; }
-.pricing-on-site-benefits p { color: #52606d; font-size: 14px; line-height: 1.7; }
-.package-year-total { display: grid; gap: 6px; margin-top: 28px; padding-top: 20px; border-top: 1px solid #d4dee5; }
-.package-year-total span, .package-year-total small { font-size: 12px; color: #52606d; }
-.package-year-total strong { font-size: 21px; color: #0a1628; }
-.pricing-guarantee { margin: 42px auto 20px; max-width: 720px; border-left: 3px solid #2f5d8f; padding: 18px 24px; background: #edf3f8; }
-.pricing-guarantee p { margin-top: 8px; }
-.pricing-note { max-width: 800px; margin: auto; font-size: 13px; line-height: 1.7; color: #52606d; }
-.pricing-help { display: grid; grid-template-columns: 1.5fr 1fr; gap: 50px; align-items: center; }
-.pricing-help p { margin-top: 20px; max-width: 640px; }
-.pricing-help-actions { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
-@media (max-width: 800px) {
-  .pricing-overview, .pricing-help, .pricing-on-site-benefits { grid-template-columns: 1fr; gap: 30px; }
-}
 .stories-intro { max-width: 680px; margin: 24px 0 36px; }
 .contact-actions { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
 .contact-actions .booking-link-light { color: #faf7f1; }

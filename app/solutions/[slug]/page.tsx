@@ -61,7 +61,7 @@ export default async function Solution({
               <li key={c}>— {c}</li>
             ))}
           </ul>
-          <p style={{ marginTop: 20 }}>These are capabilities we can scope around your requirements, not a claim that every feature is included in one package.</p>
+          <p style={{ marginTop: 20 }}>We scope these capabilities around your requirements and include the agreed work in a custom quote.</p>
           <p className="overline" style={{ marginTop: 28 }}>Explore the work in your industry</p>
           <ul className="check-list">
             {content.industryLinks.map((industry) => (
@@ -112,7 +112,7 @@ export default async function Solution({
       </section>
       {content.costGuidance && <section className={`wrap content-section two-grid ${styles.cost}`} aria-labelledby="software-cost-heading">
         <div><p className="overline">Plan the investment</p><h2 id="software-cost-heading">{content.costGuidance.question}</h2></div>
-        <div><p>{content.costGuidance.answer}</p><Link className="text-link" href="/pricing">View custom software implementation and monthly pricing <span aria-hidden="true">&rarr;</span></Link></div>
+        <div><p>{content.costGuidance.answer}</p><Link className="text-link" href="/discovery">See discovery call details and the custom quote process <span aria-hidden="true">&rarr;</span></Link></div>
       </section>}
       <section className="wrap content-section">
         <p className="overline">Use your own figures</p><h2>Explore the potential value.</h2>

@@ -30,7 +30,7 @@ export default function Footer() {
           <span className="overline">Start a conversation</span>
           <Link href="/consultation">Discuss my business ↗</Link>
           <Link href="/tools">Savings tools</Link>
-          <Link href="/pricing">Pricing</Link>
+          <Link href="/discovery">Discovery</Link>
           <Link href="/about">About Catalyst</Link>
           <Link href="/contact">Contact & hours</Link>
         </div>

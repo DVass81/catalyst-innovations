@@ -161,7 +161,7 @@ export default function Home() {
             ],
             [
               "How do we get started?",
-              "Tell us about one process you want to improve. A 45-minute discovery visit lets us meet your team, follow a real example and outline practical opportunities before agreeing what to build.",
+              "Tell us about one process you want to improve. A 45-minute discovery call lets us hear from your team, follow a real example and outline practical opportunities before agreeing what to build.",
             ],
             [
               "Are the calculator results guaranteed?",

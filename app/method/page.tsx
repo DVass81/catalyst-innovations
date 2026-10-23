@@ -7,8 +7,8 @@ import { discoveryOffer } from "@/data/catalystProcess";
 
 export const metadata = pageMetadata({
   path: "/method",
-  title: "The Catalyst Process — On-Site Discovery, Build & Launch",
-  description: `Start with a ${discoveryOffer.durationMinutes}-minute discovery visit. Agree a 4–6-week on-site build, test with your team, then train and launch.`,
+  title: "The Catalyst Process — Discovery Call, On-Site Build & Launch",
+  description: `Start with a ${discoveryOffer.durationMinutes}-minute discovery call. Agree a 4–6-week on-site build, test with your team, then train and launch.`,
 });
 export default function MethodPage() {
   return <>
