@@ -8,7 +8,9 @@ export const analyticsEvents = [
   "founder_profile_view", "phone_click", "email_click",
 ] as const;
 export type AnalyticsEvent = (typeof analyticsEvents)[number];
-export type AnalyticsConsent = "pending" | "granted" | "denied";
+// `granted` is basic site analytics only. Advertising measurement is a separate,
+// explicit choice; existing saved grants must never silently become ad consent.
+export type AnalyticsConsent = "pending" | "granted" | "ad_measurement" | "denied";
 export type AnalyticsProperties = Record<string, string>;
 
 // Keep these small, explicit registries separate from customer-facing copy.
@@ -97,27 +99,41 @@ export const preferencesOpenEvent = "catalyst:analytics-preferences";
 const consentCookie = "catalyst_analytics_consent";
 
 export function parseAnalyticsConsent(value: unknown): AnalyticsConsent {
-  return value === "granted" || value === "denied" ? value : "pending";
+  return value === "granted" || value === "ad_measurement" || value === "denied" ? value : "pending";
 }
 
 export function getAnalyticsConsent(): AnalyticsConsent {
   if (typeof window === "undefined") return "pending";
+  const override = (window as unknown as AnalyticsWindow).ciConsentOverride;
+  if (override) return override;
   let saved: AnalyticsConsent = "pending";
   try { saved = parseAnalyticsConsent(window.localStorage.getItem(consentStorageKey)); } catch {}
   let cookie: AnalyticsConsent = "pending";
   try { cookie = parseAnalyticsConsent(document.cookie.split("; ").find((part) => part.startsWith(`${consentCookie}=`))?.split("=")[1]); } catch {}
   // A denial in either store wins, including a withdrawal after a storage failure.
   if (saved === "denied" || cookie === "denied") return "denied";
+  // The more permissive ad choice requires both stores to agree. A stale or
+  // blocked store must not turn an older analytics-only choice into ad consent.
+  if (saved === "ad_measurement" && cookie === "ad_measurement") return "ad_measurement";
   return saved === "granted" || cookie === "granted" ? "granted" : "pending";
 }
 
 /** Persist before notifying listeners. Acceptance fails closed if storage is blocked. */
 export function saveAnalyticsConsent(choice: Exclude<AnalyticsConsent, "pending">): boolean {
+  const w = window as unknown as AnalyticsWindow;
+  const previouslyBlocked = Boolean(w.ciConsentOverride);
+  delete w.ciConsentOverride;
   try { window.localStorage.setItem(consentStorageKey, choice); } catch {}
   try { document.cookie = `${consentCookie}=${choice}; Path=/; SameSite=Lax${location.protocol === "https:" ? "; Secure" : ""}`; } catch {}
   const persisted = getAnalyticsConsent() === choice;
-  // Even if all storage is blocked, the active page must stop immediately on decline.
-  window.dispatchEvent(new CustomEvent(consentChangeEvent, { detail: choice === "denied" ? "denied" : persisted ? "granted" : "pending" }));
+  // A failed downgrade must never revive a stale, more permissive preference.
+  // Keep this document off instead of reloading into stores we could not update.
+  if (!persisted) w.ciConsentOverride = "denied";
+  if (!persisted || choice !== "ad_measurement") clearGoogleMeasurementCookies(choice === "denied" || !persisted);
+  window.dispatchEvent(new CustomEvent(consentChangeEvent, { detail: persisted && !previouslyBlocked ? choice : "denied" }));
+  // After a failed save the previous tag may still have code in this document.
+  // A later successful choice starts from a fresh document, never a second tag.
+  if (persisted && previouslyBlocked) window.location.reload();
   return persisted;
 }
 
@@ -141,33 +157,42 @@ export function configuredAnalytics() {
 
 export type AnalyticsPayload = { name: AnalyticsEvent | "page_view"; path: string; props: AnalyticsProperties };
 export type AnalyticsTransport = {
-  start: (path: string | null) => void;
+  start: (path: string | null, adMeasurement: boolean) => void;
   page: (path: string | null) => void;
   send: (payload: AnalyticsPayload) => void;
-  stop: () => void;
+  stop: (reloadForModeChange?: boolean) => void;
 };
+
+const isActiveConsent = (choice: AnalyticsConsent) => choice === "granted" || choice === "ad_measurement";
 
 /** Testable state machine: no queue/replay of interactions made before consent. */
 export function createAnalyticsSession(transport: AnalyticsTransport) {
   let consent: AnalyticsConsent = "pending";
   let path: string | null = null;
   let lastViewed: string | null = null;
+  let reloading = false;
   const view = () => {
-    if (consent !== "granted" || !path || path === lastViewed) return;
+    if (!isActiveConsent(consent) || reloading || !path || path === lastViewed) return;
     lastViewed = path;
     transport.send({ name: "page_view", path, props: {} });
   };
   return {
     consent(next: AnalyticsConsent) {
-      if (next === consent) return;
+      if (next === consent || reloading) return;
       const previous = consent;
       consent = next;
-      if (next === "granted") {
-        transport.start(path);
+      if (isActiveConsent(previous) && isActiveConsent(next)) {
+        // A loaded Google tag can retain its old consent state. Persist the
+        // choice first, tear down the old tag, then start clean on reload.
+        reloading = true;
+        lastViewed = null;
+        transport.stop(true);
+      } else if (isActiveConsent(next)) {
+        transport.start(path, next === "ad_measurement");
         view();
       } else {
         lastViewed = null;
-        if (previous === "granted") transport.stop();
+        if (isActiveConsent(previous)) transport.stop();
       }
     },
     navigate(input: unknown) {
@@ -175,11 +200,11 @@ export function createAnalyticsSession(transport: AnalyticsTransport) {
       if (next === path) return;
       path = next;
       if (!path) lastViewed = null;
-      if (consent === "granted") transport.page(path);
+      if (isActiveConsent(consent) && !reloading) transport.page(path);
       view();
     },
     track(event: unknown, props?: unknown) {
-      if (consent !== "granted" || !path) return;
+      if (!isActiveConsent(consent) || reloading || !path) return;
       const clean = sanitizeAnalyticsEvent(event, props);
       if (clean) transport.send({ ...clean, path });
     },
@@ -198,9 +223,35 @@ export const googlePrivacyConfig = {
   campaign_name: "", campaign_term: "", campaign_content: "",
 };
 
+const googleAdMeasurementConfig = {
+  ...googlePrivacyConfig,
+  ads_data_redaction: false,
+};
+
 export function analyticsPageFields(origin: string, path: string | null) {
   const safePath = analyticsPath(path) ?? "/";
   return { page_location: `${new URL(origin).origin}${safePath}`, page_title: safePath, page_referrer: "" };
+}
+
+/** Only documented Google Ads click/aggregate identifiers are allowed into a
+ * consented GA URL. All other queries, including UTMs and form values, stay out. */
+export function adMeasurementPageFields(origin: string, path: string | null, search: string) {
+  const fields = analyticsPageFields(origin, path);
+  if (!analyticsPath(path)) return fields;
+  const input = new URLSearchParams(search);
+  const safe = new URLSearchParams();
+  for (const [name, pattern] of [
+    ["gclid", /^[A-Za-z0-9_-]{10,256}$/],
+    ["gbraid", /^[A-Za-z0-9_-]{8,256}$/],
+    ["wbraid", /^[A-Za-z0-9_-]{8,256}$/],
+    ["gad_source", /^[0-9]{1,4}$/],
+    ["gad_campaignid", /^[0-9]{1,20}$/],
+  ] as const) {
+    const values = input.getAll(name);
+    if (values.length === 1 && pattern.test(values[0])) safe.set(name, values[0]);
+  }
+  const query = safe.toString();
+  return query ? { ...fields, page_location: `${fields.page_location}?${query}` } : fields;
 }
 
 /** Acquisition category only: never retain or send the referring URL or search. */
@@ -218,11 +269,29 @@ export function analyticsEntrySource(referrer: unknown): "google" | "bing" | "du
 }
 
 type AnalyticsWindow = Window & {
+  ciConsentOverride?: AnalyticsConsent;
   dataLayer?: unknown[];
   gtag?: (...args: unknown[]) => void;
   ciTrack?: (event: string, props?: Record<string, string | number>) => void;
   [key: `ga-disable-${string}`]: boolean;
 };
+
+/** Remove browser-accessible cookies for the host and parent-domain variants. */
+function clearGoogleMeasurementCookies(includeAnalytics: boolean) {
+  try {
+    for (const pair of document.cookie.split("; ")) {
+      const name = pair.split("=")[0];
+      const analyticsCookie = name === "_ga" || name.startsWith("_ga_");
+      if (!name.startsWith("_gcl_") && !(includeAnalytics && analyticsCookie)) continue;
+      const domains = window.location.hostname.split(".");
+      document.cookie = `${name}=; Max-Age=0; Path=/`;
+      while (domains.length > 1) {
+        document.cookie = `${name}=; Max-Age=0; Path=/; Domain=${domains.join(".")}`;
+        domains.shift();
+      }
+    }
+  } catch { /* Storage restrictions must not prevent stopping the tag. */ }
+}
 
 /** Browser adapter. Plausible uses explicit API calls, with no automatic tracker. */
 export function createBrowserAnalyticsTransport(providers = configuredAnalytics()): AnalyticsTransport {
@@ -231,18 +300,24 @@ export function createBrowserAnalyticsTransport(providers = configuredAnalytics(
   let active = false;
   let script: HTMLScriptElement | null = null;
   let generation = 0;
+  let adMeasurement = false;
   const entrySource = analyticsEntrySource(document.referrer);
-  const fields = (path: string | null) => analyticsPageFields(window.location.origin, path);
+  const fields = (path: string | null) => adMeasurement && path === window.location.pathname
+    ? adMeasurementPageFields(window.location.origin, path, window.location.search)
+    : analyticsPageFields(window.location.origin, path);
+  const privacyConfig = () => adMeasurement ? googleAdMeasurementConfig : googlePrivacyConfig;
   const page = (path: string | null) => {
     if (!active || !providers.gaId) return;
     w[`ga-disable-${providers.gaId}`] = path === null;
-    w.gtag?.("set", { ...googlePrivacyConfig, ...fields(path) });
-    w.gtag?.("config", providers.gaId, { ...googlePrivacyConfig, ...fields(path), update: true });
+    w.gtag?.("set", { ...privacyConfig(), ...fields(path) });
+    w.gtag?.("config", providers.gaId, { ...privacyConfig(), ...fields(path), update: true });
   };
   return {
-    start(path) {
+    start(path, measureAds) {
       if (active) return;
       active = true;
+      adMeasurement = measureAds;
+      if (!adMeasurement) clearGoogleMeasurementCookies(false);
       const currentGeneration = ++generation;
       if (!providers.gaId) return;
       w[`ga-disable-${providers.gaId}`] = path === null;
@@ -253,12 +328,12 @@ export function createBrowserAnalyticsTransport(providers = configuredAnalytics(
         if (active && generation === currentGeneration) w.dataLayer?.push(arguments);
       };
       w.gtag("consent", "default", {
-        analytics_storage: "granted", ad_storage: "denied",
-        ad_user_data: "denied", ad_personalization: "denied",
+        analytics_storage: "granted", ad_storage: adMeasurement ? "granted" : "denied",
+        ad_user_data: adMeasurement ? "granted" : "denied", ad_personalization: "denied",
       });
-      w.gtag("set", { ...googlePrivacyConfig, ...fields(path) });
+      w.gtag("set", { ...privacyConfig(), ...fields(path) });
       w.gtag("js", new Date());
-      w.gtag("config", providers.gaId, { ...googlePrivacyConfig, ...fields(path) });
+      w.gtag("config", providers.gaId, { ...privacyConfig(), ...fields(path) });
       script = document.createElement("script");
       script.id = "catalyst-consented-ga4";
       script.async = true;
@@ -285,14 +360,20 @@ export function createBrowserAnalyticsTransport(providers = configuredAnalytics(
           body: JSON.stringify({
             name: payload.name === "page_view" ? "pageview" : payload.name,
             domain: providers.plausibleDomain,
-            url: fields(payload.path).page_location,
+            // Plausible never receives click IDs, even when ad measurement is on.
+            url: analyticsPageFields(window.location.origin, payload.path).page_location,
             props: { ...payload.props, entry_source: entrySource },
           }),
         }).catch(() => {}).finally(() => requests.delete(controller));
       }
     },
-    stop() {
+    stop(reloadForModeChange = false) {
       if (!active) return;
+      // Inform an already loaded Google tag before disabling our event bridge.
+      w.gtag?.("consent", "update", {
+        analytics_storage: "denied", ad_storage: "denied",
+        ad_user_data: "denied", ad_personalization: "denied",
+      });
       active = false;
       generation++;
       if (providers.gaId) w[`ga-disable-${providers.gaId}`] = true;
@@ -302,22 +383,10 @@ export function createBrowserAnalyticsTransport(providers = configuredAnalytics(
       script = null;
       requests.forEach((request) => request.abort());
       requests.clear();
-      // Expire GA cookies for the site's host and parent-domain variants.
-      try {
-        for (const pair of document.cookie.split("; ")) {
-          const name = pair.split("=")[0];
-          if (name !== "_ga" && !name.startsWith("_ga_")) continue;
-          const domains = window.location.hostname.split(".");
-          document.cookie = `${name}=; Max-Age=0; Path=/`;
-          while (domains.length > 1) {
-            document.cookie = `${name}=; Max-Age=0; Path=/; Domain=${domains.join(".")}`;
-            domains.shift();
-          }
-        }
-      } catch { /* Browser storage restrictions must not prevent the mandatory reload. */ }
+      clearGoogleMeasurementCookies(true);
       // Persisted denial is read before any scripts load in the fresh document.
       // This also removes listeners installed inside an already-loaded Google tag.
-      if (providers.gaId && getAnalyticsConsent() !== "granted") window.location.reload();
+      if (!w.ciConsentOverride && (reloadForModeChange || (providers.gaId && !isActiveConsent(getAnalyticsConsent())))) window.location.reload();
     },
   };
 }

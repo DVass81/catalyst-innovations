@@ -64,6 +64,24 @@ test("retired pricing, founder and tool links redirect permanently to their publ
   }
 });
 
+test("CSP permits the linked tag's collect paths without allowing entire Google or DoubleClick hosts", async () => {
+  const config = load("next.config.ts").default;
+  const headers = (await config.headers())[0].headers;
+  const policy = headers.find((header) => header.key === "Content-Security-Policy").value;
+  const directives = Object.fromEntries(policy.split(";").map((part) => {
+    const [name, ...sources] = part.trim().split(/\s+/);
+    return [name, sources];
+  }));
+  assert.deepEqual(directives["connect-src"], [
+    "'self'", "https://plausible.io", "https://*.google-analytics.com",
+    "https://analytics.google.com/g/collect", "https://www.google.com/g/collect",
+    "https://stats.g.doubleclick.net/g/collect",
+  ]);
+  assert.ok(!directives["script-src"].some((source) => /doubleclick|analytics\.google\.com|www\.google\.com/.test(source)));
+  assert.deepEqual(directives["img-src"], ["'self'", "data:", "blob:"]);
+  assert.deepEqual(directives["frame-ancestors"], ["'none'"]);
+});
+
 test("discovery fee, conditional credit and arrangement action are readable without JavaScript", () => {
   const React = require("react");
   const { renderToStaticMarkup } = require("react-dom/server");

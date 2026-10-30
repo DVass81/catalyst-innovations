@@ -168,7 +168,7 @@ export default function ConsultationForm({
       if (!res.ok || !json.ok)
         throw new Error(json.error ?? "Submission failed.");
       setStatus("done");
-      track("form_complete");
+      if (!data.website) track("form_complete");
     } catch (e) {
       setStatus("error");
       setServerError(

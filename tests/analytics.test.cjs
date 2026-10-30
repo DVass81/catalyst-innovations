@@ -58,6 +58,20 @@ test("analytics only permits reviewed public routes and removes queries, fragmen
   });
 });
 
+test("ad-result URLs allow only valid Google click and aggregate identifiers, never arbitrary query values", () => {
+  const origin = "https://site.example/?email=private";
+  assert.deepEqual(analytics.adMeasurementPageFields(origin, "/consultation", "?gclid=EAIaIQobChMI12345678&gbraid=0AAAAAA12345678&wbraid=CjkKC12345678&gad_source=1&gad_campaignid=12345678901&utm_term=private%40example.test&email=private"), {
+    page_location: "https://site.example/consultation?gclid=EAIaIQobChMI12345678&gbraid=0AAAAAA12345678&wbraid=CjkKC12345678&gad_source=1&gad_campaignid=12345678901",
+    page_title: "/consultation", page_referrer: "",
+  });
+  for (const search of ["?email=private", "?gclid=short", `?gclid=${"A".repeat(257)}`, "?gclid=private%40example.test", "?gclid=EAIaIQobChMI12345678&gclid=EAIaIQobChMI87654321", "?gbraid=bad%20space", "?wbraid=too", "?gad_source=1%40example.test", "?gad_campaignid=12abc", `?gad_campaignid=${"1".repeat(21)}`, "?gad=1"]) {
+    assert.deepEqual(analytics.adMeasurementPageFields(origin, "/consultation", search), analytics.analyticsPageFields(origin, "/consultation"));
+  }
+  assert.equal(analytics.adMeasurementPageFields(origin, "/consultation", "?gclid=EAIaIQobChMI12345678&gad_source=1&gad_source=2").page_location,
+    "https://site.example/consultation?gclid=EAIaIQobChMI12345678");
+  assert.deepEqual(analytics.adMeasurementPageFields(origin, "/private/path", "?gclid=EAIaIQobChMI12345678"), analytics.analyticsPageFields(origin, "/private/path"));
+});
+
 test("acquisition labels only recognized search hosts and never exposes a referrer or search terms", () => {
   assert.equal(analytics.analyticsEntrySource("https://www.google.com/search?q=private@example.test"), "google");
   assert.equal(analytics.analyticsEntrySource("https://www.bing.com/search?q=private#secret"), "bing");
@@ -104,6 +118,20 @@ test("consent transitions drop pre-consent interactions and emit one view per ac
   session.consent("granted");
   assert.deepEqual(calls.sends.at(-1), { name: "page_view", path: "/contact", props: {} });
   assert.equal(calls.starts.length, 2);
+});
+
+test("ad measurement is distinct from old analytics grants and a mode switch stops before any more events", () => {
+  const { calls, session } = sessionFixture();
+  assert.equal(analytics.parseAnalyticsConsent("ad_measurement"), "ad_measurement");
+  session.navigate("/consultation");
+  session.consent("granted");
+  assert.deepEqual(calls.starts, ["/consultation"]);
+  session.consent("ad_measurement");
+  assert.equal(calls.stops, 1);
+  session.track("form_complete", { source: "inquiry" });
+  session.navigate("/about");
+  assert.equal(calls.sends.length, 1);
+  assert.equal(calls.starts.length, 1);
 });
 
 test("unknown routes neither leak paths nor inherit the previous page context", () => {
@@ -178,7 +206,7 @@ function browserFixture(t) {
   const scripts = [];
   const requests = [];
   let reloads = 0;
-  const location = { origin: "https://site.example", protocol: "https:", hostname: "site.example", pathname: "/", reload: () => reloads++ };
+  const location = { origin: "https://site.example", protocol: "https:", hostname: "site.example", pathname: "/", search: "", reload: () => reloads++ };
   const window = new EventTarget();
   Object.assign(window, { location, localStorage: {
     getItem: (key) => stored.get(key) ?? null,
@@ -206,6 +234,8 @@ function browserFixture(t) {
 
 test("browser transport stays silent until consent and sends explicitly sanitized provider payloads", (t) => {
   const fixture = browserFixture(t);
+  fixture.window.location.pathname = "/consultation";
+  fixture.window.location.search = "?gclid=EAIaIQobChMI12345678&email=private";
   const transport = analytics.createBrowserAnalyticsTransport({ gaId: "G-TEST123", plausibleDomain: "site.example" });
   const session = analytics.createAnalyticsSession(transport);
   session.navigate("/consultation?email=private#secret");
@@ -237,6 +267,75 @@ test("browser transport stays silent until consent and sends explicitly sanitize
   }
   assert.equal(analytics.saveAnalyticsConsent("denied"), true);
   session.consent("denied");
+});
+
+test("ad-result opt-in grants only ad measurement and sends a validated click ID to Google, not Plausible", (t) => {
+  const fixture = browserFixture(t);
+  fixture.window.location.pathname = "/consultation";
+  fixture.window.location.search = "?gclid=EAIaIQobChMI12345678&gad_source=1&utm_term=private%40example.test&email=private";
+  assert.equal(analytics.saveAnalyticsConsent("ad_measurement"), true);
+  assert.equal(analytics.getAnalyticsConsent(), "ad_measurement");
+  const session = analytics.createAnalyticsSession(analytics.createBrowserAnalyticsTransport({ gaId: "G-TEST123", plausibleDomain: "site.example" }));
+  session.navigate("/consultation");
+  session.consent(analytics.getAnalyticsConsent());
+  const consent = fixture.window.dataLayer.find((entry) => entry[0] === "consent")[2];
+  assert.equal(consent.ad_storage, "granted");
+  assert.equal(consent.ad_user_data, "granted");
+  assert.equal(consent.ad_personalization, "denied");
+  const config = fixture.window.dataLayer.find((entry) => entry[0] === "config")[2];
+  assert.equal(config.page_location, "https://site.example/consultation?gclid=EAIaIQobChMI12345678&gad_source=1");
+  assert.equal(config.allow_google_signals, false);
+  assert.equal(config.allow_ad_personalization_signals, false);
+  assert.equal(config.ads_data_redaction, false);
+  for (const field of ["campaign_id", "campaign_source", "campaign_medium", "campaign_name", "campaign_term", "campaign_content"]) {
+    assert.equal(config[field], "", "arbitrary campaign queries must not override safe page fields");
+  }
+  session.track("form_complete", { source: "inquiry", email: "private@example.test" });
+  const googleEvents = fixture.window.dataLayer.filter((entry) => entry[0] === "event");
+  assert.ok(googleEvents.every((entry) => !JSON.stringify(entry).includes("private")));
+  assert.ok(googleEvents.every((entry) => entry[2].page_location.endsWith("?gclid=EAIaIQobChMI12345678&gad_source=1")));
+  assert.equal(JSON.parse(fixture.requests[0].options.body).url, "https://site.example/consultation");
+  fixture.cookies.set("_gcl_aw", "click-cookie");
+  fixture.cookies.set("_gcl_au", "click-cookie");
+  const lateTagCallback = fixture.window.gtag;
+  analytics.saveAnalyticsConsent("granted");
+  // This isolated test has no event listener; switch the session as the app does.
+  session.consent(analytics.getAnalyticsConsent());
+  assert.equal(analytics.getAnalyticsConsent(), "granted");
+  assert.equal(fixture.cookies.has("_gcl_aw"), false);
+  assert.equal(fixture.cookies.has("_gcl_au"), false);
+  assert.equal(fixture.reloads(), 1);
+  assert.equal(fixture.window.dataLayer.length, 0);
+  assert.equal(fixture.scripts[0].removed, true);
+  lateTagCallback("event", "form_complete");
+  session.track("form_complete");
+  assert.equal(fixture.window.dataLayer.length, 0);
+  assert.equal(fixture.requests.length, 2);
+});
+
+test("ad consent fails closed if only one preference store contains the opt-in", (t) => {
+  const fixture = browserFixture(t);
+  fixture.stored.set(analytics.consentStorageKey, "granted");
+  fixture.cookies.set("catalyst_analytics_consent", "ad_measurement");
+  assert.equal(analytics.getAnalyticsConsent(), "granted");
+  fixture.stored.set(analytics.consentStorageKey, "ad_measurement");
+  fixture.cookies.delete("catalyst_analytics_consent");
+  assert.equal(analytics.getAnalyticsConsent(), "pending");
+});
+
+test("basic and necessary choices clear old ad cookies even without a loaded tag", (t) => {
+  const fixture = browserFixture(t);
+  fixture.cookies.set("_gcl_aw", "old-ad-click");
+  fixture.cookies.set("_ga", "basic-analytics");
+  const session = analytics.createAnalyticsSession(analytics.createBrowserAnalyticsTransport({ gaId: "G-TEST123", plausibleDomain: "" }));
+  session.navigate("/consultation");
+  session.consent("granted");
+  assert.equal(fixture.cookies.has("_gcl_aw"), false);
+  assert.equal(fixture.cookies.has("_ga"), true);
+  fixture.cookies.set("_gcl_au", "old-ad-cookie");
+  analytics.saveAnalyticsConsent("denied");
+  assert.equal(fixture.cookies.has("_gcl_au"), false);
+  assert.equal(fixture.cookies.has("_ga"), false);
 });
 
 test("withdrawal stops loaded and late-loading tags, clears queued events, aborts requests and persists before reload", (t) => {
@@ -277,7 +376,65 @@ test("blocked storage cannot grant consent and a cookie denial overrides an old 
   fixture.cookies.clear();
   Object.defineProperty(fixture.document, "cookie", { get: () => { throw new Error("blocked"); }, set: () => { throw new Error("blocked"); } });
   assert.equal(analytics.saveAnalyticsConsent("granted"), false);
-  assert.equal(analytics.getAnalyticsConsent(), "pending");
+  assert.equal(analytics.getAnalyticsConsent(), "denied");
+});
+
+test("failed ad-to-basic downgrade stops this page without reloading stale ad consent", (t) => {
+  const fixture = browserFixture(t);
+  analytics.saveAnalyticsConsent("ad_measurement");
+  const session = analytics.createAnalyticsSession(analytics.createBrowserAnalyticsTransport({ gaId: "G-TEST123", plausibleDomain: "site.example" }));
+  fixture.window.addEventListener(analytics.consentChangeEvent, (event) => session.consent(event.detail));
+  session.navigate("/consultation");
+  session.consent(analytics.getAnalyticsConsent());
+  const lateTagCallback = fixture.window.gtag;
+  const tagUpdates = [];
+  fixture.window.gtag = (...args) => { tagUpdates.push(args); lateTagCallback(...args); };
+  const cookieDescriptor = Object.getOwnPropertyDescriptor(fixture.document, "cookie");
+  fixture.window.localStorage.setItem = () => { throw new Error("blocked writes"); };
+  Object.defineProperty(fixture.document, "cookie", { get: cookieDescriptor.get, set: () => {} });
+  assert.equal(analytics.saveAnalyticsConsent("granted"), false);
+  assert.equal(fixture.stored.get(analytics.consentStorageKey), "ad_measurement");
+  assert.equal(fixture.cookies.get("catalyst_analytics_consent"), "ad_measurement");
+  assert.equal(analytics.getAnalyticsConsent(), "denied");
+  assert.equal(fixture.reloads(), 0);
+  assert.deepEqual(tagUpdates[0], ["consent", "update", {
+    analytics_storage: "denied", ad_storage: "denied", ad_user_data: "denied", ad_personalization: "denied",
+  }]);
+  assert.equal(fixture.window["ga-disable-G-TEST123"], true);
+  assert.equal(fixture.scripts[0].removed, true);
+  assert.ok(fixture.requests.every(({ options }) => options.signal.aborted));
+  session.track("form_complete");
+  session.navigate("/about");
+  lateTagCallback("event", "form_complete");
+  assert.equal(fixture.window.dataLayer.length, 0);
+  assert.equal(fixture.requests.length, 1);
+  // Recovery saves the choice but does not restart a tag in the dirty document.
+  fixture.window.localStorage.setItem = (key, value) => fixture.stored.set(key, value);
+  Object.defineProperty(fixture.document, "cookie", cookieDescriptor);
+  assert.equal(analytics.saveAnalyticsConsent("granted"), true);
+  assert.equal(analytics.getAnalyticsConsent(), "granted");
+  assert.equal(fixture.reloads(), 1);
+  assert.equal(fixture.scripts.length, 1);
+  assert.equal(fixture.requests.length, 1);
+});
+
+test("loss of ad consent to pending blocks loaded and late tag events", (t) => {
+  const fixture = browserFixture(t);
+  analytics.saveAnalyticsConsent("ad_measurement");
+  const session = analytics.createAnalyticsSession(analytics.createBrowserAnalyticsTransport({ gaId: "G-TEST123", plausibleDomain: "site.example" }));
+  session.navigate("/consultation");
+  session.consent(analytics.getAnalyticsConsent());
+  const lateTagCallback = fixture.window.gtag;
+  fixture.stored.clear();
+  fixture.cookies.clear();
+  session.consent(analytics.getAnalyticsConsent());
+  assert.equal(fixture.reloads(), 1);
+  session.track("form_complete");
+  session.navigate("/about");
+  lateTagCallback("event", "form_complete");
+  assert.equal(fixture.window.dataLayer.length, 0);
+  assert.equal(fixture.requests.length, 1);
+  assert.equal(fixture.scripts[0].removed, true);
 });
 
 test("withdrawal still refreshes and stops an accepted session when cookie access becomes blocked", (t) => {

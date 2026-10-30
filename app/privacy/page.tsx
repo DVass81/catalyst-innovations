@@ -6,7 +6,7 @@ import { pageMetadata } from "@/lib/seo";
 export const metadata = pageMetadata({
   path: "/privacy",
   title: "Privacy",
-  description: "How this website handles inquiries, local calculator data and optional analytics, and how to change your analytics choice.",
+  description: "How this website handles inquiries, local calculator data, optional analytics and ad-result measurement, and how to change your choice.",
 });
 
 export default function PrivacyPage() {
@@ -34,27 +34,43 @@ export default function PrivacyPage() {
           to an inquiry, the site saves the calculation in this browser tab’s session
           storage so you can review it before sending. Calculator inputs and results
           are not included in analytics events. Browser storage also remembers your
-          analytics preference; the preference cookie lasts for the browser session,
+          measurement preference; the preference cookie lasts for the browser session,
           and the local-storage preference remains until changed or cleared.
         </p>
 
         <h2>Optional analytics</h2>
         <p>
           When enabled on the site, Google Analytics and/or Plausible start only after
-          you accept analytics. They help us understand visits to public pages and
+          you choose basic analytics or ad-result measurement. They help us understand visits to public pages and
           actions such as using a calculator, viewing a demo, preparing an email draft,
           clicking a booking link or successfully submitting an inquiry. A booking
           click does not tell us whether an appointment was completed, and an email-app
           click does not tell us whether an email was sent.
         </p>
         <p>
-          Our event code sends only reviewed page paths and feature identifiers.
-          It excludes form answers, names, email addresses, phone numbers, calculator
-          values, URL queries, fragments and referring-page URLs. Google Analytics
+          Our custom events use reviewed page paths and feature identifiers.
+          They exclude form answers, names, email addresses, phone numbers, calculator
+          values, fragments and referring-page URLs. With basic analytics, our code
+          supplies a page URL without query details. Google Analytics
           can use cookies and collect browser and device information; analytics
           providers also receive the network information needed to handle a request.
-          Our Google configuration disables advertising storage, advertising user
-          data, ad personalization and Google signals.
+          Basic analytics denies Google advertising storage, advertising user data,
+          ad personalization and Google signals.
+        </p>
+        <h2>Optional ad-result measurement</h2>
+        <p>
+          If you separately choose “Measure ad results,” we allow Google advertising
+          storage and advertising user data so a Google ad click can be connected to
+          a later site action, such as a consultation inquiry. Only validated Google
+          click or aggregate identifiers (gclid, gbraid, wbraid, gad_source or
+          gad_campaignid) may be added to the page URL our code sends to Google;
+          other URL query details are omitted from our custom analytics events. The
+          click identifiers may be stored in first-party Google advertising cookies. If our
+          Google Analytics property is linked to Google Ads, Google may use that
+          measurement to report ad results. Our custom events do not include form fields,
+          inquiry text, email addresses or phone numbers for conversion matching, and
+          enhanced conversions are not enabled by this site. Ad personalization and
+          Google signals remain disabled. Plausible does not receive these identifiers.
         </p>
         <p>
           Where the browser supplies a referrer, we can label a visit as coming from
@@ -62,10 +78,11 @@ export default function PrivacyPage() {
           not the referring URL or search words; other visits share a general category.
         </p>
         <p>
-          Declining analytics leaves the site available. You can change your choice
-          below or through the footer. Turning analytics off stops future site
-          analytics; a page refresh removes an already loaded Google tag. This does
-          not remove information already received by a provider.
+          Choosing “Necessary only” leaves the site available. You can change your
+          choice below or through the footer. Turning measurement off stops future
+          site analytics; changing from ad measurement to basic analytics also removes
+          browser-accessible first-party Google ad-click cookies and refreshes the page to reset the loaded
+          Google tag. This does not remove information already received by a provider.
         </p>
         <p><AnalyticsPreferences /></p>
 
