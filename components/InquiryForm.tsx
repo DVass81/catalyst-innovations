@@ -65,8 +65,11 @@ export default function InquiryForm({
   const [issues, setIssues] = useState<Record<string, string[]>>({});
   const router = useRouter();
   const started = useRef(false);
+  const submissionState = useRef<"idle" | "submitting" | "done">("idle");
   async function submit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (submissionState.current !== "idle") return;
+    submissionState.current = "submitting";
     setPending(true);
     setError("");
     setIssues({});
@@ -81,6 +84,7 @@ export default function InquiryForm({
         setIssues(parsed.error.flatten().fieldErrors);
         setError("Please check the highlighted fields.");
         setPending(false);
+        submissionState.current = "idle";
         requestAnimationFrame(() => errorRef.current?.focus());
         return;
       }
@@ -94,6 +98,7 @@ export default function InquiryForm({
       setCopyMessage("");
       track("inquiry_draft_created", { source: tool ? "calculator" : demo ? "demo" : "inquiry" });
       setPending(false);
+      submissionState.current = "idle";
       requestAnimationFrame(() => draftHeading.current?.focus());
       return;
     }
@@ -133,8 +138,9 @@ export default function InquiryForm({
       );
       setSuggestions(form.getAll("struggleCategories").map(String));
       setSuccess(true);
+      submissionState.current = "done";
       // Honeypot responses deliberately look successful without delivering a lead.
-      if (!String(form.get("website") ?? "").trim()) {
+      if (!String(form.get("website") ?? "")) {
         track("form_complete", { source: tool ? "calculator" : "inquiry" });
       }
       if (include) {
@@ -153,6 +159,7 @@ export default function InquiryForm({
           : "Your request could not be sent. Please try again.",
       );
     } finally {
+      if (submissionState.current !== "done") submissionState.current = "idle";
       setPending(false);
     }
   }
