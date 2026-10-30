@@ -7,7 +7,7 @@ import { PageIntro } from "@/components/SiteSections";
 import InquiryForm from "@/components/InquiryForm";
 import { industryList } from "@/data/redesign";
 import { getCalculator } from "@/lib/calculators";
-import { getPublishedInsight } from "@/lib/blog";
+import { getPublishedInsight, getPublishedPost } from "@/lib/blog";
 export const metadata = pageMetadata({
   path: "/consultation",
   title: "Discuss My Business",
@@ -26,14 +26,16 @@ export default async function Consultation({
     ind?: string;
     rec?: string;
     article?: string;
+    post?: string;
   }>;
 }) {
   const q = await searchParams;
   const industry = industryList.find((i) => i.slug === (q.industry ?? q.ind));
   const tool = q.tool ? getCalculator(q.tool) : undefined;
-  const article = typeof q.article === "string" ? await getPublishedInsight(q.article).catch(() => undefined) : undefined;
+  const post = typeof q.post === "string" ? await getPublishedPost(q.post).catch(() => undefined) : undefined;
+  const article = !post && typeof q.article === "string" ? await getPublishedInsight(q.article).catch(() => undefined) : undefined;
   return (
-    <>
+    <div className="studio-page studio-inquiry">
       <PageIntro
         eyebrow="Let’s start with your business"
         title="What’s slowing you down?"
@@ -50,6 +52,8 @@ export default async function Consultation({
           tool={tool?.slug}
           article={article?.slug}
           articleTitle={article?.title}
+          post={post?.slug}
+          postTitle={post?.title}
           demo={
             q.demo === "hoa" || q.demo === "flooring" || q.demo === "painting"
               ? q.demo
@@ -92,6 +96,6 @@ export default async function Consultation({
         </aside>
       </section>
       <EngagementDetails />
-    </>
+    </div>
   );
 }

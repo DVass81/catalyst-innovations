@@ -20,7 +20,7 @@ const outcomes = [
 ];
 
 export default function DiscoveryPage() {
-  return <>
+  return <div className="studio-page studio-discovery">
     <section className={`wrap ${styles.hero}`} aria-labelledby="discovery-title">
       <div className={styles.intro}>
         <p className="overline">Discovery / Built around your business</p>
@@ -65,5 +65,5 @@ export default function DiscoveryPage() {
     </section>
 
     <section className={styles.closing} aria-labelledby="discovery-next-heading"><div className="wrap"><p className="overline">Bring us the process that needs to work better</p><h2 id="discovery-next-heading">Let’s find your<br /><em>best next step.</em></h2><p>You know your business. We’ll help turn that understanding into software built around it.</p><Link className="button" href="/consultation">Set up a discovery <ArrowUpRight size={18} aria-hidden="true" /></Link><Link className="text-link" href="/services">Explore what we build <ArrowRight size={16} aria-hidden="true" /></Link></div></section>
-  </>;
+  </div>;
 }

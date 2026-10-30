@@ -1,11 +1,13 @@
-import VisualStory from "@/components/VisualStory";
-import { solutionStories } from "@/data/motionStories";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { ArrowRight, ArrowUpRight, BookOpen } from "lucide-react";
 import { notFound } from "next/navigation";
 import { services } from "@/data/services";
-import { PageIntro, DiscussCTA } from "@/components/SiteSections";
+import { DiscussCTA } from "@/components/SiteSections";
+import StudioPhoto from "@/components/studio/StudioPhoto";
+import WorkflowDiagram from "@/components/studio/WorkflowDiagram";
+import { solutionVisuals } from "@/data/solutionVisuals";
 import { solutionContent } from "@/data/seoContent";
 import { demos } from "@/data/demos";
 import { getDemoPage } from "@/data/demoPages";
@@ -36,34 +38,36 @@ export default async function Solution({
   if (!s) notFound();
   const content = solutionContent[s.slug];
   const guide = getInsight(content.guide)!;
+  const visual = solutionVisuals[s.slug];
   return (
-    <>
+    <div className={styles.page}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Solutions", path: "/solutions" }, { name: s.title, path: `/solutions/${s.slug}` }])).replace(/</g, "\\u003c") }} />
-      <PageIntro eyebrow="What we build" title={content.title} text={content.summary} />
-      <section className="wrap content-section two-grid">
-        <div>
+      <section className={`wrap ${styles.hero}`} aria-labelledby="solution-heading">
+        <div className={styles.heroCopy}><Link className={styles.backLink} href="/solutions">Solutions <ArrowRight size={14} aria-hidden="true" /> {s.navLabel}</Link><p className="overline">What we build / {s.navLabel}</p><h1 id="solution-heading">{content.title}</h1><p className={styles.lead}>{content.summary}</p><Link className="button" href="/consultation">Discuss your process <ArrowUpRight size={18} aria-hidden="true" /></Link></div>
+        <div className={styles.heroPhoto}><StudioPhoto photoKey={visual.photoKey} priority sizes="(max-width: 760px) 92vw, 43vw" /><p className={styles.photoNote}>{visual.photoNote}</p></div>
+      </section>
+      <section className={`wrap ${styles.startSection}`}>
+        <div className={styles.startCopy}>
+          <p className="overline">The work before the software</p>
           <h2>Start with the work.</h2>
           <p>{content.introduction}</p>
-          <p style={{ marginTop: 20 }}>
+          <p>
             Based in Knoxville, we work with businesses across East Tennessee
             and remotely worldwide. We define a useful first version together
             and agree how to evaluate it before expanding.
           </p>
-          <Link className="text-link" href="/consultation">
-            Discuss your process ↗
-          </Link>
-          <p style={{ marginTop: 20 }}><Link className="text-link" href="/portfolio">See our actual software demonstrations ↗</Link></p>
+          <Link className="text-link" href="/portfolio">See our actual software demonstrations <ArrowRight size={16} aria-hidden="true" /></Link>
         </div>
-        <div className="content-card">
+        <div className={styles.capabilities}>
           <p className="overline">What we can build</p>
-          <ul className="check-list">
-            {s.capabilities.slice(0, 6).map((c) => (
-              <li key={c}>— {c}</li>
+          <ul>
+            {s.capabilities.slice(0, 6).map((c, index) => (
+              <li key={c}><span aria-hidden="true">0{index + 1}</span>{c}</li>
             ))}
           </ul>
-          <p style={{ marginTop: 20 }}>We scope these capabilities around your requirements and include the agreed work in a custom quote.</p>
-          <p className="overline" style={{ marginTop: 28 }}>Explore the work in your industry</p>
-          <ul className="check-list">
+          <p className={styles.scopeNote}>We scope these capabilities around your requirements and include the agreed work in a custom quote.</p>
+          <p className="overline">Explore the work in your industry</p>
+          <ul className={styles.industryLinks}>
             {content.industryLinks.map((industry) => (
               <li key={industry.slug}>
                 <Link className="text-link" href={`/industries/${industry.slug}`}>
@@ -74,7 +78,7 @@ export default async function Solution({
           </ul>
         </div>
       </section>
-      {content.demoEvidence && <section className="wrap content-section" aria-labelledby="software-evidence-heading">
+      {content.demoEvidence && <section className={`wrap ${styles.evidence}`} aria-labelledby="software-evidence-heading">
         <p className="overline">Actual software demonstrations</p>
         <h2 id="software-evidence-heading">See custom software in practice.</h2>
         <p className={styles.introduction}>Explore two estimating workflows built by Catalyst. Each recording explains what is demonstrated and where the example stops.</p>
@@ -84,6 +88,7 @@ export default async function Solution({
           const screen = demo.steps[0];
           return <article key={id} className={styles.example}>
             <div className={styles.screen}>
+              <span className={styles.screenLabel}>Actual application / sample information</span>
               <Image src={screen.image} width={screen.width} height={screen.height} alt={screen.alt} sizes="(max-width: 700px) 88vw, (max-width: 1100px) 43vw, 520px" />
             </div>
             <div className={styles.copy}>
@@ -96,33 +101,27 @@ export default async function Solution({
           </article>;
         })}</div>
       </section>}
-      <section className="wrap content-section">
-        <p className="overline">A clearer workflow</p>
-        <h2>What a connected process could look like.</h2>
-        <p style={{ marginBottom: 28 }}>{content.example}</p>
-        <VisualStory
-          kind="desk"
-          context={s.navLabel}
-          workflow={solutionStories[s.slug].steps.map((step) => step.label)}
-        />
+      <section className={`wrap ${styles.workflow}`}>
+        <header className={styles.sectionHeader}><div><p className="overline">A clearer workflow</p><h2>What a connected process could look like.</h2></div><p>{content.example}</p></header>
+        <WorkflowDiagram title={visual.workflowTitle} steps={visual.workflow} caption={visual.caption} />
       </section>
-      <section className="wrap content-section two-grid">
-        <div><p className="overline">A focused first step</p><h2>Define the work before the build.</h2><ol className="check-list">{content.firstSteps.map((step, index) => <li key={step}>{index + 1}. {step}</li>)}</ol></div>
-        <aside className="content-card"><p className="overline">Practical guide</p><h2>{guide.title}</h2><p>{guide.description}</p><Link className="text-link" href={`/insights/${guide.slug}`}>Read: {guide.title} ↗</Link></aside>
+      <section className={`wrap ${styles.firstSteps}`}>
+        <div><p className="overline">A focused first step</p><h2>Define the work before the build.</h2><ol>{content.firstSteps.map((step, index) => <li key={step}><span>0{index + 1}</span><p>{step}</p></li>)}</ol></div>
+        <aside className={styles.guide}><BookOpen size={29} strokeWidth={1.3} aria-hidden="true" /><p className="overline">Practical guide / Read and prepare</p><h3>{guide.title}</h3><p>{guide.description}</p><Link className="text-link" href={`/insights/${guide.slug}`}>Read: {guide.title} ↗</Link></aside>
       </section>
-      {content.costGuidance && <section className={`wrap content-section two-grid ${styles.cost}`} aria-labelledby="software-cost-heading">
+      {content.costGuidance && <section className={`wrap ${styles.cost}`} aria-labelledby="software-cost-heading">
         <div><p className="overline">Plan the investment</p><h2 id="software-cost-heading">{content.costGuidance.question}</h2></div>
         <div><p>{content.costGuidance.answer}</p><Link className="text-link" href="/discovery">See discovery call details and the custom quote process <span aria-hidden="true">&rarr;</span></Link></div>
       </section>}
-      <section className="wrap content-section">
+      <section className={`wrap ${styles.tools}`}>
         <p className="overline">Use your own figures</p><h2>Explore the potential value.</h2>
-        <div className="three-grid">{content.tools.map(slug => { const tool = getCalculator(slug)!; return <article className="tool-card" key={slug}><h3>{tool.title}</h3><p>{tool.description}</p><Link className="text-link" href={`/tools/${slug}`}>Try the calculator ↗</Link></article>; })}</div>
+        <div className={styles.toolRows}>{content.tools.map((slug, index) => { const tool = getCalculator(slug)!; return <article key={slug}><span className={styles.index}>0{index + 1} / Savings tool</span><h3>{tool.title}</h3><p>{tool.description}</p><Link className="text-link" href={`/tools/${slug}`}>Try the calculator <ArrowUpRight size={17} aria-hidden="true" /></Link></article>; })}</div>
       </section>
       <section className="wrap content-section faq-section">
         <div><p className="overline">Before we begin</p><h2>Useful questions.</h2></div>
         <div>{content.faqs.map(faq => <details key={faq.question}><summary>{faq.question}<span aria-hidden="true">+</span></summary><p>{faq.answer}</p></details>)}</div>
       </section>
       <DiscussCTA />
-    </>
+    </div>
   );
 }

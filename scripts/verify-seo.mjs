@@ -130,7 +130,7 @@ for (const [path, destination] of [["/founders", "/about#our-background"], ["/st
   redirects.push({ path, status: response.status, location, finalStatus: final, passed: response.status === 308 && target && `${target.pathname}${target.hash}` === destination && final === 200 });
 }
 const missingPages = [];
-for (const path of ["/not-a-real-page", "/solutions/not-a-real-solution", "/industries/not-a-real-industry", "/tools/not-a-real-tool", "/insights/not-a-real-guide", "/portfolio/not-a-real-demo"]) {
+for (const path of ["/not-a-real-page", "/solutions/not-a-real-solution", "/industries/not-a-real-industry", "/tools/not-a-real-tool", "/insights/not-a-real-guide", "/blog/not-a-real-post", "/portfolio/not-a-real-demo"]) {
   const { response, text } = await get(path);
   const noindex = inspect(text).meta.robots?.some((value) => /noindex/i.test(value)) ?? false;
   missingPages.push({ path, status: response.status, noindex, passed: response.status === 404 && noindex });

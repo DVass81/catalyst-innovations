@@ -11,7 +11,7 @@ export const metadata = pageMetadata({
 
 export default function PrivacyPage() {
   return (
-    <Section className="bg-white pt-40">
+    <Section className="studio-legal">
       <div className="prose-ci mx-auto">
         <Heading as="h1">Privacy</Heading>
         <p>This page describes the information handled by the Catalyst Innovations website and the choices available to you.</p>
@@ -59,13 +59,14 @@ export default function PrivacyPage() {
         </p>
         <p>
           After analytics consent, a shared article link can also supply a reviewed
-          article identifier and a predefined sharing label such as LinkedIn or email.
+          Blog-post or Guide identifier and a predefined sharing label such as LinkedIn or email.
           These two labels stay in this browser tab’s session storage and can accompany
           later site actions. They describe the link’s sharing label, rather than proving
           which platform sent a visitor. Search terms, arbitrary link parameters and
           questionnaire answers are excluded. Withdrawing consent clears these labels.
-          If you open an inquiry from an article, its public identifier can accompany
-          the inquiry so we know which guide you were reading.
+          Blog posts and Guides use distinct identifiers. If you open an inquiry from
+          either, its public identifier can accompany the inquiry so we know what you
+          were reading.
         </p>
         <h2>Optional ad-result measurement</h2>
         <p>

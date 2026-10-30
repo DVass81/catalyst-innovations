@@ -1,7 +1,7 @@
 /** Builds a user-reviewed email draft locally; it never transmits or claims delivery. */
 export function inquiryEmailDraft(
   data: Record<string, unknown>,
-  context: { tool?: string; demo?: string; article?: string; summary?: string },
+  context: { tool?: string; demo?: string; article?: string; post?: string; summary?: string },
 ) {
   const fields = [
     ["Name", data.name],
@@ -20,7 +20,8 @@ export function inquiryEmailDraft(
     ["Desired improvement", data.desiredOutcome],
     ["Demo", context.demo],
     ["Calculator", context.tool],
-    ["Article", context.article],
+    ["Guide", context.article],
+    ["Blog post", context.post],
     ["Calculation shared by choice", context.summary],
   ];
   const body = fields

@@ -1,34 +1,16 @@
 {
-  "startedAt": "2026-10-30T17:41:28.167Z",
-  "completedAt": "2026-10-30T17:41:29.834Z",
-  "baseUrl": "http://127.0.0.1:3130",
+  "startedAt": "2026-10-30T22:09:31.903Z",
+  "completedAt": "2026-10-30T22:09:33.741Z",
+  "baseUrl": "http://127.0.0.1:3132",
   "scope": "Local production build; no browser execution or external requests. Canonical/social URLs checked against the sitemap. Images and demo media checked through the local origin.",
   "passed": true,
-  "totalPages": 77,
+  "totalPages": 78,
   "failedPages": 0,
   "duplicateTitles": [],
   "duplicateDescriptions": [],
   "images": [
     {
-      "path": "/insights/software-data-migration/opengraph-image",
-      "status": 200,
-      "contentType": "image/png",
-      "passed": true
-    },
-    {
-      "path": "/insights/software-rollout-small-team/opengraph-image",
-      "status": 200,
-      "contentType": "image/png",
-      "passed": true
-    },
-    {
       "path": "/opengraph-image",
-      "status": 200,
-      "contentType": "image/png",
-      "passed": true
-    },
-    {
-      "path": "/insights/inventory-purchasing-stock/opengraph-image",
       "status": 200,
       "contentType": "image/png",
       "passed": true
@@ -40,13 +22,19 @@
       "passed": true
     },
     {
+      "path": "/insights/estimate-to-invoice-field-office/opengraph-image",
+      "status": 200,
+      "contentType": "image/png",
+      "passed": true
+    },
+    {
       "path": "/insights/trackable-approval-workflows/opengraph-image",
       "status": 200,
       "contentType": "image/png",
       "passed": true
     },
     {
-      "path": "/insights/estimate-to-invoice-field-office/opengraph-image",
+      "path": "/insights/inventory-purchasing-stock/opengraph-image",
       "status": 200,
       "contentType": "image/png",
       "passed": true
@@ -64,19 +52,13 @@
       "passed": true
     },
     {
-      "path": "/solutions/procurement/opengraph-image",
+      "path": "/insights/software-data-migration/opengraph-image",
       "status": 200,
       "contentType": "image/png",
       "passed": true
     },
     {
-      "path": "/solutions/supply-chain/opengraph-image",
-      "status": 200,
-      "contentType": "image/png",
-      "passed": true
-    },
-    {
-      "path": "/solutions/manufacturing-operations/opengraph-image",
+      "path": "/insights/software-rollout-small-team/opengraph-image",
       "status": 200,
       "contentType": "image/png",
       "passed": true
@@ -88,13 +70,31 @@
       "passed": true
     },
     {
-      "path": "/solutions/process-automation/opengraph-image",
+      "path": "/solutions/procurement/opengraph-image",
       "status": 200,
       "contentType": "image/png",
       "passed": true
     },
     {
       "path": "/solutions/custom-software/opengraph-image",
+      "status": 200,
+      "contentType": "image/png",
+      "passed": true
+    },
+    {
+      "path": "/solutions/manufacturing-operations/opengraph-image",
+      "status": 200,
+      "contentType": "image/png",
+      "passed": true
+    },
+    {
+      "path": "/solutions/process-automation/opengraph-image",
+      "status": 200,
+      "contentType": "image/png",
+      "passed": true
+    },
+    {
+      "path": "/solutions/supply-chain/opengraph-image",
       "status": 200,
       "contentType": "image/png",
       "passed": true
@@ -138,30 +138,6 @@
       "passed": true
     },
     {
-      "page": "/portfolio/hoa",
-      "kind": "video",
-      "asset": "/demos/hoa-walkthrough.mp4",
-      "status": 200,
-      "contentType": "video/mp4",
-      "passed": true
-    },
-    {
-      "page": "/portfolio/hoa",
-      "kind": "poster",
-      "asset": "/demos/hoa-walkthrough.webp",
-      "status": 200,
-      "contentType": "image/webp",
-      "passed": true
-    },
-    {
-      "page": "/portfolio/hoa",
-      "kind": "captions",
-      "asset": "/demos/hoa-walkthrough.vtt",
-      "status": 200,
-      "contentType": "text/vtt; charset=UTF-8",
-      "passed": true
-    },
-    {
       "page": "/portfolio/painting",
       "kind": "video",
       "asset": "/demos/painting-walkthrough.mp4",
@@ -181,6 +157,30 @@
       "page": "/portfolio/painting",
       "kind": "captions",
       "asset": "/demos/painting-walkthrough.vtt",
+      "status": 200,
+      "contentType": "text/vtt; charset=UTF-8",
+      "passed": true
+    },
+    {
+      "page": "/portfolio/hoa",
+      "kind": "video",
+      "asset": "/demos/hoa-walkthrough.mp4",
+      "status": 200,
+      "contentType": "video/mp4",
+      "passed": true
+    },
+    {
+      "page": "/portfolio/hoa",
+      "kind": "poster",
+      "asset": "/demos/hoa-walkthrough.webp",
+      "status": 200,
+      "contentType": "image/webp",
+      "passed": true
+    },
+    {
+      "page": "/portfolio/hoa",
+      "kind": "captions",
+      "asset": "/demos/hoa-walkthrough.vtt",
       "status": 200,
       "contentType": "text/vtt; charset=UTF-8",
       "passed": true
@@ -248,6 +248,12 @@
       "passed": true
     },
     {
+      "path": "/blog/not-a-real-post",
+      "status": 404,
+      "noindex": true,
+      "passed": true
+    },
+    {
       "path": "/portfolio/not-a-real-demo",
       "status": 404,
       "noindex": true,
@@ -270,15 +276,15 @@
     {
       "route": "/",
       "baselineUncompressedBytes": 573048,
-      "currentUncompressedBytes": 553923,
-      "deltaBytes": -19125,
+      "currentUncompressedBytes": 532054,
+      "deltaBytes": -40994,
       "calculatorDefinitionChunks": []
     },
     {
       "route": "/tools",
       "baselineUncompressedBytes": 550098,
-      "currentUncompressedBytes": 549809,
-      "deltaBytes": -289,
+      "currentUncompressedBytes": 542140,
+      "deltaBytes": -7958,
       "calculatorDefinitionChunks": []
     }
   ],
@@ -290,7 +296,7 @@
       "description": "Custom business software and workflow automation from Knoxville, Tennessee. Connect customers, jobs, inventory and accounting around the way you work.",
       "canonical": "https://mycatalystinnovations.com",
       "h1": "Custom software. A better-running business.",
-      "mainWordCount": 1614,
+      "mainWordCount": 1423,
       "schemaTypes": [
         "Organization"
       ],
@@ -303,8 +309,8 @@
       "title": "Josh, Daniel & the Story Behind Catalyst | Catalyst Innovations",
       "description": "Meet Daniel Vass and Josh Ogle: operations experience and technology expertise, brought together at Catalyst Innovations in Knoxville, Tennessee.",
       "canonical": "https://mycatalystinnovations.com/about",
-      "h1": "Good software starts with understanding the work.",
-      "mainWordCount": 717,
+      "h1": "Meet Josh and Daniel.",
+      "mainWordCount": 795,
       "schemaTypes": [
         "Organization",
         "Person",
@@ -323,6 +329,21 @@
       "mainWordCount": 131,
       "schemaTypes": [
         "Organization"
+      ],
+      "image": "https://mycatalystinnovations.com/opengraph-image",
+      "failures": []
+    },
+    {
+      "path": "/blog",
+      "status": 200,
+      "title": "The Catalyst Blog: Manual Work & Automation | Catalyst Innovations",
+      "description": "Short Friday reads from Catalyst Innovations about manual work, practical automation and the business problems behind better software.",
+      "canonical": "https://mycatalystinnovations.com/blog",
+      "h1": "Less busywork. A fresh perspective.",
+      "mainWordCount": 189,
+      "schemaTypes": [
+        "Organization",
+        "BreadcrumbList"
       ],
       "image": "https://mycatalystinnovations.com/opengraph-image",
       "failures": []
@@ -375,8 +396,8 @@
       "title": "Industries We Help | Catalyst Innovations",
       "description": "Custom software for trades, manufacturing, warehouses, communities, nonprofits and growing businesses.",
       "canonical": "https://mycatalystinnovations.com/industries",
-      "h1": "Different work. The same need for a better way.",
-      "mainWordCount": 129,
+      "h1": "Different work. The same need for a clearer way.",
+      "mainWordCount": 381,
       "schemaTypes": [
         "Organization"
       ],
@@ -389,8 +410,8 @@
       "title": "Custom Software for Churches & Nonprofits | Catalyst Innovations",
       "description": "Small teams juggle programs and administrative work. Explore custom workflows for churches & nonprofits, practical starting points and relevant calculators.",
       "canonical": "https://mycatalystinnovations.com/industries/churches-nonprofits",
-      "h1": "Churches & Nonprofits",
-      "mainWordCount": 394,
+      "h1": "Churches & Nonprofits More attention for the purpose behind the work.",
+      "mainWordCount": 639,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList"
@@ -404,8 +425,8 @@
       "title": "Custom Software for Construction | Catalyst Innovations",
       "description": "Changing schedules leave crews working from old plans. Explore custom workflows for construction, practical starting points and relevant calculators.",
       "canonical": "https://mycatalystinnovations.com/industries/construction",
-      "h1": "Construction",
-      "mainWordCount": 406,
+      "h1": "Construction Keep the job and its changes together.",
+      "mainWordCount": 650,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList"
@@ -419,8 +440,8 @@
       "title": "Custom Software for Credit Unions | Catalyst Innovations",
       "description": "Member-service handoffs are hard to follow across teams. Explore custom workflows for credit unions, practical starting points and relevant calculators.",
       "canonical": "https://mycatalystinnovations.com/industries/credit-unions",
-      "h1": "Credit Unions",
-      "mainWordCount": 381,
+      "h1": "Credit Unions Internal work, with a visible next step.",
+      "mainWordCount": 612,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList"
@@ -434,8 +455,8 @@
       "title": "Custom Software for Electrical Contractors | Catalyst Innovations",
       "description": "Estimates depend on labor and material details in separate files. Explore custom workflows for electrical contractors, practical starting points and relevant calculators.",
       "canonical": "https://mycatalystinnovations.com/industries/electrical-contractors",
-      "h1": "Electrical Contractors",
-      "mainWordCount": 391,
+      "h1": "Electrical Contractors One job record, from office to site.",
+      "mainWordCount": 641,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList"
@@ -449,8 +470,8 @@
       "title": "Custom Software for Field-Service Businesses | Catalyst Innovations",
       "description": "Dispatch changes do not always reach the technician. Explore custom workflows for field-service businesses, practical starting points and relevant calculators.",
       "canonical": "https://mycatalystinnovations.com/industries/field-service",
-      "h1": "Field-Service Businesses",
-      "mainWordCount": 392,
+      "h1": "Field-Service Businesses A useful handoff, on both sides of the visit.",
+      "mainWordCount": 642,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList"
@@ -464,8 +485,8 @@
       "title": "Custom Software for Financial Institutions | Catalyst Innovations",
       "description": "Vendor reviews involve scattered documents and deadlines. Explore custom workflows for financial institutions, practical starting points and relevant calculators.",
       "canonical": "https://mycatalystinnovations.com/industries/financial-institutions",
-      "h1": "Financial Institutions",
-      "mainWordCount": 369,
+      "h1": "Financial Institutions A clear owner for the next decision.",
+      "mainWordCount": 610,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList"
@@ -479,8 +500,8 @@
       "title": "Custom Software for HOAs & community associations | Catalyst Innovations",
       "description": "Resident requests arrive through too many channels. Explore custom workflows for hoas & community associations, practical starting points and relevant calculators.",
       "canonical": "https://mycatalystinnovations.com/industries/hoa",
-      "h1": "HOAs & community associations",
-      "mainWordCount": 399,
+      "h1": "HOAs & community associations A request the resident and community can follow.",
+      "mainWordCount": 651,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList"
@@ -494,8 +515,8 @@
       "title": "Custom Software for HVAC | Catalyst Innovations",
       "description": "Busy seasons make scheduling and follow-up difficult. Explore custom workflows for hvac, practical starting points and relevant calculators.",
       "canonical": "https://mycatalystinnovations.com/industries/hvac",
-      "h1": "HVAC",
-      "mainWordCount": 388,
+      "h1": "HVAC Equipment history that travels with the visit.",
+      "mainWordCount": 630,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList"
@@ -509,8 +530,8 @@
       "title": "Custom Software for Industrial Service Companies | Catalyst Innovations",
       "description": "Maintenance work competes for limited crew time. Explore custom workflows for industrial service companies, practical starting points and relevant calculators.",
       "canonical": "https://mycatalystinnovations.com/industries/industrial-services",
-      "h1": "Industrial Service Companies",
-      "mainWordCount": 396,
+      "h1": "Industrial Service Companies The service history meets the next job.",
+      "mainWordCount": 642,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList"
@@ -524,8 +545,8 @@
       "title": "Custom Software for Supply Chain & Logistics | Catalyst Innovations",
       "description": "Shipment updates live in several different systems. Explore custom workflows for supply chain & logistics, practical starting points and relevant calculators.",
       "canonical": "https://mycatalystinnovations.com/industries/logistics",
-      "h1": "Supply Chain & Logistics",
-      "mainWordCount": 396,
+      "h1": "Supply Chain & Logistics The order, the update and the exception.",
+      "mainWordCount": 638,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList"
@@ -539,8 +560,8 @@
       "title": "Custom Software for Manufacturing | Catalyst Innovations",
       "description": "Production plans change before everyone gets the update. Explore custom workflows for manufacturing, practical starting points and relevant calculators.",
       "canonical": "https://mycatalystinnovations.com/industries/manufacturing",
-      "h1": "Manufacturing",
-      "mainWordCount": 389,
+      "h1": "Manufacturing A clearer view of the floor.",
+      "mainWordCount": 661,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList"
@@ -554,8 +575,8 @@
       "title": "Custom Software for Multi-Location Organizations | Catalyst Innovations",
       "description": "Each location follows a slightly different process. Explore custom workflows for multi-location organizations, practical starting points and relevant calculators.",
       "canonical": "https://mycatalystinnovations.com/industries/multi-location",
-      "h1": "Multi-Location Organizations",
-      "mainWordCount": 378,
+      "h1": "Multi-Location Organizations A shared picture, with room for local detail.",
+      "mainWordCount": 617,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList"
@@ -569,8 +590,8 @@
       "title": "Custom Software for Painting businesses | Catalyst Innovations",
       "description": "Unclear preparation and surface scope create misunderstandings. Explore custom workflows for painting businesses, practical starting points and relevant calculators.",
       "canonical": "https://mycatalystinnovations.com/industries/painting",
-      "h1": "Painting businesses",
-      "mainWordCount": 396,
+      "h1": "Painting businesses The scope should stay connected to the work.",
+      "mainWordCount": 646,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList"
@@ -584,8 +605,8 @@
       "title": "Custom Software for Plumbing | Catalyst Innovations",
       "description": "Urgent calls disrupt an already busy dispatch schedule. Explore custom workflows for plumbing, practical starting points and relevant calculators.",
       "canonical": "https://mycatalystinnovations.com/industries/plumbing",
-      "h1": "Plumbing",
-      "mainWordCount": 398,
+      "h1": "Plumbing The right details, from the first call onward.",
+      "mainWordCount": 639,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList"
@@ -599,8 +620,8 @@
       "title": "Custom Software for Professional Services | Catalyst Innovations",
       "description": "Client information is repeatedly requested by different people. Explore custom workflows for professional services, practical starting points and relevant calculators.",
       "canonical": "https://mycatalystinnovations.com/industries/professional-services",
-      "h1": "Professional Services",
-      "mainWordCount": 374,
+      "h1": "Professional Services Less reconstructing the work from email.",
+      "mainWordCount": 618,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList"
@@ -614,8 +635,8 @@
       "title": "Custom Software for Schools & Athletic Organizations | Catalyst Innovations",
       "description": "Events require coordinating facilities, people and transport. Explore custom workflows for schools & athletic organizations, practical starting points and relevant calculators.",
       "canonical": "https://mycatalystinnovations.com/industries/schools-athletics",
-      "h1": "Schools & Athletic Organizations",
-      "mainWordCount": 398,
+      "h1": "Schools & Athletic Organizations Keep the campaign’s people and records connected.",
+      "mainWordCount": 638,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList"
@@ -629,8 +650,8 @@
       "title": "Custom Software for Growing Small Businesses | Catalyst Innovations",
       "description": "The owner has to chase every next step. Explore custom workflows for growing small businesses, practical starting points and relevant calculators.",
       "canonical": "https://mycatalystinnovations.com/industries/small-business",
-      "h1": "Growing Small Businesses",
-      "mainWordCount": 403,
+      "h1": "Growing Small Businesses A next step that does not depend on chasing.",
+      "mainWordCount": 656,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList"
@@ -644,8 +665,8 @@
       "title": "Custom Software for Warehousing & distribution | Catalyst Innovations",
       "description": "Stock records do not reflect what is available to pick. Explore custom workflows for warehousing & distribution, practical starting points and relevant calculators.",
       "canonical": "https://mycatalystinnovations.com/industries/warehousing",
-      "h1": "Warehousing & distribution",
-      "mainWordCount": 393,
+      "h1": "Warehousing & distribution A stock figure the next person can use.",
+      "mainWordCount": 634,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList"
@@ -659,8 +680,8 @@
       "title": "Custom Software for Welding & Fabrication | Catalyst Innovations",
       "description": "Shop teams need the current drawing and job requirements. Explore custom workflows for welding & fabrication, practical starting points and relevant calculators.",
       "canonical": "https://mycatalystinnovations.com/industries/welding-fabrication",
-      "h1": "Welding & Fabrication",
-      "mainWordCount": 399,
+      "h1": "Welding & Fabrication The right revision, beside the work.",
+      "mainWordCount": 637,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList"
@@ -671,11 +692,11 @@
     {
       "path": "/insights",
       "status": 200,
-      "title": "Business Software Blog & Practical Guides | Catalyst Innovations",
+      "title": "Practical Business Software Guides | Catalyst Innovations",
       "description": "Practical guides from Catalyst Innovations on field workflows, manufacturing, inventory, approvals, HOA requests and choosing business software.",
       "canonical": "https://mycatalystinnovations.com/insights",
-      "h1": "Ideas for a better-running business.",
-      "mainWordCount": 626,
+      "h1": "A practical guide. A clearer next step.",
+      "mainWordCount": 631,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList"
@@ -690,7 +711,7 @@
       "description": "Compare an existing software package, integration and custom development using your real workflow, total cost, data needs and a small practical trial.",
       "canonical": "https://mycatalystinnovations.com/insights/custom-software-vs-off-the-shelf",
       "h1": "Custom software or an off-the-shelf tool: how to decide",
-      "mainWordCount": 942,
+      "mainWordCount": 1002,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList",
@@ -706,7 +727,7 @@
       "description": "A practical way to connect scope, approvals, field updates and invoice preparation without asking your team to enter every detail twice.",
       "canonical": "https://mycatalystinnovations.com/insights/estimate-to-invoice-field-office",
       "h1": "From estimate to invoice: connecting the field and office",
-      "mainWordCount": 869,
+      "mainWordCount": 924,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList",
@@ -722,7 +743,7 @@
       "description": "Plan HOA maintenance requests with a reusable intake template, clear handoffs and honest status updates. Explore a public sample with fictional community information.",
       "canonical": "https://mycatalystinnovations.com/insights/hoa-maintenance-requests",
       "h1": "HOA maintenance request management: a practical workflow",
-      "mainWordCount": 1207,
+      "mainWordCount": 1266,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList",
@@ -738,7 +759,7 @@
       "description": "A practical starting point for linking item records, demand, purchase orders and receiving so stock decisions use the same information.",
       "canonical": "https://mycatalystinnovations.com/insights/inventory-purchasing-stock",
       "h1": "Connecting inventory and purchasing before stock runs short",
-      "mainWordCount": 849,
+      "mainWordCount": 905,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList",
@@ -754,7 +775,7 @@
       "description": "Learn when shared spreadsheets need a connected production workflow, and how to start with orders, materials and status without replacing everything.",
       "canonical": "https://mycatalystinnovations.com/insights/manufacturing-spreadsheets",
       "h1": "When manufacturing spreadsheets stop keeping up",
-      "mainWordCount": 857,
+      "mainWordCount": 919,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList",
@@ -770,7 +791,7 @@
       "description": "Decide what to move, clean up duplicate records, map the important fields and rehearse the transfer before your team changes systems.",
       "canonical": "https://mycatalystinnovations.com/insights/software-data-migration",
       "h1": "Preparing your business data for a software migration",
-      "mainWordCount": 1067,
+      "mainWordCount": 1126,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList",
@@ -786,7 +807,7 @@
       "description": "Plan a focused pilot, practical training and a clear handover so your team can learn new software while keeping everyday work moving.",
       "canonical": "https://mycatalystinnovations.com/insights/software-rollout-small-team",
       "h1": "Introducing new software without disrupting your team",
-      "mainWordCount": 1090,
+      "mainWordCount": 1150,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList",
@@ -802,7 +823,7 @@
       "description": "Define request details, reviewers, decisions and exceptions so approvals can be followed without searching through email threads.",
       "canonical": "https://mycatalystinnovations.com/insights/trackable-approval-workflows",
       "h1": "Replacing email approvals with a trackable workflow",
-      "mainWordCount": 833,
+      "mainWordCount": 896,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList",
@@ -818,7 +839,7 @@
       "description": "Start with a 45-minute discovery call. Agree a 4–6-week on-site build, test with your team, then train and launch.",
       "canonical": "https://mycatalystinnovations.com/method",
       "h1": "We learn your business. We build around it.",
-      "mainWordCount": 434,
+      "mainWordCount": 503,
       "schemaTypes": [
         "Organization"
       ],
@@ -891,7 +912,7 @@
       "description": "How this website handles inquiries, local calculator data, optional analytics and ad-result measurement, and how to change your choice.",
       "canonical": "https://mycatalystinnovations.com/privacy",
       "h1": "Privacy",
-      "mainWordCount": 759,
+      "mainWordCount": 766,
       "schemaTypes": [
         "Organization"
       ],
@@ -905,7 +926,7 @@
       "description": "Explore Catalyst Innovations services: website design, Elevate fundraising, custom business software, automation, inventory, reporting, and integrations. Based in Knoxville, Tennessee.",
       "canonical": "https://mycatalystinnovations.com/services",
       "h1": "Services built around your business.",
-      "mainWordCount": 544,
+      "mainWordCount": 631,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList"
@@ -920,7 +941,7 @@
       "description": "Custom software and workflow automation from Knoxville, Tennessee. Connect customer records, jobs, inventory, purchasing and reporting around your business.",
       "canonical": "https://mycatalystinnovations.com/solutions",
       "h1": "Start with the work you want to make easier.",
-      "mainWordCount": 437,
+      "mainWordCount": 540,
       "schemaTypes": [
         "Organization"
       ],
@@ -934,7 +955,7 @@
       "description": "AI workflow automation for document processing, summaries and draft preparation, with human review around your business decisions.",
       "canonical": "https://mycatalystinnovations.com/solutions/ai-automation",
       "h1": "AI Workflow Automation",
-      "mainWordCount": 569,
+      "mainWordCount": 632,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList"
@@ -949,7 +970,7 @@
       "description": "Custom business software from Knoxville, Tennessee. Connect customers, quotes, jobs, inventory and accounting around the way your team works.",
       "canonical": "https://mycatalystinnovations.com/solutions/custom-software",
       "h1": "Custom Software Development in Knoxville",
-      "mainWordCount": 1043,
+      "mainWordCount": 1106,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList"
@@ -964,7 +985,7 @@
       "description": "Business dashboards and reporting that connect approved source records and explain what needs attention.",
       "canonical": "https://mycatalystinnovations.com/solutions/data-intelligence",
       "h1": "Business Dashboards & Reporting",
-      "mainWordCount": 560,
+      "mainWordCount": 620,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList"
@@ -979,7 +1000,7 @@
       "description": "Business software integration services for CRM, accounting, inventory and operations tools. Assess supported connections and reduce duplicate entry.",
       "canonical": "https://mycatalystinnovations.com/solutions/integrations-consulting",
       "h1": "Business Software Integration Services",
-      "mainWordCount": 722,
+      "mainWordCount": 776,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList"
@@ -994,7 +1015,7 @@
       "description": "Custom manufacturing operations software for work-order tracking, material availability, production status and quality review.",
       "canonical": "https://mycatalystinnovations.com/solutions/manufacturing-operations",
       "h1": "Manufacturing Operations Software",
-      "mainWordCount": 572,
+      "mainWordCount": 636,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList"
@@ -1009,7 +1030,7 @@
       "description": "Business process automation consulting from Knoxville, Tennessee. Connect forms, approvals, reminders and handoffs while keeping people in control.",
       "canonical": "https://mycatalystinnovations.com/solutions/process-automation",
       "h1": "Business Process Automation Consulting",
-      "mainWordCount": 586,
+      "mainWordCount": 641,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList"
@@ -1024,7 +1045,7 @@
       "description": "Custom purchasing and inventory software connecting stock needs, approvals, suppliers, purchase orders and receiving.",
       "canonical": "https://mycatalystinnovations.com/solutions/procurement",
       "h1": "Purchasing & Inventory Software",
-      "mainWordCount": 576,
+      "mainWordCount": 632,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList"
@@ -1039,7 +1060,7 @@
       "description": "Connect demand, stock, supplier lead times and order status so your team can review supply risks and act on exceptions.",
       "canonical": "https://mycatalystinnovations.com/solutions/supply-chain",
       "h1": "Supply Chain & Inventory Visibility",
-      "mainWordCount": 557,
+      "mainWordCount": 616,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList"
@@ -1068,7 +1089,7 @@
       "description": "Explore time, costs, margins and automation opportunities with transparent calculators for your business. No email required.",
       "canonical": "https://mycatalystinnovations.com/tools",
       "h1": "Your numbers. A clearer picture.",
-      "mainWordCount": 636,
+      "mainWordCount": 609,
       "schemaTypes": [
         "Organization"
       ],

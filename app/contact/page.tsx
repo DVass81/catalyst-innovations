@@ -12,7 +12,7 @@ export const metadata = pageMetadata({
 });
 export default function ContactPage() {
   return (
-    <>
+    <div className="studio-page studio-contact">
       <PageIntro
         eyebrow="Contact"
         title="Start with the work you want to make easier."
@@ -57,6 +57,6 @@ export default function ContactPage() {
           <p>We meet clients at their businesses or online. We do not operate a walk-in office.</p>
         </div>
       </section>
-    </>
+    </div>
   );
 }

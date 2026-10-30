@@ -1,4 +1,4 @@
-import { getPublishedInsights } from "@/lib/blog";
+import { getPublishedPosts } from "@/lib/blog";
 import { site } from "@/lib/site";
 
 export const revalidate = 300;
@@ -8,9 +8,9 @@ function xml(value: string) {
 }
 
 export async function GET() {
-  let articles: Awaited<ReturnType<typeof getPublishedInsights>>;
+  let articles: Awaited<ReturnType<typeof getPublishedPosts>>;
   try {
-    articles = [...await getPublishedInsights()].sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
+    articles = [...await getPublishedPosts()].sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
   } catch {
     return new Response("The feed is temporarily unavailable. Please try again shortly.", { status: 503, headers: { "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "no-store", "Retry-After": "300" } });
   }
@@ -19,14 +19,14 @@ export async function GET() {
   const body = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
 <channel>
-<title>${xml(site.name)} — Blog &amp; Guides</title>
-<link>${xml(new URL("/insights", site.url).toString())}</link>
-<description>Practical ideas for connecting your work, choosing software and helping your team move forward.</description>
+<title>${xml(site.name)} — The Catalyst Blog</title>
+<link>${xml(new URL("/blog", site.url).toString())}</link>
+<description>Short Friday reads on manual work, practical automation and the questions behind better software.</description>
 <language>en-US</language>
 <atom:link href="${xml(new URL("/feed.xml", site.url).toString())}" rel="self" type="application/rss+xml"/>
 ${updatedAt ? `<lastBuildDate>${date(updatedAt)}</lastBuildDate>` : ""}
 ${articles.map(article => {
-    const url = xml(new URL(`/insights/${article.slug}`, site.url).toString());
+    const url = xml(new URL(`/blog/${article.slug}`, site.url).toString());
     return `<item>
 <title>${xml(article.title)}</title>
 <link>${url}</link>

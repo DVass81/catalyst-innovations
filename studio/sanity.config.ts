@@ -3,6 +3,7 @@ import { structureTool, type DefaultDocumentNodeResolver } from "sanity/structur
 import { ArticlePreview } from "./components/ArticlePreview";
 import { PromotionPanel } from "./components/PromotionPanel";
 import { blogArticle } from "./schema/blogArticle";
+import { ApproveVersionAction } from "./components/ApproveVersionAction";
 
 const projectId = process.env.SANITY_STUDIO_PROJECT_ID || process.env.VITE_SANITY_PROJECT_ID;
 const dataset = process.env.SANITY_STUDIO_DATASET || process.env.VITE_SANITY_DATASET || "production";
@@ -31,6 +32,6 @@ export default defineConfig({
   document: {
     // Autosave preserves drafts. Publishing always requires the editor's deliberate action.
     // Keep Sanity's built-in duplicate, unpublish, delete and revision/history controls.
-    actions: (previous) => previous,
+    actions: (previous, context) => context.schemaType === "blogArticle" ? [ApproveVersionAction, ...previous] : previous,
   },
 });

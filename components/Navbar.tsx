@@ -11,7 +11,7 @@ export const links = [
   ["Industries", "/industries"],
   ["Discovery", "/discovery"],
   ["Savings Tools", "/tools"],
-  ["Blog", "/insights"],
+  ["Blog", "/blog"],
   ["About", "/about"],
 ];
 export default function Navbar() {

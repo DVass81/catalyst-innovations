@@ -8,6 +8,7 @@ import {
 import { serviceMenu, serviceDemoLabels } from "@/data/serviceMenu";
 import { demos, type Demo } from "@/data/demos";
 import { DiscussCTA } from "@/components/SiteSections";
+import StudioPhoto from "@/components/studio/StudioPhoto";
 import { breadcrumbSchema, pageMetadata } from "@/lib/seo";
 import styles from "./services.module.css";
 
@@ -50,7 +51,7 @@ export default function ServicesPage() {
   const website = serviceMenu.find((service) => service.id === "website-design")!;
   const fundraising = serviceMenu.find((service) => service.id === "fundraising")!;
   const custom = serviceMenu.find((service) => service.id === "custom-software")!;
-  return <>
+  return <div className={styles.page}>
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(
       breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Services", path: "/services" }]),
     ).replace(/</g, "\\u003c") }} />
@@ -64,7 +65,7 @@ export default function ServicesPage() {
     </section>
 
     <section id="service-menu" className={`wrap ${styles.featureGrid}`} aria-label="Featured services">
-      <article className={`${styles.feature} ${styles.website}`}>
+      <article className={styles.feature}>
         <div className={styles.featureTop}><span>01 / Your presence</span><Globe2 size={24} strokeWidth={1.3} aria-hidden="true" /></div>
         <div className={styles.featureCopy}>
           <p className={styles.featureKicker}>Make a stronger first impression.</p>
@@ -72,9 +73,9 @@ export default function ServicesPage() {
           <p>{website.description}</p>
           <div className={styles.tags}><span>New websites</span><span>Redesigns</span><span>Ongoing care</span></div>
         </div>
-        <div className={styles.websiteArt} aria-hidden="true"><div /><div /><div /><span /></div>
+        <div className={styles.websiteMap} aria-label="Illustrative website visitor journey"><p className="overline">A clear visitor journey</p><ol role="list"><li><span>01</span><div><strong>Understand your business</strong><p>Tell people what you do and who you help.</p></div></li><li><span>02</span><div><strong>Explore the right service</strong><p>Make the useful details easy to find.</p></div></li><li><span>03</span><div><strong>Start a conversation</strong><p>Give interested visitors a clear next step.</p></div></li></ol><p className={styles.visualNote}>Design, content and a purposeful path through the website.</p></div>
       </article>
-      <article className={`${styles.feature} ${styles.fundraising}`}>
+      <article className={styles.feature}>
         <div className={styles.featureTop}><span>02 / Your purpose</span><HeartHandshake size={24} strokeWidth={1.3} aria-hidden="true" /></div>
         <div className={styles.featureCopy}>
           <p className={styles.featureKicker}>Bring people behind your purpose.</p>
@@ -82,7 +83,7 @@ export default function ServicesPage() {
           <p>{fundraising.description}</p>
           <div className={styles.tags}><span>Campaign pages</span><span>Share your story</span><span>Track progress</span></div>
         </div>
-        <div className={styles.fundraisingArt} aria-hidden="true"><span /><span /><span /><HeartHandshake size={62} strokeWidth={1.1} /></div>
+        <div className={styles.featureMedia}><StudioPhoto photoKey="community" sizes="(max-width: 760px) 92vw, 43vw" /><p className={styles.mediaNote}>A place to bring people behind a shared goal.</p></div>
       </article>
     </section>
 
@@ -101,7 +102,7 @@ export default function ServicesPage() {
           const destination = demoDestination(demo);
           const image = demo.steps[0];
           return <article key={demo.id} className={styles.demoCard}>
-            <div className={styles.demoImage}><Image src={image.image} alt={image.alt} width={image.width} height={image.height} sizes="(max-width: 760px) 90vw, (max-width: 1100px) 44vw, 350px" /></div>
+            <div className={styles.demoImage}><span className={styles.imageLabel}>Actual application / sample information</span><Image src={image.image} alt={image.alt} width={image.width} height={image.height} sizes="(max-width: 760px) 88vw, 43vw" /></div>
             <div className={styles.demoCopy}>
               <p className={styles.demoStatus}>{demo.id === "painting" ? "Demonstration prototype" : destination.live ? "Interactive public sample" : "Public sample in preparation"}</p>
               <h4>{destination.external ? <a href={destination.href} target="_blank" rel="noopener noreferrer">{label.title}<ArrowUpRight size={19} aria-hidden="true" /><span className="sr-only"> (opens in a new tab)</span></a> : <Link href={destination.href}>{label.title}<ArrowRight size={19} aria-hidden="true" /></Link>}</h4>
@@ -123,5 +124,5 @@ export default function ServicesPage() {
       })}</div>
     </section>
     <DiscussCTA />
-  </>;
+  </div>;
 }

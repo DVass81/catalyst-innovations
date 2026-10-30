@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import GuideVisual from "@/components/studio/GuideVisual";
 import { notFound } from "next/navigation";
-import { insights, insightReadingMinutes } from "@/data/insights";
+import { getInsight, insights, insightReadingMinutes } from "@/data/insights";
 import ArticleShare from "@/components/ArticleShare";
-import { getPublishedInsight, getPublishedInsights } from "@/lib/blog";
 import { getCalculator } from "@/lib/calculators";
 import { breadcrumbSchema, pageMetadata } from "@/lib/seo";
 import { site } from "@/lib/site";
@@ -14,7 +14,7 @@ export const dynamicParams = true;
 export const revalidate = 300;
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
-  const article = await getPublishedInsight((await params).slug);
+  const article = getInsight((await params).slug);
   if (!article) notFound();
   const metadata = pageMetadata({ title: article.title, description: article.description, path: `/insights/${article.slug}` });
   const image = { url: new URL(`/insights/${article.slug}/opengraph-image`, site.url).toString(), width: 1200, height: 630, alt: `${article.title} | ${site.name}` };
@@ -26,10 +26,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 }
 
 export default async function InsightPage({ params }: { params: Promise<{ slug: string }> }) {
-  const article = await getPublishedInsight((await params).slug);
+  const article = getInsight((await params).slug);
   if (!article) notFound();
   const context = article.industry ? `?industry=${article.industry}` : "";
-  const published = await getPublishedInsights();
+  const published = insights;
   const relatedArticles = article.related?.length
     ? article.related.flatMap(slug => { const related = published.find(item => item.slug === slug && item.slug !== article.slug); return related ? [related] : []; })
     : published.filter(item => item.slug !== article.slug).slice(0, 2);
@@ -41,7 +41,7 @@ export default async function InsightPage({ params }: { params: Promise<{ slug: 
   inquiryParams.set("article", article.slug);
   const inquiry = `/consultation?${inquiryParams}`;
   const articleUrl = new URL(`/insights/${article.slug}`, site.url).toString();
-  const jsonLd = [breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Blog & Guides", path: "/insights" }, { name: article.title, path: `/insights/${article.slug}` }]), {
+  const jsonLd = [breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Guides", path: "/insights" }, { name: article.title, path: `/insights/${article.slug}` }]), {
     "@context": "https://schema.org", "@type": "Article", headline: article.title, description: article.description,
     datePublished: article.publishedAt, dateModified: article.updatedAt, inLanguage: "en-US",
     mainEntityOfPage: articleUrl, url: articleUrl,
@@ -52,14 +52,15 @@ export default async function InsightPage({ params }: { params: Promise<{ slug: 
   return <div className="insights-page">
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
     <header className="wrap page-intro insight-header">
-      <Link className="breadcrumb" href="/insights">← Blog &amp; Guides</Link>
+      <Link className="breadcrumb" href="/insights">← All guides</Link>
       <p className="overline">{article.category}</p>
       <h1>{article.title}</h1>
       <p className="intro-copy">{article.description}</p>
       <p className="insight-byline">Published by Catalyst Innovations · <time dateTime={article.publishedAt}>{new Date(`${article.publishedAt}T12:00:00Z`).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric", timeZone: "UTC" })}</time> · {insightReadingMinutes(article)} min read</p>
     </header>
+    <GuideVisual slug={article.slug} />
     <div className="wrap insight-layout">
-      <aside className="insight-toc"><nav aria-label="On this page"><p className="overline">In this guide</p><ol>{article.sections.map(section => <li key={section.id}><a href={`#${section.id}`}>{section.heading.replace(/^\d+\. /, "")}</a></li>)}</ol><a href="#try-your-numbers">Try your numbers ↓</a></nav></aside>
+      <aside className="insight-toc"><nav aria-label="On this page"><p className="overline">In this guide</p><ol role="list">{article.sections.map(section => <li key={section.id}><a href={`#${section.id}`}>{section.heading.replace(/^\d+\. /, "")}</a></li>)}</ol><a href="#try-your-numbers">Try your numbers ↓</a></nav></aside>
       <article className="insight-body">
         {article.cover && <figure className="insight-cover">
           {/* CMS cover URLs are validated by the published-content source. Native images avoid a second server-side remote fetch. */}

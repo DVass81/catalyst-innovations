@@ -11,18 +11,18 @@ import { AnalyticsConsentNotice } from "./AnalyticsPreferences";
 
 let session: ReturnType<typeof createAnalyticsSession> | undefined;
 
-function getSession(articleIds: readonly string[]) {
+function getSession(articleIds: readonly string[], blogPostIds: readonly string[]) {
   if (session) return session;
   const providers = configuredAnalytics();
   if (!providers.gaId && !providers.plausibleDomain) return undefined;
-  const campaign = createBlogCampaignSession(articleIds, () => window.sessionStorage);
-  const transport = createBrowserAnalyticsTransport(providers, articleIds);
+  const campaign = createBlogCampaignSession(articleIds, () => window.sessionStorage, blogPostIds);
+  const transport = createBrowserAnalyticsTransport(providers, articleIds, blogPostIds);
   session = createAnalyticsSession({
     start(path, ads) { campaign.activate(window.location.search, path); transport.start(path, ads); },
     page(path) { campaign.capture(window.location.search, path); transport.page(path); },
     send(payload) { transport.send({ ...payload, props: { ...campaign.properties(), ...payload.props } }); },
     stop(reloadForModeChange) { campaign.withdraw(); transport.stop(reloadForModeChange); },
-  }, { articleIds });
+  }, { articleIds, blogPostIds });
   const applyConsent = (choice: ReturnType<typeof getAnalyticsConsent>) => {
     // A denial may arrive before this document ever loaded a measurement tag.
     // Remove a previous tab-session label rather than revive it on later opt-in.
@@ -56,14 +56,15 @@ function getSession(articleIds: readonly string[]) {
     const url = new URL(link.href, window.location.origin);
     if (url.origin === window.location.origin && url.pathname === "/consultation") {
       const article = url.searchParams.get("article");
-      w.ciTrack?.("cta_consultation_click", article ? { article } : undefined);
+      const post = url.searchParams.get("post");
+      w.ciTrack?.("cta_consultation_click", post ? { post } : article ? { article } : undefined);
     }
   });
   return session;
 }
 
-export default function Analytics({ articleIds = analyticsArticleIds }: { articleIds?: readonly string[] }) {
+export default function Analytics({ articleIds = analyticsArticleIds, blogPostIds = [] }: { articleIds?: readonly string[]; blogPostIds?: readonly string[] }) {
   const pathname = usePathname();
-  useEffect(() => { getSession(articleIds)?.navigate(pathname); }, [pathname, articleIds]);
+  useEffect(() => { getSession(articleIds, blogPostIds)?.navigate(pathname); }, [pathname, articleIds, blogPostIds]);
   return <AnalyticsConsentNotice />;
 }

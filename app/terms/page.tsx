@@ -9,7 +9,7 @@ export const metadata = pageMetadata({
 
 export default function TermsPage() {
   return (
-    <Section className="bg-white pt-40">
+    <Section className="studio-legal">
       <div className="prose-ci mx-auto">
         <Heading as="h1">Terms of Use</Heading>
         <p className="mt-2 text-sm text-silver-500">

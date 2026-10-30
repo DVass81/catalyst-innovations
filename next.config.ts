@@ -42,7 +42,6 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
-      { source: "/blog", destination: "/insights", permanent: true },
       { source: "/pricing", destination: "/discovery", permanent: true },
       { source: "/founders", destination: "/about#our-background", permanent: true },
       { source: "/demo-lab", destination: "/portfolio", permanent: true },
