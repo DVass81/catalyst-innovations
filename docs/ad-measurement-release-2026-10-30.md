@@ -1,7 +1,8 @@
 # Ad-result measurement — October 30, 2026
 
 Status: prepared for review from main commit
-`d997fef186a3f8e9384c67d47192e6f6253efe89`. Not committed, pushed or deployed.
+`d997fef186a3f8e9384c67d47192e6f6253efe89`. Draft pull request #19 holds the
+review candidate; it has not been deployed.
 The Google Ads campaign remains unpublished.
 
 ## Website behavior
@@ -34,7 +35,7 @@ prevents duplicate requests and completion events before React rerenders.
 
 ## Local checks
 
-- 79 automated tests passed, including actual inquiry-handler success,
+- 80 automated tests passed, including actual inquiry-handler success,
   failure/retry, draft, duplicate-submit and whitespace-honeypot cases.
 - Lint, TypeScript and `git diff --check` passed.
 - The default Next.js production build passed and generated all 99 pages.
@@ -68,6 +69,23 @@ Google Ads **353-982-1684**, not historical customer 968-914-1805. Josh's handof
 identifies the imported secondary action as Catalyst consultation request,
 `form_complete`, conversion ID **7883004137**; this does not establish receipt
 of a new live test conversion.
+
+## Controlled preview network review
+
+Actual browser requests from the local production preview showed Basic analytics
+sending a query-free request to `www.google-analytics.com` with HTTP 204 and
+`G101` consent state. Explicit ad-result consent used `G111` but initially could
+not send measurement because the existing Content Security Policy blocked
+`analytics.google.com/g/collect`, fallback `www.google.com/g/collect`, and
+`stats.g.doubleclick.net/g/collect`.
+
+The policy now permits exactly those three HTTPS collect paths in `connect-src`.
+It does not add broad Google/DoubleClick origins or change scripts, images or
+frames. Google's [CSP guide](https://developers.google.com/tag-platform/security/guides/csp#google_analytics)
+documents the relevant Google/DoubleClick destinations; these exact observed
+host/path entries are a deliberately narrower policy. Browser retesting after
+the fix remains pending. Local requests do not establish live-domain receipt,
+delivered inquiries or Ads attribution.
 
 ## Outstanding release evidence
 

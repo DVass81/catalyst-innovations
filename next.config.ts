@@ -16,7 +16,9 @@ const securityHeaders = [
       "style-src 'self' 'unsafe-inline'",
       "img-src 'self' data: blob:",
       "font-src 'self' data:",
-      "connect-src 'self' https://plausible.io https://*.google-analytics.com",
+      // The linked GA4 tag uses these collect endpoints after explicit ad-result
+      // consent. Permit only the observed paths, not entire additional hosts.
+      "connect-src 'self' https://plausible.io https://*.google-analytics.com https://analytics.google.com/g/collect https://www.google.com/g/collect https://stats.g.doubleclick.net/g/collect",
       // Scheduling embed on /consultation — Google Calendar Appointment
       // Schedules and Microsoft Bookings both show up under these hosts.
       "frame-src 'self' https://calendar.google.com https://outlook.office.com https://outlook.office365.com https://bookings.cloud.microsoft",
