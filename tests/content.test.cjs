@@ -36,7 +36,26 @@ const common = {
   "@/data/services": services, "@/data/redesign": redesign, "@/lib/seo": seo, "@/lib/site": { site },
   "@/lib/blog": { getPublishedInsights: async () => insights.insights, getPublishedInsight: async slug => insights.getInsight(slug) },
   "@/components/ArticleShare": { default: ({ slug, title, url }) => React.createElement("div", { "data-share-article": slug, "data-share-url": url }, title) },
+  "@/components/studio/GuideVisual": { default: () => null },
 };
+const studioMedia = load("data/studioMedia.ts");
+const studioPhoto = load("components/studio/StudioPhoto.tsx", { ...common, "@/data/studioMedia": studioMedia, "./StudioPhoto.module.css": { default: {} } });
+const workflowDiagram = load("components/studio/WorkflowDiagram.tsx", { "./WorkflowDiagram.module.css": { default: {} } });
+const industryVisuals = load("data/industryVisuals.ts");
+
+test("workflow headings follow the surrounding section with or without a diagram title", () => {
+  const steps = [{ title: "Request", detail: "Keep the original details." }];
+  for (const title of [undefined, "A connected request"]) {
+    const html = renderToStaticMarkup(React.createElement("section", null,
+      React.createElement("h2", null, "The workflow"),
+      React.createElement(workflowDiagram.default, { title, steps })));
+    const levels = [...html.matchAll(/<h([1-6])\b/g)].map(match => Number(match[1]));
+    assert.ok(levels.length >= 2, "steps should remain navigable as headings");
+    for (let index = 1; index < levels.length; index++) {
+      assert.ok(levels[index] <= levels[index - 1] + 1, "a diagram must not skip a heading level");
+    }
+  }
+});
 
 test("eight practical guides have complete sections, primary references and valid contextual links", () => {
   assert.equal(insights.insights.length, 8);
@@ -99,6 +118,9 @@ test("custom-software evidence and cost guidance are readable without JavaScript
     "@/data/demoPages": demoPages,
     "@/data/motionStories": load("data/motionStories.ts"),
     "@/components/VisualStory": { default: () => React.createElement("div") },
+    "@/components/studio/StudioPhoto": studioPhoto,
+    "@/components/studio/WorkflowDiagram": workflowDiagram,
+    "@/data/solutionVisuals": load("data/solutionVisuals.ts"),
     "@/components/SiteSections": {
       PageIntro: ({ title, text }) => React.createElement("header", null, React.createElement("h1", null, title), React.createElement("p", null, text)),
       DiscussCTA: () => React.createElement("aside"),
@@ -203,16 +225,23 @@ test("the separate published blog controls post routes, evidence, related conten
 });
 
 test("industry pages retain the first three problem pairs and relevant inquiry/calculator context", async () => {
-  const media = load("data/studioMedia.ts");
   const pilot = load("components/studio/IndustryPilot.tsx", { ...common,
-    "@/data/studioMedia": media,
+    "@/data/studioMedia": studioMedia,
     "./IndustryPilot.module.css": { default: {} },
+  });
+  const studio = load("components/studio/IndustryStudio.tsx", { ...common,
+    "@/data/industryVisuals": industryVisuals,
+    "@/data/startingPoints": load("data/startingPoints.ts"),
+    "./StudioPhoto": studioPhoto,
+    "./WorkflowDiagram": workflowDiagram,
+    "./IndustryStudio.module.css": { default: {} },
   });
   const page = load("app/industries/[slug]/page.tsx", { ...common,
     "@/data/startingPoints": load("data/startingPoints.ts"),
     "@/components/IndustryProblems": load("components/IndustryProblems.tsx"),
     "@/components/SiteSections": { PageIntro: ({ title, text }) => React.createElement("header", null, React.createElement("h1", null, title), React.createElement("p", null, text)) },
     "@/components/studio/IndustryPilot": pilot,
+    "@/components/studio/IndustryStudio": studio,
   });
   for (const industry of redesign.industryList) {
     const html = renderToStaticMarkup(await page.default({ params: Promise.resolve({ slug: industry.slug }) }));
@@ -223,8 +252,8 @@ test("industry pages retain the first three problem pairs and relevant inquiry/c
     assert.ok(html.includes(`/insights/${content.industryContent[industry.slug].guide}`));
     if (industry.slug === "manufacturing") {
       assert.match(html, /Representative industry photography/);
-      assert.ok(html.includes(media.studioPhotos.manufacturing.credit));
-      assert.ok(html.includes(media.studioPhotos.manufacturing.sourceUrl));
+      assert.ok(html.includes(studioMedia.studioPhotos.manufacturing.credit));
+      assert.ok(html.includes(studioMedia.studioPhotos.manufacturing.sourceUrl));
       assert.match(html, /Illustrative workflow/);
       assert.match(html, /not a delivered Catalyst manufacturing product/);
       assert.ok(html.indexOf("Hold the work. Name the owner.") < html.indexOf("<h3>Production</h3>"), "the shortage exception belongs before production");
@@ -232,9 +261,28 @@ test("industry pages retain the first three problem pairs and relevant inquiry/c
       assert.ok(html.includes(content.industryContent.manufacturing.faq.answer));
       assert.match(html, /href="https:\/\/www.nist.gov\/mep\/value-stream-mapping"/);
     } else {
-      assert.doesNotMatch(html, /Representative industry photography|Hold the work. Name the owner./, "the pilot must not roll out to other industries");
+      const visual = industryVisuals.industryVisuals[industry.slug];
+      assert.match(html, /Representative photography/);
+      assert.ok(html.includes(studioMedia.studioPhotos[visual.photoKey].credit));
+      const headings = [...html.matchAll(/<h[2-6]\b[^>]*>([\s\S]*?)<\/h[2-6]>/g)].map(match => match[1]);
+      for (const step of industry.workflow) {
+        const encoded = renderToStaticMarkup(React.createElement(React.Fragment, null, step));
+        assert.ok(headings.includes(encoded), `${industry.slug}: preserve ${step} as a heading`);
+      }
+      for (const note of visual.stepNotes) assert.ok(html.includes(renderToStaticMarkup(React.createElement("p", null, note))), `${industry.slug}: contextual handoff description`);
+      assert.ok(html.includes(visual.exception.title));
+      assert.ok(html.includes(visual.source.url));
+      assert.ok(html.includes(content.industryContent[industry.slug].faq.answer));
+      assert.doesNotMatch(html, /not a delivered Catalyst manufacturing product|Hold the work. Name the owner./, "manufacturing retains its separately approved pilot");
     }
   }
+  const directory = load("app/industries/page.tsx", { ...common, "@/components/studio/IndustryStudio": studio });
+  const html = renderToStaticMarkup(React.createElement(directory.default));
+  for (const industry of redesign.industryList) {
+    assert.ok(html.includes(`id="${industry.slug}"`), `${industry.slug}: retain existing directory anchor`);
+    assert.ok(html.includes(`href="/industries/${industry.slug}"`), `${industry.slug}: retain directory destination`);
+  }
+  for (const group of industryVisuals.industryGroupVisuals) assert.ok(html.includes(`href="#${group.id}"`));
 });
 
 test("calculator additions retain the original calculator definitions and validated industry context", async () => {

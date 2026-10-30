@@ -35,7 +35,7 @@ export default async function Consultation({
   const post = typeof q.post === "string" ? await getPublishedPost(q.post).catch(() => undefined) : undefined;
   const article = !post && typeof q.article === "string" ? await getPublishedInsight(q.article).catch(() => undefined) : undefined;
   return (
-    <>
+    <div className="studio-page studio-inquiry">
       <PageIntro
         eyebrow="Let’s start with your business"
         title="What’s slowing you down?"
@@ -96,6 +96,6 @@ export default async function Consultation({
         </aside>
       </section>
       <EngagementDetails />
-    </>
+    </div>
   );
 }

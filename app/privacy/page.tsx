@@ -11,7 +11,7 @@ export const metadata = pageMetadata({
 
 export default function PrivacyPage() {
   return (
-    <Section className="bg-white pt-40">
+    <Section className="studio-legal">
       <div className="prose-ci mx-auto">
         <Heading as="h1">Privacy</Heading>
         <p>This page describes the information handled by the Catalyst Innovations website and the choices available to you.</p>

@@ -1,0 +1,17 @@
+.diagram { container-type: inline-size; margin: 0; padding: 30px 32px 24px; background: #eff1ed; border: 1px solid #d5dcda; border-radius: 3px; color: #10273c; }
+.heading { padding-bottom: 26px; }
+.heading > p { margin: 0 0 9px; font: 11px ui-monospace, monospace; letter-spacing: .13em; text-transform: uppercase; color: #365d7d; }
+.heading h3 { font-size: clamp(22px, 2.2vw, 30px); font-weight: 550; letter-spacing: -.035em; line-height: 1.2; max-width: 32ch; }
+.steps { list-style: none; padding: 0; margin: 0; display: flex; }
+.steps li { flex: 1; min-width: 0; position: relative; padding-right: 24px; }
+.steps li:last-child { padding-right: 0; }
+.steps li:not(:last-child)::before { content: ""; position: absolute; top: 21px; left: 43px; right: 0; height: 1px; background: #7fa7c8; }
+.steps li:not(:last-child)::after { content: ""; position: absolute; top: 18px; right: 3px; height: 7px; width: 7px; border-top: 1px solid #48799f; border-right: 1px solid #48799f; transform: rotate(45deg); }
+.node { display: grid; place-items: center; position: relative; z-index: 1; width: 43px; height: 43px; border: 1px solid #3c7bad; background: #eff1ed; border-radius: 50%; font: 11px ui-monospace, monospace; color: #225c8c; }
+.steps .stepTitle { font-size: 15px; font-weight: 600; line-height: 1.35; letter-spacing: -.015em; margin: 18px 0 8px; }
+.steps li > p { font-size: 12px; line-height: 1.65; color: #455765; margin: 0; max-width: 28ch; }
+.record { display: inline-block; color: #2f628a; font: 11px ui-monospace, monospace; margin-top: 14px; border-top: 1px solid #cad9df; padding-top: 8px; }
+.caption { border-top: 1px solid #d2dbd8; margin: 24px 0 0; padding-top: 16px; font-size: 11px; line-height: 1.65; color: #53616c; max-width: 100%; }
+@container (max-width: 680px) { .steps { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px 32px; } .steps li { padding-right: 0; } .steps li::before, .steps li::after { display: none; } .steps .stepTitle { margin-top: 13px; } }
+@media (max-width: 900px) { .diagram { padding: 26px; } .steps { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px 32px; } .steps li { padding-right: 0; } .steps li::before, .steps li::after { display: none; } .steps .stepTitle { margin-top: 13px; } .steps li > p { max-width: 38ch; } }
+@media (max-width: 540px) { .diagram { padding: 22px 20px; } .heading { padding-bottom: 22px; } .steps { display: block; } .steps li { display: grid; grid-template-columns: 37px 1fr; column-gap: 16px; padding-bottom: 24px; } .steps li:last-child { padding-bottom: 0; } .node { width: 37px; height: 37px; grid-row: 1 / 4; } .steps li:not(:last-child)::before { display: block; top: 38px; bottom: 0; left: 18px; width: 1px; height: auto; right: auto; background: #a2bacb; } .steps .stepTitle { margin: 1px 0 7px; font-size: 16px; } .record { width: fit-content; margin-top: 9px; } .steps li > p { font-size: 13px; } .caption { margin-top: 22px; } }

@@ -1,0 +1,114 @@
+.page { background: #faf7f1; color: #0a1628; }
+.page h1, .page h2, .page h3 { font-weight: 550; }
+.page .eyebrow { margin: 0 0 16px; color: #2f5d8f; font-size: 11px; font-weight: 600; line-height: 1.6; letter-spacing: .11em; text-transform: uppercase; }
+.page p { line-height: 1.75; }
+.introduction { padding-top: 36px; padding-bottom: 48px; }
+.back { display: inline-block; color: #52606d; font-size: 12px; margin-bottom: 34px; min-height: 24px; }
+.titleRow { display: grid; grid-template-columns: 1.25fr .8fr; gap: 55px; align-items: end; }
+.titleRow h1 { font-size: clamp(43px, 5.3vw, 69px); line-height: 1.04; letter-spacing: -.05em; max-width: 20ch; }
+.titleRow h1 > span { display: block; color: #2f5d8f; font-size: .5em; letter-spacing: -.025em; line-height: 1.3; margin-top: 15px; }
+.introAside p { color: #52606d; font-size: 14px; margin-bottom: 22px; }
+.workplace { display: grid; grid-template-columns: 1fr 1.03fr; gap: clamp(35px, 5vw, 70px); padding-bottom: 70px; align-items: start; }
+.problems { padding-top: 25px; border-top: 2px solid #2f5d8f; }
+.problems h2 { font-size: clamp(27px, 2.8vw, 36px); line-height: 1.2; margin-bottom: 25px; }
+.problems ul { list-style: none; margin: 0; padding: 0; }
+.problems li { display: grid; grid-template-columns: 26px 1fr; gap: 18px; padding: 20px 0; border-top: 1px solid #d5d9d9; }
+.problemNumber { font: 11px ui-monospace, monospace; color: #52606d; padding-top: 3px; }
+.problems .problemLabel, .problems .helpLabel { color: #52606d; font-size: 11px; line-height: 1.5; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 5px; }
+.problems h3 { font-size: 17px; line-height: 1.45; letter-spacing: -.015em; margin-bottom: 11px; }
+.problems .helpLabel { color: #2f5d8f; margin-bottom: 4px; }
+.problems li > div > p:last-child { color: #52606d; font-size: 14px; line-height: 1.65; }
+.photoColumn { min-width: 0; }
+.observation { display: flex; gap: 18px; font-size: 22px; line-height: 1.4 !important; letter-spacing: -.025em; margin: 30px 0 0; max-width: 36ch; }
+.observation > span { color: #2f5d8f; }
+.workflowSection { padding: 64px 0 35px; background: #eef0ec; border-block: 1px solid #d5d9d9; }
+.workflowHeading { display: grid; grid-template-columns: 1fr .8fr; gap: 65px; align-items: end; margin-bottom: 32px; }
+.workflowHeading h2 { font-size: clamp(30px, 3.4vw, 43px); line-height: 1.15; max-width: 23ch; }
+.workflowHeading > p { color: #52606d; font-size: 14px; }
+.exception { display: grid; grid-template-columns: .65fr 1.35fr; gap: 40px; margin-top: 20px; padding: 26px 30px; background: #10273c; color: #faf7f1; }
+.exception .eyebrow { color: #b5d4ef; margin-bottom: 10px; }
+.exception > div:first-child > span { display: inline-block; color: #cbd8e4; font: 12px ui-monospace, monospace; }
+.exception h3 { font-size: 21px; line-height: 1.3; margin-bottom: 12px; }
+.exception p:not(.eyebrow) { color: #d3dfeb; font-size: 13px; }
+.exception .returnLabel { margin-top: 13px; color: #b5d4ef; font-size: 12px; }
+.source { color: #52606d; font-size: 11px; line-height: 1.75; margin-top: 24px; }
+.source a { color: #2f5d8f; text-decoration: underline; text-underline-offset: 3px; }
+.startSection { display: grid; grid-template-columns: 1.1fr .9fr; gap: clamp(40px, 7vw, 95px); padding-block: 74px; }
+.startSection h2, .resources h2 { font-size: clamp(28px, 3.1vw, 40px); line-height: 1.18; margin-bottom: 24px; }
+.startSection > div:first-child > p:not(.eyebrow) { color: #52606d; font-size: 15px; margin-bottom: 20px; }
+.startSection > div:first-child > a { margin-top: 8px; }
+.records ul { list-style: none; margin: 0 0 18px; padding: 0; }
+.records li { display: flex; gap: 16px; border-top: 1px solid #d5d9d9; padding: 16px 0; font-size: 15px; line-height: 1.6; }
+.records li > span { color: #2f5d8f; }
+.records > p:not(.eyebrow) { color: #52606d; font-size: 12px; }
+.question { margin-top: 26px; padding-top: 22px; border-top: 2px solid #2f5d8f; }
+.question h3 { font-size: 21px; line-height: 1.35; margin-bottom: 13px; }
+.question p { color: #52606d; font-size: 13px; }
+.resources { display: grid; grid-template-columns: .85fr 1.15fr; gap: 60px; padding-block: 52px 65px; border-top: 1px solid #d5d9d9; }
+.resources > div:first-child > p:not(.eyebrow) { color: #52606d; font-size: 13px; max-width: 42ch; }
+.toolList > a { display: grid; grid-template-columns: 24px 1fr 24px; gap: 20px; padding: 23px 0; border-top: 1px solid #d5d9d9; }
+.toolList > a:last-child { border-bottom: 1px solid #d5d9d9; }
+.toolNumber { font: 11px ui-monospace, monospace; color: #52606d; padding-top: 6px; }
+.toolList h3 { font-size: 20px; line-height: 1.3; margin-bottom: 9px; }
+.toolList p { color: #52606d; font-size: 12px; }
+.toolArrow { align-self: center; color: #2f5d8f; font-size: 22px; }
+.reading { display: grid; grid-template-columns: 1.2fr .8fr; gap: 65px; padding-block: 32px; margin-bottom: 65px; border-block: 1px solid #d5d9d9; }
+.reading h2 { font-size: 27px; line-height: 1.3; margin-bottom: 18px; }
+.reading p:not(.eyebrow) { color: #52606d; font-size: 13px; margin-bottom: 20px; }
+.reading aside { border-left: 1px solid #d5d9d9; padding-left: 35px; }
+.invitation { padding-block: 60px 65px; background: #edf2f5; }
+.invitation h2 { font-size: clamp(33px, 4.3vw, 54px); line-height: 1.1; margin-bottom: 24px; }
+.invitation p:not(.eyebrow) { max-width: 510px; color: #52606d; font-size: 15px; margin-bottom: 27px; }
+.page a:focus-visible { outline: 3px solid #2f5d8f; outline-offset: 5px; }
+.directoryIntro { padding-block: 55px 30px; }
+.directoryIntro h1 { font-size: clamp(43px, 5.2vw, 66px); line-height: 1.06; letter-spacing: -.05em; max-width: 22ch; }
+.directoryIntro h1 > span { color: #2f5d8f; }
+.directoryIntro > p:not(.eyebrow) { max-width: 660px; color: #52606d; font-size: 16px; margin-top: 24px; }
+.groupNav { display: flex; flex-wrap: wrap; gap: 0 28px; margin-top: 34px; padding-block: 12px; border-block: 1px solid #d5d9d9; }
+.groupNav a { display: inline-flex; justify-content: space-between; align-items: center; gap: 12px; min-height: 44px; font-size: 12px; color: #2f5d8f; }
+.directoryGroup { display: grid; grid-template-columns: 1.05fr 1fr; gap: 65px; padding-block: 45px 55px; scroll-margin-top: 100px; }
+.directoryGroup + .directoryGroup { border-top: 1px solid #d5d9d9; }
+.directoryCopy h2 { font-size: clamp(29px, 3.1vw, 40px); line-height: 1.18; max-width: 25ch; margin-bottom: 20px; }
+.directoryCopy > p:not(.eyebrow) { color: #52606d; font-size: 14px; margin-bottom: 25px; max-width: 55ch; }
+.industryLinks { list-style: none; margin: 0; padding: 0; }
+.industryLinks a { display: flex; align-items: center; justify-content: space-between; gap: 25px; min-height: 53px; padding-block: 14px; border-top: 1px solid #d5d9d9; font-size: 16px; line-height: 1.5; scroll-margin-top: 110px; }
+.industryLinks li:last-child > a { border-bottom: 1px solid #d5d9d9; }
+.industryLinks a > span:last-child { color: #2f5d8f; }
+.industryLinks a:hover { color: #2f5d8f; }
+.directoryPhoto { align-self: start; }
+@media (max-width: 1050px) {
+  .titleRow, .workplace, .workflowHeading, .startSection, .resources, .reading, .directoryGroup { gap: 35px; }
+  .titleRow h1 { font-size: clamp(43px, 5.7vw, 62px); }
+}
+@media (max-width: 900px) {
+  .titleRow, .workplace, .workflowHeading, .startSection, .resources, .reading { grid-template-columns: 1fr; }
+  .introduction { padding-bottom: 34px; }
+  .titleRow { gap: 25px; }
+  .titleRow h1 { font-size: clamp(43px, 7.7vw, 68px); }
+  .introAside { max-width: 650px; }
+  .problems h2 br { display: none; }
+  .photoColumn { max-width: 700px; }
+  .observation { font-size: 21px; }
+  .workflowSection { padding-top: 44px; }
+  .workflowHeading { gap: 20px; }
+  .workflowHeading > p { max-width: 650px; }
+  .startSection { padding-block: 55px; }
+  .reading aside { padding-top: 25px; border-left: 0; padding-left: 0; border-top: 1px solid #d5d9d9; }
+  .directoryGroup { grid-template-columns: 1fr 1fr; gap: 30px; }
+  .directoryCopy h2 { font-size: 29px; }
+}
+@media (max-width: 650px) {
+  .introduction { padding-top: 26px; }
+  .back { margin-bottom: 24px; }
+  .titleRow h1 { font-size: 43px; }
+  .titleRow h1 > span { font-size: 25px; }
+  .workplace { padding-bottom: 45px; }
+  .exception { grid-template-columns: 1fr; gap: 20px; padding: 23px; }
+  .resources { padding-top: 40px; padding-bottom: 45px; }
+  .toolList > a { grid-template-columns: 20px 1fr 18px; gap: 12px; }
+  .reading { margin-bottom: 45px; }
+  .invitation { padding-block: 45px 50px; }
+  .directoryIntro { padding-top: 38px; }
+  .directoryGroup { grid-template-columns: 1fr; gap: 28px; padding-block: 35px 40px; }
+  .directoryPhoto { max-width: 600px; }
+}

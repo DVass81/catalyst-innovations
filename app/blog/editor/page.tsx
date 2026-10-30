@@ -6,7 +6,7 @@ export const metadata = pageMetadata({ path: "/blog/editor", title: "Editorial S
 export default function EditorialSignIn() {
   const url = getBlogEditorUrl();
   const connected = url && /^[a-z0-9]{3,32}$/.test(process.env.NEXT_PUBLIC_BLOG_SANITY_PROJECT_ID || "");
-  return <section className="wrap page-intro">
+  return <section className="wrap page-intro studio-editor">
     <p className="overline">For the Catalyst publishing team</p>
     <h1>The Blog<br /><em>editor.</em></h1>
     <p className="intro-copy">A short Friday read about the work that slows businesses down—and practical ways to improve it.</p>

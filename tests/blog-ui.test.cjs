@@ -51,6 +51,7 @@ test("guide and blog libraries keep their routes and readable labels distinct be
 
 const blogPosts = [1, 2, 3].map(number => ({ ...data.insights[0], slug: `editorial-fixture-${number}`, title: `Distinct editorial fixture ${number}`, publishedAt: "2026-10-30", evidence: [] }));
 const pageShared = {
+  "@/components/studio/StudioPhoto": { default: () => React.createElement("figure", null, "Representative photography") },
   "next/link": link,
   "@/data/insights": data,
   "@/lib/site": { site: { url: "https://mycatalystinnovations.com" } },

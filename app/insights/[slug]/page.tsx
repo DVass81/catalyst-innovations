@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import GuideVisual from "@/components/studio/GuideVisual";
 import { notFound } from "next/navigation";
 import { getInsight, insights, insightReadingMinutes } from "@/data/insights";
 import ArticleShare from "@/components/ArticleShare";
@@ -57,8 +58,9 @@ export default async function InsightPage({ params }: { params: Promise<{ slug: 
       <p className="intro-copy">{article.description}</p>
       <p className="insight-byline">Published by Catalyst Innovations · <time dateTime={article.publishedAt}>{new Date(`${article.publishedAt}T12:00:00Z`).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric", timeZone: "UTC" })}</time> · {insightReadingMinutes(article)} min read</p>
     </header>
+    <GuideVisual slug={article.slug} />
     <div className="wrap insight-layout">
-      <aside className="insight-toc"><nav aria-label="On this page"><p className="overline">In this guide</p><ol>{article.sections.map(section => <li key={section.id}><a href={`#${section.id}`}>{section.heading.replace(/^\d+\. /, "")}</a></li>)}</ol><a href="#try-your-numbers">Try your numbers ↓</a></nav></aside>
+      <aside className="insight-toc"><nav aria-label="On this page"><p className="overline">In this guide</p><ol role="list">{article.sections.map(section => <li key={section.id}><a href={`#${section.id}`}>{section.heading.replace(/^\d+\. /, "")}</a></li>)}</ol><a href="#try-your-numbers">Try your numbers ↓</a></nav></aside>
       <article className="insight-body">
         {article.cover && <figure className="insight-cover">
           {/* CMS cover URLs are validated by the published-content source. Native images avoid a second server-side remote fetch. */}

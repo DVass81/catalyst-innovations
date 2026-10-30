@@ -1,33 +1,8 @@
+import Link from "next/link";
 import { pageMetadata } from "@/lib/seo";
-import { Lock } from "lucide-react";
-import { Section, Eyebrow, Heading, Lead, ButtonLink } from "@/components/ui";
-import { Reveal } from "@/components/Reveal";
 
-export const metadata = pageMetadata({
-  path: "/portal",
-  title: "Client Portal",
-  description: "The Catalyst Innovations client portal — coming soon for active engagement partners.",
-  noIndex: true,
-});
+export const metadata = pageMetadata({ path: "/portal", title: "Client Portal", description: "The Catalyst Innovations client portal — coming soon for active engagement partners.", noIndex: true });
 
 export default function PortalPage() {
-  return (
-    <Section className="bg-ice-50 min-h-[70vh] pt-40">
-      <Reveal className="mx-auto max-w-xl text-center">
-        <span className="mx-auto inline-flex h-16 w-16 items-center justify-center rounded-full border border-ice-200 bg-white shadow-card">
-          <Lock size={26} className="text-steel-600" />
-        </span>
-        <Eyebrow>Client portal</Eyebrow>
-        <Heading as="h1">Coming soon for engagement partners.</Heading>
-        <Lead className="mx-auto">
-          Active clients will sign in here to view project status, dashboards, documents,
-          and support. If you&apos;re working with us and need access, contact your project
-          lead directly.
-        </Lead>
-        <div className="mt-8">
-          <ButtonLink href="/consultation">Become a client</ButtonLink>
-        </div>
-      </Reveal>
-    </Section>
-  );
+  return <div className="studio-page"><section className="wrap studio-placeholder"><p className="overline">Client portal / In preparation</p><h1>A place for<br />working together.</h1><p>The client portal is being prepared. If you need information about your project, contact your Catalyst project lead directly.</p><Link className="button" href="/contact">Contact Josh and Daniel ↗</Link><Link className="text-link" href="/services">Explore our services ↗</Link></section></div>;
 }

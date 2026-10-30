@@ -54,7 +54,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
     <header className="wrap page-intro insight-header"><Link className="breadcrumb" href="/blog">← The Catalyst Blog</Link><p className="overline">{post.category}</p><h1>{post.title}</h1><p className="intro-copy">{post.description}</p><p className="insight-byline">Published by Catalyst Innovations · <time dateTime={post.publishedAt}>{displayDate(post.publishedAt)}</time> · {blogReadingMinutes(post)} min read</p></header>
     <div className="wrap insight-layout">
-      <aside className="insight-toc"><nav aria-label="On this page"><p className="overline">In this edition</p><ol>{post.sections.map(section => <li key={section.id}><a href={`#${section.id}`}>{section.heading.replace(/^\d+\. /, "")}</a></li>)}</ol>{post.evidence.length > 0 && <a href="#facts-in-context">The facts in context ↓</a>}{post.tools.length > 0 && <a href="#try-your-numbers">Try your numbers ↓</a>}</nav></aside>
+      <aside className="insight-toc"><nav aria-label="On this page"><p className="overline">In this edition</p><ol role="list">{post.sections.map(section => <li key={section.id}><a href={`#${section.id}`}>{section.heading.replace(/^\d+\. /, "")}</a></li>)}</ol>{post.evidence.length > 0 && <a href="#facts-in-context">The facts in context ↓</a>}{post.tools.length > 0 && <a href="#try-your-numbers">Try your numbers ↓</a>}</nav></aside>
       <article className="insight-body">
         {post.cover && <figure className="insight-cover">
           {/* The published-content reader validates cover URLs before rendering. */}

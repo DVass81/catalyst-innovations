@@ -1,6 +1,6 @@
 # SEO crawl verification
 
-Run: 2026-10-30T21:33:37.619Z on http://127.0.0.1:3132.
+Run: 2026-10-30T22:09:33.741Z on http://127.0.0.1:3132.
 
 Result: **PASS**. 78/78 sitemap pages passed their individual checks.
 
@@ -15,8 +15,8 @@ Result: **PASS**. 78/78 sitemap pages passed their individual checks.
 
 | Route | Prior build bytes | Current bytes | Difference | Calculator-definition chunks remaining |
 | --- | ---: | ---: | ---: | ---: |
-| / | 573048 | 533155 | -39893 | 0 |
-| /tools | 550098 | 550751 | 653 | 0 |
+| / | 573048 | 532054 | -40994 | 0 |
+| /tools | 550098 | 542140 | -7958 | 0 |
 
 Values are uncompressed initial JavaScript from Next build diagnostics. The prior build predates the combined SEO/analytics/content changes, so the overall difference is not attributable to one change. Absence of calculator field strings checks the intended IndustrySelector/ToolLibrary boundary reduction. This is not a mobile performance score.
 

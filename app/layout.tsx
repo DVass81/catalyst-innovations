@@ -5,6 +5,7 @@ import "./redesign.css";
 import "./motion-shared.css";
 import "./visual-story.css";
 import "./experience.css";
+import "./studio.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Analytics from "@/components/Analytics";

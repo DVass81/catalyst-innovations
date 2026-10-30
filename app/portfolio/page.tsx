@@ -22,7 +22,7 @@ export default async function Work({
   if (industry) context.set("industry", industry.slug);
   if (problem) context.set("problem", problem.id);
   return (
-    <>
+    <div className="studio-page studio-demos">
       <PageIntro
         eyebrow="See what we build"
         title="See the software do the work."
@@ -44,6 +44,6 @@ export default async function Work({
       </section>
       <ProjectStories />
       <DiscussCTA />
-    </>
+    </div>
   );
 }

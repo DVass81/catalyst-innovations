@@ -31,7 +31,8 @@ export default async function DemoWatchPage({ params }: Props) {
     { name: demo.displayName, path: `/portfolio/${demo.id}` },
   ]);
 
-  return <div className={styles.page}>
+  return <div className={`studio-page studio-watch ${styles.page}`}>
+    <link rel="preload" as="image" href={demo.walkthrough.poster} fetchPriority="high" />
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbs).replace(/</g, "\\u003c") }} />
     <header className={`wrap ${styles.header}`}>
       <nav aria-label="Breadcrumb"><Link href="/">Home</Link><span aria-hidden="true"> / </span><Link href="/portfolio">Software demos</Link><span aria-hidden="true"> / </span><span aria-current="page">{demo.displayName}</span></nav>

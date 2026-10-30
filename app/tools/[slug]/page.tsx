@@ -38,7 +38,7 @@ export default async function Tool({
   const solution = services.find(service => service.slug === content.solution)!;
   const context = valid ? `?industry=${valid}` : "";
   return (
-    <>
+    <div className="studio-page studio-calculator">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Savings Tools", path: "/tools" }, { name: c.title, path: `/tools/${c.slug}` }])).replace(/</g, "\\u003c") }} />
       <section className="page-intro wrap">
         <Link className="breadcrumb" href="/tools">
@@ -59,6 +59,6 @@ export default async function Tool({
       {content.references && <section className="wrap content-section no-print"><h2>Background reference</h2><ul>{content.references.map(reference => <li key={reference.url}><a href={reference.url} target="_blank" rel="noopener noreferrer">{reference.title} ↗<span className="sr-only"> (opens in a new tab)</span></a> · Reviewed <time dateTime={reference.reviewedAt}>{reference.reviewedAt}</time></li>)}</ul><p>This source explains replenishment planning; the practical guidance above is Catalyst’s editorial advice.</p></section>}
       <section className="wrap content-section two-grid no-print"><article className="content-card"><p className="overline">Put the numbers in context</p><h2>{guide.title}</h2><p>{guide.description}</p><Link className="text-link" href={`/insights/${guide.slug}`}>Read the guide ↗</Link></article><article className="content-card"><p className="overline">Explore the process</p><h2>{solution.title}</h2><p>{content.serviceExplanation ?? "A clearer workflow starts with the records, decisions and people behind these figures. Explore what Catalyst can help you connect."}</p><Link className="text-link" href={`/solutions/${solution.slug}`}>{content.serviceLinkLabel ?? "Explore the solution"} ↗</Link></article></section>
       <section className="wrap content-section no-print"><p className="overline">Related tools</p><h2>Explore another part of the work.</h2><div className="three-grid">{guide.tools.filter(slug => slug !== c.slug).slice(0, 3).map(slug => { const related = getCalculator(slug)!; return <article className="tool-card" key={slug}><h3>{related.title}</h3><p>{related.description}</p><Link className="text-link" href={`/tools/${slug}${context}`}>Try the calculator ↗</Link></article>; })}</div></section>
-    </>
+    </div>
   );
 }
