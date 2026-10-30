@@ -14,7 +14,7 @@ import SectionMotion from "@/components/SectionMotion";
 import { site } from "@/lib/site";
 import { pageMetadata } from "@/lib/seo";
 import { activeFounders } from "@/data/content";
-import { getPublishedInsights } from "@/lib/blog";
+import { getPublishedInsights, getPublishedPosts } from "@/lib/blog";
 
 export const metadata: Metadata = {
   ...pageMetadata({
@@ -76,7 +76,10 @@ export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   // A publishing-service interruption must not take down the rest of the site.
-  const articleIds = await getPublishedInsights().then(articles => articles.map(article => article.slug)).catch(() => []);
+  const [articleIds, blogPostIds] = await Promise.all([
+    getPublishedInsights().then(articles => articles.map(article => article.slug)).catch(() => []),
+    getPublishedPosts().then(posts => posts.map(post => post.slug)).catch(() => []),
+  ]);
   return (
     <html
       lang="en"
@@ -95,7 +98,7 @@ export default async function RootLayout({
         </Suspense>
         <ErrorMonitoring>
           <Navbar />
-          <Analytics articleIds={articleIds} />
+          <Analytics articleIds={articleIds} blogPostIds={blogPostIds} />
           <main id="main" className="flex-1">
             {children}
           </main>

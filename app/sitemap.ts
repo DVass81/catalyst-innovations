@@ -3,14 +3,15 @@ import { site } from "@/lib/site";
 import { services } from "@/data/services";
 import { calculators } from "@/lib/calculators";
 import { industryList } from "@/data/redesign";
-import { getPublishedInsights } from "@/lib/blog";
+import { insights } from "@/data/insights";
+import { getPublishedPosts } from "@/lib/blog";
 import { demos } from "@/data/demos";
 import { calculatorContent } from "@/data/seoContent";
 
 export const revalidate = 300;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const insights = await getPublishedInsights();
+  const posts = await getPublishedPosts();
   const staticRoutes = [
     "",
     "/services",
@@ -24,11 +25,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/consultation",
     "/tools",
     "/insights",
+    "/blog",
     "/privacy",
     "/terms",
     "/accessibility",
   ];
   return [
+    ...posts.map(post => ({
+      url: new URL(`/blog/${post.slug}`, site.url).toString(),
+      lastModified: post.updatedAt,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    })),
     ...demos.flatMap((demo) => demo.walkthrough ? [{
       url: new URL(`/portfolio/${demo.id}`, site.url).toString(),
       changeFrequency: "monthly" as const,

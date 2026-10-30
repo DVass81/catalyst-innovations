@@ -152,7 +152,8 @@ test("the sitemap includes published guides and playable demo pages without reti
   });
   const sitemap = await load("app/sitemap.ts", {
     "@/lib/site": { site: { ...site, url: `${site.url}/` } },
-    "@/lib/blog": { getPublishedInsights: async () => insights.insights },
+    "@/lib/blog": { getPublishedPosts: async () => [] },
+    "@/data/insights": insights,
     "@/data/seoContent": content,
     "@/data/demos": demos,
     "@/data/services": load("data/services.ts"),
@@ -167,6 +168,8 @@ test("the sitemap includes published guides and playable demo pages without reti
     assert.equal(entry.lastModified, article.updatedAt);
   }
   assert.ok(urls.includes(`${site.url}/insights`));
+  assert.ok(urls.includes(`${site.url}/blog`));
+  assert.ok(!urls.some(url => url.startsWith(`${site.url}/blog/`)), "a blog with no published posts must not borrow the guides");
   assert.ok(urls.includes(`${site.url}/services`));
   assert.ok(urls.includes(`${site.url}/discovery`));
   for (const demo of demos.demos) {
@@ -237,10 +240,10 @@ test("industry and tool-library client props omit calculator definitions while p
   assert.match(html, /All industries/);
 });
 
-test("RSS and sitemap use only the public catalog and do not resurrect removed guides", async () => {
+test("RSS uses only published blog posts while the sitemap keeps guides in their original namespace", async () => {
   const data = load("data/insights.ts");
-  const article = { ...data.insights[0], slug: "published-cms-guide", title: 'Keep <work> & "records" together', description: "A guide about approvals & handoffs.", publishedAt: "2026-10-30", updatedAt: "2026-10-30" };
-  const source = { getPublishedInsights: async () => [article] };
+  const article = { ...data.insights[0], slug: "published-cms-post", title: 'Keep <work> & "records" together', description: "A perspective on approvals & handoffs.", publishedAt: "2026-10-30", updatedAt: "2026-10-30" };
+  const source = { getPublishedPosts: async () => [article] };
   const feed = load("app/feed.xml/route.ts", { "@/lib/blog": source, "@/lib/site": { site } });
   const response = await feed.GET();
   const xml = await response.text();
@@ -251,22 +254,36 @@ test("RSS and sitemap use only the public catalog and do not resurrect removed g
   assert.match(xml, /<dc:creator>Catalyst Innovations<\/dc:creator>/);
   assert.match(xml, /<pubDate>Fri, 30 Oct 2026 12:00:00 GMT<\/pubDate>/);
   assert.equal((xml.match(/<item>/g) ?? []).length, 1);
-  assert.ok(xml.includes(`${site.url}/insights/${article.slug}`));
+  assert.ok(xml.includes(`${site.url}/blog/${article.slug}`));
   assert.ok(!xml.includes(data.insights[0].slug));
   assert.doesNotMatch(xml, /<script>|<author>/);
   const sitemap = load("app/sitemap.ts", {
     "@/lib/site": { site }, "@/lib/blog": source,
+    "@/data/insights": data,
     "@/data/services": { services: [] }, "@/lib/calculators": { calculators: [] },
     "@/data/redesign": { industryList: [] }, "@/data/demos": { demos: [] }, "@/data/seoContent": { calculatorContent: {} },
   });
   const pages = await sitemap.default();
-  assert.ok(pages.some(item => item.url === `${site.url}/insights/${article.slug}`));
-  assert.ok(!pages.some(item => item.url.endsWith(data.insights[0].slug)));
+  assert.ok(pages.some(item => item.url === `${site.url}/blog/${article.slug}`));
+  assert.ok(!pages.some(item => item.url === `${site.url}/insights/${article.slug}`));
+  for (const guide of data.insights) {
+    assert.ok(pages.some(item => item.url === `${site.url}/insights/${guide.slug}`));
+    assert.ok(!pages.some(item => item.url === `${site.url}/blog/${guide.slug}`));
+  }
   assert.equal(sitemap.revalidate, 300);
 });
 
+test("an unpublished blog has an honest empty RSS feed and never republishes the guides", async () => {
+  const feed = load("app/feed.xml/route.ts", { "@/lib/blog": { getPublishedPosts: async () => [] }, "@/lib/site": { site } });
+  const response = await feed.GET();
+  const xml = await response.text();
+  assert.equal(response.status, 200);
+  assert.match(xml, /<link>https:\/\/mycatalystinnovations.com\/blog<\/link>/);
+  assert.doesNotMatch(xml, /<item>|<lastBuildDate>|\/insights\//);
+});
+
 test("catalog outages produce an unavailable feed rather than an empty success feed", async () => {
-  const source = { getPublishedInsights: async () => { throw new Error("private backend detail"); } };
+  const source = { getPublishedPosts: async () => { throw new Error("private backend detail"); } };
   const feed = load("app/feed.xml/route.ts", { "@/lib/blog": source, "@/lib/site": { site } });
   const response = await feed.GET();
   assert.equal(response.status, 503);
@@ -275,14 +292,14 @@ test("catalog outages produce an unavailable feed rather than an empty success f
   assert.doesNotMatch(await response.text(), /private backend detail|<rss/);
 });
 
-test("article social previews use the published article title and reject unavailable routes", async () => {
+test("blog social previews use published post titles and reject unavailable routes", async () => {
   const React = require("react");
   const { renderToStaticMarkup } = require("react-dom/server");
-  const article = { slug: "a-public-guide", title: "Making the field and office work together", category: "Field operations" };
-  const page = load("app/insights/[slug]/opengraph-image.tsx", {
+  const article = { slug: "a-public-post", title: "Making the field and office work together", category: "Field operations" };
+  const page = load("app/blog/[slug]/opengraph-image.tsx", {
     "next/og": { ImageResponse: class { constructor(element, options) { this.element = element; this.options = options; } } },
     "next/navigation": { notFound() { throw new Error("NOT_FOUND"); } },
-    "@/lib/blog": { getPublishedInsight: async slug => slug === article.slug ? article : undefined },
+    "@/lib/blog": { getPublishedPost: async slug => slug === article.slug ? article : undefined },
     "@/lib/site": { site },
   });
   const response = await page.default({ params: Promise.resolve({ slug: article.slug }) });

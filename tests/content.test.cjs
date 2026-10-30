@@ -168,28 +168,38 @@ test("guide pages expose complete readable content, organization attribution and
   await assert.rejects(page.default({ params: Promise.resolve({ slug: "does-not-exist" }) }), /NOT_FOUND/);
 });
 
-test("published catalog is authoritative for article routes, related content and inquiry context", async () => {
-  const published = [{ ...insights.insights[0], slug: "new-public-guide", title: "New public guide", related: [insights.insights[1].slug], sources: [], sections: insights.insights[0].sections.map(section => ({ ...section, source: undefined })), demo: "painting", industry: "painting", cover: { url: "/media/blog/guide-cover.webp", alt: "A fictional workflow diagram", caption: "Illustrative workflow" } }];
-  const page = load("app/insights/[slug]/page.tsx", {
+test("the separate published blog controls post routes, evidence, related content and inquiry context", async () => {
+  const published = [{ ...insights.insights[0], slug: "new-public-post", title: "New public editorial post", solution: undefined, tools: [], related: [insights.insights[1].slug], sources: [{ ...insights.insights[0].sources[0], context: "Reference context", methodology: "Reference methodology", publishedAt: "2026-10-01" }], evidence: [{ claim: "A clearly marked fixture claim", source: 0, context: "Evidence context", methodology: "Evidence methodology", dataDate: "2026" }], demo: "painting", industry: "painting", cover: { url: "/media/blog/post-cover.webp", alt: "A fictional workflow diagram", caption: "Illustrative workflow" } }];
+  const source = { getPublishedPosts: async () => published, getPublishedPost: async slug => published.find(post => post.slug === slug), blogReadingMinutes: () => 4 };
+  const page = load("app/blog/[slug]/page.tsx", {
     ...common,
-    "@/lib/blog": { getPublishedInsights: async () => published, getPublishedInsight: async slug => published.find(article => article.slug === slug) },
-    "../insights.css": {},
+    "@/lib/blog": source,
+    "../../insights/insights.css": {}, "../blog.css": {},
   });
-  const html = renderToStaticMarkup(await page.default({ params: Promise.resolve({ slug: "new-public-guide" }) }));
-  assert.match(html, /New public guide/);
-  assert.match(html, /demo=painting&amp;industry=painting&amp;article=new-public-guide/);
-  assert.match(html, /src="\/media\/blog\/guide-cover.webp"/);
+  const params = Promise.resolve({ slug: "new-public-post" });
+  const html = renderToStaticMarkup(await page.default({ params }));
+  assert.match(html, /New public editorial post/);
+  assert.match(html, /demo=painting&amp;industry=painting&amp;post=new-public-post/);
+  assert.match(html, /src="\/media\/blog\/post-cover.webp"/);
   assert.match(html, /alt="A fictional workflow diagram"/);
   assert.match(html, /loading="lazy"/);
   assert.match(html, /Illustrative workflow/);
-  assert.doesNotMatch(html, /Latest source review|Another part of the process/);
-  await assert.rejects(page.default({ params: Promise.resolve({ slug: insights.insights[0].slug }) }), /NOT_FOUND/, "a removed published guide must not fall back to the static copy");
-  const unavailable = load("app/insights/[slug]/page.tsx", { ...common, "@/lib/blog": { getPublishedInsight: async () => { throw new Error("catalog unavailable"); } }, "../insights.css": {} });
-  await assert.rejects(unavailable.default({ params: Promise.resolve({ slug: "new-public-guide" }) }), /catalog unavailable/);
-  await assert.rejects(unavailable.generateMetadata({ params: Promise.resolve({ slug: "new-public-guide" }) }), /catalog unavailable/);
+  assert.match(html, /Evidence context/);
+  assert.match(html, /Evidence methodology/);
+  assert.match(html, /Reference context/);
+  assert.match(html, /Reference methodology/);
+  assert.match(html, /"@type":"BlogPosting"/);
+  assert.doesNotMatch(html, /href="\/solutions\/undefined"|id="try-your-numbers"|Another perspective/);
+  const metadata = await page.generateMetadata({ params });
+  assert.equal(metadata.alternates.canonical, `${site.url}/blog/new-public-post`);
+  assert.equal(metadata.openGraph.images[0].url, `${site.url}/blog/new-public-post/opengraph-image`);
+  await assert.rejects(page.default({ params: Promise.resolve({ slug: insights.insights[0].slug }) }), /NOT_FOUND/, "a guide must not become a blog post");
+  const unavailable = load("app/blog/[slug]/page.tsx", { ...common, "@/lib/blog": { getPublishedPost: async () => { throw new Error("catalog unavailable"); } }, "../../insights/insights.css": {}, "../blog.css": {} });
+  await assert.rejects(unavailable.default({ params }), /catalog unavailable/);
+  await assert.rejects(unavailable.generateMetadata({ params }), /catalog unavailable/);
   assert.equal(page.revalidate, 300);
   assert.equal(page.dynamicParams, true);
-  assert.equal(page.generateStaticParams().length, 8);
+  assert.deepEqual(await page.generateStaticParams(), [{ slug: "new-public-post" }]);
 });
 
 test("industry pages retain the first three problem pairs and relevant inquiry/calculator context", async () => {

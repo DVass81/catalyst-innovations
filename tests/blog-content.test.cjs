@@ -6,6 +6,7 @@ const path = require("node:path");
 const Module = require("node:module");
 const ts = require("typescript");
 const { pathToFileURL } = require("node:url");
+const { createHash } = require("node:crypto");
 
 function load(file, mocks = {}) {
   const filename = path.join(__dirname, "..", file);
@@ -21,15 +22,22 @@ function load(file, mocks = {}) {
 }
 
 const articles = load("data/insights.ts").insights;
+const approvalHelpers = load("studio/lib/approval.ts");
 const blog = load("lib/blog.ts", {
   "@/data/insights": { insights: articles },
   "@/lib/calculators": load("lib/calculators.ts"),
   "@/data/services": load("data/services.ts"),
   "@/data/industryNeeds": load("data/industryNeeds.ts"),
+  "@/studio/lib/approval": approvalHelpers,
 });
 const today = "2026-10-30";
 const clone = value => structuredClone(value);
 const fixture = () => ({ ...clone(articles[0]), _id: `blog-${articles[0].slug}` });
+function approvedFixture(input = fixture()) {
+  const article = { containsStatistics: false, evidence: [], ...clone(input), editorialReview: { accurate: true, privateData: true, sources: true, preview: true, statistics: true } };
+  article.approval = { approvedBy: "josh", approvedAt: `${today}T12:00:00Z`, fingerprint: createHash("sha256").update(approvalHelpers.approvalContentPayload(article)).digest("hex") };
+  return article;
+}
 const reader = fetcher => blog.readPublishedBlog({ projectId: "abc12345", dataset: "production", today, fetcher });
 const response = result => new Response(JSON.stringify({ result }), { status: 200, headers: { "Content-Type": "application/json" } });
 
@@ -134,10 +142,13 @@ test("public field bounds agree with the Studio publishing schema", () => {
   }
 });
 
-test("without CMS setup the eight static articles load without any account or network", async () => {
+test("without CMS setup the real Blog stays empty and Guides remain their separate static library", async () => {
   const result = await blog.readPublishedBlog({ fetcher() { throw new Error("must not fetch"); }, today });
-  assert.equal(result.length, 8);
-  assert.deepEqual(result.map(article => article.slug), [...articles].sort((a, b) => b.publishedAt.localeCompare(a.publishedAt)).map(article => article.slug));
+  assert.deepEqual(result, []);
+  const guides = await blog.getPublishedInsights();
+  assert.equal(guides.length, 8);
+  assert.deepEqual(guides.map(article => article.slug), [...articles].sort((a, b) => b.publishedAt.localeCompare(a.publishedAt)).map(article => article.slug));
+  assert.deepEqual(await blog.getPublishedInsight(articles[0].slug), articles[0]);
 });
 
 test("configured empty CMS stays empty instead of resurrecting static articles", async () => {
@@ -146,7 +157,7 @@ test("configured empty CMS stays empty instead of resurrecting static articles",
 
 test("reader uses blogArticle schema, published perspective and no authenticated browser token", async () => {
   let request;
-  const actual = await reader(async (input, options) => { request = { url: new URL(input), options }; return response([fixture()]); });
+  const actual = await reader(async (input, options) => { request = { url: new URL(input), options }; return response([approvedFixture()]); });
   assert.equal(actual[0].slug, articles[0].slug);
   assert.equal(request.url.origin, "https://abc12345.api.sanity.io");
   assert.equal(request.url.searchParams.get("perspective"), "published");
@@ -156,7 +167,8 @@ test("reader uses blogArticle schema, published perspective and no authenticated
   assert.match(query, /drafts\.\*\*/); assert.match(query, /versions\.\*\*/);
   assert.match(query, /sourceKey/); assert.match(query, /sources\[\]\{_key/);
   assert.match(query, /coverImage\.asset->url/);
-  assert.doesNotMatch(query, /editorialReview|promotion|token|password/);
+  assert.match(query, /editorialReview/); assert.match(query, /approval/);
+  assert.doesNotMatch(query, /promotion|token|password/);
   assert.equal(request.options.headers, undefined);
   assert.equal(request.options.next.revalidate, 300);
   assert.ok(request.options.signal instanceof AbortSignal);
@@ -171,10 +183,11 @@ test("configured reader rejects failed, malformed, duplicate or private catalogs
     async () => new Response("not JSON"),
     async () => new Response(JSON.stringify({ result: {} })),
     async () => new Response("x".repeat(2_000_001)),
-    async () => response([fixture(), fixture()]),
+    async () => response([approvedFixture(), approvedFixture()]),
     async () => response([privateArticle]),
     async () => response([futureArticle]),
-    async () => response([missingId]),
+    async () => response([approvedFixture(missingId)]),
+    async () => response([fixture()]),
     async () => { throw new Error("network failed"); },
   ]) await assert.rejects(reader(fetcher), error => error instanceof blog.BlogUnavailableError);
   let calls = 0;
@@ -189,9 +202,62 @@ test("future editor share copies contain only reviewed article and channel ident
   const article = { slug: { current: articles[0].slug } };
   for (const channel of ["linkedin", "google_business_profile", "email", "direct"]) {
     const url = new URL(editor.publicArticleCampaignUrl(article, channel));
-    assert.equal(url.pathname, `/insights/${articles[0].slug}`);
-    assert.deepEqual([...url.searchParams], [["ci_source", channel], ["ci_article", articles[0].slug]]);
+    assert.equal(url.pathname, `/blog/${articles[0].slug}`);
+    assert.deepEqual([...url.searchParams], [["ci_source", channel], ["ci_post", articles[0].slug]]);
   }
   assert.equal(editor.publicArticleCampaignUrl(article, "person@example.test"), undefined);
   assert.equal(editor.publicArticleCampaignUrl({ slug: { current: "private/person" } }, "email"), undefined);
+});
+
+test("a Blog post needs Josh's approval of its current content; optional service links stay optional", async () => {
+  const article = fixture(); delete article.solution;
+  const approved = approvedFixture(article);
+  const publicPost = blog.normalizeBlogPost(approved, today);
+  assert.ok(publicPost);
+  assert.equal(publicPost.solution, undefined);
+  assert.equal(publicPost.approval, undefined);
+  assert.equal(publicPost.editorialReview, undefined);
+  assert.deepEqual(publicPost.evidence, []);
+  assert.ok(blog.blogReadingMinutes(publicPost) >= 1);
+  assert.equal(blog.normalizeBlogPost(article, today), null);
+  assert.equal(blog.normalizeBlogPost({ ...approved, title: "A changed, unapproved title" }, today), null);
+  assert.equal(blog.normalizeBlogPost({ ...approved, editorialReview: { ...approved.editorialReview, statistics: false } }, today), null);
+  assert.equal(blog.normalizeBlogPost({ ...approved, approval: { ...approved.approval, approvedBy: "someone-else" } }, today), null);
+  assert.equal(blog.normalizeBlogPost({ ...approved, promotion: { social: "A separate sharing draft" } }, today)?.slug, approved.slug);
+  assert.equal(await approvalHelpers.contentFingerprint(approved), approved.approval.fingerprint, "browser Web Crypto and server SHA-256 match");
+  const reserved = approvedFixture({ ...article, slug: "editor" });
+  assert.equal(blog.normalizeBlogPost(reserved, today), null);
+});
+
+test("statistics require traceable sources, research dates, methodology and context", () => {
+  const article = fixture();
+  article.sources[0]._key = "original-research";
+  article.sources[0].publishedAt = "2026-01-05";
+  article.sources[0].methodology = "An official report using its stated survey and reporting period.";
+  article.sources[0].context = "The original population and geography are stated rather than treated as local customer results.";
+  article.containsStatistics = true;
+  article.evidence = [{ _key: "claim-one", claim: "A fictional test claim used only by this test fixture.", sourceKey: "original-research", dataDate: "2026-01-01", methodology: "The test fixture describes the original research method without claiming a real statistic.", context: "This is test data, not a number published on Catalyst's website." }];
+  const post = blog.normalizeBlogPost(approvedFixture(article), today);
+  assert.ok(post);
+  assert.equal(post.evidence[0].source, 0);
+  assert.equal(post.evidence[0].dataDate, "2026-01-01");
+  assert.equal(post.sources[0].publishedAt, "2026-01-05");
+  for (const change of [
+    value => { value.evidence = []; },
+    value => { value.containsStatistics = false; },
+    value => { value.evidence[0].sourceKey = "missing-source"; },
+    value => { value.evidence[0].methodology = ""; },
+    value => { value.evidence[0].context = ""; },
+    value => { value.evidence[0].dataDate = "2026-10-31"; },
+  ]) { const changed = clone(article); change(changed); assert.equal(blog.normalizeBlogPost(approvedFixture(changed), today), null); }
+});
+
+test("an approved raw Studio image reference matches its public GROQ projection", () => {
+  const raw = fixture();
+  raw.coverImage = { _type: "image", asset: { _type: "reference", _ref: "image-abc123-1200x630-jpg" }, alt: "A blue business workflow", caption: "Original Catalyst illustration" };
+  const signed = approvedFixture(raw);
+  const projected = { ...signed, coverImage: { assetRef: raw.coverImage.asset._ref, url: "https://cdn.sanity.io/images/abc12345/production/abc123-1200x630.jpg", alt: raw.coverImage.alt, caption: raw.coverImage.caption } };
+  assert.ok(blog.normalizeBlogPost(projected, today));
+  projected.coverImage.alt = "Changed after approval";
+  assert.equal(blog.normalizeBlogPost(projected, today), null);
 });

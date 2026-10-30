@@ -25,12 +25,16 @@ export default function InquiryForm({
   problem,
   article,
   articleTitle,
+  post,
+  postTitle,
   deliveryConfigured = true,
 }: {
   deliveryConfigured?: boolean;
   problem?: string;
   article?: string;
   articleTitle?: string;
+  post?: string;
+  postTitle?: string;
   industry?: string;
   tool?: string;
   attach?: boolean;
@@ -70,6 +74,7 @@ export default function InquiryForm({
   const router = useRouter();
   const started = useRef(false);
   const submissionState = useRef<"idle" | "submitting" | "done">("idle");
+  const readingContext: Record<string, string> = post ? { post } : article ? { article } : {};
   async function submit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (submissionState.current !== "idle") return;
@@ -97,11 +102,12 @@ export default function InquiryForm({
           tool,
           demo,
           article,
+          post,
           summary: include ? attachment : undefined,
         }),
       );
       setCopyMessage("");
-      track("inquiry_draft_created", { source: tool ? "calculator" : demo ? "demo" : "inquiry", ...(article ? { article } : {}) });
+      track("inquiry_draft_created", { source: tool ? "calculator" : demo ? "demo" : "inquiry", ...readingContext });
       setPending(false);
       submissionState.current = "idle";
       requestAnimationFrame(() => draftHeading.current?.focus());
@@ -117,6 +123,7 @@ export default function InquiryForm({
           sourceTool: tool,
           sourceDemo: demo,
           sourceArticle: article,
+          sourcePost: post,
           struggleCategories: form.getAll("struggleCategories"),
           calculatorSummary: include ? attachment : undefined,
         }),
@@ -147,7 +154,7 @@ export default function InquiryForm({
       submissionState.current = "done";
       // Honeypot responses deliberately look successful without delivering a lead.
       if (!String(form.get("website") ?? "")) {
-        track("form_complete", { source: tool ? "calculator" : "inquiry", ...(article ? { article } : {}) });
+        track("form_complete", { source: tool ? "calculator" : "inquiry", ...readingContext });
       }
       if (include) {
         try {
@@ -157,7 +164,7 @@ export default function InquiryForm({
     } catch (err) {
       track("form_error", {
         source: tool ? "calculator" : demo ? "demo" : "inquiry",
-        ...(article ? { article } : {}),
+        ...readingContext,
       });
       requestAnimationFrame(() => errorRef.current?.focus());
       setError(
@@ -244,12 +251,12 @@ export default function InquiryForm({
       }}
       onFocusCapture={() => {
         if (!started.current) {
-          track("form_start", article ? { article } : undefined);
+          track("form_start", post || article ? readingContext : undefined);
           started.current = true;
         }
       }}
     >
-      {article && articleTitle && <p className="inquiry-context">Related guide: <Link href={`/insights/${article}`}>{articleTitle}</Link></p>}
+      {post && postTitle ? <p className="inquiry-context">Related Blog article: <Link href={`/blog/${post}`}>{postTitle}</Link></p> : article && articleTitle ? <p className="inquiry-context">Related guide: <Link href={`/insights/${article}`}>{articleTitle}</Link></p> : null}
       {!deliveryConfigured && (
         <p className="inquiry-context">
           Tell us a little about your business, then send the prepared inquiry
@@ -481,7 +488,7 @@ export default function InquiryForm({
               onClick={async () => {
                 try {
                   await navigator.clipboard.writeText(emailDraft.body);
-                  track("inquiry_draft_copied", { source: "inquiry_draft", ...(article ? { article } : {}) });
+                  track("inquiry_draft_copied", { source: "inquiry_draft", ...readingContext });
                   setCopyMessage(
                     "Copied. Paste these details into your email.",
                   );
@@ -497,7 +504,7 @@ export default function InquiryForm({
             <a
               className="button"
               href={emailDraft.href}
-              onClick={() => track("inquiry_email_opened", { source: "inquiry_draft", ...(article ? { article } : {}) })}
+              onClick={() => track("inquiry_email_opened", { source: "inquiry_draft", ...readingContext })}
             >
               Open email app ↗
             </a>

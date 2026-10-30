@@ -53,6 +53,7 @@
 .insights-page .insight-toc nav { position: sticky; top: 120px; }
 .insights-page .insight-toc ol { display: grid; gap: 18px; padding: 0; list-style: none; margin: 25px 0; }
 .insights-page .insight-toc a { color: #2f5d8f; font-size: 14px; line-height: 1.6; }
+.insights-page .insight-toc nav > a { display: block; margin-top: 14px; }
 .insights-page .insight-body { max-width: 760px; min-width: 0; }
 .insights-page .insight-cover { margin: 0 0 36px; }
 .insights-page .insight-cover img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: contain; border: 1px solid #d4dee5; border-radius: 12px; background: #edf3f8; }

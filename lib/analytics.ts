@@ -5,7 +5,7 @@ export const analyticsEvents = [
   "inquiry_email_opened", "roi_calculator_used", "roi_pdf_download",
   "assessment_start", "assessment_complete", "booking_click",
   "demo_interaction", "industry_select", "section_view",
-  "founder_profile_view", "phone_click", "email_click", "article_share",
+  "founder_profile_view", "phone_click", "email_click", "article_share", "blog_post_share",
 ] as const;
 export type AnalyticsEvent = (typeof analyticsEvents)[number];
 // `granted` is basic site analytics only. Advertising measurement is a separate,
@@ -38,7 +38,7 @@ export const analyticsArticleIds = [
 export const analyticsDemoIds = ["hoa", "flooring", "painting"] as const;
 export const analyticsPaths = new Set([
   "/", "/services", "/solutions", "/industries", "/portfolio", "/method", "/about",
-  "/discovery", "/contact", "/consultation", "/tools", "/insights",
+  "/discovery", "/contact", "/consultation", "/tools", "/insights", "/blog",
   "/privacy", "/terms", "/accessibility",
   ...analyticsToolIds.map((id) => `/tools/${id}`),
   ...analyticsIndustryIds.map((id) => `/industries/${id}`),
@@ -55,11 +55,17 @@ export function reviewedAnalyticsArticle(input: unknown, articleIds: readonly st
     && input.length <= 100 && articleIds.includes(input) ? input : null;
 }
 
+/** Editorial posts have a separate, initially empty published-content registry. */
+export function reviewedAnalyticsPost(input: unknown, blogPostIds: readonly string[] = []): string | null {
+  return reviewedAnalyticsArticle(input, blogPostIds);
+}
+
 /** No absolute URLs, unknown paths, user identifiers, query strings or fragments. */
-export function analyticsPath(input: unknown, articleIds: readonly string[] = analyticsArticleIds): string | null {
+export function analyticsPath(input: unknown, articleIds: readonly string[] = analyticsArticleIds, blogPostIds: readonly string[] = []): string | null {
   if (typeof input !== "string" || !input.startsWith("/") || input.startsWith("//")) return null;
   const path = input.split(/[?#]/, 1)[0];
   if (path.startsWith("/insights/")) return reviewedAnalyticsArticle(path.slice("/insights/".length), articleIds) ? path : null;
+  if (path.startsWith("/blog/")) return reviewedAnalyticsPost(path.slice("/blog/".length), blogPostIds) ? path : null;
   return analyticsPaths.has(path) ? path : null;
 }
 
@@ -78,18 +84,19 @@ const identifiers: Record<string, readonly string[]> = {
   channel: ["copy", "linkedin", "email"],
 };
 const eventKeys: Record<AnalyticsEvent, readonly string[]> = {
-  cta_consultation_click: ["location", "article"],
-  form_start: ["source", "article"], form_step: [], form_complete: ["source", "article"], form_error: ["source", "article"],
-  inquiry_draft_created: ["source", "article"], inquiry_draft_copied: ["source", "article"], inquiry_email_opened: ["source", "article"],
-  roi_calculator_used: ["tool", "article"], roi_pdf_download: ["tool", "article"],
-  assessment_start: ["problem"], assessment_complete: [], booking_click: ["article"],
-  demo_interaction: ["demo", "widget", "action", "industry", "article"], industry_select: ["industry"],
+  cta_consultation_click: ["location", "article", "post"],
+  form_start: ["source", "article", "post"], form_step: [], form_complete: ["source", "article", "post"], form_error: ["source", "article", "post"],
+  inquiry_draft_created: ["source", "article", "post"], inquiry_draft_copied: ["source", "article", "post"], inquiry_email_opened: ["source", "article", "post"],
+  roi_calculator_used: ["tool", "article", "post"], roi_pdf_download: ["tool", "article", "post"],
+  assessment_start: ["problem"], assessment_complete: [], booking_click: ["article", "post"],
+  demo_interaction: ["demo", "widget", "action", "industry", "article", "post"], industry_select: ["industry"],
   section_view: ["section"], founder_profile_view: ["founder"],
   phone_click: ["context"], email_click: ["context", "source"],
   article_share: ["article", "channel"],
+  blog_post_share: ["post", "channel"],
 };
 
-export function sanitizeAnalyticsEvent(event: unknown, input: unknown = {}, articleIds: readonly string[] = analyticsArticleIds): { name: AnalyticsEvent; props: AnalyticsProperties } | null {
+export function sanitizeAnalyticsEvent(event: unknown, input: unknown = {}, articleIds: readonly string[] = analyticsArticleIds, blogPostIds: readonly string[] = []): { name: AnalyticsEvent; props: AnalyticsProperties } | null {
   if (typeof event !== "string" || !(analyticsEvents as readonly string[]).includes(event)) return null;
   const name = event as AnalyticsEvent;
   const props: AnalyticsProperties = {};
@@ -99,9 +106,15 @@ export function sanitizeAnalyticsEvent(event: unknown, input: unknown = {}, arti
       if (key === "article") {
         const article = reviewedAnalyticsArticle(value, articleIds);
         if (article) props.article = article;
+      } else if (key === "post") {
+        const post = reviewedAnalyticsPost(value, blogPostIds);
+        if (post) props.post = post;
       } else if (typeof value === "string" && identifiers[key]?.includes(value)) props[key] = value;
     }
   }
+  // A single action has one originating content item, even if a caller supplies both.
+  if (props.post) delete props.article;
+  if (name === "blog_post_share" && !props.post) return null;
   return { name, props };
 }
 
@@ -178,19 +191,22 @@ export type AnalyticsTransport = {
 const isActiveConsent = (choice: AnalyticsConsent) => choice === "granted" || choice === "ad_measurement";
 
 /** Testable state machine: no queue/replay of interactions made before consent. */
-export function createAnalyticsSession(transport: AnalyticsTransport, options: { articleIds?: readonly string[] } = {}) {
+export function createAnalyticsSession(transport: AnalyticsTransport, options: { articleIds?: readonly string[]; blogPostIds?: readonly string[] } = {}) {
   const articleIds = [...(options.articleIds ?? analyticsArticleIds)];
+  const blogPostIds = [...(options.blogPostIds ?? [])];
   let consent: AnalyticsConsent = "pending";
   let path: string | null = null;
   let lastViewed: string | null = null;
   let reloading = false;
-  let originArticle: string | null = null;
+  let originContent: AnalyticsProperties | null = null;
   const view = () => {
     if (!isActiveConsent(consent) || reloading || !path || path === lastViewed) return;
     lastViewed = path;
     const article = path.startsWith("/insights/") ? reviewedAnalyticsArticle(path.slice("/insights/".length), articleIds) : null;
-    if (article) originArticle = article;
-    transport.send({ name: "page_view", path, props: article ? { article } : {} });
+    const post = path.startsWith("/blog/") ? reviewedAnalyticsPost(path.slice("/blog/".length), blogPostIds) : null;
+    const content: AnalyticsProperties | null = article ? { article } : post ? { post } : null;
+    if (content) originContent = content;
+    transport.send({ name: "page_view", path, props: content ?? {} });
   };
   return {
     consent(next: AnalyticsConsent) {
@@ -202,29 +218,31 @@ export function createAnalyticsSession(transport: AnalyticsTransport, options: {
         // choice first, tear down the old tag, then start clean on reload.
         reloading = true;
         lastViewed = null;
-        originArticle = null;
+        originContent = null;
         transport.stop(true);
       } else if (isActiveConsent(next)) {
         transport.start(path, next === "ad_measurement");
         view();
       } else {
         lastViewed = null;
-        originArticle = null;
+        originContent = null;
         if (isActiveConsent(previous)) transport.stop();
       }
     },
     navigate(input: unknown) {
-      const next = analyticsPath(input, articleIds);
+      const next = analyticsPath(input, articleIds, blogPostIds);
       if (next === path) return;
       path = next;
-      if (!path) { lastViewed = null; originArticle = null; }
+      if (!path) { lastViewed = null; originContent = null; }
       if (isActiveConsent(consent) && !reloading) transport.page(path);
       view();
     },
     track(event: unknown, props?: unknown) {
       if (!isActiveConsent(consent) || reloading || !path) return;
-      const context = originArticle ? { article: originArticle, ...(props && typeof props === "object" ? props : {}) } : props;
-      const clean = sanitizeAnalyticsEvent(event, context, articleIds);
+      const explicit = props && typeof props === "object" ? props as Record<string, unknown> : {};
+      const hasExplicitContent = reviewedAnalyticsArticle(explicit.article, articleIds) || reviewedAnalyticsPost(explicit.post, blogPostIds);
+      const context = hasExplicitContent ? explicit : { ...originContent, ...explicit };
+      const clean = sanitizeAnalyticsEvent(event, context, articleIds, blogPostIds);
       if (clean) transport.send({ ...clean, path });
     },
   };
@@ -247,16 +265,16 @@ const googleAdMeasurementConfig = {
   ads_data_redaction: false,
 };
 
-export function analyticsPageFields(origin: string, path: string | null, articleIds: readonly string[] = analyticsArticleIds) {
-  const safePath = analyticsPath(path, articleIds) ?? "/";
+export function analyticsPageFields(origin: string, path: string | null, articleIds: readonly string[] = analyticsArticleIds, blogPostIds: readonly string[] = []) {
+  const safePath = analyticsPath(path, articleIds, blogPostIds) ?? "/";
   return { page_location: `${new URL(origin).origin}${safePath}`, page_title: safePath, page_referrer: "" };
 }
 
 /** Only documented Google Ads click/aggregate identifiers are allowed into a
  * consented GA URL. All other queries, including UTMs and form values, stay out. */
-export function adMeasurementPageFields(origin: string, path: string | null, search: string, articleIds: readonly string[] = analyticsArticleIds) {
-  const fields = analyticsPageFields(origin, path, articleIds);
-  if (!analyticsPath(path, articleIds)) return fields;
+export function adMeasurementPageFields(origin: string, path: string | null, search: string, articleIds: readonly string[] = analyticsArticleIds, blogPostIds: readonly string[] = []) {
+  const fields = analyticsPageFields(origin, path, articleIds, blogPostIds);
+  if (!analyticsPath(path, articleIds, blogPostIds)) return fields;
   const input = new URLSearchParams(search);
   const safe = new URLSearchParams();
   for (const [name, pattern] of [
@@ -313,7 +331,7 @@ function clearGoogleMeasurementCookies(includeAnalytics: boolean) {
 }
 
 /** Browser adapter. Plausible uses explicit API calls, with no automatic tracker. */
-export function createBrowserAnalyticsTransport(providers = configuredAnalytics(), articleIds: readonly string[] = analyticsArticleIds): AnalyticsTransport {
+export function createBrowserAnalyticsTransport(providers = configuredAnalytics(), articleIds: readonly string[] = analyticsArticleIds, blogPostIds: readonly string[] = []): AnalyticsTransport {
   const w = window as unknown as AnalyticsWindow;
   const requests = new Set<AbortController>();
   let active = false;
@@ -322,8 +340,8 @@ export function createBrowserAnalyticsTransport(providers = configuredAnalytics(
   let adMeasurement = false;
   const entrySource = analyticsEntrySource(document.referrer);
   const fields = (path: string | null) => adMeasurement && path === window.location.pathname
-    ? adMeasurementPageFields(window.location.origin, path, window.location.search, articleIds)
-    : analyticsPageFields(window.location.origin, path, articleIds);
+    ? adMeasurementPageFields(window.location.origin, path, window.location.search, articleIds, blogPostIds)
+    : analyticsPageFields(window.location.origin, path, articleIds, blogPostIds);
   const privacyConfig = () => adMeasurement ? googleAdMeasurementConfig : googlePrivacyConfig;
   const page = (path: string | null) => {
     if (!active || !providers.gaId) return;
@@ -380,7 +398,7 @@ export function createBrowserAnalyticsTransport(providers = configuredAnalytics(
             name: payload.name === "page_view" ? "pageview" : payload.name,
             domain: providers.plausibleDomain,
             // Plausible never receives click IDs, even when ad measurement is on.
-            url: analyticsPageFields(window.location.origin, payload.path, articleIds).page_location,
+            url: analyticsPageFields(window.location.origin, payload.path, articleIds, blogPostIds).page_location,
             props: { ...payload.props, entry_source: entrySource },
           }),
         }).catch(() => {}).finally(() => requests.delete(controller));

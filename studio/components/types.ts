@@ -12,6 +12,7 @@ export type PreviewArticle = {
   nextStep?: string;
   sources?: Array<{ _key: string; title?: string; url?: string }>;
   promotion?: { social?: string; emailSubject?: string; emailBody?: string };
+  approval?: { approvedBy?: string; approvedAt?: string; fingerprint?: string };
 };
 export type ArticleViewProps = {
   document: { displayed?: PreviewArticle; published?: PreviewArticle | null; draft?: PreviewArticle | null };
@@ -24,7 +25,8 @@ export function publicArticleUrl(article?: PreviewArticle) {
   try {
     const website = new URL(configured);
     if (website.protocol !== "https:" || website.username || website.password) return undefined;
-    return new URL(`/insights/${slug}`, website.origin).toString();
+    if (slug === "editor") return undefined;
+    return new URL(`/blog/${slug}`, website.origin).toString();
   } catch { return undefined; }
 }
 
@@ -37,6 +39,6 @@ export function publicArticleCampaignUrl(article: PreviewArticle | undefined, ch
   if (!canonical || !article?.slug?.current) return undefined;
   const url = new URL(canonical);
   url.searchParams.set("ci_source", channel);
-  url.searchParams.set("ci_article", article.slug.current);
+  url.searchParams.set("ci_post", article.slug.current);
   return url.toString();
 }

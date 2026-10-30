@@ -175,6 +175,59 @@ test("article-to-inquiry context begins after consent, survives navigation, and 
   assert.deepEqual(calls.sends.at(-1).props, { source: "inquiry" });
 });
 
+test("editorial blog routes and events use a separate published registry from product Guides", () => {
+  const articleIds = ["shared-topic"];
+  const blogPostIds = ["shared-topic", "editorial-post"];
+  assert.equal(analytics.analyticsPath("/blog"), "/blog");
+  assert.equal(analytics.analyticsPath("/blog/shared-topic", articleIds), null, "Guides never implicitly approve Blog routes");
+  assert.equal(analytics.analyticsPath("/blog/shared-topic?email=private#note", articleIds, blogPostIds), "/blog/shared-topic");
+  assert.equal(analytics.analyticsPath("/insights/editorial-post", articleIds, blogPostIds), null, "Blog posts never implicitly approve Guide routes");
+  assert.equal(analytics.analyticsPath("/blog/unpublished-post", articleIds, blogPostIds), null);
+  assert.equal(analytics.reviewedAnalyticsPost("editorial-post"), null);
+  assert.equal(analytics.reviewedAnalyticsPost("person@example.test", ["person@example.test"]), null);
+  assert.deepEqual(analytics.sanitizeAnalyticsEvent("blog_post_share", { post: "editorial-post", channel: "linkedin", article: "shared-topic", email: "private@example.test" }, articleIds, blogPostIds), {
+    name: "blog_post_share", props: { post: "editorial-post", channel: "linkedin" },
+  });
+  assert.equal(analytics.sanitizeAnalyticsEvent("blog_post_share", { post: "unpublished-post", channel: "copy" }, articleIds, blogPostIds), null);
+  assert.deepEqual(analytics.sanitizeAnalyticsEvent("article_share", { article: "shared-topic", post: "editorial-post", channel: "copy" }, articleIds, blogPostIds), {
+    name: "article_share", props: { article: "shared-topic", channel: "copy" },
+  });
+  assert.deepEqual(analytics.sanitizeAnalyticsEvent("form_complete", { source: "inquiry", post: "editorial-post" }, articleIds).props, { source: "inquiry" });
+});
+
+test("the latest Guide or Blog visit supplies one distinct inquiry context without replaying pre-consent history", () => {
+  const articleIds = ["shared-topic"];
+  const blogPostIds = ["shared-topic"];
+  const { calls, session } = sessionFixture({ articleIds, blogPostIds });
+  session.navigate("/blog/shared-topic");
+  session.navigate("/consultation");
+  session.consent("granted");
+  session.track("form_start", { source: "inquiry" });
+  assert.deepEqual(calls.sends.at(-1).props, { source: "inquiry" });
+  session.navigate("/insights/shared-topic");
+  assert.deepEqual(calls.sends.at(-1), { name: "page_view", path: "/insights/shared-topic", props: { article: "shared-topic" } });
+  session.navigate("/blog/shared-topic");
+  session.navigate("/blog/shared-topic?ci_source=linkedin&ci_post=shared-topic");
+  assert.deepEqual(calls.sends.at(-1), { name: "page_view", path: "/blog/shared-topic", props: { post: "shared-topic" } });
+  session.navigate("/consultation");
+  session.track("form_complete", { source: "inquiry", email: "private@example.test" });
+  assert.deepEqual(calls.sends.at(-1).props, { source: "inquiry", post: "shared-topic" });
+  session.track("cta_consultation_click", { article: "shared-topic" });
+  assert.deepEqual(calls.sends.at(-1).props, { article: "shared-topic" }, "An explicit Guide link overrides a preceding Blog visit");
+  session.navigate("/insights/shared-topic");
+  session.navigate("/consultation");
+  session.track("form_complete", { source: "inquiry" });
+  assert.deepEqual(calls.sends.at(-1).props, { source: "inquiry", article: "shared-topic" });
+  assert.equal(calls.sends.filter(event => event.name === "page_view" && event.path === "/blog/shared-topic").length, 1);
+  session.consent("denied");
+  const total = calls.sends.length;
+  session.track("blog_post_share", { post: "shared-topic", channel: "copy" });
+  assert.equal(calls.sends.length, total);
+  session.consent("granted");
+  session.track("form_start");
+  assert.deepEqual(calls.sends.at(-1).props, {});
+});
+
 test("ad measurement is distinct from old analytics grants and a mode switch stops before any more events", () => {
   const { calls, session } = sessionFixture();
   assert.equal(analytics.parseAnalyticsConsent("ad_measurement"), "ad_measurement");
@@ -344,6 +397,32 @@ test("the browser transport reports a future published article without promoting
     assert.equal(event[2].article, articleIds[0]);
     assert.doesNotMatch(JSON.stringify(event), /private|gclid|ci_source|ci_article/);
   }
+  for (const request of fixture.requests) assert.equal(JSON.parse(request.options.body).url, `https://site.example${route}`);
+  session.consent("denied");
+});
+
+test("published Blog tracking strips private queries and still requires separate ad-result consent", t => {
+  const fixture = browserFixture(t);
+  const blogPostIds = ["editorial-post"];
+  const route = "/blog/editorial-post";
+  fixture.window.location.pathname = route;
+  fixture.window.location.search = "?ci_source=linkedin&ci_post=editorial-post&gclid=EAIaIQobChMI12345678&email=private";
+  const session = analytics.createAnalyticsSession(analytics.createBrowserAnalyticsTransport({ gaId: "G-TEST123", plausibleDomain: "site.example" }, undefined, blogPostIds), { blogPostIds });
+  session.navigate(route);
+  assert.equal(fixture.scripts.length, 0);
+  session.consent("granted");
+  session.track("blog_post_share", { post: "editorial-post", channel: "linkedin", email: "private@example.test" });
+  const consent = fixture.window.dataLayer.find(entry => entry[0] === "consent")[2];
+  assert.equal(consent.ad_storage, "denied");
+  assert.equal(consent.ad_user_data, "denied");
+  for (const event of fixture.window.dataLayer.filter(entry => entry[0] === "event")) {
+    assert.equal(event[2].page_location, `https://site.example${route}`);
+    assert.equal(event[2].post, "editorial-post");
+    assert.equal(Object.hasOwn(event[2], "article"), false);
+    assert.doesNotMatch(JSON.stringify(event), /private|gclid|ci_post|ci_source/);
+  }
+  assert.equal(analytics.adMeasurementPageFields("https://site.example", route, fixture.window.location.search, undefined, blogPostIds).page_location,
+    `https://site.example${route}?gclid=EAIaIQobChMI12345678`);
   for (const request of fixture.requests) assert.equal(JSON.parse(request.options.body).url, `https://site.example${route}`);
   session.consent("denied");
 });

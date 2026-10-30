@@ -173,3 +173,63 @@ test("guide context on an email draft remains a draft action rather than a deliv
   assert.equal(fixture.requests.length, 0);
   assert.deepEqual(fixture.events, [{ name: "inquiry_draft_created", context: { source: "inquiry", article } }]);
 });
+
+test("an editorial Blog inquiry sends sourcePost and records one post-specific lead without private fields", async t => {
+  const post = "an-approved-editorial-post";
+  const fixture = mount(t, { post, postTitle: "An editorial title that stays out of analytics" });
+  const tree = fixture.render();
+  const form = find(tree, element => element.type === "form");
+  form.props.onFocusCapture();
+  form.props.onFocusCapture();
+  await fixture.submit(tree);
+  await fixture.submit(tree);
+  assert.equal(fixture.requests.length, 1);
+  const payload = JSON.parse(fixture.requests[0].options.body);
+  assert.equal(payload.sourcePost, post);
+  assert.equal(Object.hasOwn(payload, "sourceArticle"), false);
+  assert.equal(Object.hasOwn(payload, "postTitle"), false);
+  assert.deepEqual(fixture.events, [
+    { name: "form_start", context: { post } },
+    { name: "form_complete", context: { source: "inquiry", post } },
+  ]);
+  assert.doesNotMatch(JSON.stringify(fixture.events), /qa@example|QA Example|Fictional QA|editorial title/);
+});
+
+test("Blog delivery failures do not count leads, and retry preserves post context", async t => {
+  const post = "an-approved-editorial-post";
+  const fixture = mount(t, { post });
+  for (const response of [new Response('{"ok":false}', { status: 502 }), new Response('{"ok":false}', { status: 200 })]) {
+    fixture.deliver(async () => response);
+    await fixture.submit(fixture.render());
+    assert.ok(find(fixture.render(), element => element.type === "form"));
+    assert.equal(fixture.events.filter(event => event.name === "form_complete").length, 0);
+    assert.deepEqual(fixture.events.at(-1), { name: "form_error", context: { source: "inquiry", post } });
+  }
+  fixture.deliver(async () => { throw new TypeError("Fixture delivery failure"); });
+  await fixture.submit(fixture.render());
+  assert.equal(fixture.events.filter(event => event.name === "form_complete").length, 0);
+  fixture.deliver(async () => new Response('{"ok":true}', { status: 200 }));
+  await fixture.submit(fixture.render());
+  for (const request of fixture.requests) assert.equal(JSON.parse(request.options.body).sourcePost, post);
+  assert.deepEqual(fixture.events.at(-1), { name: "form_complete", context: { source: "inquiry", post } });
+  assert.equal(fixture.events.filter(event => event.name === "form_complete").length, 1);
+});
+
+test("Blog context takes precedence over a legacy Guide context in form events", async t => {
+  const post = "an-approved-editorial-post";
+  const fixture = mount(t, { post, article: "software-data-migration" });
+  find(fixture.render(), element => element.type === "form").props.onFocusCapture();
+  await fixture.submit(fixture.render());
+  assert.deepEqual(fixture.events, [
+    { name: "form_start", context: { post } },
+    { name: "form_complete", context: { source: "inquiry", post } },
+  ]);
+});
+
+test("an editorial Blog email draft is a separate non-lead action", async t => {
+  const post = "an-approved-editorial-post";
+  const fixture = mount(t, { post, deliveryConfigured: false });
+  await fixture.submit(fixture.render());
+  assert.equal(fixture.requests.length, 0);
+  assert.deepEqual(fixture.events, [{ name: "inquiry_draft_created", context: { source: "inquiry", post } }]);
+});

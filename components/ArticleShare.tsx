@@ -2,20 +2,21 @@
 
 import { useState } from "react";
 import { Check, Copy, Mail, ArrowUpRight } from "lucide-react";
-import { articleCampaignUrl } from "@/lib/blog-attribution";
+import { articleCampaignUrl, type ContentKind } from "@/lib/blog-attribution";
 import { track } from "@/lib/site";
 import styles from "./ArticleShare.module.css";
 
 /** Opens visitors' own sharing/draft tools; never publishes or sends for them. */
-export default function ArticleShare({ slug, title, url }: { slug: string; title: string; url: string }) {
+export default function ArticleShare({ slug, title, url, kind = "guide" }: { slug: string; title: string; url: string; kind?: ContentKind }) {
   const [copied, setCopied] = useState(false);
   const [fallback, setFallback] = useState(false);
-  const direct = articleCampaignUrl(url, slug, "direct");
-  const linkedin = articleCampaignUrl(url, slug, "linkedin");
-  const email = articleCampaignUrl(url, slug, "email");
+  const direct = articleCampaignUrl(url, slug, "direct", kind);
+  const linkedin = articleCampaignUrl(url, slug, "linkedin", kind);
+  const email = articleCampaignUrl(url, slug, "email", kind);
   if (!direct || !linkedin || !email) return null;
   const safeTitle = title.replace(/[\r\n]+/g, " ");
-  const share = (channel: "copy" | "linkedin" | "email") => track("article_share", { article: slug, channel });
+  const share = (channel: "copy" | "linkedin" | "email") => kind === "blog"
+    ? track("blog_post_share", { post: slug, channel }) : track("article_share", { article: slug, channel });
   async function copy() {
     try {
       await navigator.clipboard.writeText(direct!);
@@ -25,7 +26,7 @@ export default function ArticleShare({ slug, title, url }: { slug: string; title
     } catch { setCopied(false); setFallback(true); }
   }
   return <section className={styles.share} aria-label="Share this article">
-    <div><p className="overline">Useful to someone on your team?</p><p className={styles.label}>Share the guide.</p></div>
+    <div><p className="overline">Useful to someone on your team?</p><p className={styles.label}>{kind === "blog" ? "Share the article." : "Share the guide."}</p></div>
     <div className={styles.actions}>
       <button type="button" onClick={copy}>{copied ? <Check size={16} aria-hidden="true" /> : <Copy size={16} aria-hidden="true" />}{copied ? "Link copied" : "Copy link"}</button>
       <a href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(linkedin)}`} target="_blank" rel="noopener noreferrer" onClick={() => share("linkedin")}>LinkedIn <ArrowUpRight size={15} aria-hidden="true" /><span className="sr-only"> (opens in a new tab)</span></a>

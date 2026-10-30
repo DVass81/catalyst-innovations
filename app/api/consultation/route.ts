@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { consultationSchema } from "@/lib/consultation";
 import { scoreLead } from "@/lib/leadScoring";
 import { isRateLimited } from "@/lib/rateLimit";
-import { getPublishedInsight } from "@/lib/blog";
+import { getPublishedInsight, getPublishedPost } from "@/lib/blog";
 
 /**
  * Consultation form endpoint.
@@ -55,6 +55,11 @@ export async function POST(req: NextRequest) {
 
   const submission = { ...parsed.data };
   delete submission.website;
+  if (submission.sourcePost) {
+    const post = await getPublishedPost(submission.sourcePost).catch(() => undefined);
+    if (!post) delete submission.sourcePost;
+    else delete submission.sourceArticle;
+  }
   if (submission.sourceArticle) {
     // Optional context never prevents an otherwise valid inquiry from arriving.
     const article = await getPublishedInsight(submission.sourceArticle).catch(() => undefined);

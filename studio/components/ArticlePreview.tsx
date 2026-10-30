@@ -1,5 +1,6 @@
-import { useState, type CSSProperties } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 import { type ArticleViewProps } from "./types";
+import { articleWordCount, contentFingerprint } from "../lib/approval";
 
 const bodyStyle: CSSProperties = { background: "#faf7f1", color: "#0a1628", minHeight: "100%", padding: "28px 20px", fontFamily: "system-ui, sans-serif", lineHeight: 1.75 };
 const eyebrowStyle: CSSProperties = { color: "#2f5d8f", textTransform: "uppercase", letterSpacing: ".12em", fontSize: 12, fontWeight: 750 };
@@ -8,11 +9,23 @@ const eyebrowStyle: CSSProperties = { color: "#2f5d8f", textTransform: "uppercas
 export function ArticlePreview({ document }: ArticleViewProps) {
   const article = document.displayed;
   const [narrow, setNarrow] = useState(false);
+  const [approved, setApproved] = useState(false);
+  useEffect(() => {
+    let current = true;
+    setApproved(false);
+    if (article?.approval?.approvedBy === "josh" && article.approval.fingerprint) {
+      void contentFingerprint(article).then(value => { if (current) setApproved(value === article.approval?.fingerprint); }).catch(() => {});
+    }
+    return () => { current = false; };
+  }, [article]);
   if (!article) return <p style={{ padding: 24 }}>Start writing to see a preview.</p>;
+  const words = articleWordCount(article);
   return <div style={bodyStyle}>
     <div style={{ maxWidth: 780, margin: "0 auto 28px", borderBottom: "1px solid #ccd7e3", paddingBottom: 18 }}>
       <strong>Draft preview</strong>
       <p style={{ margin: "6px 0 12px", fontSize: 14 }}>This preview shows unpublished text inside your authenticated editor. It is not a public preview link.</p>
+      <p style={{ margin: "6px 0 12px", fontSize: 14 }}><strong>{document.draft ? "Unpublished draft" : document.published ? "Published version" : "New draft"}</strong> · {words} words · about {Math.max(1, Math.ceil(words / 200))} min read. Aim for 600–1,000 useful words.</p>
+      <p role="status" style={{ color: approved ? "#1c624d" : "#78551b", fontSize: 14 }}>{approved ? "Josh approved this content version. Publishing remains a separate step." : "Awaiting Josh's approval of this content version."}</p>
       <button type="button" aria-pressed={narrow} onClick={() => setNarrow(!narrow)} style={{ padding: "8px 14px", border: "1px solid #2f5d8f", borderRadius: 20, background: "white", color: "#0a1628", cursor: "pointer" }}>{narrow ? "Show wider reading layout" : "Check narrow reading layout"}</button>
     </div>
     <article style={{ maxWidth: narrow ? 360 : 780, margin: "0 auto", overflowWrap: "anywhere" }}>

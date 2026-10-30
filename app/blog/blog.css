@@ -1,0 +1,24 @@
+.catalyst-blog-page .blog-editorial-rhythm { display: flex; flex-wrap: wrap; gap: 12px 28px; margin-top: 30px; padding-top: 24px; border-top: 1px solid #d4dee5; color: #52606d; font-size: 12px; }
+.catalyst-blog-page .blog-editorial-rhythm span { display: inline-flex; gap: 9px; align-items: center; }
+.catalyst-blog-page .blog-editorial-rhythm svg { color: #2f5d8f; }
+.catalyst-blog-page .blog-awaiting-edition { display: grid; grid-template-columns: .55fr 1.45fr; gap: clamp(30px, 5vw, 70px); align-items: center; padding: clamp(28px, 5vw, 64px); background: white; border: 1px solid #d4dee5; border-radius: 22px; }
+.catalyst-blog-page .blog-edition-mark { display: flex; justify-content: center; align-items: center; min-height: 240px; aspect-ratio: 1; border: 1px solid #d4dee5; border-radius: 50%; background: radial-gradient(ellipse at 75% 20%, #dceaf6, #edf3f8 60%); color: #2f5d8f; }
+.catalyst-blog-page .blog-edition-mark svg { width: 30%; height: auto; }
+.catalyst-blog-page .blog-awaiting-edition h2 { font-size: clamp(29px, 3.2vw, 44px); line-height: 1.2; margin: 20px 0; }
+.catalyst-blog-page .blog-awaiting-edition p:not(.overline) { max-width: 620px; font-size: 15px; line-height: 1.85; color: #52606d; margin-bottom: 20px; }
+.catalyst-blog-page .blog-library-footer { display: flex; justify-content: space-between; align-items: flex-end; gap: 32px; }
+.catalyst-blog-page .blog-editor-entry { display: inline-flex; align-items: center; gap: 7px; color: #52606d; font-size: 12px; line-height: 1.7; }
+.catalyst-blog-page .blog-evidence { padding: 30px; background: #edf3f8; border: 1px solid #d4dee5; border-radius: 12px; }
+.catalyst-blog-page .blog-evidence > div + div { border-top: 1px solid #c6d3de; padding-top: 24px; margin-top: 26px; }
+.catalyst-blog-page .blog-evidence .blog-evidence-claim { font-size: 18px; color: #173454; }
+.catalyst-blog-page .blog-evidence a { color: #2f5d8f; text-decoration: underline; text-underline-offset: 3px; }
+.catalyst-blog-page .blog-evidence p:not(.blog-evidence-claim) { font-size: 14px; }
+.catalyst-blog-page .blog-source-details { margin-top: 10px; }
+.catalyst-blog-page .blog-source-details p { margin: 6px 0; }
+@media (max-width: 780px) {
+  .catalyst-blog-page .blog-awaiting-edition { grid-template-columns: 1fr; }
+  .catalyst-blog-page .blog-edition-mark { min-height: 0; aspect-ratio: 2.4; border-radius: 14px; }
+  .catalyst-blog-page .blog-edition-mark svg { width: 40px; }
+  .catalyst-blog-page .blog-library-footer { display: block; }
+  .catalyst-blog-page .blog-editor-entry { margin-top: 32px; }
+}

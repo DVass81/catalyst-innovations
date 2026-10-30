@@ -232,7 +232,7 @@ const { POST } = load("app/api/consultation/route.ts", {
   "@/lib/consultation": schema,
   "@/lib/leadScoring": lead,
   "@/lib/rateLimit": { isRateLimited: async () => false },
-  "@/lib/blog": { getPublishedInsight: async () => undefined },
+  "@/lib/blog": { getPublishedInsight: async () => undefined, getPublishedPost: async () => undefined },
 });
 test("delivery is truthful and provider requests can be mocked without sending", async () => {
   const keys = [
@@ -329,7 +329,7 @@ test("optional inquiry article context preserves published sources and removes u
     "@/lib/consultation": schema,
     "@/lib/leadScoring": lead,
     "@/lib/rateLimit": { isRateLimited: async () => false },
-    "@/lib/blog": { getPublishedInsight: async slug => {
+    "@/lib/blog": { getPublishedPost: async () => undefined, getPublishedInsight: async slug => {
       lookups.push(slug);
       if (sourceUnavailable) throw new Error("Fixture published catalog unavailable");
       return slug === article ? { slug: article, title: "A published guide" } : undefined;
@@ -372,6 +372,88 @@ test("optional inquiry article context preserves published sources and removes u
     }
     assert.equal(delivered.length, previousDeliveries);
     assert.equal(lookups.length, previousLookups);
+  } finally {
+    global.fetch = fetchBefore;
+    for (const key of keys) { if (before[key] === undefined) delete process.env[key]; else process.env[key] = before[key]; }
+  }
+});
+
+test("editorial inquiry sources require the published-post registry and take precedence over Guide context", async () => {
+  const post = "a-josh-approved-post";
+  const guide = "software-data-migration";
+  const lookups = [];
+  let sourceUnavailable = false;
+  const endpoint = load("app/api/consultation/route.ts", {
+    "@/lib/consultation": schema,
+    "@/lib/leadScoring": lead,
+    "@/lib/rateLimit": { isRateLimited: async () => false },
+    "@/lib/blog": {
+      getPublishedPost: async slug => {
+        lookups.push({ kind: "post", slug });
+        if (sourceUnavailable) throw new Error("Fixture post catalog unavailable");
+        return slug === post ? { slug: post, title: "A reviewed editorial post" } : undefined;
+      },
+      getPublishedInsight: async slug => {
+        lookups.push({ kind: "guide", slug });
+        return slug === guide ? { slug: guide, title: "A product guide" } : undefined;
+      },
+    },
+  });
+  const keys = ["NODE_ENV", "CONSULTATION_WEBHOOK_URL", "RESEND_API_KEY", "CONSULTATION_TO_EMAIL"];
+  const before = Object.fromEntries(keys.map(key => [key, process.env[key]]));
+  const fetchBefore = global.fetch;
+  const delivered = [];
+  const request = body => new Request("http://localhost/api/consultation", {
+    method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body),
+  });
+  let providerStatus = 200;
+  try {
+    process.env.NODE_ENV = "production";
+    process.env.CONSULTATION_WEBHOOK_URL = "https://fixture.invalid/inquiries";
+    delete process.env.RESEND_API_KEY;
+    delete process.env.CONSULTATION_TO_EMAIL;
+    global.fetch = async (url, options) => {
+      assert.equal(url, "https://fixture.invalid/inquiries");
+      delivered.push(JSON.parse(options.body));
+      return new Response("{}", { status: providerStatus });
+    };
+    assert.equal((await endpoint.POST(request({ ...valid, sourcePost: post }))).status, 200);
+    assert.equal(delivered.at(-1).sourcePost, post);
+    assert.equal(Object.hasOwn(delivered.at(-1), "sourceArticle"), false);
+    for (const sourcePost of ["unpublished-post", guide]) {
+      assert.equal((await endpoint.POST(request({ ...valid, sourcePost }))).status, 200);
+      assert.equal(Object.hasOwn(delivered.at(-1), "sourcePost"), false, "Guides cannot approve an editorial Blog source");
+      assert.equal(Object.hasOwn(delivered.at(-1), "sourceArticle"), false);
+    }
+    assert.equal(lookups.some(lookup => lookup.kind === "guide"), false);
+    assert.equal((await endpoint.POST(request({ ...valid, sourcePost: post, sourceArticle: guide }))).status, 200);
+    assert.equal(delivered.at(-1).sourcePost, post);
+    assert.equal(Object.hasOwn(delivered.at(-1), "sourceArticle"), false);
+    assert.equal(lookups.some(lookup => lookup.kind === "guide"), false, "A valid post overrides Guide context without a second lookup");
+    assert.equal((await endpoint.POST(request({ ...valid, sourcePost: "unpublished-post", sourceArticle: guide }))).status, 200);
+    assert.equal(delivered.at(-1).sourceArticle, guide);
+    assert.equal(Object.hasOwn(delivered.at(-1), "sourcePost"), false);
+    sourceUnavailable = true;
+    assert.equal((await endpoint.POST(request({ ...valid, sourcePost: post }))).status, 200);
+    assert.equal(Object.hasOwn(delivered.at(-1), "sourcePost"), false, "Source lookup failures must not lose a valid inquiry");
+    sourceUnavailable = false;
+    const deliveriesBeforeValidation = delivered.length;
+    const lookupsBeforeValidation = lookups.length;
+    for (const sourcePost of ["person@example.test", "private/person", "a".repeat(101)]) {
+      assert.equal((await endpoint.POST(request({ ...valid, sourcePost }))).status, 400);
+    }
+    assert.equal(delivered.length, deliveriesBeforeValidation);
+    assert.equal(lookups.length, lookupsBeforeValidation);
+    providerStatus = 500;
+    const failed = await endpoint.POST(request({ ...valid, sourcePost: post }));
+    assert.equal(failed.status, 502);
+    assert.equal((await failed.json()).ok, false);
+    assert.equal(delivered.at(-1).sourcePost, post);
+    const lookupsBeforeLegacy = lookups.length;
+    providerStatus = 200;
+    assert.equal((await endpoint.POST(request(valid))).status, 200);
+    assert.equal(lookups.length, lookupsBeforeLegacy);
+    assert.equal(Object.hasOwn(delivered.at(-1), "sourcePost"), false);
   } finally {
     global.fetch = fetchBefore;
     for (const key of keys) { if (before[key] === undefined) delete process.env[key]; else process.env[key] = before[key]; }
@@ -431,6 +513,12 @@ test("email draft fallback preserves context and excludes calculation figures wi
   assert.match(draft.href, /^mailto:daniel@mycatalystinnovations.com/);
   assert.match(decodeURIComponent(draft.href), /Example & Co/);
   assert.match(draft.body, /Demo: flooring/);
+  const guideDraft = inquiryEmailDraft(data, { article: "software-data-migration" });
+  assert.match(guideDraft.body, /Guide: software-data-migration/);
+  assert.doesNotMatch(guideDraft.body, /Blog post:/);
+  const postDraft = inquiryEmailDraft(data, { post: "a-josh-approved-post" });
+  assert.match(postDraft.body, /Blog post: a-josh-approved-post/);
+  assert.doesNotMatch(postDraft.body, /Guide:/);
   assert.doesNotMatch(draft.body, /Calculation shared/);
   const long = inquiryEmailDraft(
     { ...data, challenge: "x".repeat(3000) },

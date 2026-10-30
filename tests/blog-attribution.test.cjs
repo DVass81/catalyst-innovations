@@ -58,6 +58,53 @@ test("campaign parsing requires one published article matching its actual landin
   assert.equal(attribution.parseBlogCampaign(query, route, []), null);
 });
 
+test("Blog share links and campaigns cannot be confused with Guides even when slugs match", () => {
+  const postUrl = "https://mycatalystinnovations.com/blog/shared-topic";
+  const guideUrl = "https://mycatalystinnovations.com/insights/shared-topic";
+  const guideIds = ["shared-topic"];
+  const postIds = ["shared-topic"];
+  const blogLink = attribution.articleCampaignUrl(`${postUrl}?email=private#notes`, "shared-topic", "linkedin", "blog");
+  const guideLink = attribution.articleCampaignUrl(guideUrl, "shared-topic", "linkedin");
+  assert.deepEqual([...new URL(blogLink).searchParams], [["ci_source", "linkedin"], ["ci_post", "shared-topic"]]);
+  assert.deepEqual([...new URL(guideLink).searchParams], [["ci_source", "linkedin"], ["ci_article", "shared-topic"]]);
+  assert.equal(attribution.articleCampaignUrl(postUrl, "shared-topic", "linkedin"), null);
+  assert.equal(attribution.articleCampaignUrl(guideUrl, "shared-topic", "linkedin", "blog"), null);
+  assert.equal(attribution.articleCampaignUrl(postUrl, "shared-topic", "linkedin", "unknown"), null);
+  const blogQuery = new URL(blogLink).search;
+  assert.deepEqual(attribution.parseBlogCampaign(blogQuery, "/blog/shared-topic", guideIds, postIds), { post: "shared-topic", channel: "linkedin" });
+  assert.equal(attribution.parseBlogCampaign(blogQuery, "/blog/shared-topic", guideIds), null, "No Blog post is approved by default");
+  assert.equal(attribution.parseBlogCampaign(blogQuery, "/insights/shared-topic", guideIds, postIds), null);
+  assert.equal(attribution.parseBlogCampaign(new URL(guideLink).search, "/blog/shared-topic", guideIds, postIds), null);
+  for (const query of [
+    "?ci_source=linkedin&ci_article=shared-topic&ci_post=shared-topic",
+    "?ci_source=linkedin&ci_post=shared-topic&ci_post=shared-topic",
+    "?ci_source=linkedin&ci_post=unpublished",
+    "?ci_source=linkedin&ci_post=person%40example.test",
+  ]) assert.equal(attribution.parseBlogCampaign(query, "/blog/shared-topic", guideIds, postIds), null);
+});
+
+test("consented Blog campaign storage keeps post labels separate, revalidates publication and clears on withdrawal", () => {
+  const stored = new Map();
+  const storage = { getItem: key => stored.get(key) ?? null, setItem: (key, value) => stored.set(key, value), removeItem: key => stored.delete(key) };
+  let storageAccesses = 0;
+  const create = posts => attribution.createBlogCampaignSession(["shared-topic"], () => { storageAccesses++; return storage; }, posts);
+  const session = create(["shared-topic"]);
+  const query = "?ci_source=email&ci_post=shared-topic&email=private@example.test";
+  session.capture(query, "/blog/shared-topic");
+  assert.equal(storageAccesses, 0);
+  session.activate(query, "/blog/shared-topic");
+  assert.deepEqual(session.properties(), { campaign_post: "shared-topic", campaign_channel: "email" });
+  assert.deepEqual(JSON.parse(stored.get(attribution.blogCampaignStorageKey)), { post: "shared-topic", channel: "email" });
+  const unpublished = create([]);
+  unpublished.activate("", "/consultation");
+  assert.deepEqual(unpublished.properties(), {}, "A previously stored Blog ID cannot fall back to the Guide namespace");
+  session.capture("?ci_source=linkedin&ci_article=shared-topic", "/insights/shared-topic");
+  assert.deepEqual(session.properties(), { campaign_article: "shared-topic", campaign_channel: "linkedin" });
+  session.withdraw();
+  assert.equal(stored.size, 0);
+  assert.deepEqual(session.properties(), {});
+});
+
 function storageFixture() {
   const stored = new Map();
   const operations = [];
@@ -149,6 +196,33 @@ test("sharing exposes copy, LinkedIn and email draft actions without auto-publis
   assert.match(html, /role="status"/);
   assert.doesNotMatch(html, /private|<script|<iframe|<img|<video/);
   assert.equal(renderToStaticMarkup(React.createElement(ArticleShare, { slug: "private/person", title: "Hidden", url: canonical })), "");
+});
+
+test("the Blog share component uses the editorial address and event without changing Guide sharing", async t => {
+  const post = "editorial-post";
+  const postUrl = `https://mycatalystinnovations.com/blog/${post}`;
+  const props = { slug: post, title: "An editorial article", url: postUrl, kind: "blog" };
+  const mocks = { "@/lib/blog-attribution": attribution, "@/lib/site": { track: () => {} }, "./ArticleShare.module.css": { default: {} } };
+  const ArticleShare = load("components/ArticleShare.tsx", mocks).default;
+  const html = renderToStaticMarkup(React.createElement(ArticleShare, props));
+  assert.match(html, /Share the article/);
+  const linkedIn = html.match(/href="(https:\/\/www\.linkedin\.com[^\"]+)"/)[1].replaceAll("&amp;", "&");
+  const shared = new URL(new URL(linkedIn).searchParams.get("url"));
+  assert.equal(shared.pathname, `/blog/${post}`);
+  assert.equal(shared.searchParams.get("ci_post"), post);
+  assert.equal(shared.searchParams.has("ci_article"), false);
+  assert.equal(renderToStaticMarkup(React.createElement(ArticleShare, { ...props, url: canonical })), "", "Mismatched namespaces must not offer share actions");
+  const navigatorDescriptor = Object.getOwnPropertyDescriptor(globalThis, "navigator");
+  t.after(() => { if (navigatorDescriptor) Object.defineProperty(globalThis, "navigator", navigatorDescriptor); else delete globalThis.navigator; });
+  const events = [];
+  const copied = [];
+  Object.defineProperty(globalThis, "navigator", { configurable: true, value: { clipboard: { writeText: async value => copied.push(value) } } });
+  const InteractiveShare = load("components/ArticleShare.tsx", { ...mocks, react: { useState: initial => [initial, () => {}] }, "@/lib/site": { track: (name, values) => events.push({ name, values }) } }).default;
+  function descendants(element) { return React.isValidElement(element) ? [element, ...React.Children.toArray(element.props.children).flatMap(descendants)] : []; }
+  const button = descendants(InteractiveShare(props)).find(element => element.type === "button");
+  await button.props.onClick();
+  assert.equal(new URL(copied[0]).searchParams.get("ci_post"), post);
+  assert.deepEqual(events, [{ name: "blog_post_share", values: { post, channel: "copy" } }]);
 });
 
 test("copy records success only after the clipboard works and provides a safe fallback on failure", async t => {
