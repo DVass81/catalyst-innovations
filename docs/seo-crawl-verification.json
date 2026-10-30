@@ -1,7 +1,7 @@
 {
-  "startedAt": "2026-10-30T19:33:04.978Z",
-  "completedAt": "2026-10-30T19:33:06.446Z",
-  "baseUrl": "http://127.0.0.1:3131",
+  "startedAt": "2026-10-30T21:33:36.068Z",
+  "completedAt": "2026-10-30T21:33:37.619Z",
+  "baseUrl": "http://127.0.0.1:3132",
   "scope": "Local production build; no browser execution or external requests. Canonical/social URLs checked against the sitemap. Images and demo media checked through the local origin.",
   "passed": true,
   "totalPages": 78,
@@ -10,6 +10,12 @@
   "duplicateDescriptions": [],
   "images": [
     {
+      "path": "/insights/manufacturing-spreadsheets/opengraph-image",
+      "status": 200,
+      "contentType": "image/png",
+      "passed": true
+    },
+    {
       "path": "/opengraph-image",
       "status": 200,
       "contentType": "image/png",
@@ -17,18 +23,6 @@
     },
     {
       "path": "/insights/estimate-to-invoice-field-office/opengraph-image",
-      "status": 200,
-      "contentType": "image/png",
-      "passed": true
-    },
-    {
-      "path": "/insights/manufacturing-spreadsheets/opengraph-image",
-      "status": 200,
-      "contentType": "image/png",
-      "passed": true
-    },
-    {
-      "path": "/insights/software-data-migration/opengraph-image",
       "status": 200,
       "contentType": "image/png",
       "passed": true
@@ -46,13 +40,19 @@
       "passed": true
     },
     {
-      "path": "/insights/hoa-maintenance-requests/opengraph-image",
+      "path": "/insights/custom-software-vs-off-the-shelf/opengraph-image",
       "status": 200,
       "contentType": "image/png",
       "passed": true
     },
     {
-      "path": "/insights/custom-software-vs-off-the-shelf/opengraph-image",
+      "path": "/insights/software-data-migration/opengraph-image",
+      "status": 200,
+      "contentType": "image/png",
+      "passed": true
+    },
+    {
+      "path": "/insights/hoa-maintenance-requests/opengraph-image",
       "status": 200,
       "contentType": "image/png",
       "passed": true
@@ -76,19 +76,7 @@
       "passed": true
     },
     {
-      "path": "/solutions/manufacturing-operations/opengraph-image",
-      "status": 200,
-      "contentType": "image/png",
-      "passed": true
-    },
-    {
       "path": "/solutions/procurement/opengraph-image",
-      "status": 200,
-      "contentType": "image/png",
-      "passed": true
-    },
-    {
-      "path": "/solutions/process-automation/opengraph-image",
       "status": 200,
       "contentType": "image/png",
       "passed": true
@@ -100,13 +88,25 @@
       "passed": true
     },
     {
-      "path": "/solutions/integrations-consulting/opengraph-image",
+      "path": "/solutions/manufacturing-operations/opengraph-image",
+      "status": 200,
+      "contentType": "image/png",
+      "passed": true
+    },
+    {
+      "path": "/solutions/process-automation/opengraph-image",
       "status": 200,
       "contentType": "image/png",
       "passed": true
     },
     {
       "path": "/solutions/data-intelligence/opengraph-image",
+      "status": 200,
+      "contentType": "image/png",
+      "passed": true
+    },
+    {
+      "path": "/solutions/integrations-consulting/opengraph-image",
       "status": 200,
       "contentType": "image/png",
       "passed": true
@@ -138,30 +138,6 @@
       "passed": true
     },
     {
-      "page": "/portfolio/hoa",
-      "kind": "video",
-      "asset": "/demos/hoa-walkthrough.mp4",
-      "status": 200,
-      "contentType": "video/mp4",
-      "passed": true
-    },
-    {
-      "page": "/portfolio/hoa",
-      "kind": "poster",
-      "asset": "/demos/hoa-walkthrough.webp",
-      "status": 200,
-      "contentType": "image/webp",
-      "passed": true
-    },
-    {
-      "page": "/portfolio/hoa",
-      "kind": "captions",
-      "asset": "/demos/hoa-walkthrough.vtt",
-      "status": 200,
-      "contentType": "text/vtt; charset=UTF-8",
-      "passed": true
-    },
-    {
       "page": "/portfolio/painting",
       "kind": "video",
       "asset": "/demos/painting-walkthrough.mp4",
@@ -181,6 +157,30 @@
       "page": "/portfolio/painting",
       "kind": "captions",
       "asset": "/demos/painting-walkthrough.vtt",
+      "status": 200,
+      "contentType": "text/vtt; charset=UTF-8",
+      "passed": true
+    },
+    {
+      "page": "/portfolio/hoa",
+      "kind": "video",
+      "asset": "/demos/hoa-walkthrough.mp4",
+      "status": 200,
+      "contentType": "video/mp4",
+      "passed": true
+    },
+    {
+      "page": "/portfolio/hoa",
+      "kind": "poster",
+      "asset": "/demos/hoa-walkthrough.webp",
+      "status": 200,
+      "contentType": "image/webp",
+      "passed": true
+    },
+    {
+      "page": "/portfolio/hoa",
+      "kind": "captions",
+      "asset": "/demos/hoa-walkthrough.vtt",
       "status": 200,
       "contentType": "text/vtt; charset=UTF-8",
       "passed": true
@@ -276,8 +276,8 @@
     {
       "route": "/",
       "baselineUncompressedBytes": 573048,
-      "currentUncompressedBytes": 554865,
-      "deltaBytes": -18183,
+      "currentUncompressedBytes": 533155,
+      "deltaBytes": -39893,
       "calculatorDefinitionChunks": []
     },
     {
@@ -296,7 +296,7 @@
       "description": "Custom business software and workflow automation from Knoxville, Tennessee. Connect customers, jobs, inventory and accounting around the way you work.",
       "canonical": "https://mycatalystinnovations.com",
       "h1": "Custom software. A better-running business.",
-      "mainWordCount": 1439,
+      "mainWordCount": 1423,
       "schemaTypes": [
         "Organization"
       ],
@@ -560,8 +560,8 @@
       "title": "Custom Software for Manufacturing | Catalyst Innovations",
       "description": "Production plans change before everyone gets the update. Explore custom workflows for manufacturing, practical starting points and relevant calculators.",
       "canonical": "https://mycatalystinnovations.com/industries/manufacturing",
-      "h1": "Manufacturing",
-      "mainWordCount": 389,
+      "h1": "Manufacturing A clearer view of the floor.",
+      "mainWordCount": 661,
       "schemaTypes": [
         "Organization",
         "BreadcrumbList"

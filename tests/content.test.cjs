@@ -203,10 +203,16 @@ test("the separate published blog controls post routes, evidence, related conten
 });
 
 test("industry pages retain the first three problem pairs and relevant inquiry/calculator context", async () => {
+  const media = load("data/studioMedia.ts");
+  const pilot = load("components/studio/IndustryPilot.tsx", { ...common,
+    "@/data/studioMedia": media,
+    "./IndustryPilot.module.css": { default: {} },
+  });
   const page = load("app/industries/[slug]/page.tsx", { ...common,
     "@/data/startingPoints": load("data/startingPoints.ts"),
     "@/components/IndustryProblems": load("components/IndustryProblems.tsx"),
     "@/components/SiteSections": { PageIntro: ({ title, text }) => React.createElement("header", null, React.createElement("h1", null, title), React.createElement("p", null, text)) },
+    "@/components/studio/IndustryPilot": pilot,
   });
   for (const industry of redesign.industryList) {
     const html = renderToStaticMarkup(await page.default({ params: Promise.resolve({ slug: industry.slug }) }));
@@ -215,6 +221,19 @@ test("industry pages retain the first three problem pairs and relevant inquiry/c
     assert.ok(html.includes(`/consultation?industry=${industry.slug}`));
     for (const tool of industry.tools) assert.ok(html.includes(`/tools/${tool}?industry=${industry.slug}`));
     assert.ok(html.includes(`/insights/${content.industryContent[industry.slug].guide}`));
+    if (industry.slug === "manufacturing") {
+      assert.match(html, /Representative industry photography/);
+      assert.ok(html.includes(media.studioPhotos.manufacturing.credit));
+      assert.ok(html.includes(media.studioPhotos.manufacturing.sourceUrl));
+      assert.match(html, /Illustrative workflow/);
+      assert.match(html, /not a delivered Catalyst manufacturing product/);
+      assert.ok(html.indexOf("Hold the work. Name the owner.") < html.indexOf("<h3>Production</h3>"), "the shortage exception belongs before production");
+      assert.match(html, /completion follows the required quality review/);
+      assert.ok(html.includes(content.industryContent.manufacturing.faq.answer));
+      assert.match(html, /href="https:\/\/www.nist.gov\/mep\/value-stream-mapping"/);
+    } else {
+      assert.doesNotMatch(html, /Representative industry photography|Hold the work. Name the owner./, "the pilot must not roll out to other industries");
+    }
   }
 });
 

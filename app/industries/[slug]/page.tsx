@@ -10,6 +10,7 @@ import { industryContent } from "@/data/seoContent";
 import { getInsight } from "@/data/insights";
 import { services } from "@/data/services";
 import { breadcrumbSchema, pageMetadata } from "@/lib/seo";
+import IndustryPilot from "@/components/studio/IndustryPilot";
 export const generateStaticParams = () =>
   industryList.map((i) => ({ slug: i.slug }));
 export async function generateMetadata({
@@ -30,6 +31,7 @@ export default async function IndustryPage({
   const { slug } = await params;
   const i = industryList.find((x) => x.slug === slug);
   if (!i) notFound();
+  if (i.slug === "manufacturing") return <IndustryPilot industry={i} content={industryContent[i.slug]} />;
   const demo = recommendedDemo(i.group, i.slug);
   const content = industryContent[i.slug];
   const guide = getInsight(content.guide)!;
