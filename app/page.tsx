@@ -11,6 +11,7 @@ import { DiscussCTA, SolutionCards, Projects } from "@/components/SiteSections";
 import SavingsPreview from "@/components/SavingsPreview";
 import CatalystProcess from "@/components/CatalystProcess";
 import ChamberMembership from "@/components/ChamberMembership";
+import BlogHighlights from "@/components/BlogHighlights";
 import { catalystProcess } from "@/data/catalystProcess";
 export const metadata = pageMetadata({
   path: "/",
@@ -140,6 +141,7 @@ export default function Home() {
         <SavingsPreview />
       </section>
       <FounderIntro />
+      <BlogHighlights />
       <section className="section wrap faq-section">
         <div>
           <p className="overline">A few good questions</p>

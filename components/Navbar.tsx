@@ -4,12 +4,14 @@ import { useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { Menu, X, ArrowUpRight } from "lucide-react";
 import { LogoLockup } from "./Logo";
+import styles from "./Navbar.module.css";
 export const links = [
   ["Services", "/services"],
   ["Solutions", "/solutions"],
   ["Industries", "/industries"],
   ["Discovery", "/discovery"],
   ["Savings Tools", "/tools"],
+  ["Blog", "/insights"],
   ["About", "/about"],
 ];
 export default function Navbar() {
@@ -18,7 +20,7 @@ export default function Navbar() {
   const toggle = useRef<HTMLButtonElement>(null);
   return (
     <header
-      className="site-header"
+      className={`site-header ${styles.header}`}
       onKeyDown={(e) => {
         if (e.key === "Escape" && open) {
           setOpen(false);

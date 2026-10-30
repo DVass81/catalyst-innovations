@@ -18,6 +18,7 @@ export type Insight = {
   demo?: "painting" | "flooring" | "hoa";
   related?: string[];
   sources: InsightSource[];
+  cover?: { url: string; alt: string; caption?: string };
 };
 
 const publishedAt = "2026-10-02";

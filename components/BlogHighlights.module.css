@@ -1,0 +1,15 @@
+.section { background: #f0f5f8; border-block: 1px solid #dbe3e9; }
+.heading > div:last-child { max-width: 440px; }
+.heading > div:last-child p { margin-bottom: 20px; color: #52606d; }
+.grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+.card { display: flex; flex-direction: column; gap: 22px; padding: 30px; border: 1px solid #d4dee5; border-radius: 14px; background: #fff; min-width: 0; }
+.top { display: flex; justify-content: space-between; align-items: flex-start; gap: 14px; }
+.top p { margin-bottom: 0; }
+.top > span { color: #8198ae; font-size: 12px; }
+.card h3 { font-size: 24px; line-height: 1.3; letter-spacing: -.025em; }
+.card h3 a { color: #0a1628; }
+.card h3 a:hover { color: #2f5d8f; }
+.card > p { color: #52606d; font-size: 14px; line-height: 1.8; }
+.bottom { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding-top: 10px; margin-top: auto; font-size: 12px; color: #52606d; }
+.card a:focus-visible { outline: 3px solid #2f5d8f; outline-offset: 4px; border-radius: 3px; }
+@media (max-width: 950px) { .grid { grid-template-columns: 1fr; } .card { padding: 26px; } }

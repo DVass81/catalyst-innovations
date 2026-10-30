@@ -127,3 +127,49 @@ test("validation failure and email draft preparation never complete an inquiry",
   assert.deepEqual(fixture.events.map((event) => event.name), ["inquiry_draft_created"]);
   assert.equal(fixture.requests.length, 0);
 });
+
+test("a published guide stays attached to the inquiry request and one accepted lead event", async t => {
+  const article = "a-new-published-guide";
+  const fixture = mount(t, { article, articleTitle: "A useful business guide" });
+  const tree = fixture.render();
+  const form = find(tree, element => element.type === "form");
+  form.props.onFocusCapture();
+  form.props.onFocusCapture();
+  await fixture.submit(tree);
+  await fixture.submit(tree);
+  assert.equal(fixture.requests.length, 1);
+  const request = JSON.parse(fixture.requests[0].options.body);
+  assert.equal(fixture.requests[0].url, "/api/consultation");
+  assert.equal(request.sourceArticle, article);
+  assert.equal(request.name, "QA Example");
+  assert.equal(request.company, "Fictional QA");
+  assert.equal(Object.hasOwn(request, "articleTitle"), false);
+  assert.deepEqual(fixture.events, [
+    { name: "form_start", context: { article } },
+    { name: "form_complete", context: { source: "inquiry", article } },
+  ]);
+  assert.doesNotMatch(JSON.stringify(fixture.events), /QA Example|qa@example|Fictional QA|useful business guide/);
+});
+
+test("a failed guide inquiry retains context for retry and does not create a lead", async t => {
+  const article = "a-new-published-guide";
+  const fixture = mount(t, { article, articleTitle: "A useful business guide" });
+  fixture.deliver(async () => new Response('{"ok":false,"error":"Provider unavailable"}', { status: 502 }));
+  await fixture.submit(fixture.render());
+  assert.ok(find(fixture.render(), element => element.type === "form"));
+  assert.deepEqual(fixture.events, [{ name: "form_error", context: { source: "inquiry", article } }]);
+  assert.equal(JSON.parse(fixture.requests[0].options.body).sourceArticle, article);
+  fixture.deliver(async () => new Response('{"ok":true}', { status: 200 }));
+  await fixture.submit(fixture.render());
+  assert.equal(JSON.parse(fixture.requests[1].options.body).sourceArticle, article);
+  assert.equal(fixture.events.filter(event => event.name === "form_complete").length, 1);
+  assert.deepEqual(fixture.events.at(-1), { name: "form_complete", context: { source: "inquiry", article } });
+});
+
+test("guide context on an email draft remains a draft action rather than a delivered lead", async t => {
+  const article = "a-new-published-guide";
+  const fixture = mount(t, { article, deliveryConfigured: false });
+  await fixture.submit(fixture.render());
+  assert.equal(fixture.requests.length, 0);
+  assert.deepEqual(fixture.events, [{ name: "inquiry_draft_created", context: { source: "inquiry", article } }]);
+});

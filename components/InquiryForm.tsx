@@ -23,10 +23,14 @@ export default function InquiryForm({
   attach = false,
   demo,
   problem,
+  article,
+  articleTitle,
   deliveryConfigured = true,
 }: {
   deliveryConfigured?: boolean;
   problem?: string;
+  article?: string;
+  articleTitle?: string;
   industry?: string;
   tool?: string;
   attach?: boolean;
@@ -92,11 +96,12 @@ export default function InquiryForm({
         inquiryEmailDraft(parsed.data, {
           tool,
           demo,
+          article,
           summary: include ? attachment : undefined,
         }),
       );
       setCopyMessage("");
-      track("inquiry_draft_created", { source: tool ? "calculator" : demo ? "demo" : "inquiry" });
+      track("inquiry_draft_created", { source: tool ? "calculator" : demo ? "demo" : "inquiry", ...(article ? { article } : {}) });
       setPending(false);
       submissionState.current = "idle";
       requestAnimationFrame(() => draftHeading.current?.focus());
@@ -111,6 +116,7 @@ export default function InquiryForm({
           inquiryType: "Request a consultation",
           sourceTool: tool,
           sourceDemo: demo,
+          sourceArticle: article,
           struggleCategories: form.getAll("struggleCategories"),
           calculatorSummary: include ? attachment : undefined,
         }),
@@ -141,7 +147,7 @@ export default function InquiryForm({
       submissionState.current = "done";
       // Honeypot responses deliberately look successful without delivering a lead.
       if (!String(form.get("website") ?? "")) {
-        track("form_complete", { source: tool ? "calculator" : "inquiry" });
+        track("form_complete", { source: tool ? "calculator" : "inquiry", ...(article ? { article } : {}) });
       }
       if (include) {
         try {
@@ -151,6 +157,7 @@ export default function InquiryForm({
     } catch (err) {
       track("form_error", {
         source: tool ? "calculator" : demo ? "demo" : "inquiry",
+        ...(article ? { article } : {}),
       });
       requestAnimationFrame(() => errorRef.current?.focus());
       setError(
@@ -237,11 +244,12 @@ export default function InquiryForm({
       }}
       onFocusCapture={() => {
         if (!started.current) {
-          track("form_start");
+          track("form_start", article ? { article } : undefined);
           started.current = true;
         }
       }}
     >
+      {article && articleTitle && <p className="inquiry-context">Related guide: <Link href={`/insights/${article}`}>{articleTitle}</Link></p>}
       {!deliveryConfigured && (
         <p className="inquiry-context">
           Tell us a little about your business, then send the prepared inquiry
@@ -473,7 +481,7 @@ export default function InquiryForm({
               onClick={async () => {
                 try {
                   await navigator.clipboard.writeText(emailDraft.body);
-                  track("inquiry_draft_copied", { source: "inquiry_draft" });
+                  track("inquiry_draft_copied", { source: "inquiry_draft", ...(article ? { article } : {}) });
                   setCopyMessage(
                     "Copied. Paste these details into your email.",
                   );
@@ -489,7 +497,7 @@ export default function InquiryForm({
             <a
               className="button"
               href={emailDraft.href}
-              onClick={() => track("inquiry_email_opened", { source: "inquiry_draft" })}
+              onClick={() => track("inquiry_email_opened", { source: "inquiry_draft", ...(article ? { article } : {}) })}
             >
               Open email app ↗
             </a>

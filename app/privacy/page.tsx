@@ -57,6 +57,16 @@ export default function PrivacyPage() {
           Basic analytics denies Google advertising storage, advertising user data,
           ad personalization and Google signals.
         </p>
+        <p>
+          After analytics consent, a shared article link can also supply a reviewed
+          article identifier and a predefined sharing label such as LinkedIn or email.
+          These two labels stay in this browser tab’s session storage and can accompany
+          later site actions. They describe the link’s sharing label, rather than proving
+          which platform sent a visitor. Search terms, arbitrary link parameters and
+          questionnaire answers are excluded. Withdrawing consent clears these labels.
+          If you open an inquiry from an article, its public identifier can accompany
+          the inquiry so we know which guide you were reading.
+        </p>
         <h2>Optional ad-result measurement</h2>
         <p>
           If you separately choose “Measure ad results,” we allow Google advertising

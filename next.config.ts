@@ -14,7 +14,7 @@ const securityHeaders = [
       // plausible.io / googletagmanager only load if the analytics env vars are set.
       `script-src 'self' 'unsafe-inline' https://plausible.io https://www.googletagmanager.com${process.env.NODE_ENV === "development" ? " 'unsafe-eval'" : ""}`,
       "style-src 'self' 'unsafe-inline'",
-      "img-src 'self' data: blob:",
+      "img-src 'self' data: blob: https://cdn.sanity.io",
       "font-src 'self' data:",
       // The linked GA4 tag uses these collect endpoints after explicit ad-result
       // consent. Permit only the observed paths, not entire additional hosts.
@@ -42,6 +42,7 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
+      { source: "/blog", destination: "/insights", permanent: true },
       { source: "/pricing", destination: "/discovery", permanent: true },
       { source: "/founders", destination: "/about#our-background", permanent: true },
       { source: "/demo-lab", destination: "/portfolio", permanent: true },

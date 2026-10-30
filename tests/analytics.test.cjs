@@ -81,14 +81,14 @@ test("acquisition labels only recognized search hosts and never exposes a referr
   }
 });
 
-function sessionFixture() {
+function sessionFixture(options) {
   const calls = { starts: [], pages: [], sends: [], stops: 0 };
   return {
     calls,
     session: analytics.createAnalyticsSession({
       start: (route) => calls.starts.push(route), page: (route) => calls.pages.push(route),
       send: (event) => calls.sends.push(event), stop: () => calls.stops++,
-    }),
+    }, options),
   };
 }
 
@@ -118,6 +118,61 @@ test("consent transitions drop pre-consent interactions and emit one view per ac
   session.consent("granted");
   assert.deepEqual(calls.sends.at(-1), { name: "page_view", path: "/contact", props: {} });
   assert.equal(calls.starts.length, 2);
+});
+
+test("published CMS articles use an explicit registry rather than opening arbitrary insight routes", () => {
+  const published = ["future-published-guide"];
+  const route = "/insights/future-published-guide";
+  assert.equal(analytics.analyticsPath(route), null);
+  assert.equal(analytics.analyticsPath(`${route}?email=private#notes`, published), route);
+  assert.equal(analytics.analyticsPath("/insights/software-data-migration", published), null, "Removed articles must not remain approved through the static registry");
+  for (const slug of ["private/person", "person@example.test", "../account", "Private", "bad%2Fpath", "a".repeat(101)]) {
+    assert.equal(analytics.reviewedAnalyticsArticle(slug, [slug]), null);
+    assert.equal(analytics.analyticsPath(`/insights/${slug}`, [slug]), null);
+  }
+  assert.deepEqual(analytics.sanitizeAnalyticsEvent("form_complete", {
+    article: "future-published-guide", source: "inquiry", email: "private@example.test", revenue: 1234,
+  }, published), { name: "form_complete", props: { source: "inquiry", article: "future-published-guide" } });
+  assert.deepEqual(analytics.sanitizeAnalyticsEvent("article_share", {
+    article: "future-published-guide", channel: "linkedin", message: "Private notes", recipient: "private@example.test",
+  }, published), { name: "article_share", props: { article: "future-published-guide", channel: "linkedin" } });
+  assert.deepEqual(analytics.sanitizeAnalyticsEvent("article_share", { article: "unpublished", channel: "private@example.test" }, published).props, {});
+  assert.deepEqual(analytics.analyticsPageFields("https://site.example", route, published), {
+    page_location: `https://site.example${route}`, page_title: route, page_referrer: "",
+  });
+  assert.equal(analytics.adMeasurementPageFields("https://site.example", route,
+    "?ci_source=linkedin&ci_article=future-published-guide&email=private&gclid=EAIaIQobChMI12345678", published).page_location,
+  `https://site.example${route}?gclid=EAIaIQobChMI12345678`);
+});
+
+test("article-to-inquiry context begins after consent, survives navigation, and clears on withdrawal", () => {
+  const published = ["future-published-guide"];
+  const { calls, session } = sessionFixture({ articleIds: published });
+  session.navigate("/insights/future-published-guide");
+  session.track("article_share", { article: published[0], channel: "copy" });
+  session.navigate("/consultation");
+  session.consent("granted");
+  session.track("form_start", { source: "inquiry" });
+  assert.deepEqual(calls.sends.at(-1).props, { source: "inquiry" }, "Pre-consent article history must not be replayed");
+  session.navigate("/insights/future-published-guide");
+  session.navigate("/insights/future-published-guide?ci_source=linkedin#copy");
+  assert.equal(calls.sends.filter(event => event.path === "/insights/future-published-guide").length, 1);
+  assert.deepEqual(calls.sends.at(-1).props, { article: published[0] });
+  session.navigate("/consultation");
+  session.track("form_complete", { source: "inquiry", name: "Private", amount: 999 });
+  assert.deepEqual(calls.sends.at(-1).props, { source: "inquiry", article: published[0] });
+  session.consent("denied");
+  const total = calls.sends.length;
+  session.track("article_share", { article: published[0], channel: "copy" });
+  assert.equal(calls.sends.length, total);
+  session.consent("granted");
+  session.track("form_start", { source: "inquiry" });
+  assert.deepEqual(calls.sends.at(-1).props, { source: "inquiry" });
+  session.navigate("/insights/future-published-guide");
+  session.navigate("/private/account");
+  session.navigate("/consultation");
+  session.track("form_start", { source: "inquiry" });
+  assert.deepEqual(calls.sends.at(-1).props, { source: "inquiry" });
 });
 
 test("ad measurement is distinct from old analytics grants and a mode switch stops before any more events", () => {
@@ -266,6 +321,30 @@ test("browser transport stays silent until consent and sends explicitly sanitize
     assert.equal(JSON.parse(request.options.body).props.entry_source, "google");
   }
   assert.equal(analytics.saveAnalyticsConsent("denied"), true);
+  session.consent("denied");
+});
+
+test("the browser transport reports a future published article without promoting campaign labels into ad consent", (t) => {
+  const fixture = browserFixture(t);
+  const articleIds = ["future-published-guide"];
+  const route = "/insights/future-published-guide";
+  fixture.window.location.pathname = route;
+  fixture.window.location.search = "?ci_source=linkedin&ci_article=future-published-guide&gclid=EAIaIQobChMI12345678&email=private";
+  const session = analytics.createAnalyticsSession(analytics.createBrowserAnalyticsTransport({ gaId: "G-TEST123", plausibleDomain: "site.example" }, articleIds), { articleIds });
+  session.navigate(route);
+  session.consent("granted");
+  session.track("article_share", { article: articleIds[0], channel: "copy", email: "private@example.test" });
+  const consent = fixture.window.dataLayer.find(entry => entry[0] === "consent")[2];
+  assert.equal(consent.ad_storage, "denied");
+  assert.equal(consent.ad_user_data, "denied");
+  const events = fixture.window.dataLayer.filter(entry => entry[0] === "event");
+  assert.deepEqual(events.map(entry => entry[1]), ["page_view", "article_share"]);
+  for (const event of events) {
+    assert.equal(event[2].page_location, `https://site.example${route}`);
+    assert.equal(event[2].article, articleIds[0]);
+    assert.doesNotMatch(JSON.stringify(event), /private|gclid|ci_source|ci_article/);
+  }
+  for (const request of fixture.requests) assert.equal(JSON.parse(request.options.body).url, `https://site.example${route}`);
   session.consent("denied");
 });
 
