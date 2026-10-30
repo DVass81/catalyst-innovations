@@ -7,6 +7,7 @@ import { PageIntro } from "@/components/SiteSections";
 import InquiryForm from "@/components/InquiryForm";
 import { industryList } from "@/data/redesign";
 import { getCalculator } from "@/lib/calculators";
+import { getPublishedInsight } from "@/lib/blog";
 export const metadata = pageMetadata({
   path: "/consultation",
   title: "Discuss My Business",
@@ -24,11 +25,13 @@ export default async function Consultation({
     attach?: string;
     ind?: string;
     rec?: string;
+    article?: string;
   }>;
 }) {
   const q = await searchParams;
   const industry = industryList.find((i) => i.slug === (q.industry ?? q.ind));
   const tool = q.tool ? getCalculator(q.tool) : undefined;
+  const article = typeof q.article === "string" ? await getPublishedInsight(q.article).catch(() => undefined) : undefined;
   return (
     <>
       <PageIntro
@@ -45,6 +48,8 @@ export default async function Consultation({
           industry={industry?.name ?? ""}
           problem={startingPoints.find((p) => p.id === q.problem)?.id}
           tool={tool?.slug}
+          article={article?.slug}
+          articleTitle={article?.title}
           demo={
             q.demo === "hoa" || q.demo === "flooring" || q.demo === "painting"
               ? q.demo

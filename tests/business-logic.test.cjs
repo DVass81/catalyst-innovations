@@ -232,6 +232,7 @@ const { POST } = load("app/api/consultation/route.ts", {
   "@/lib/consultation": schema,
   "@/lib/leadScoring": lead,
   "@/lib/rateLimit": { isRateLimited: async () => false },
+  "@/lib/blog": { getPublishedInsight: async () => undefined },
 });
 test("delivery is truthful and provider requests can be mocked without sending", async () => {
   const keys = [
@@ -317,6 +318,63 @@ test("delivery is truthful and provider requests can be mocked without sending",
       if (before[k] === undefined) delete process.env[k];
       else process.env[k] = before[k];
     }
+  }
+});
+
+test("optional inquiry article context preserves published sources and removes unknown or unavailable sources", async () => {
+  const article = "a-new-published-guide";
+  let sourceUnavailable = false;
+  const lookups = [];
+  const endpoint = load("app/api/consultation/route.ts", {
+    "@/lib/consultation": schema,
+    "@/lib/leadScoring": lead,
+    "@/lib/rateLimit": { isRateLimited: async () => false },
+    "@/lib/blog": { getPublishedInsight: async slug => {
+      lookups.push(slug);
+      if (sourceUnavailable) throw new Error("Fixture published catalog unavailable");
+      return slug === article ? { slug: article, title: "A published guide" } : undefined;
+    } },
+  });
+  const keys = ["NODE_ENV", "CONSULTATION_WEBHOOK_URL", "RESEND_API_KEY", "CONSULTATION_TO_EMAIL"];
+  const before = Object.fromEntries(keys.map(key => [key, process.env[key]]));
+  const fetchBefore = global.fetch;
+  const delivered = [];
+  const request = body => new Request("http://localhost/api/consultation", {
+    method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body),
+  });
+  try {
+    process.env.NODE_ENV = "production";
+    process.env.CONSULTATION_WEBHOOK_URL = "https://fixture.invalid/inquiries";
+    delete process.env.RESEND_API_KEY;
+    delete process.env.CONSULTATION_TO_EMAIL;
+    global.fetch = async (url, options) => {
+      assert.equal(url, "https://fixture.invalid/inquiries");
+      delivered.push(JSON.parse(options.body));
+      return new Response("{}", { status: 200 });
+    };
+    assert.equal((await endpoint.POST(request({ ...valid, sourceArticle: article }))).status, 200);
+    assert.equal(delivered.at(-1).sourceArticle, article);
+    assert.equal(delivered.at(-1).source, "catalyst-innovations-website");
+    assert.equal((await endpoint.POST(request({ ...valid, sourceArticle: "unpublished-private-guide" }))).status, 200);
+    assert.equal(Object.hasOwn(delivered.at(-1), "sourceArticle"), false);
+    sourceUnavailable = true;
+    assert.equal((await endpoint.POST(request({ ...valid, sourceArticle: article }))).status, 200);
+    assert.equal(Object.hasOwn(delivered.at(-1), "sourceArticle"), false, "An optional catalog outage must not prevent valid inquiry delivery");
+    const previousLookups = lookups.length;
+    for (const body of [valid, { ...valid, inquiryType: "Request a consultation", companySize: "11–50", timeline: "1–3 months", contactMethod: "Email" }]) {
+      assert.equal((await endpoint.POST(request(body))).status, 200);
+      assert.equal(Object.hasOwn(delivered.at(-1), "sourceArticle"), false);
+    }
+    assert.equal(lookups.length, previousLookups, "Older submissions must not depend on a catalog lookup");
+    const previousDeliveries = delivered.length;
+    for (const invalid of ["person@example.test", "private/person", "a".repeat(101)]) {
+      assert.equal((await endpoint.POST(request({ ...valid, sourceArticle: invalid }))).status, 400);
+    }
+    assert.equal(delivered.length, previousDeliveries);
+    assert.equal(lookups.length, previousLookups);
+  } finally {
+    global.fetch = fetchBefore;
+    for (const key of keys) { if (before[key] === undefined) delete process.env[key]; else process.env[key] = before[key]; }
   }
 });
 

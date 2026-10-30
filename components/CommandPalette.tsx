@@ -21,6 +21,7 @@ const staticPages: Item[] = [
   { group: "Pages", title: "Request a Consultation", subtitle: "Start a conversation", href: "/consultation", icon: "ShoppingCart" },
   { group: "Pages", title: "ROI Estimator", subtitle: "Calculator plus a short assessment", href: "/roi-estimator", icon: "BarChart3" },
   { group: "Pages", title: "Discovery", subtitle: "Discovery call and a custom quote", href: "/discovery", icon: "PiggyBank" },
+  { group: "Pages", title: "Blog & Guides", subtitle: "Practical ideas for better business software", href: "/insights", icon: "BookOpen" },
 ];
 
 function buildIndex(): Item[] {

@@ -3,11 +3,14 @@ import { site } from "@/lib/site";
 import { services } from "@/data/services";
 import { calculators } from "@/lib/calculators";
 import { industryList } from "@/data/redesign";
-import { insights } from "@/data/insights";
+import { getPublishedInsights } from "@/lib/blog";
 import { demos } from "@/data/demos";
 import { calculatorContent } from "@/data/seoContent";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export const revalidate = 300;
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const insights = await getPublishedInsights();
   const staticRoutes = [
     "",
     "/services",

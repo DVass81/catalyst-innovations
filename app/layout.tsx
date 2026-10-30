@@ -14,6 +14,7 @@ import SectionMotion from "@/components/SectionMotion";
 import { site } from "@/lib/site";
 import { pageMetadata } from "@/lib/seo";
 import { activeFounders } from "@/data/content";
+import { getPublishedInsights } from "@/lib/blog";
 
 export const metadata: Metadata = {
   ...pageMetadata({
@@ -22,6 +23,10 @@ export const metadata: Metadata = {
     path: "/",
   }),
   metadataBase: new URL(site.url),
+  alternates: {
+    canonical: site.url,
+    types: { "application/rss+xml": new URL("/feed.xml", site.url).toString() },
+  },
   title: {
     default: "Catalyst Innovations — Custom software. A better-running business.",
     template: "%s | Catalyst Innovations",
@@ -67,9 +72,11 @@ const orgSchema = {
   ],
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  // A publishing-service interruption must not take down the rest of the site.
+  const articleIds = await getPublishedInsights().then(articles => articles.map(article => article.slug)).catch(() => []);
   return (
     <html
       lang="en"
@@ -88,7 +95,7 @@ export default function RootLayout({
         </Suspense>
         <ErrorMonitoring>
           <Navbar />
-          <Analytics />
+          <Analytics articleIds={articleIds} />
           <main id="main" className="flex-1">
             {children}
           </main>

@@ -4,25 +4,39 @@ import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 import {
   configuredAnalytics, consentChangeEvent, createAnalyticsSession,
-  createBrowserAnalyticsTransport, getAnalyticsConsent, parseAnalyticsConsent,
+  createBrowserAnalyticsTransport, getAnalyticsConsent, parseAnalyticsConsent, analyticsArticleIds,
 } from "@/lib/analytics";
+import { createBlogCampaignSession } from "@/lib/blog-attribution";
 import { AnalyticsConsentNotice } from "./AnalyticsPreferences";
 
 let session: ReturnType<typeof createAnalyticsSession> | undefined;
 
-function getSession() {
+function getSession(articleIds: readonly string[]) {
   if (session) return session;
   const providers = configuredAnalytics();
   if (!providers.gaId && !providers.plausibleDomain) return undefined;
-  session = createAnalyticsSession(createBrowserAnalyticsTransport(providers));
+  const campaign = createBlogCampaignSession(articleIds, () => window.sessionStorage);
+  const transport = createBrowserAnalyticsTransport(providers, articleIds);
+  session = createAnalyticsSession({
+    start(path, ads) { campaign.activate(window.location.search, path); transport.start(path, ads); },
+    page(path) { campaign.capture(window.location.search, path); transport.page(path); },
+    send(payload) { transport.send({ ...payload, props: { ...campaign.properties(), ...payload.props } }); },
+    stop(reloadForModeChange) { campaign.withdraw(); transport.stop(reloadForModeChange); },
+  }, { articleIds });
+  const applyConsent = (choice: ReturnType<typeof getAnalyticsConsent>) => {
+    // A denial may arrive before this document ever loaded a measurement tag.
+    // Remove a previous tab-session label rather than revive it on later opt-in.
+    if (choice !== "granted" && choice !== "ad_measurement") campaign.withdraw();
+    session?.consent(choice);
+  };
   session.navigate(window.location.pathname);
-  session.consent(getAnalyticsConsent());
+  applyConsent(getAnalyticsConsent());
   const w = window as typeof window & { ciTrack?: (event: string, props?: Record<string, string | number>) => void };
   w.ciTrack = (event, props) => session?.track(event, props);
   window.addEventListener(consentChangeEvent, (event) => {
-    session?.consent(parseAnalyticsConsent((event as CustomEvent).detail));
+    applyConsent(parseAnalyticsConsent((event as CustomEvent).detail));
   });
-  window.addEventListener("storage", () => session?.consent(getAnalyticsConsent()));
+  window.addEventListener("storage", () => applyConsent(getAnalyticsConsent()));
   // Cover consultation links without copying destination queries. Explicit CTA
   // hooks and the delegated listener are deduplicated within a click dispatch.
   let lastCtaAt = -100;
@@ -40,13 +54,16 @@ function getSession() {
     const link = event.target.closest<HTMLAnchorElement>("a[href]");
     if (!link) return;
     const url = new URL(link.href, window.location.origin);
-    if (url.origin === window.location.origin && url.pathname === "/consultation") w.ciTrack?.("cta_consultation_click");
+    if (url.origin === window.location.origin && url.pathname === "/consultation") {
+      const article = url.searchParams.get("article");
+      w.ciTrack?.("cta_consultation_click", article ? { article } : undefined);
+    }
   });
   return session;
 }
 
-export default function Analytics() {
+export default function Analytics({ articleIds = analyticsArticleIds }: { articleIds?: readonly string[] }) {
   const pathname = usePathname();
-  useEffect(() => { getSession()?.navigate(pathname); }, [pathname]);
+  useEffect(() => { getSession(articleIds)?.navigate(pathname); }, [pathname, articleIds]);
   return <AnalyticsConsentNotice />;
 }

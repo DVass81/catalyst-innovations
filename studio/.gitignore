@@ -1,0 +1,8 @@
+/node_modules/
+/dist/
+/.sanity/
+/.env
+/.env.local
+/seed/*.ndjson
+/seed/*.json
+/tsconfig.tsbuildinfo

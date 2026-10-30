@@ -86,6 +86,7 @@ export const consultationSchema = z.object({
     .max(80)
     .optional(),
   sourceDemo: z.enum(["hoa", "flooring", "painting"]).optional(),
+  sourceArticle: z.string().max(100).regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/).optional(),
   struggleCategories: z.array(z.enum(struggleCategories)).max(6).optional(),
   calculatorSummary: z.string().trim().max(5000).optional(),
   // Honeypot: real users never fill this hidden field.

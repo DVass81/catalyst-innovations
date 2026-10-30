@@ -34,6 +34,8 @@ const common = {
   "next/navigation": { notFound() { throw new Error("NOT_FOUND"); } },
   "@/data/insights": insights, "@/data/seoContent": content, "@/lib/calculators": calculators,
   "@/data/services": services, "@/data/redesign": redesign, "@/lib/seo": seo, "@/lib/site": { site },
+  "@/lib/blog": { getPublishedInsights: async () => insights.insights, getPublishedInsight: async slug => insights.getInsight(slug) },
+  "@/components/ArticleShare": { default: ({ slug, title, url }) => React.createElement("div", { "data-share-article": slug, "data-share-url": url }, title) },
 };
 
 test("eight practical guides have complete sections, primary references and valid contextual links", () => {
@@ -157,8 +159,37 @@ test("guide pages expose complete readable content, organization attribution and
     assert.equal(metadata.alternates.canonical, schema.url);
     assert.equal(metadata.openGraph.type, "article");
     assert.equal(metadata.openGraph.title, metadata.title.absolute);
+    assert.equal(metadata.openGraph.images[0].url, `${site.url}/insights/${article.slug}/opengraph-image`);
+    assert.deepEqual(metadata.twitter.images, metadata.openGraph.images);
+    assert.ok(html.includes(`article=${article.slug}`));
+    assert.ok(html.includes(`data-share-url="${schema.url}"`));
+    assert.match(html, /href="\/discovery"/);
   }
   await assert.rejects(page.default({ params: Promise.resolve({ slug: "does-not-exist" }) }), /NOT_FOUND/);
+});
+
+test("published catalog is authoritative for article routes, related content and inquiry context", async () => {
+  const published = [{ ...insights.insights[0], slug: "new-public-guide", title: "New public guide", related: [insights.insights[1].slug], sources: [], sections: insights.insights[0].sections.map(section => ({ ...section, source: undefined })), demo: "painting", industry: "painting", cover: { url: "/media/blog/guide-cover.webp", alt: "A fictional workflow diagram", caption: "Illustrative workflow" } }];
+  const page = load("app/insights/[slug]/page.tsx", {
+    ...common,
+    "@/lib/blog": { getPublishedInsights: async () => published, getPublishedInsight: async slug => published.find(article => article.slug === slug) },
+    "../insights.css": {},
+  });
+  const html = renderToStaticMarkup(await page.default({ params: Promise.resolve({ slug: "new-public-guide" }) }));
+  assert.match(html, /New public guide/);
+  assert.match(html, /demo=painting&amp;industry=painting&amp;article=new-public-guide/);
+  assert.match(html, /src="\/media\/blog\/guide-cover.webp"/);
+  assert.match(html, /alt="A fictional workflow diagram"/);
+  assert.match(html, /loading="lazy"/);
+  assert.match(html, /Illustrative workflow/);
+  assert.doesNotMatch(html, /Latest source review|Another part of the process/);
+  await assert.rejects(page.default({ params: Promise.resolve({ slug: insights.insights[0].slug }) }), /NOT_FOUND/, "a removed published guide must not fall back to the static copy");
+  const unavailable = load("app/insights/[slug]/page.tsx", { ...common, "@/lib/blog": { getPublishedInsight: async () => { throw new Error("catalog unavailable"); } }, "../insights.css": {} });
+  await assert.rejects(unavailable.default({ params: Promise.resolve({ slug: "new-public-guide" }) }), /catalog unavailable/);
+  await assert.rejects(unavailable.generateMetadata({ params: Promise.resolve({ slug: "new-public-guide" }) }), /catalog unavailable/);
+  assert.equal(page.revalidate, 300);
+  assert.equal(page.dynamicParams, true);
+  assert.equal(page.generateStaticParams().length, 8);
 });
 
 test("industry pages retain the first three problem pairs and relevant inquiry/calculator context", async () => {
