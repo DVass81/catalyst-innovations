@@ -29,6 +29,8 @@ jobs:
             http://localhost:3000/
             http://localhost:3000/solutions
             http://localhost:3000/industries
+            http://localhost:3000/blog
+            http://localhost:3000/blog/editor
           configPath: ./lighthouserc.json
           uploadArtifacts: true
           temporaryPublicStorage: true

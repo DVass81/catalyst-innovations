@@ -28,3 +28,13 @@ Initial Turbopack development-cache issues were resolved by clearing only this c
 Daniel needs to review/merge the code, configure the restricted GitHub publishing token and private editor secrets on the existing DigitalOcean app, and approve the first actual article. Then observe a real publication commit, successful deployment and public article/feed/sitemap before describing publication as live. Login rate limiting is per process; inspect host IP trust and existing edge protection before wider access. See `native-blog-publishing.md` for exact activation and operational limits.
 
 The SEO Engine planning report is `native-blog-seo-plan.json`. It deliberately records performance as unmeasured and does not claim SEO-ready status. Existing public schema and canonical paths are preserved; private editor routes remain outside the sitemap.
+
+## Repository transfer follow-up — November 20, 2026
+
+The initial verification above is preserved as the pre-transfer snapshot. A later GitHub inspection confirmed the canonical source is now `My-Catalyst-Innovations/catalyst-innovations`, with Josh's administrator access. The prepared publisher and deployment template now use that organization-owned repository. Requests intentionally reject redirects, so this explicit target update is required after the transfer.
+
+After the target correction, `npm test` passed all 175 tests, `npm run lint` passed, `npm run typecheck` passed, and `git diff --check` passed. The local default `npm run build` remained at “Creating an optimized production build” without further output for several minutes and was stopped. No generated files were deleted and no compiler configuration was changed. The earlier successful build above is historical evidence, not a successful build of this follow-up. A fresh successful default build is still required before release.
+
+The existing Lighthouse CI workflow now also audits `/blog` and the signed-out `/blog/editor`, without editor credentials. Its existing thresholds, permissions and upload settings are unchanged. No new CI build or Lighthouse report has yet been observed for this follow-up.
+
+Production activation remains pending: verify the canonical GitHub connection on the existing DigitalOcean application, configure the restricted publishing token and private editor runtime settings, and complete the live publication checks in `native-blog-publishing.md`. No actual article has been supplied or published. Keep `native-blog-seo-plan.json` performance status pending until production-like measurements are recorded. Lighthouse can provide laboratory LCP, CLS and a responsiveness proxy; it does not establish field INP or field Core Web Vitals.

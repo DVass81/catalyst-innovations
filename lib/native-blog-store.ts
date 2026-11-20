@@ -6,7 +6,7 @@ import {
   type NativeBlogInput,
 } from "./native-blog-content";
 
-const repositoryApi = "https://api.github.com/repos/DVass81/catalyst-innovations";
+const repositoryApi = "https://api.github.com/repos/My-Catalyst-Innovations/catalyst-innovations";
 const publicationPath = "data/blog-published.json";
 const contentsEndpoint = `${repositoryApi}/contents/${publicationPath}`;
 const branch = "main";

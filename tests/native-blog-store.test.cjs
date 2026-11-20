@@ -24,7 +24,7 @@ loaded._compile(ts.transpileModule(fs.readFileSync(filename, "utf8"), {
 }).outputText, filename);
 const { readPublicationCatalog, publishDocument, NativeBlogStoreError } = loaded.exports;
 
-const repository = "https://api.github.com/repos/DVass81/catalyst-innovations";
+const repository = "https://api.github.com/repos/My-Catalyst-Innovations/catalyst-innovations";
 const endpoint = `${repository}/contents/data/blog-published.json`;
 const revision = "a".repeat(40);
 const nextRevision = "b".repeat(40);
@@ -44,7 +44,7 @@ async function expectStatus(promise, status) {
 test.beforeEach(() => { process.env.BLOG_GITHUB_TOKEN = "server-secret"; });
 test.afterEach(() => { delete process.env.BLOG_GITHUB_TOKEN; });
 
-test("catalog reads use the fixed main file and a bounded, uncacheable server request", async () => {
+test("catalog reads use the canonical company repository main file and a bounded, uncacheable server request", async () => {
   const result = await readPublicationCatalog(async (url, options) => {
     assert.equal(url, `${endpoint}?ref=main`);
     assert.equal(options.method, "GET");
