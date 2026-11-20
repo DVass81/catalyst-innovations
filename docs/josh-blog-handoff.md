@@ -1,5 +1,7 @@
 # Josh and Echo: finish connecting the Blog
 
+**Superseded November 20, 2026:** Josh approved a native paste/preview/publish editor, with no Sanity account. Use [Native Blog publishing](native-blog-publishing.md) for current activation, access and weekly instructions. The older Sanity steps below are retained only as historical setup evidence and must not be followed for this release.
+
 The corrected website and editor are built and tested. The publishing account is **not connected yet**. Daniel approved resuming Free setup; Josh needs to complete the company Google sign-in. No post has been substituted for Josh's approved first edition.
 
 ## The account step for Josh

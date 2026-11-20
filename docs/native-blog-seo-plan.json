@@ -1,0 +1,224 @@
+{
+  "scope": "Incremental native Blog publisher. Planning output only, not an instruction to replace existing public metadata or schema.",
+  "observedAt": "2026-11-20",
+  "privateEditor": {
+    "path": "/blog/editor",
+    "indexable": false,
+    "sitemap": false,
+    "robots": "noindex,nofollow"
+  },
+  "publicMetadata": "Existing BlogPosting, RSS, sitemap, canonical and sharing paths preserved. No first article supplied or published.",
+  "performance": "No new production field CWV measured. Do not claim SEO ready.",
+  "plan": {
+    "version": 1,
+    "mode": "PRODUCTION",
+    "facts": [
+      {
+        "field": "businessName",
+        "value": "Catalyst Innovations",
+        "status": "VERIFIED"
+      },
+      {
+        "field": "serviceArea",
+        "value": "Knoxville, TN",
+        "status": "VERIFIED"
+      },
+      {
+        "field": "phone",
+        "value": "+18653483137",
+        "status": "VERIFIED"
+      },
+      {
+        "field": "email",
+        "value": "daniel@mycatalystinnovations.com",
+        "status": "VERIFIED"
+      },
+      {
+        "field": "address",
+        "status": "UNKNOWN"
+      }
+    ],
+    "searchThemes": [
+      {
+        "query": "Custom software Knoxville TN",
+        "intent": "TRANSACTIONAL",
+        "evidence": "https://mycatalystinnovations.com/solutions/custom-software"
+      },
+      {
+        "query": "AI and automation Knoxville TN",
+        "intent": "TRANSACTIONAL",
+        "evidence": "https://mycatalystinnovations.com/solutions/ai-automation"
+      }
+    ],
+    "pages": [
+      {
+        "slug": "",
+        "title": "Catalyst Innovations | Custom business software in Knoxville, TN",
+        "description": "Catalyst Innovations provides custom software, ai and automation for customers in Knoxville, TN.",
+        "intent": "COMMERCIAL_RESEARCH",
+        "indexable": true,
+        "canonical": "https://mycatalystinnovations.com",
+        "internalLinks": [
+          "/custom-software",
+          "/ai-and-automation",
+          "/blog"
+        ],
+        "rationale": "Primary business and conversion destination."
+      },
+      {
+        "slug": "custom-software",
+        "title": "Custom software in Knoxville, TN | Catalyst Innovations",
+        "description": "Learn about custom software from Catalyst Innovations, serving Knoxville, TN.",
+        "intent": "TRANSACTIONAL",
+        "indexable": true,
+        "canonical": "https://mycatalystinnovations.com/custom-software",
+        "internalLinks": [
+          "/",
+          "/contact"
+        ],
+        "rationale": "Supported by sourced business offering: https://mycatalystinnovations.com/solutions/custom-software"
+      },
+      {
+        "slug": "ai-and-automation",
+        "title": "AI and automation in Knoxville, TN | Catalyst Innovations",
+        "description": "Learn about ai and automation from Catalyst Innovations, serving Knoxville, TN.",
+        "intent": "TRANSACTIONAL",
+        "indexable": true,
+        "canonical": "https://mycatalystinnovations.com/ai-and-automation",
+        "internalLinks": [
+          "/",
+          "/contact"
+        ],
+        "rationale": "Supported by sourced business offering: https://mycatalystinnovations.com/solutions/ai-automation"
+      },
+      {
+        "slug": "blog",
+        "title": "The Catalyst Blog",
+        "description": "Learn about the catalyst blog from Catalyst Innovations, serving Knoxville, TN.",
+        "intent": "TRANSACTIONAL",
+        "indexable": true,
+        "canonical": "https://mycatalystinnovations.com/blog",
+        "internalLinks": [
+          "/",
+          "/contact"
+        ],
+        "rationale": "Supported by sourced business offering: https://mycatalystinnovations.com/blog"
+      },
+      {
+        "slug": "contact",
+        "title": "Contact Catalyst Innovations | Knoxville, TN",
+        "description": "Contact Catalyst Innovations about service in Knoxville, TN.",
+        "intent": "NAVIGATIONAL",
+        "indexable": true,
+        "canonical": "https://mycatalystinnovations.com/contact",
+        "internalLinks": [
+          "/"
+        ],
+        "rationale": "Clear conversion and NAP destination."
+      }
+    ],
+    "robots": {
+      "index": true,
+      "follow": true,
+      "directive": "index,follow"
+    },
+    "sitemap": {
+      "enabled": true,
+      "hostname": "https://mycatalystinnovations.com",
+      "urls": [
+        "https://mycatalystinnovations.com",
+        "https://mycatalystinnovations.com/custom-software",
+        "https://mycatalystinnovations.com/ai-and-automation",
+        "https://mycatalystinnovations.com/blog",
+        "https://mycatalystinnovations.com/contact"
+      ]
+    },
+    "schema": [
+      {
+        "type": "LocalBusiness",
+        "properties": {
+          "name": "Catalyst Innovations",
+          "areaServed": "Knoxville, TN",
+          "url": "https://mycatalystinnovations.com",
+          "hasOfferCatalog": [
+            "Custom software",
+            "AI and automation"
+          ],
+          "telephone": "+18653483137"
+        }
+      },
+      {
+        "type": "Service",
+        "properties": {
+          "name": "Custom software",
+          "areaServed": "Knoxville, TN",
+          "provider": "Catalyst Innovations"
+        }
+      },
+      {
+        "type": "Service",
+        "properties": {
+          "name": "AI and automation",
+          "areaServed": "Knoxville, TN",
+          "provider": "Catalyst Innovations"
+        }
+      }
+    ],
+    "imageSeo": {
+      "meaningfulAlt": true,
+      "controlledAssets": true,
+      "generatedAssetDisclosureSafe": true
+    },
+    "searchConsole": {
+      "ready": false,
+      "steps": [
+        "Create property",
+        "Verify ownership",
+        "Submit sitemap",
+        "Review indexing and Core Web Vitals",
+        "Monitor queries and conversions"
+      ]
+    },
+    "analyticsEvents": [
+      "phone_click",
+      "form_submit",
+      "quote_request",
+      "booking_click",
+      "email_click",
+      "primary_cta_click"
+    ],
+    "localGrowthHooks": [
+      "search_console_metrics",
+      "organic_conversion_metrics",
+      "technical_health",
+      "content_opportunities",
+      "gbp_recommendations",
+      "seo_change_log"
+    ],
+    "score": {
+      "technical": 25,
+      "onPage": 20,
+      "local": 12,
+      "structuredData": 8,
+      "performance": 6,
+      "accessibility": 9,
+      "content": 5,
+      "total": 85
+    },
+    "issues": [
+      {
+        "code": "ADDRESS_UNKNOWN",
+        "severity": "WARNING",
+        "detail": "Address is unknown; confirm whether the business is service-area only.",
+        "action": "Confirm address visibility and GBP configuration with the client."
+      },
+      {
+        "code": "CWV_PENDING",
+        "severity": "BLOCKER",
+        "detail": "Core Web Vitals have not been measured.",
+        "action": "Run production-like performance measurement."
+      }
+    ],
+    "releaseReady": false
+  }
+}

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import ArticleShare from "@/components/ArticleShare";
+import NativeBlogBody from "@/components/NativeBlogBody";
 import { blogReadingMinutes, getPublishedPost, getPublishedPosts } from "@/lib/blog";
 import { getCalculator } from "@/lib/calculators";
 import { breadcrumbSchema, pageMetadata } from "@/lib/seo";
@@ -53,8 +54,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   return <div className="insights-page catalyst-blog-page">
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
     <header className="wrap page-intro insight-header"><Link className="breadcrumb" href="/blog">← The Catalyst Blog</Link><p className="overline">{post.category}</p><h1>{post.title}</h1><p className="intro-copy">{post.description}</p><p className="insight-byline">Published by Catalyst Innovations · <time dateTime={post.publishedAt}>{displayDate(post.publishedAt)}</time> · {blogReadingMinutes(post)} min read</p></header>
-    <div className="wrap insight-layout">
-      <aside className="insight-toc"><nav aria-label="On this page"><p className="overline">In this edition</p><ol role="list">{post.sections.map(section => <li key={section.id}><a href={`#${section.id}`}>{section.heading.replace(/^\d+\. /, "")}</a></li>)}</ol>{post.evidence.length > 0 && <a href="#facts-in-context">The facts in context ↓</a>}{post.tools.length > 0 && <a href="#try-your-numbers">Try your numbers ↓</a>}</nav></aside>
+    <div className={`wrap insight-layout${post.sections.length ? "" : " blog-without-toc"}`}>
+      {post.sections.length > 0 && <aside className="insight-toc"><nav aria-label="On this page"><p className="overline">In this edition</p><ol role="list">{post.sections.map(section => <li key={section.id}><a href={`#${section.id}`}>{section.heading.replace(/^\d+\. /, "")}</a></li>)}</ol>{post.evidence.length > 0 && <a href="#facts-in-context">The facts in context ↓</a>}{post.tools.length > 0 && <a href="#try-your-numbers">Try your numbers ↓</a>}</nav></aside>}
       <article className="insight-body">
         {post.cover && <figure className="insight-cover">
           {/* The published-content reader validates cover URLs before rendering. */}
@@ -62,6 +63,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           <img src={post.cover.url} alt={post.cover.alt} width={1600} height={900} loading="lazy" decoding="async" />
           {post.cover.caption && <figcaption>{post.cover.caption}</figcaption>}
         </figure>}
+        {post.nativeBody ? <NativeBlogBody body={post.nativeBody} /> : <>
         <p className="insight-opening">{post.introduction}</p>
         <aside className="insight-takeaway"><p className="overline">The useful idea</p><p>{post.takeaway}</p></aside>
         {post.sections.map(section => <section id={section.id} key={section.id}><h2>{section.heading}</h2>{section.paragraphs.map(paragraph => <p key={paragraph}>{paragraph}</p>)}{section.checklist && <ul>{section.checklist.map(item => <li key={item}>{item}</li>)}</ul>}{section.source !== undefined && <p className="insight-reference">Source: <a href={post.sources[section.source].url} target="_blank" rel="noopener noreferrer">{post.sources[section.source].title} ↗</a></p>}</section>)}
@@ -69,8 +71,9 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         <aside className="insight-example"><p className="overline">Illustrative example</p><h2>{post.example.title}</h2><p>{post.example.text}</p></aside>
         {post.tools.length > 0 && <section id="try-your-numbers"><h2>Put your own work in perspective.</h2><p>Try your own assumptions. Time, cost and opportunity are different measures; calculator results should not automatically be added together.</p><div className="insight-tools">{post.tools.map(slug => { const tool = getCalculator(slug)!; return <Link href={`/tools/${slug}${context}`} key={slug}><strong>{tool.title}</strong><span>{tool.description}</span><span className="text-link">Try the calculator ↗</span></Link>; })}</div></section>}
         <section className="insight-next"><p className="overline">A question for your business</p><h2>Where would a clearer process help?</h2><p>{post.nextStep}</p><div className="insight-actions"><Link className="button" href={`/consultation?${inquiryParams}`}>Discuss my business ↗</Link><Link className="text-link" href="/discovery">How discovery and a custom quote work ↗</Link>{post.solution && <Link className="text-link" href={`/solutions/${post.solution}`}>Explore the relevant solution ↗</Link>}{post.demo && <Link className="text-link" href={`/portfolio${context}#${post.demo}`}>See the actual demonstration ↗</Link>}</div></section>
+        </>}
         <ArticleShare kind="blog" slug={post.slug} title={post.title} url={canonical} />
-        <footer className="insight-sources"><h2>Sources and editorial notes</h2><p>{reviewedAt && <>Latest source review: <time dateTime={reviewedAt}>{displayDate(reviewedAt)}</time>. </>}References support the attributed factual background. The interpretation and illustrative example are Catalyst’s editorial guidance, rather than measured results from a Catalyst customer.</p>{post.sources.length > 0 && <ul>{post.sources.map(source => <li key={source.url}><a href={source.url} target="_blank" rel="noopener noreferrer">{source.title} ↗</a><div className="blog-source-details">{source.publishedAt && <p>Published: <time dateTime={source.publishedAt}>{displayDate(source.publishedAt)}</time>.</p>}{source.context && <p><strong>Context:</strong> {source.context}</p>}{source.methodology && <p><strong>Methodology:</strong> {source.methodology}</p>}</div></li>)}</ul>}</footer>
+        {!post.nativeBody && <footer className="insight-sources"><h2>Sources and editorial notes</h2><p>{reviewedAt && <>Latest source review: <time dateTime={reviewedAt}>{displayDate(reviewedAt)}</time>. </>}References support the attributed factual background. The interpretation and illustrative example are Catalyst’s editorial guidance, rather than measured results from a Catalyst customer.</p>{post.sources.length > 0 && <ul>{post.sources.map(source => <li key={source.url}><a href={source.url} target="_blank" rel="noopener noreferrer">{source.title} ↗</a><div className="blog-source-details">{source.publishedAt && <p>Published: <time dateTime={source.publishedAt}>{displayDate(source.publishedAt)}</time>.</p>}{source.context && <p><strong>Context:</strong> {source.context}</p>}{source.methodology && <p><strong>Methodology:</strong> {source.methodology}</p>}</div></li>)}</ul>}</footer>}
       </article>
     </div>
     {related.length > 0 && <section className="wrap content-section insight-related"><p className="overline">Keep the conversation going</p><h2>Another perspective.</h2><div className="insights-grid">{related.map(item => <article key={item.slug} className="insight-card"><p className="overline">{item.category}</p><h3><Link href={`/blog/${item.slug}`}>{item.title}</Link></h3><p>{item.description}</p><Link className="text-link" href={`/blog/${item.slug}`}>Read the article ↗<span className="sr-only">: {item.title}</span></Link></article>)}</div></section>}

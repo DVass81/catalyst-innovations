@@ -29,6 +29,8 @@ const blog = load("lib/blog.ts", {
   "@/data/services": load("data/services.ts"),
   "@/data/industryNeeds": load("data/industryNeeds.ts"),
   "@/studio/lib/approval": approvalHelpers,
+  "@/data/blog-published.json": [],
+  "@/lib/native-blog-content": load("lib/native-blog-content.ts"),
 });
 const today = "2026-10-30";
 const clone = value => structuredClone(value);
@@ -260,4 +262,56 @@ test("an approved raw Studio image reference matches its public GROQ projection"
   assert.ok(blog.normalizeBlogPost(projected, today));
   projected.coverImage.alt = "Changed after approval";
   assert.equal(blog.normalizeBlogPost(projected, today), null);
+});
+
+function nativeDocument(overrides = {}) {
+  return {
+    title: "The useful work between familiar business steps",
+    slug: "work-between-steps",
+    description: "Follow a real request with your team and make the information needed at each handoff easier to find.",
+    category: "Operations",
+    body: "An opening paragraph with all of its original wording.\r\nThe second line belongs to that same paragraph.\r\n\r\n# Follow the request\r\n\r\nKeep the full account of what happens next, including the exceptions and questions that need an answer.\r\n\r\n### Check the handoff\r\n\r\n- Name the next person.\r\n- Keep the original information.\r\n\r\n## Follow the request\r\n\r\nThe final paragraph completes the article.",
+    publishedAt: "2026-10-29",
+    updatedAt: "2026-10-30",
+    publicationId: "cd319592-457c-4eab-b301-c9525c850c07",
+    ...overrides,
+  };
+}
+
+test("native published catalogs preserve complete pasted bodies, dates and heading destinations without a legacy fallback", () => {
+  assert.deepEqual(blog.readNativePublishedBlog([], today), []);
+  const document = nativeDocument();
+  const earlier = nativeDocument({ slug: "an-earlier-edition", publishedAt: "2026-10-28", publicationId: "9e6ad2c3-a797-41df-b469-77f9fb4aa266" });
+  const input = [earlier, document];
+  const before = clone(input);
+  const posts = blog.readNativePublishedBlog(input, today);
+  assert.deepEqual(input, before, "reading must not alter the committed source document");
+  assert.deepEqual(posts.map(post => post.slug), [document.slug, earlier.slug]);
+  const post = posts[0];
+  for (const field of ["title", "slug", "description", "category", "publishedAt", "updatedAt"]) assert.equal(post[field], document[field]);
+  assert.equal(post.nativeBody, document.body, "CRLF and every original article character survive the public adapter");
+  const headings = load("lib/native-blog-content.ts").nativeBlogHeadings(document.body);
+  assert.deepEqual(post.sections, headings.map(heading => ({ id: heading.id, heading: heading.text, paragraphs: [] })));
+  assert.deepEqual(post.tools, []);
+  assert.deepEqual(post.sources, []);
+  assert.deepEqual(post.evidence, []);
+  assert.equal(post.solution, undefined);
+  assert.equal(post.publicationId, undefined, "the publication operation identity is not article copy");
+  assert.equal(blog.blogReadingMinutes(post), load("lib/native-blog-content.ts").nativeReadingMinutes(document.body));
+});
+
+test("native catalogs reject incomplete drafts, invalid dates, future editions and duplicate publication identities as unavailable", () => {
+  const valid = nativeDocument();
+  const draft = clone(valid);
+  delete draft.publicationId;
+  delete draft.publishedAt;
+  for (const input of [
+    null, {}, { posts: [] }, [draft], [{ ...valid, body: "Incomplete draft" }],
+    [{ ...valid, publishedAt: "2026-02-30" }], [{ ...valid, updatedAt: "2026-10-28" }],
+    [{ ...valid, publishedAt: "2026-10-31", updatedAt: "2026-10-31" }],
+    [{ ...valid, updatedAt: "2026-10-31" }],
+    [valid, { ...valid, publicationId: "9e6ad2c3-a797-41df-b469-77f9fb4aa266" }],
+    [valid, { ...valid, slug: "a-different-article" }],
+  ]) assert.throws(() => blog.readNativePublishedBlog(input, today), blog.BlogUnavailableError);
+  assert.throws(() => blog.readNativePublishedBlog([], "not-a-date"), blog.BlogUnavailableError);
 });

@@ -30,6 +30,7 @@ const redesign = load("data/redesign.ts", { "./industries": load("data/industrie
 const site = { name: "Catalyst Innovations", url: "https://mycatalystinnovations.com" };
 const seo = load("lib/seo.ts", { "@/lib/site": { site } });
 const common = {
+  "@/components/NativeBlogBody": load("components/NativeBlogBody.tsx", { "@/lib/native-blog-content": load("lib/native-blog-content.ts") }),
   "next/link": { default: ({ children, ...props }) => React.createElement("a", props, children) },
   "next/navigation": { notFound() { throw new Error("NOT_FOUND"); } },
   "@/data/insights": insights, "@/data/seoContent": content, "@/lib/calculators": calculators,
@@ -333,4 +334,73 @@ test("all calculators describe money and non-money units accurately in the rende
       assert.match(html, /Use the units shown beside each field and result\./);
     }
   }
+});
+
+function nativePostPage(body) {
+  const nativeContent = load("lib/native-blog-content.ts");
+  const reader = load("lib/blog.ts", {
+    "@/data/insights": insights,
+    "@/lib/calculators": calculators,
+    "@/data/services": services,
+    "@/data/industryNeeds": load("data/industryNeeds.ts"),
+    "@/studio/lib/approval": load("studio/lib/approval.ts"),
+    "@/data/blog-published.json": [],
+    "@/lib/native-blog-content": nativeContent,
+  });
+  const document = {
+    title: "A complete article pasted by the publishing team",
+    slug: "complete-pasted-article",
+    description: "A practical article that retains the publishing team's complete text, sources and section order.",
+    category: "Operations",
+    body,
+    publishedAt: "2026-11-19",
+    updatedAt: "2026-11-20",
+    publicationId: "9aff0d7e-06a4-4ce4-b3b4-fc59a1087aa4",
+  };
+  const posts = reader.readNativePublishedBlog([document], "2026-11-20");
+  const page = load("app/blog/[slug]/page.tsx", {
+    ...common,
+    "@/lib/blog": { getPublishedPosts: async () => posts, getPublishedPost: async slug => posts.find(post => post.slug === slug), blogReadingMinutes: reader.blogReadingMinutes },
+    "../../insights/insights.css": {}, "../blog.css": {},
+  });
+  return { page, document, nativeContent, params: Promise.resolve({ slug: document.slug }) };
+}
+
+test("native articles use the real shared renderer, matching heading anchors, share URLs and canonical metadata", async () => {
+  const body = "The opening paragraph keeps every original word.\nThis line continues the same thought before the first section.\n\n# Follow one request\n\nKeep the source account intact and ask [the primary source](https://www.nist.gov/mep/value-stream-mapping).\n\n### Name the next step\n\n- First action with **important context**.\n- Second action with its complete wording.\n\n## Follow one request\n\nThe final paragraph is present after the repeated heading.";
+  const { page, document, nativeContent, params } = nativePostPage(body);
+  const html = renderToStaticMarkup(await page.default({ params }));
+  const expectedBody = renderToStaticMarkup(React.createElement(common["@/components/NativeBlogBody"].default, { body }));
+  assert.ok(html.includes(expectedBody), "editor and public article must render the same complete native body");
+  assert.equal((html.match(/<h1\b/g) || []).length, 1);
+  assert.match(html, /<h1>A complete article pasted by the publishing team<\/h1>/);
+  assert.match(html, /class="insight-toc"/);
+  for (const heading of nativeContent.nativeBlogHeadings(body)) {
+    assert.ok(html.includes(`href="#${heading.id}"`));
+    assert.equal((html.match(new RegExp(`id="${heading.id}"`, "g")) || []).length, 1);
+  }
+  assert.doesNotMatch(html, /insight-takeaway|insight-example|insight-next|insight-sources|insight-opening|id="facts-in-context"|id="try-your-numbers"/);
+  assert.match(html, /href="https:\/\/www\.nist\.gov\/mep\/value-stream-mapping" target="_blank" rel="noopener noreferrer"/);
+  const canonical = `${site.url}/blog/${document.slug}`;
+  assert.ok(html.includes(`data-share-url="${canonical}"`));
+  assert.match(html, /"@type":"BlogPosting"/);
+  assert.ok(html.includes(`"datePublished":"${document.publishedAt}"`));
+  assert.ok(html.includes(`"dateModified":"${document.updatedAt}"`));
+  const metadata = await page.generateMetadata({ params });
+  assert.equal(metadata.alternates.canonical, canonical);
+  assert.equal(metadata.openGraph.type, "article");
+  assert.equal(metadata.openGraph.publishedTime, document.publishedAt);
+  assert.equal(metadata.openGraph.modifiedTime, document.updatedAt);
+  assert.equal(metadata.openGraph.images[0].url, `${canonical}/opengraph-image`);
+  assert.deepEqual(metadata.twitter.images, metadata.openGraph.images);
+});
+
+test("a paragraph-only native article keeps its full prose and uses the layout without a table-of-contents column", async () => {
+  const body = "A complete opening paragraph can explain the business problem without needing a heading for every thought. It stays readable as the author pasted it.\n\nThe closing paragraph keeps its full wording and the question the reader should consider next.";
+  const { page, params } = nativePostPage(body);
+  const html = renderToStaticMarkup(await page.default({ params }));
+  assert.match(html, /class="wrap insight-layout blog-without-toc"/);
+  assert.doesNotMatch(html, /class="insight-toc"|aria-label="On this page"|insight-takeaway|insight-example/);
+  assert.equal((html.match(/<h1\b/g) || []).length, 1);
+  for (const paragraph of body.split("\n\n")) assert.ok(html.includes(`<p>${paragraph}</p>`));
 });

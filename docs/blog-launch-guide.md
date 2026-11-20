@@ -50,7 +50,7 @@ Only allowed paths and context labels are sent. Questionnaire answers, contact i
 
 ## Publishing a Friday edition
 
-Editor entry: https://mycatalystinnovations.com/blog/editor. When configured, this opens the private Sanity editor and requires an authorized account; until account setup is complete, it explains the remaining dependency. A public editor-entry link does not grant publishing access.
+Editor entry: https://mycatalystinnovations.com/blog/editor. The native editor accepts pasted articles and requires its private password. See `native-blog-publishing.md` for current activation and weekly-use instructions. The former Sanity setup is superseded. A public editor-entry link does not grant publishing access.
 
 Prepare an original 3–5 minute post, verify factual claims against credible sources, and record the source dates and relevant context. Quantitative claims also need a clear explanation of what was measured and its limitations. Mark fictional examples as illustrative. Josh reviews the exact version before publication; changing its content requires renewed approval. Never treat a drafted or future-dated post as already published.
 

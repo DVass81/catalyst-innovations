@@ -38,7 +38,10 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   async headers() {
-    return [{ source: "/(.*)", headers: securityHeaders }];
+    return [
+      { source: "/(.*)", headers: securityHeaders },
+      { source: "/blog/editor", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }, { key: "Cache-Control", value: "no-store, private" }] },
+    ];
   },
   async redirects() {
     return [
