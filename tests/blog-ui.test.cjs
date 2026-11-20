@@ -50,6 +50,16 @@ test("guide and blog libraries keep their routes and readable labels distinct be
 });
 
 const blogPosts = [1, 2, 3].map(number => ({ ...data.insights[0], slug: `editorial-fixture-${number}`, title: `Distinct editorial fixture ${number}`, publishedAt: "2026-10-30", evidence: [] }));
+const content = load("lib/native-blog-content.ts");
+const nativeBody = load("components/NativeBlogBody.tsx", { "@/lib/native-blog-content": content });
+const articleReader = load("components/BlogArticle.tsx", {
+  "next/link": link,
+  "@/components/ArticleShare": { default: ({ url }) => React.createElement("a", { href: url }, "Share this article") },
+  "@/components/NativeBlogBody": nativeBody,
+  "@/lib/blog": { blogReadingMinutes: () => 4 },
+  "@/lib/calculators": { getCalculator: () => ({ title: "Example calculator", description: "A sample calculator" }) },
+  "@/lib/site": { site: { url: "https://mycatalystinnovations.com", name: "Catalyst Innovations" } },
+});
 const pageShared = {
   "@/components/studio/StudioPhoto": { default: () => React.createElement("figure", null, "Representative photography") },
   "next/link": link,
@@ -59,6 +69,7 @@ const pageShared = {
   "@/lib/seo": { pageMetadata: value => value, breadcrumbSchema: () => ({}) },
   "@/components/SiteSections": { DiscussCTA: () => null },
   "@/components/BlogLibrary": { default: library.default },
+  "@/components/BlogArticle": articleReader,
 };
 
 test("the public blog and homepage highlights contain only distinct published blog posts", async () => {
@@ -72,7 +83,7 @@ test("the public blog and homepage highlights contain only distinct published bl
   const html = renderToStaticMarkup(pageElement);
   assert.match(html, /The Catalyst Blog/);
   assert.match(html, /Distinct editorial fixture 1/);
-  assert.match(html, /href="\/blog\/editorial-fixture-1"/);
+  assert.match(html, /href="https:\/\/mycatalystinnovations\.com\/blog\/editorial-fixture-1"/);
   assert.doesNotMatch(html, /\/blog\/manufacturing-spreadsheets/);
   assert.equal(page.metadata.path, "/blog");
   const { default: Highlights } = load("components/BlogHighlights.tsx", {
@@ -98,6 +109,25 @@ test("an empty blog explains the editorial intent without republishing guides or
   assert.doesNotMatch(html, /Latest edition|editorial-fixture|\/blog\/manufacturing-spreadsheets/);
   const Highlights = load("components/BlogHighlights.tsx", { ...shared, "./BlogHighlights.module.css": { default: {} } }).default;
   assert.equal(await Highlights(), null);
+});
+
+test("the Blog home shows the complete latest article and its formatting without another click", async () => {
+  const post = { ...blogPosts[0], nativeBody: "The entire opening is visible immediately, without another page to open.\n\n## A useful section label\n\nKeep the **important label** and a [source](https://example.com).\n\n- First practical step\n- Second practical step\n\nThe final paragraph must also be present on the Blog home." };
+  const page = load("app/blog/page.tsx", { ...pageShared, "@/lib/blog": { getPublishedPosts: async () => [post], blogReadingMinutes: () => 4 }, "../insights/insights.css": {}, "./blog.css": {} });
+  const html = renderToStaticMarkup(await page.default());
+  assert.match(html, /<h1>Distinct editorial fixture 1<\/h1>/);
+  assert.equal((html.match(/<h1[\s>]/g) ?? []).length, 1);
+  assert.match(html, /4 min read/);
+  assert.match(html, /<time dateTime="2026-10-30">October 30, 2026<\/time>/);
+  assert.match(html, /The entire opening is visible immediately/);
+  assert.match(html, /<h2 id="section-a-useful-section-label">A useful section label<\/h2>/);
+  assert.match(html, /<strong>important label<\/strong>/);
+  assert.match(html, /<li>Second practical step<\/li>/);
+  assert.match(html, /The final paragraph must also be present/);
+  assert.doesNotMatch(html, /Read the latest article|Read the article|Explore the articles|blog-featured-copy/);
+  assert.doesNotMatch(html, /For the Catalyst team: open the editor|href="\/blog\/editor"/);
+  const scripts = [...html.matchAll(/<script type="application\/ld\+json">(.*?)<\/script>/g)].map(match => JSON.parse(match[1]));
+  assert.equal(scripts.find(schema => schema["@type"] === "BlogPosting").mainEntityOfPage, `https://mycatalystinnovations.com/blog/${post.slug}`);
 });
 
 test("Guides remain eight static references even when the separate blog is unavailable", async () => {

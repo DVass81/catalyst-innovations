@@ -39,6 +39,14 @@ const common = {
   "@/components/ArticleShare": { default: ({ slug, title, url }) => React.createElement("div", { "data-share-article": slug, "data-share-url": url }, title) },
   "@/components/studio/GuideVisual": { default: () => null },
 };
+function blogPageMocks(source) {
+  return {
+    ...common,
+    "@/lib/blog": source,
+    "@/components/BlogArticle": load("components/BlogArticle.tsx", { ...common, "@/lib/blog": source }),
+    "../../insights/insights.css": {}, "../blog.css": {},
+  };
+}
 const studioMedia = load("data/studioMedia.ts");
 const studioPhoto = load("components/studio/StudioPhoto.tsx", { ...common, "@/data/studioMedia": studioMedia, "./StudioPhoto.module.css": { default: {} } });
 const workflowDiagram = load("components/studio/WorkflowDiagram.tsx", { "./WorkflowDiagram.module.css": { default: {} } });
@@ -194,11 +202,7 @@ test("guide pages expose complete readable content, organization attribution and
 test("the separate published blog controls post routes, evidence, related content and inquiry context", async () => {
   const published = [{ ...insights.insights[0], slug: "new-public-post", title: "New public editorial post", solution: undefined, tools: [], related: [insights.insights[1].slug], sources: [{ ...insights.insights[0].sources[0], context: "Reference context", methodology: "Reference methodology", publishedAt: "2026-10-01" }], evidence: [{ claim: "A clearly marked fixture claim", source: 0, context: "Evidence context", methodology: "Evidence methodology", dataDate: "2026" }], demo: "painting", industry: "painting", cover: { url: "/media/blog/post-cover.webp", alt: "A fictional workflow diagram", caption: "Illustrative workflow" } }];
   const source = { getPublishedPosts: async () => published, getPublishedPost: async slug => published.find(post => post.slug === slug), blogReadingMinutes: () => 4 };
-  const page = load("app/blog/[slug]/page.tsx", {
-    ...common,
-    "@/lib/blog": source,
-    "../../insights/insights.css": {}, "../blog.css": {},
-  });
+  const page = load("app/blog/[slug]/page.tsx", blogPageMocks(source));
   const params = Promise.resolve({ slug: "new-public-post" });
   const html = renderToStaticMarkup(await page.default({ params }));
   assert.match(html, /New public editorial post/);
@@ -217,7 +221,7 @@ test("the separate published blog controls post routes, evidence, related conten
   assert.equal(metadata.alternates.canonical, `${site.url}/blog/new-public-post`);
   assert.equal(metadata.openGraph.images[0].url, `${site.url}/blog/new-public-post/opengraph-image`);
   await assert.rejects(page.default({ params: Promise.resolve({ slug: insights.insights[0].slug }) }), /NOT_FOUND/, "a guide must not become a blog post");
-  const unavailable = load("app/blog/[slug]/page.tsx", { ...common, "@/lib/blog": { getPublishedPost: async () => { throw new Error("catalog unavailable"); } }, "../../insights/insights.css": {}, "../blog.css": {} });
+  const unavailable = load("app/blog/[slug]/page.tsx", blogPageMocks({ getPublishedPost: async () => { throw new Error("catalog unavailable"); } }));
   await assert.rejects(unavailable.default({ params }), /catalog unavailable/);
   await assert.rejects(unavailable.generateMetadata({ params }), /catalog unavailable/);
   assert.equal(page.revalidate, 300);
@@ -358,11 +362,9 @@ function nativePostPage(body) {
     publicationId: "9aff0d7e-06a4-4ce4-b3b4-fc59a1087aa4",
   };
   const posts = reader.readNativePublishedBlog([document], "2026-11-20");
-  const page = load("app/blog/[slug]/page.tsx", {
-    ...common,
-    "@/lib/blog": { getPublishedPosts: async () => posts, getPublishedPost: async slug => posts.find(post => post.slug === slug), blogReadingMinutes: reader.blogReadingMinutes },
-    "../../insights/insights.css": {}, "../blog.css": {},
-  });
+  const page = load("app/blog/[slug]/page.tsx", blogPageMocks({
+    getPublishedPosts: async () => posts, getPublishedPost: async slug => posts.find(post => post.slug === slug), blogReadingMinutes: reader.blogReadingMinutes,
+  }));
   return { page, document, nativeContent, params: Promise.resolve({ slug: document.slug }) };
 }
 
