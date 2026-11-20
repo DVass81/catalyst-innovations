@@ -93,7 +93,7 @@ test("an empty blog explains the editorial intent without republishing guides or
   const html = renderToStaticMarkup(await page.default());
   assert.match(html, /first Friday edition/);
   assert.match(html, /3–5 minute/);
-  assert.match(html, /href="\/blog\/editor"/);
+  assert.doesNotMatch(html, /href="\/blog\/editor"|For the Catalyst team: open the editor/);
   assert.match(html, /href="\/insights"/);
   assert.doesNotMatch(html, /Latest edition|editorial-fixture|\/blog\/manufacturing-spreadsheets/);
   const Highlights = load("components/BlogHighlights.tsx", { ...shared, "./BlogHighlights.module.css": { default: {} } }).default;
