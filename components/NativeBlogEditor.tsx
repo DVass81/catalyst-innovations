@@ -10,6 +10,21 @@ type FieldErrors = Partial<Record<keyof NativeBlogInput, string>>;
 type Preview = { post: NativeBlogInput; fingerprint: string };
 type PublishOperation = Preview & { revision: string; operationId: string };
 type SavedArticle = { document: NativeBlogDocument; commitSha: string };
+type Delivery = { status: "live" | "saved" | "unknown"; checkedAt: string };
+type ArticleDelivery = Record<string, Delivery>;
+
+function deliveryCatalog(value: unknown): ArticleDelivery {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return {};
+  return Object.fromEntries(Object.entries(value).filter((entry): entry is [string, Delivery] => {
+    const status = entry[1];
+    return status && typeof status === "object" && ["live", "saved", "unknown"].includes(status.status)
+      && typeof status.checkedAt === "string" && Number.isFinite(Date.parse(status.checkedAt));
+  }));
+}
+
+function displayDate(value: string) {
+  return new Date(`${value}T12:00:00Z`).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" });
+}
 
 function articleSlug(title: string) {
   return title.normalize("NFKD").replace(/[\u0300-\u036f]/g, "").toLowerCase()
@@ -36,6 +51,8 @@ export function NativeBlogEditor() {
   const [selectedSlug, setSelectedSlug] = useState("");
   const [slugEdited, setSlugEdited] = useState(false);
   const [posts, setPosts] = useState<NativeBlogDocument[]>([]);
+  const [delivery, setDelivery] = useState<ArticleDelivery>({});
+  const [historyChanged, setHistoryChanged] = useState(false);
   const [revision, setRevision] = useState<string | null>(null);
   const [catalogLoading, setCatalogLoading] = useState(true);
   const [catalogError, setCatalogError] = useState("");
@@ -50,13 +67,17 @@ export function NativeBlogEditor() {
   const operation = useRef<PublishOperation | null>(null);
   const editVersion = useRef(0);
   const publicationInProgress = useRef(false);
+  const catalogRequest = useRef(0);
   const previewHeading = useRef<HTMLHeadingElement>(null);
   const errorSummary = useRef<HTMLDivElement>(null);
 
-  const loadCatalog = useCallback(async (signal?: AbortSignal) => {
+  const loadCatalog = useCallback(async (signal?: AbortSignal, statusRevision?: string) => {
+    const requestId = ++catalogRequest.current;
     try {
       const response = await fetch("/api/blog/editor", { credentials: "same-origin", cache: "no-store", signal });
+      if (signal?.aborted || requestId !== catalogRequest.current) return;
       if (response.status === 401 || response.status === 403) {
+        setDelivery({});
         setSessionExpired(true);
         setCatalogError("Your editor session has expired. Sign in again to continue.");
         return;
@@ -65,15 +86,27 @@ export function NativeBlogEditor() {
       const data: unknown = await response.json();
       if (!data || typeof data !== "object" || !("posts" in data) || !Array.isArray(data.posts)
         || !data.posts.every(catalogDocument) || !("revision" in data) || typeof data.revision !== "string" || !data.revision) throw new Error("catalog");
-      if (signal?.aborted) return;
-      setPosts(data.posts);
-      setRevision(data.revision);
+      if (signal?.aborted || requestId !== catalogRequest.current) return;
+      if (statusRevision && data.revision !== statusRevision) {
+        setHistoryChanged(true);
+        setDelivery({});
+        return;
+      }
+      if (!statusRevision) {
+        setPosts(data.posts);
+        setRevision(data.revision);
+        setHistoryChanged(false);
+      }
+      setDelivery(deliveryCatalog("delivery" in data ? data.delivery : null));
       setCatalogError("");
       setSessionExpired(false);
     } catch {
-      if (!signal?.aborted) setCatalogError("The article list could not be loaded. Your text is still here. Try loading it again before publishing.");
+      if (!signal?.aborted && requestId === catalogRequest.current) {
+        setDelivery({});
+        setCatalogError("The article list could not be loaded. Your text is still here. Try loading it again before publishing.");
+      }
     } finally {
-      if (!signal?.aborted) setCatalogLoading(false);
+      if (!signal?.aborted && requestId === catalogRequest.current && !statusRevision) setCatalogLoading(false);
     }
   }, []);
 
@@ -84,6 +117,19 @@ export function NativeBlogEditor() {
     });
     return () => controller.abort();
   }, [loadCatalog]);
+
+  const awaitingDelivery = posts.some(article => delivery[article.slug]?.status !== "live");
+  useEffect(() => {
+    if (!awaitingDelivery || !revision || sessionExpired || historyChanged) return;
+    const controller = new AbortController();
+    let checking = false;
+    const timer = setInterval(() => {
+      if (checking || publicationInProgress.current || document.visibilityState !== "visible") return;
+      checking = true;
+      void loadCatalog(controller.signal, revision).finally(() => { checking = false; });
+    }, 20_000);
+    return () => { clearInterval(timer); controller.abort(); };
+  }, [awaitingDelivery, revision, sessionExpired, historyChanged, loadCatalog]);
 
   useEffect(() => {
     if (preview) previewHeading.current?.focus();
@@ -151,6 +197,7 @@ export function NativeBlogEditor() {
   async function publishArticle() {
     if (!preview || !revision || catalogLoading || sessionExpired || publicationInProgress.current) return;
     publicationInProgress.current = true;
+    catalogRequest.current += 1;
     setPublishing(true);
     setError("");
     try {
@@ -185,7 +232,9 @@ export function NativeBlogEditor() {
       const data: unknown = await response.json();
       if (!data || typeof data !== "object" || !("document" in data) || !catalogDocument(data.document)
         || !("commitSha" in data) || typeof data.commitSha !== "string" || !("status" in data) || data.status !== "queued") throw new Error("publish");
-      setSaved({ document: data.document, commitSha: data.commitSha });
+      const document = data.document;
+      setSaved({ document, commitSha: data.commitSha });
+      setDelivery(current => ({ ...current, [document.slug]: { status: "saved", checkedAt: new Date().toISOString() } }));
       setSelectedSlug(data.document.slug);
       setSlugEdited(true);
       setPost(pending.post);
@@ -206,6 +255,8 @@ export function NativeBlogEditor() {
   }
 
   const busy = publishing;
+  const savedDelivery = saved && posts.some(article => article.slug === saved.document.slug && article.publicationId === saved.document.publicationId)
+    ? delivery[saved.document.slug]?.status : "unknown";
   const errorId = (field: keyof NativeBlogInput) => errors[field] ? `native-blog-${field}-error` : undefined;
 
   return <section className="native-blog-editor" aria-labelledby="native-blog-editor-title">
@@ -215,6 +266,18 @@ export function NativeBlogEditor() {
     </header>
 
     <div className="nbe-catalog">
+      <div className="nbe-history-heading"><h2>Article history</h2><button className="nbe-button nbe-button-secondary" type="button" onClick={() => selectArticle("")} disabled={busy}>New article</button></div>
+      <p className="nbe-hint">Saved means the latest version is stored. Live means that exact version is on the website. Open an article below to edit it.</p>
+      {!catalogLoading && !catalogError && posts.length === 0 && <p className="nbe-empty-history">No saved articles yet. Your first published article will appear here.</p>}
+      {posts.length > 0 && <ul className="nbe-history-list" aria-label="Saved articles">{posts.map(article => {
+        const state = delivery[article.slug]?.status ?? "unknown";
+        return <li key={article.slug} className="nbe-history-card">
+          <div className="nbe-history-copy"><span className={`nbe-delivery nbe-delivery-${state}`}>{state === "live" ? "Live" : state === "saved" ? "Saved · waiting to go live" : "Saved · live status unconfirmed"}</span><h3>{article.title}</h3><p className="nbe-hint">First saved <time dateTime={article.publishedAt}>{displayDate(article.publishedAt)}</time> · Latest save <time dateTime={article.updatedAt}>{displayDate(article.updatedAt)}</time></p></div>
+          <div className="nbe-history-actions"><button className="nbe-button nbe-button-secondary" type="button" onClick={() => selectArticle(article.slug)} aria-label={`Open to edit: ${article.title}`} aria-pressed={selectedSlug === article.slug} disabled={busy}>Open to edit</button>{state === "live" && <a className="nbe-text-link" href={`/blog/${article.slug}`} target="_blank" rel="noopener noreferrer">View live article<span className="nbe-sr-only">: {article.title} (opens in a new tab)</span></a>}</div>
+        </li>;
+      })}</ul>}
+      {awaitingDelivery && !historyChanged && !sessionExpired && <p className="nbe-hint" role="status">Live status checks automatically every 20 seconds while this tab is visible. Deployment can take a few minutes; you don’t need to publish again.</p>}
+      {historyChanged && <p className="nbe-notice" role="status">The saved history has changed. Copy any unsaved text, then reload articles to see the latest versions.</p>}
       <label htmlFor="native-blog-article">Article</label>
       <div className="nbe-catalog-controls"><select id="native-blog-article" value={selectedSlug} onChange={event => selectArticle(event.target.value)} disabled={busy || catalogLoading}>
         <option value="">New article</option>{posts.map(article => <option value={article.slug} key={article.slug}>{article.title}</option>)}
@@ -223,7 +286,7 @@ export function NativeBlogEditor() {
       {sessionExpired && <div><Link className="nbe-text-link" href="/blog/editor" target="_blank" rel="noopener noreferrer" prefetch={false}>Sign in again<span className="nbe-sr-only"> (opens in a new tab)</span></Link><p className="nbe-hint">Sign in in the new tab, then reload articles here to continue with your text.</p></div>}
     </div>
 
-    {saved && <div className="nbe-notice nbe-saved" role="status"><strong>Saved. Waiting for deployment.</strong><p>{saved.document.title} has been queued. The public article may take a moment to update.</p><a href={`/blog/${saved.document.slug}`} target="_blank" rel="noopener noreferrer">Check public article<span className="nbe-sr-only"> (opens in a new tab)</span></a></div>}
+    {saved && <div className="nbe-notice nbe-saved" role="status"><strong>{savedDelivery === "live" ? "Live. Your latest save is on the website." : savedDelivery === "saved" ? "Saved. Waiting for deployment." : "Saved. Live status has not been confirmed."}</strong><p>{saved.document.title} has been queued. {savedDelivery === "live" ? "The deployed version matches your saved article." : "Keep this page open to check progress. You don’t need to publish it again."}</p><a href={`/blog/${saved.document.slug}`} target="_blank" rel="noopener noreferrer">Check public article<span className="nbe-sr-only"> (opens in a new tab)</span></a></div>}
 
     <form className="nbe-compose" onSubmit={previewArticle} noValidate aria-busy={busy}>
       {error && <div className="nbe-notice nbe-notice-error" role="alert" tabIndex={-1} ref={errorSummary}><p>{error}</p></div>}

@@ -32,7 +32,7 @@ const article = {
 const publicationId = "3372a388-8c8f-43f4-b7ba-332915991f31";
 const documentFor = post => ({ ...post, publishedAt: "2026-11-20", updatedAt: "2026-11-20", publicationId });
 const json = (value, status = 200) => new Response(JSON.stringify(value), { status, headers: { "Content-Type": "application/json" } });
-const catalog = (posts = [], revision = "catalog-revision-a") => json({ posts, revision });
+const catalog = (posts = [], revision = "catalog-revision-a", delivery = Object.fromEntries(posts.map(post => [post.slug, { status: "saved", checkedAt: "2026-11-20T22:30:00Z" }]))) => json({ posts, revision, delivery });
 const queued = post => json({ document: documentFor(post), commitSha: "a".repeat(40), status: "queued" });
 
 function find(element, predicate) {
@@ -55,7 +55,12 @@ function mount(t, delivery = async () => catalog()) {
   const hooks = [];
   const effects = [];
   const requests = [];
-  const savedGlobals = Object.fromEntries(["fetch", "crypto", "requestAnimationFrame"].map(key => [key, Object.getOwnPropertyDescriptor(globalThis, key)]));
+  const timers = new Map();
+  let timerId = 0;
+  const savedGlobals = Object.fromEntries(["fetch", "crypto", "requestAnimationFrame", "document", "setInterval", "clearInterval"].map(key => [key, Object.getOwnPropertyDescriptor(globalThis, key)]));
+  global.document = { visibilityState: "visible" };
+  global.setInterval = callback => { const id = ++timerId; timers.set(id, callback); return id; };
+  global.clearInterval = id => timers.delete(id);
   Object.defineProperty(globalThis, "crypto", { configurable: true, value: webcrypto });
   global.requestAnimationFrame = callback => { callback(0); return 1; };
   global.fetch = (url, options = {}) => {
@@ -120,6 +125,8 @@ function mount(t, delivery = async () => catalog()) {
       return fixture.render();
     },
     posts() { return requests.filter(request => request.options.method === "POST"); },
+    async tick() { for (const callback of [...timers.values()]) callback(); return fixture.settle(); },
+    timerCount() { return timers.size; },
   };
   fixture.render();
   return fixture;
@@ -276,4 +283,86 @@ test("an unrecognized success payload never claims the article is saved or live"
   assert.doesNotMatch(text(fixture.render()), /Saved\. Waiting for deployment/);
   assert.equal(fixture.field("body").props.value, article.body);
   assert.equal(text(fixture.publishButton()), "Retry publish");
+});
+
+test("history lists saved and live versions and opens an existing post without publishing", async t => {
+  const document = documentFor(article);
+  const fixture = mount(t, async () => catalog([document], "catalog-revision-a", { [article.slug]: { status: "live", checkedAt: "2026-11-20T22:30:00Z" } }));
+  await fixture.settle();
+  const tree = fixture.render();
+  assert.match(text(tree), /Article history/);
+  assert.match(text(tree), /First saved Nov 20, 2026/);
+  assert.ok(find(tree, element => element.props.className === "nbe-delivery nbe-delivery-live"));
+  assert.equal(fixture.timerCount(), 0, "confirmed live articles need no background polling");
+  find(tree, element => element.props["aria-label"] === `Open to edit: ${article.title}`).props.onClick();
+  assert.equal(fixture.field("body").props.value, article.body);
+  assert.equal(fixture.field("title").props.value, article.title);
+  assert.equal(fixture.field("slug").props.readOnly, true);
+  assert.equal(text(fixture.publishButton()), "Publish changes");
+  assert.equal(fixture.posts().length, 0);
+});
+
+test("pending history checks change Saved to Live without clearing text or publishing again", async t => {
+  const fixture = mount(t, async () => catalog([documentFor(article)]));
+  await fixture.settle();
+  fixture.fill({ ...article, title: "An unsaved article still being written" });
+  await fixture.preview();
+  assert.match(text(fixture.render()), /Saved · waiting to go live/);
+  assert.equal(fixture.timerCount(), 1);
+  fixture.deliver(async () => catalog([documentFor(article)], "catalog-revision-a", { [article.slug]: { status: "live", checkedAt: "2026-11-20T22:31:00Z" } }));
+  global.document.visibilityState = "hidden";
+  const before = fixture.requests.length;
+  await fixture.tick();
+  assert.equal(fixture.requests.length, before);
+  global.document.visibilityState = "visible";
+  await fixture.tick();
+  assert.ok(find(fixture.render(), element => element.props.className === "nbe-delivery nbe-delivery-live"));
+  assert.equal(fixture.field("title").props.value, "An unsaved article still being written");
+  assert.ok(find(fixture.render(), element => element.props.className === "nbe-preview"));
+  assert.equal(fixture.timerCount(), 0);
+  assert.equal(fixture.posts().length, 0);
+});
+
+test("a background check cannot advance the edit revision when another save changes history", async t => {
+  const fixture = mount(t, async () => catalog([documentFor(article)]));
+  await fixture.settle();
+  fixture.fill();
+  await fixture.preview();
+  fixture.deliver(async (_url, options) => options.method === "POST" ? json({ error: "Conflict" }, 409) : catalog([documentFor({ ...article, title: "A newer saved version from another editor" })], "catalog-revision-b"));
+  await fixture.tick();
+  assert.match(text(fixture.render()), /saved history has changed/);
+  assert.equal(fixture.field("title").props.value, article.title);
+  assert.equal(fixture.timerCount(), 0);
+  fixture.publishButton().props.onClick();
+  await fixture.settle();
+  assert.equal(JSON.parse(fixture.posts()[0].options.body).revision, "catalog-revision-a");
+  assert.match(text(fixture.render()), /article list changed/);
+});
+
+test("failed delivery verification retains history and never labels a saved article Live", async t => {
+  const fixture = mount(t, async () => catalog([documentFor(article)], "catalog-revision-a", { [article.slug]: { status: "unknown", checkedAt: "2026-11-20T22:30:00Z" } }));
+  await fixture.settle();
+  assert.match(text(fixture.render()), /Saved · live status unconfirmed/);
+  assert.ok(find(fixture.render(), element => element.props["aria-label"] === `Open to edit: ${article.title}`));
+  assert.equal(find(fixture.render(), element => element.props.className === "nbe-delivery nbe-delivery-live"), undefined);
+});
+
+test("editing a Live post never labels its new save Live while the catalog reload is pending", async t => {
+  const previous = { ...documentFor(article), publicationId: "178688b0-6369-4bba-8c9f-2665ae072e0c" };
+  const fixture = mount(t, async () => catalog([previous], "catalog-revision-a", { [article.slug]: { status: "live", checkedAt: "2026-11-20T22:30:00Z" } }));
+  await fixture.settle();
+  find(fixture.render(), element => element.props["aria-label"] === `Open to edit: ${article.title}`).props.onClick();
+  fixture.change("body", `${article.body}\n\nThis is the new approved revision.`);
+  await fixture.preview();
+  let finishCatalog;
+  fixture.deliver(async (_url, options) => options.method === "POST" ? queued({ ...article, body: fixture.field("body").props.value }) : new Promise(resolve => { finishCatalog = resolve; }));
+  fixture.publishButton().props.onClick();
+  await fixture.settle();
+  assert.doesNotMatch(text(fixture.render()), /Live\. Your latest save is on the website/);
+  assert.match(text(fixture.render()), /Saved\. Live status has not been confirmed/);
+  assert.equal(find(fixture.render(), element => element.props.className === "nbe-delivery nbe-delivery-live"), undefined);
+  const newer = { ...documentFor(article), publicationId: "907c3844-4618-45cb-8102-e788c00e6e24" };
+  finishCatalog(catalog([newer], "catalog-revision-c", { [article.slug]: { status: "live", checkedAt: "2026-11-20T22:32:00Z" } }));
+  await fixture.settle();
+  assert.doesNotMatch(text(fixture.render()), /Live\. Your latest save is on the website/, "a different writer's live version cannot verify this save");
 });

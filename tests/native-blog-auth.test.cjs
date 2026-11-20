@@ -76,6 +76,7 @@ function routeHarness(overrides = {}) {
     "@/lib/blog-editor-auth": { ...auth, ...overrides.auth },
     "@/lib/native-blog-content": content,
     "@/lib/native-blog-store": store,
+    "@/lib/native-blog-delivery": { async readArticleDeliveries() { return {}; }, ...overrides.delivery },
   });
   return { ...route, calls, NativeBlogStoreError };
 }
@@ -215,8 +216,27 @@ test("authenticated catalog reads use private responses and expose the storage r
   const response = await route.GET(editorRequest("GET"));
   assert.equal(response.status, 200);
   privateResponse(response);
-  assert.deepEqual(await response.json(), { posts: [], revision: "a".repeat(40) });
+  assert.deepEqual(await response.json(), { posts: [], revision: "a".repeat(40), delivery: {} });
   assert.deepEqual(route.calls, { read: 1, publish: [] });
+});
+
+test("unavailable public verification still returns saved articles so they can be reopened", async t => {
+  environment(t);
+  const post = { ...article(), publicationId: publication().operationId, publishedAt: "2026-11-20", updatedAt: "2026-11-20" };
+  const checkedAt = "2026-11-20T22:30:00.000Z";
+  const route = routeHarness({
+    store: { async readPublicationCatalog() { return { posts: [post], revision: "a".repeat(40) }; } },
+    delivery: { async readArticleDeliveries(posts) {
+      assert.deepEqual(posts, [post]);
+      return { [post.slug]: { status: "unknown", checkedAt } };
+    } },
+  });
+  const response = await route.GET(editorRequest("GET"));
+  assert.equal(response.status, 200);
+  privateResponse(response);
+  assert.deepEqual(await response.json(), {
+    posts: [post], revision: "a".repeat(40), delivery: { [post.slug]: { status: "unknown", checkedAt } },
+  });
 });
 
 test("publish requests reject foreign origins, unsupported bodies and malformed fields before storage", async t => {
