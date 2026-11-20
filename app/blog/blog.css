@@ -7,7 +7,6 @@
 .catalyst-blog-page .blog-awaiting-edition h2 { font-size: clamp(29px, 3.2vw, 44px); line-height: 1.2; margin: 20px 0; }
 .catalyst-blog-page .blog-awaiting-edition p:not(.overline) { max-width: 620px; font-size: 15px; line-height: 1.85; color: #52606d; margin-bottom: 20px; }
 .catalyst-blog-page .blog-library-footer { display: flex; justify-content: space-between; align-items: flex-end; gap: 32px; }
-.catalyst-blog-page .blog-editor-entry { display: inline-flex; align-items: center; gap: 7px; color: #52606d; font-size: 12px; line-height: 1.7; }
 .catalyst-blog-page .blog-evidence { padding: 28px; background: #edf3f8; border-left: 3px solid #2f5d8f; border-radius: 0; }
 .catalyst-blog-page .blog-evidence > div + div { border-top: 1px solid #c6d3de; padding-top: 24px; margin-top: 26px; }
 .catalyst-blog-page .blog-evidence .blog-evidence-claim { font-size: 18px; color: #173454; }
@@ -28,5 +27,4 @@
   .catalyst-blog-page .blog-edition-mark { min-height: 0; aspect-ratio: 2.4; border-radius: 14px; }
   .catalyst-blog-page .blog-edition-mark svg { width: 40px; }
   .catalyst-blog-page .blog-library-footer { display: block; }
-  .catalyst-blog-page .blog-editor-entry { margin-top: 32px; }
 }
