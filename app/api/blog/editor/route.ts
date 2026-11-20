@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { editorCookieName, hasEditorSession, readEditorBody, sameEditorOrigin } from "@/lib/blog-editor-auth";
 import { parseNativeBlogInput } from "@/lib/native-blog-content";
 import { NativeBlogStoreError, publishDocument, readPublicationCatalog } from "@/lib/native-blog-store";
+import { readArticleDeliveries } from "@/lib/native-blog-delivery";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -11,7 +12,10 @@ const storeError = (error: unknown) => error instanceof NativeBlogStoreError ? j
 
 export async function GET(request: NextRequest) {
   if (!hasEditorSession(request.cookies.get(editorCookieName())?.value)) return json({ error: "Sign in to open the editor." }, 401);
-  try { return json(await readPublicationCatalog()); }
+  try {
+    const catalog = await readPublicationCatalog();
+    return json({ ...catalog, delivery: await readArticleDeliveries(catalog.posts) });
+  }
   catch (error) { return storeError(error); }
 }
 
