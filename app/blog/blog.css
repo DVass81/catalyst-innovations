@@ -15,6 +15,14 @@
 .catalyst-blog-page .blog-evidence p:not(.blog-evidence-claim) { font-size: 14px; }
 .catalyst-blog-page .blog-source-details { margin-top: 10px; }
 .catalyst-blog-page .blog-source-details p { margin: 6px 0; }
+.catalyst-blog-page .blog-without-toc { grid-template-columns: minmax(0, 760px); justify-content: center; }
+.catalyst-blog-page .native-blog-body { overflow-wrap: anywhere; }
+.catalyst-blog-page .native-blog-body :is(h2, h3) { margin: 40px 0 18px; scroll-margin-top: 125px; }
+.catalyst-blog-page .native-blog-body h3 { font-size: 24px; line-height: 1.3; }
+.catalyst-blog-page .native-blog-body ol { padding-left: 24px; margin: 20px 0; list-style: decimal; }
+.catalyst-blog-page .native-blog-body a { color: #245b83; text-decoration: underline; text-underline-offset: 3px; }
+.catalyst-blog-page .native-blog-body blockquote { margin: 24px 0; padding-left: 20px; border-left: 3px solid #bcc5c4; }
+.catalyst-blog-page .native-blog-body hr { margin: 32px 0; border: 0; border-top: 1px solid #bcc5c4; }
 @media (max-width: 780px) {
   .catalyst-blog-page .blog-awaiting-edition { grid-template-columns: 1fr; }
   .catalyst-blog-page .blog-edition-mark { min-height: 0; aspect-ratio: 2.4; border-radius: 14px; }

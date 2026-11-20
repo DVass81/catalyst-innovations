@@ -6,10 +6,12 @@ import { getCalculator } from "@/lib/calculators";
 import { services } from "@/data/services";
 import { industryNeeds } from "@/data/industryNeeds";
 import { approvalContentPayload, articleWordCount } from "@/studio/lib/approval";
+import nativeCatalog from "@/data/blog-published.json";
+import { nativeBlogHeadings, nativeReadingMinutes, parseNativeBlogDocument } from "@/lib/native-blog-content";
 
 export type BlogSource = Insight["sources"][number] & { publishedAt?: string; methodology?: string; context?: string };
 export type BlogEvidence = { claim: string; source: number; context: string; methodology: string; dataDate?: string };
-export type BlogPost = Omit<Insight, "solution" | "sources"> & { solution?: string; sources: BlogSource[]; evidence: BlogEvidence[] };
+export type BlogPost = Omit<Insight, "solution" | "sources"> & { solution?: string; sources: BlogSource[]; evidence: BlogEvidence[]; nativeBody?: string };
 
 /** Published content only. Editor drafts and credentials never enter this reader. */
 const slug = z.string().max(100).regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
@@ -140,7 +142,7 @@ export function normalizeBlogPost(input: unknown, today = todayEastern()): BlogP
 }
 
 export function blogReadingMinutes(post: BlogPost): number {
-  return Math.max(1, Math.ceil(articleWordCount(post) / 200));
+  return post.nativeBody ? nativeReadingMinutes(post.nativeBody) : Math.max(1, Math.ceil(articleWordCount(post) / 200));
 }
 
 export class BlogUnavailableError extends Error {
@@ -176,11 +178,22 @@ export async function readPublishedBlog({ projectId, dataset = "production", fet
   } catch { throw new BlogUnavailableError(); }
 }
 
-/** The real Blog is CMS-only. Never substitute the old Guides or an invented post. */
-export const getPublishedPosts = cache(() => readPublishedBlog({
-  projectId: process.env.NEXT_PUBLIC_BLOG_SANITY_PROJECT_ID,
-  dataset: process.env.NEXT_PUBLIC_BLOG_SANITY_DATASET || "production",
-}));
+/** Only explicitly published articles are bundled. Unsaved editor text never enters this catalog. */
+export function readNativePublishedBlog(input: unknown, today = todayEastern()): BlogPost[] {
+  if (!Array.isArray(input) || !date.safeParse(today).success) throw new BlogUnavailableError();
+  const documents = input.map(parseNativeBlogDocument);
+  if (documents.some(post => !post || post.publishedAt > today || post.updatedAt > today)) throw new BlogUnavailableError();
+  const published = documents.filter(post => post !== null);
+  if (new Set(published.map(post => post.slug)).size !== published.length || new Set(published.map(post => post.publicationId)).size !== published.length) throw new BlogUnavailableError();
+  return published.map(post => ({
+    slug: post.slug, title: post.title, description: post.description, category: post.category,
+    publishedAt: post.publishedAt, updatedAt: post.updatedAt, nativeBody: post.body,
+    introduction: "", takeaway: "", example: { title: "", text: "" }, nextStep: "", tools: [], sources: [], evidence: [],
+    sections: nativeBlogHeadings(post.body).map(heading => ({ id: heading.id, heading: heading.text, paragraphs: [] })),
+  })).sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
+}
+
+export const getPublishedPosts = cache(async () => readNativePublishedBlog(nativeCatalog));
 
 export async function getPublishedPost(articleSlug: string) {
   if (!slug.safeParse(articleSlug).success) return undefined;
