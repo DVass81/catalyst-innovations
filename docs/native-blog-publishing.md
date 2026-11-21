@@ -16,7 +16,7 @@ The reader presents each edition as a company post with a compact publisher row,
 
 Use blank lines for paragraphs, `##` for headings, `###` for subheadings, `-` for lists, `**bold**`, and `[source title](https://example.com)` for citations. HTML is displayed as text. Pasting rich text preserves its plain text; inspect the preview for formatting you want to add. The editor does not upload images.
 
-Select an existing article to revise it. Its URL and original publication date remain fixed. All publication dates use the New York calendar day. Friday is the writing cadence; there is no unattended publishing automation. Echo needs the same authorized session and Josh’s approval to publish.
+Select an existing article to revise it. Its URL and original publication date remain fixed. All publication dates use the New York calendar day. The regular editor keeps its eight-hour session. Josh has separately authorized Echo’s Friday articles without per-article approval; the dedicated, restricted browser publisher and its one-time private activation are described in [Echo’s weekly publishing handoff](echo-weekly-publisher.md). It uses neither the editor’s session nor a general account grant. Actual scheduled cloud-session reuse remains unverified until observed.
 
 History shows the latest saved version of each article, rather than every Git revision. Previous versions remain in GitHub history. **Reload articles** refreshes the list; unsaved text stays in the form, and another preview is required. Automatic status checks preserve the open text, preview and edit revision. If another person saves a change, the editor asks you to reload rather than silently advancing that revision.
 
@@ -24,7 +24,7 @@ Text that has not been published exists only in the open editor page. Keep the o
 
 ## One-time production activation
 
-The implementation is prepared locally. It must not be described as connected until these steps and the live checks pass. No production credentials are included in source.
+The regular editor was activated on November 20, 2026, and the first actual article is live. The following is the original activation procedure, retained for recovery. The separate Echo publisher requires its own private activation. No production credentials are included in source.
 
 - Use the existing DigitalOcean App Platform application for `mycatalystinnovations.com`, connected to `My-Catalyst-Innovations/catalyst-innovations`, branch `main`. The repository transferred to the shared organization on November 20, 2026; Josh's repository administrator access was verified after the transfer. Verify the live app's GitHub connection points to that canonical repository before activation. Preserve its actual app spec, secrets and unrelated configuration. `.do/app.yaml` is a template, not an export of production settings.
 - Josh or another approved organization owner should create a fine-grained GitHub token with **My-Catalyst-Innovations** as resource owner, **only this repository** selected and **Contents: read/write**, with an expiration and renewal owner. Complete any required organization approval through GitHub's normal controls. Confirm the token can write this fixed content file on `main` under current branch rules. Do not use the developer’s broad CLI token or add workflow/admin permissions.

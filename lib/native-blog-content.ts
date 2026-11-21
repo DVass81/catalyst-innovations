@@ -8,7 +8,7 @@ const calendarDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/).refine(value => {
 export const nativeBlogSchema = z.object({
   title: z.string().trim().min(10).max(120),
   slug: z.string().trim().max(100).regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)
-    .refine(value => value !== "editor", "Choose a different article address."),
+    .refine(value => !["editor", "publisher"].includes(value), "Choose a different article address."),
   description: z.string().trim().min(30).max(240),
   category: z.string().trim().min(1).max(80),
   body: z.string().min(100).max(60_000).refine(value => value.trim().length >= 100, "Enter at least 100 characters of article text."),
