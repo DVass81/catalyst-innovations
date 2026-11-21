@@ -1,0 +1,9 @@
+.native-blog-publisher .publisher-status { margin-top: 20px; padding: 20px; border: 1px solid var(--nbe-line); background: #fffefa; border-radius: 6px; }
+.native-blog-publisher .publisher-status p + p { margin-top: 8px; }
+.native-blog-publisher .publisher-receipt { margin-top: 20px; display: grid; gap: 10px; }
+.native-blog-publisher .publisher-receipt > div { display: grid; grid-template-columns: 100px minmax(0, 1fr); gap: 12px; }
+.native-blog-publisher .publisher-receipt dt { font-weight: 700; }
+.native-blog-publisher .publisher-receipt code { overflow-wrap: anywhere; word-break: break-all; font-size: 13px; }
+.native-blog-publisher .nbe-field-full { grid-column: 1 / -1; }
+.native-blog-publisher .nbe-error { margin-top: 20px; padding: 16px; border-left: 3px solid #a13428; color: #76291f; background: #f9ece5; }
+@media (max-width: 680px) { .native-blog-publisher .nbe-history-heading { align-items: stretch; flex-direction: column; } .native-blog-publisher .publisher-receipt > div { grid-template-columns: minmax(0, 1fr); gap: 2px; } }
