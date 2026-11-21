@@ -26,7 +26,7 @@ test("publisher API uses its own session, signed preview and exact delivery stat
   const editor = load("lib/blog-editor-auth.ts");
   const content = load("lib/native-blog-content.ts");
   const fingerprint = post => require("node:crypto").createHash("sha256").update(JSON.stringify(post)).digest("hex");
-  const post = { title: "A complete offline fixture", slug: "offline-fixture-never-published", description: "An offline fixture for the publishing route protections.", category: "Workflows", body: "This text stays inside an isolated mock. ".repeat(12) };
+  const post = { title: "A complete offline fixture", slug: "offline-fixture-never-published", description: "An offline fixture for the publishing route protections.", category: "Workflows", body: "This text stays inside an isolated mock. ".repeat(12), featuredImage: { assetId: content.nativeBlogImages[0].assetId, alt: content.nativeBlogImages[0].alt } };
   let writes = 0; let journal = []; let posts = []; let status = "saved";
   class PublisherStoreError extends Error { constructor(status, message) { super(message); this.status = status; } }
   const route = load("app/api/blog/publisher/route.ts", {
@@ -40,10 +40,14 @@ test("publisher API uses its own session, signed preview and exact delivery stat
   const guest = await route.GET(new NextRequest(`${origin}/api/blog/publisher`)); assert.equal(guest.status, 401);
   const wrongSession = await route.GET(new NextRequest(`${origin}/api/blog/publisher`, { headers: { cookie: `${editor.editorCookieName()}=${editor.createEditorSession()}` } })); assert.equal(wrongSession.status, 401);
   assert.equal(editor.hasEditorSession(auth.createPublisherSession()), false);
+  const { featuredImage, ...withoutPicture } = post;
+  assert.ok(featuredImage);
+  assert.equal((await route.POST(request({ action: "preview", post: withoutPicture }))).status, 422);
   assert.equal((await route.POST(request({ action: "preview", post }, { origin: "https://untrusted.example" }))).status, 403);
   const response = await route.POST(request({ action: "preview", post })); assert.equal(response.status, 200);
   assert.equal(response.headers.get("cache-control"), "no-store, private");
   const preview = await response.json();
+  assert.equal((await route.POST(request({ action: "publish", ...preview, post: { ...post, featuredImage: { ...post.featuredImage, alt: "A different description after the signed image preview." } } }))).status, 409); assert.equal(writes, 0);
   assert.equal((await route.POST(request({ action: "publish", ...preview, post: { ...post, title: "Changed after the signed preview" } }))).status, 409); assert.equal(writes, 0);
   const saved = await route.POST(request({ ...preview, action: "publish" })); assert.equal(saved.status, 200); assert.equal((await saved.json()).status, "SAVED"); assert.equal(writes, 1);
   const read = () => route.GET(new NextRequest(`${origin}/api/blog/publisher`, { headers: { cookie } })).then(response => response.json());

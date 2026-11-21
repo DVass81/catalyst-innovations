@@ -24,13 +24,16 @@ function load(name) {
 }
 const { createWeeklyPublication, readPublisherState, currentPublisherReceipt, publisherEdition, inputFingerprint, PublisherStoreError } = load("blog-publisher-store");
 const { publicationFingerprint } = load("native-blog-delivery");
+const { nativeBlogImages } = load("native-blog-content");
 const repository = "https://api.github.com/repos/My-Catalyst-Innovations/catalyst-innovations";
 const catalogPath = "data/blog-published.json";
 const journalPath = "data/blog-publication-journal.json";
 const edition = "2026-11-27";
 const friday = new Date("2026-11-27T13:00:00.000Z");
-const article = { title: "A practical way to save time", slug: "save-time", description: "A reviewable way to reduce repeat administrative work.", category: "Operations", body: "A complete original article with safe plain text. Start by reviewing one recurring administrative task with the person who owns the process." };
-const oldArticle = { ...article, slug: "earlier-edition", body: `${article.body} An earlier article offers a distinct example.`, publishedAt: "2026-11-20", updatedAt: "2026-11-20", publicationId: "7abf2afe-85b4-4000-8111-5d045837b115" };
+const textArticle = { title: "A practical way to save time", slug: "save-time", description: "A reviewable way to reduce repeat administrative work.", category: "Operations", body: "A complete original article with safe plain text. Start by reviewing one recurring administrative task with the person who owns the process." };
+const featuredImage = { assetId: nativeBlogImages[1].assetId, alt: nativeBlogImages[1].alt };
+const article = { ...textArticle, featuredImage };
+const oldArticle = { ...textArticle, slug: "earlier-edition", body: `${textArticle.body} An earlier article offers a distinct example.`, publishedAt: "2026-11-20", updatedAt: "2026-11-20", publicationId: "7abf2afe-85b4-4000-8111-5d045837b115" };
 
 function mockGit(posts = [], journal = []) {
   let counter = 0;
@@ -158,13 +161,54 @@ test("snapshots are pinned; publication atomically preserves existing articles a
   assert.equal(git.updates(), 1);
   assert.equal(git.files().get("unrelated.txt"), "Keep this file.");
   assert.deepEqual(git.read(catalogPath)[1], oldArticle);
+  assert.equal(Object.hasOwn(git.read(catalogPath)[1], "featuredImage"), false);
   const saved = git.read(catalogPath)[0];
+  assert.deepEqual(saved.featuredImage, featuredImage);
   assert.equal(saved.publishedAt, edition);
   assert.equal(result.receipt.documentFingerprint, publicationFingerprint(saved));
   assert.equal(result.receipt.inputFingerprint, inputFingerprint(article));
   assert.deepEqual(git.read(journalPath), [result.receipt]);
   assert.equal(result.receipt.savedAt, friday.toISOString());
   assert.equal(currentPublisherReceipt(await readPublisherState(git.fetcher), edition).publicationId, saved.publicationId);
+});
+
+test("the atomic journal binds the exact image and alt; same-edition image-only retries cannot replace them", async () => {
+  const git = mockGit([oldArticle]);
+  const revision = git.head();
+  const result = await createWeeklyPublication(article, revision, edition, git.fetcher, friday);
+  const treeWrite = git.calls.find(call => call.relative === "/git/trees" && call.options.method === "POST");
+  const entries = JSON.parse(treeWrite.options.body).tree;
+  assert.deepEqual(entries.map(entry => entry.path).sort(), [catalogPath, journalPath].sort());
+  const atomicCatalog = JSON.parse(entries.find(entry => entry.path === catalogPath).content);
+  const [atomicReceipt] = JSON.parse(entries.find(entry => entry.path === journalPath).content);
+  const [saved] = atomicCatalog;
+  assert.deepEqual(saved.featuredImage, featuredImage);
+  assert.equal(atomicReceipt.inputFingerprint, inputFingerprint(article));
+  assert.equal(atomicReceipt.documentFingerprint, publicationFingerprint(saved));
+  assert.deepEqual(atomicReceipt, result.receipt);
+  assert.equal(atomicReceipt.bodyFingerprint, createHash("sha256").update(article.body.normalize("NFKC").replace(/\s+/gu, " ").trim()).digest("hex"));
+  const writes = git.calls.filter(call => call.options.method !== "GET").length;
+  const identical = await createWeeklyPublication({ ...article, featuredImage: { ...featuredImage, alt: ` ${featuredImage.alt} ` } }, revision, edition, git.fetcher, friday);
+  assert.deepEqual(identical, { receipt: result.receipt, idempotentReplay: true });
+  const another = nativeBlogImages.find(image => image.assetId !== featuredImage.assetId);
+  const changes = [
+    { ...article, featuredImage: { assetId: another.assetId, alt: another.alt } },
+    { ...article, featuredImage: { ...featuredImage, alt: "A new description of the same planning photograph." } },
+    textArticle,
+  ];
+  for (const changed of changes) {
+    assert.equal(changed.body, article.body);
+    assert.notEqual(inputFingerprint(changed), result.receipt.inputFingerprint);
+    const changedDocument = { ...saved };
+    if (changed.featuredImage) changedDocument.featuredImage = changed.featuredImage;
+    else delete changedDocument.featuredImage;
+    assert.notEqual(publicationFingerprint(changedDocument), result.receipt.documentFingerprint);
+    await expectStatus(createWeeklyPublication(changed, revision, edition, git.fetcher, friday), 409);
+  }
+  assert.equal(git.calls.filter(call => call.options.method !== "GET").length, writes);
+  assert.equal(git.updates(), 1);
+  assert.deepEqual(git.read(journalPath), [result.receipt]);
+  assert.deepEqual(git.read(catalogPath)[0].featuredImage, featuredImage);
 });
 
 test("simultaneous identical publications leave one article and one journal entry on main", async () => {

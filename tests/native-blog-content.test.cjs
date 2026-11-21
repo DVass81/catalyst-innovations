@@ -7,6 +7,7 @@ const Module = require("node:module");
 const ts = require("typescript");
 const React = require("react");
 const { renderToStaticMarkup } = require("react-dom/server");
+const { createHash } = require("node:crypto");
 
 function load(file, mocks = {}) {
   const filename = path.join(__dirname, "..", file);
@@ -51,6 +52,64 @@ test("published documents require real calendar dates and publication identity",
   assert.deepEqual(content.parseNativeBlogDocument(document), document);
   for (const change of [{ publishedAt: "2026-02-29" }, { publishedAt: "2028-02-30" }, { updatedAt: "2028-02-28" }, { publicationId: "invented" }]) {
     assert.equal(content.parseNativeBlogDocument({ ...document, ...change }), null);
+  }
+});
+
+test("featured images accept only curated immutable identities and meaningful plain-text alternative text", () => {
+  const image = content.nativeBlogImages[0];
+  const featuredImage = { assetId: image.assetId, alt: `  ${image.alt}  ` };
+  const parsed = content.parseNativeBlogInput({ ...fixture(), featuredImage });
+  assert.deepEqual(parsed.featuredImage, { assetId: image.assetId, alt: image.alt });
+  const document = { ...parsed, publishedAt: "2026-11-20", updatedAt: "2026-11-20", publicationId: "3372a388-8c8f-43f4-b7ba-332915991f31" };
+  assert.deepEqual(content.parseNativeBlogDocument(document).featuredImage, parsed.featuredImage);
+  for (const invalid of [
+    null, "https://attacker.test/image.webp", { assetId: "f".repeat(64), alt: image.alt },
+    { assetId: image.src, alt: image.alt }, { assetId: image.assetId, alt: "short" },
+    { assetId: image.assetId, alt: "x".repeat(251) }, { assetId: image.assetId, alt: "A <script>bad image</script> description" },
+    { assetId: image.assetId, alt: "A descriptive image\u0000 label" },
+    { assetId: image.assetId, alt: image.alt, url: "https://attacker.test/image.webp" },
+  ]) assert.equal(content.parseNativeBlogInput({ ...fixture(), featuredImage: invalid }), null);
+});
+
+test("image absence preserves legacy canonical content and image-only changes alter version identity", () => {
+  const legacy = fixture();
+  const parsed = content.parseNativeBlogInput(legacy);
+  assert.deepEqual(parsed, legacy);
+  assert.equal(Object.hasOwn(parsed, "featuredImage"), false);
+  const hash = value => createHash("sha256").update(JSON.stringify(value)).digest("hex");
+  assert.equal(hash(parsed), hash(legacy));
+  const legacyDocument = { ...legacy, publishedAt: "2026-11-20", updatedAt: "2026-11-20", publicationId: "3372a388-8c8f-43f4-b7ba-332915991f31" };
+  assert.equal(hash(content.parseNativeBlogDocument(legacyDocument)), hash(legacyDocument));
+  const first = content.nativeBlogImages[0];
+  const second = content.nativeBlogImages[1];
+  const withImage = content.parseNativeBlogInput({ ...legacy, featuredImage: { assetId: first.assetId, alt: first.alt } });
+  assert.notEqual(hash(withImage), hash(parsed));
+  assert.notEqual(hash(withImage), hash(content.parseNativeBlogInput({ ...legacy, featuredImage: { assetId: second.assetId, alt: second.alt } })));
+  assert.notEqual(hash(withImage), hash(content.parseNativeBlogInput({ ...legacy, featuredImage: { assetId: first.assetId, alt: "A carefully described manufacturing work environment." } })));
+});
+
+test("the curated image library resolves local covers with recorded rights and immutable matching bytes", () => {
+  const studio = load("data/studioMedia.ts").studioPhotos;
+  const originals = new Map(Object.values(studio).map(photo => [
+    createHash("sha256").update(fs.readFileSync(path.join(__dirname, "..", "public", photo.src))).digest("hex"), photo,
+  ]));
+  assert.equal(content.nativeBlogImages.length, 8);
+  assert.equal(new Set(content.nativeBlogImages.map(image => image.assetId)).size, 8);
+  assert.equal(content.nativeBlogImage(undefined), undefined);
+  for (const image of content.nativeBlogImages) {
+    const original = originals.get(image.assetId);
+    assert.ok(original, "Every curated image must retain a known studio source.");
+    assert.equal(image.src, `/blog-images/${image.assetId}.webp`);
+    const bytes = fs.readFileSync(path.join(__dirname, "..", "public", image.src));
+    assert.equal(createHash("sha256").update(bytes).digest("hex"), image.assetId);
+    assert.equal(bytes.toString("ascii", 0, 4), "RIFF");
+    assert.equal(bytes.toString("ascii", 8, 12), "WEBP");
+    assert.deepEqual([image.width, image.height, image.alt, image.credit, image.sourceUrl, image.licenseUrl],
+      [original.width, original.height, original.alt, original.credit, original.sourceUrl, original.licenseUrl]);
+    assert.deepEqual(content.nativeBlogImage({ assetId: image.assetId, alt: "An article-specific plain-language image description." }), {
+      url: image.src, alt: "An article-specific plain-language image description.", width: image.width, height: image.height,
+      credit: image.credit, sourceUrl: image.sourceUrl, caption: "Representative photography", licenseUrl: image.licenseUrl,
+    });
   }
 });
 

@@ -15,7 +15,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const post = await getPublishedPost((await params).slug);
   if (!post) notFound();
   const metadata = pageMetadata({ title: post.title, description: post.description, path: `/blog/${post.slug}` });
-  const image = { url: new URL(`/blog/${post.slug}/opengraph-image`, site.url).toString(), width: 1200, height: 630, alt: `${post.title} | ${site.name}` };
+  const image = post.cover
+    ? { url: new URL(post.cover.url, site.url).toString(), width: post.cover.width ?? 1200, height: post.cover.height ?? 800, alt: post.cover.alt }
+    : { url: new URL(`/blog/${post.slug}/opengraph-image`, site.url).toString(), width: 1200, height: 630, alt: `${post.title} | ${site.name}` };
   return {
     ...metadata,
     openGraph: { ...metadata.openGraph, type: "article", publishedTime: post.publishedAt, modifiedTime: post.updatedAt, images: [image] },

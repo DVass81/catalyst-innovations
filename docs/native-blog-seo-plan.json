@@ -9,6 +9,36 @@
   },
   "publicMetadata": "Existing BlogPosting, RSS, sitemap, canonical and sharing paths preserved. No first article supplied or published.",
   "performance": "No new production field CWV measured. Do not claim SEO ready.",
+  "featuredImagesIncrement": {
+    "observedAt": "2026-11-20",
+    "scope": "Incremental featured-picture selection and rendering for native Blog articles. Preserve the historical plan, its 85-point score, existing canonical routes and first article body.",
+    "mode": "PRODUCTION",
+    "intent": "INFORMATIONAL",
+    "sourceClassification": "VERIFIED_REPOSITORY_RECORDS",
+    "provenance": "Eight existing licensed studio photographs; source, rights review, credits and representative-use limits recorded in docs/studio-media-sources.md.",
+    "catalog": "lib/native-blog-content.ts: nativeBlogImages",
+    "assetIdentity": "Full SHA-256 of each file's bytes; byte-identical immutable copy at /blog-images/<assetId>.webp. Never overwrite a hashed asset.",
+    "publicationIdentity": "featuredImage.assetId and meaningful plain-text alt enter normalized preview, retry and saved-document fingerprints. The existing catalog and atomic publication journal retain version identity; image changes cannot replay an old save.",
+    "rolloutOrder": "Deploy image-aware code/schema/assets first and verify the complete DigitalOcean rollout; only then backfill an approved existing article image in a separate content commit. Keep its body unchanged. Reject an older editor request that omits a previously assigned image.",
+    "reader": {
+      "placement": "Selected picture and visible source/credit above the article title on the Blog and permanent article page.",
+      "legacyCompatibility": "Old documents without featuredImage remain valid and keep their prior canonical fingerprints.",
+      "alternativeText": "10-250 characters, plain text, truthful to the image; no staff, client or project claims for representative photography.",
+      "dimensions": "Known intrinsic width and height reserve layout space; responsive sizes preserve a useful mobile crop.",
+      "loading": "High priority only for the main article image; lazy archive/related thumbnails.",
+      "metadata": "Use the actual selected image for individual article Open Graph/Twitter metadata and BlogPosting image; preserve stable article URLs and text fallback for old articles."
+    },
+    "accessBoundary": "Approved local-library selection only. No file uploads, arbitrary URLs, automatic image generation, new provider, spending or environment grant. Echo publisher remains disabled pending owner activation and private cloud-browser sign-in.",
+    "verificationRequired": [
+      "Reject unknown asset IDs, extra image URLs and HTML alternative text rather than silently omitting a requested image.",
+      "Verify immutable asset bytes match their filenames and recorded studio provenance.",
+      "Verify exact preview image, credit, history reopening and image-only retry conflicts.",
+      "Inspect main article and thumbnails on desktop and mobile; verify individual social metadata and BlogPosting image.",
+      "Confirm the existing first article body remains unchanged and no public test article is published."
+    ],
+    "scheduledEvidence": "Local image and retry checks do not prove Echo scheduled cloud-session reuse. Existing Friday task unchanged; no actual scheduled publishing proof claimed.",
+    "performanceStatus": "Field Core Web Vitals unmeasured; do not increase the historical score or claim SEO-ready from this increment."
+  },
   "plan": {
     "version": 1,
     "mode": "PRODUCTION",

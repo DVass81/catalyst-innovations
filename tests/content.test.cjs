@@ -30,6 +30,7 @@ const redesign = load("data/redesign.ts", { "./industries": load("data/industrie
 const site = { name: "Catalyst Innovations", url: "https://mycatalystinnovations.com" };
 const seo = load("lib/seo.ts", { "@/lib/site": { site } });
 const common = {
+  "@/components/BlogFeaturedImage": load("components/BlogFeaturedImage.tsx", { "next/image": { default: props => React.createElement("img", props) } }),
   "@/components/NativeBlogBody": load("components/NativeBlogBody.tsx", { "@/lib/native-blog-content": load("lib/native-blog-content.ts") }),
   "next/link": { default: ({ children, ...props }) => React.createElement("a", props, children) },
   "next/navigation": { notFound() { throw new Error("NOT_FOUND"); } },
@@ -209,7 +210,7 @@ test("the separate published blog controls post routes, evidence, related conten
   assert.match(html, /demo=painting&amp;industry=painting&amp;post=new-public-post/);
   assert.match(html, /src="\/media\/blog\/post-cover.webp"/);
   assert.match(html, /alt="A fictional workflow diagram"/);
-  assert.match(html, /loading="lazy"/);
+  assert.match(html, /loading="eager"/);
   assert.match(html, /Illustrative workflow/);
   assert.match(html, /Evidence context/);
   assert.match(html, /Evidence methodology/);
@@ -219,7 +220,8 @@ test("the separate published blog controls post routes, evidence, related conten
   assert.doesNotMatch(html, /href="\/solutions\/undefined"|id="try-your-numbers"|Another perspective/);
   const metadata = await page.generateMetadata({ params });
   assert.equal(metadata.alternates.canonical, `${site.url}/blog/new-public-post`);
-  assert.equal(metadata.openGraph.images[0].url, `${site.url}/blog/new-public-post/opengraph-image`);
+  assert.equal(metadata.openGraph.images[0].url, `${site.url}/media/blog/post-cover.webp`);
+  assert.equal(metadata.openGraph.images[0].alt, "A fictional workflow diagram");
   await assert.rejects(page.default({ params: Promise.resolve({ slug: insights.insights[0].slug }) }), /NOT_FOUND/, "a guide must not become a blog post");
   const unavailable = load("app/blog/[slug]/page.tsx", blogPageMocks({ getPublishedPost: async () => { throw new Error("catalog unavailable"); } }));
   await assert.rejects(unavailable.default({ params }), /catalog unavailable/);

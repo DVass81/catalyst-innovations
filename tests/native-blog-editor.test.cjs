@@ -22,12 +22,21 @@ function load(file, mocks = {}) {
 }
 
 const content = load("lib/native-blog-content.ts");
+const image = content.nativeBlogImages.find(item => item.label === "Office and paperwork");
+const featuredImage = { assetId: image.assetId, alt: image.alt };
+function TestNextImage() { return null; }
+const FeaturedImage = load("components/BlogFeaturedImage.tsx", { "next/image": { default: TestNextImage } }).default;
+const ImagePicker = load("components/NativeBlogImagePicker.tsx", {
+  "@/components/BlogFeaturedImage": { default: FeaturedImage },
+  "@/lib/native-blog-content": content,
+}).default;
 const article = {
   title: "A clear handoff for every customer request",
   slug: "a-clear-handoff-for-every-customer-request",
   description: "A practical guide to making customer handoffs easier to follow.",
   category: "Everyday operations",
   body: "Follow one real customer request from the beginning to the end. Identify who is responsible at every step and which information they need.\n\n## Make the next step clear\n\nWrite down the next action so the person receiving the request can continue confidently.",
+  featuredImage,
 };
 const publicationId = "3372a388-8c8f-43f4-b7ba-332915991f31";
 const documentFor = post => ({ ...post, publishedAt: "2026-11-20", updatedAt: "2026-11-20", publicationId });
@@ -92,6 +101,8 @@ function mount(t, delivery = async () => catalog()) {
     },
     "next/link": { default: function TestLink() { return null; } },
     "@/components/NativeBlogBody": { default: function TestBody() { return null; } },
+    "@/components/NativeBlogImagePicker": { default: ImagePicker },
+    "@/components/BlogFeaturedImage": { default: FeaturedImage },
     "@/lib/native-blog-content": content,
   }).default;
   t.after(() => {
@@ -112,7 +123,10 @@ function mount(t, delivery = async () => catalog()) {
     },
     field(name) { return find(fixture.render(), element => element.props.id === `native-blog-${name}`); },
     change(name, value) { fixture.field(name).props.onChange({ target: { value } }); },
-    fill(post = article) { for (const [name, value] of Object.entries(post)) fixture.change(name, value); },
+    imagePicker() { return find(fixture.render(), element => element.type === ImagePicker); },
+    imageControl(suffix) { return find(ImagePicker(fixture.imagePicker().props), element => element.props.id === `native-blog-${suffix}`); },
+    selectImage(value) { fixture.imagePicker().props.onChange(value); },
+    fill(post = article) { for (const [name, value] of Object.entries(post)) { if (name === "featuredImage") fixture.selectImage(value); else fixture.change(name, value); } },
     publishButton() { return find(fixture.render(), element => element.type === "button" && /^(Publish|Retry publish|Saving article)/.test(text(element))); },
     reloadButton() { return find(fixture.render(), element => element.type === "button" && /^(Reload articles|Loading articles)/.test(text(element))); },
     async preview() {
@@ -365,4 +379,122 @@ test("editing a Live post never labels its new save Live while the catalog reloa
   finishCatalog(catalog([newer], "catalog-revision-c", { [article.slug]: { status: "live", checkedAt: "2026-11-20T22:32:00Z" } }));
   await fixture.settle();
   assert.doesNotMatch(text(fixture.render()), /Live\. Your latest save is on the website/, "a different writer's live version cannot verify this save");
+});
+
+test("new articles require an image before preview, while image-free legacy edits can still save", async t => {
+  const legacy = { ...article };
+  delete legacy.featuredImage;
+  const fixture = mount(t, async (_url, options) => options.method === "POST" ? queued(legacy) : catalog([documentFor(legacy)]));
+  await fixture.settle();
+  fixture.fill(legacy);
+  assert.equal(fixture.imagePicker().props.required, true);
+  await fixture.preview();
+  assert.match(text(fixture.render()), /Choose a featured image for your new article/);
+  assert.equal(find(fixture.render(), element => element.props.className === "nbe-preview"), undefined);
+  assert.equal(fixture.publishButton().props.disabled, true);
+  fixture.imageControl("image").props.onChange({ target: { value: image.assetId } });
+  await fixture.preview();
+  assert.deepEqual(fixture.imagePicker().props.value, featuredImage);
+  assert.equal(fixture.publishButton().props.disabled, false);
+
+  find(fixture.render(), element => element.props["aria-label"] === `Open to edit: ${legacy.title}`).props.onClick();
+  assert.equal(fixture.imagePicker().props.required, false);
+  assert.equal(fixture.imagePicker().props.value, undefined);
+  await fixture.preview();
+  assert.equal(fixture.publishButton().props.disabled, false);
+  fixture.publishButton().props.onClick();
+  await fixture.settle();
+  const payload = JSON.parse(fixture.posts()[0].options.body);
+  assert.equal(Object.hasOwn(payload.post, "featuredImage"), false);
+  assert.equal(payload.revision, "catalog-revision-a");
+  assert.match(text(fixture.render()), /Saved\. Waiting for deployment/);
+});
+
+test("opening a saved article preserves its image and resetting starts with no inherited selection", async t => {
+  const fixture = mount(t, async () => catalog([documentFor(article)]));
+  await fixture.settle();
+  find(fixture.render(), element => element.props["aria-label"] === `Open to edit: ${article.title}`).props.onClick();
+  assert.deepEqual(fixture.imagePicker().props.value, featuredImage);
+  await fixture.preview();
+  const previewArticle = find(fixture.render(), element => element.props.className === "nbe-preview-article");
+  const firstChild = React.Children.toArray(previewArticle.props.children)[0];
+  assert.equal(firstChild.props.className, "nbe-preview-image", "the picture precedes the article's topic and title");
+  const picture = find(previewArticle, element => element.type === FeaturedImage);
+  assert.deepEqual(picture.props.cover, content.nativeBlogImage(featuredImage));
+  assert.equal(picture.props.cover.credit, image.credit);
+  const renderedPicture = FeaturedImage(picture.props);
+  assert.equal(find(renderedPicture, element => element.type === TestNextImage).props.src, image.src);
+  assert.equal(find(renderedPicture, element => element.type === "a").props.href, image.sourceUrl);
+  assert.equal(text(renderedPicture).split(image.credit).length - 1, 1, "the shared visual supplies the credit exactly once");
+
+  find(fixture.render(), element => element.type === "button" && text(element) === "New article").props.onClick();
+  assert.equal(fixture.imagePicker().props.value, undefined);
+  assert.equal(fixture.imagePicker().props.required, true);
+  assert.equal(fixture.field("title").props.value, "");
+  assert.equal(fixture.field("slug").props.readOnly, false);
+  assert.equal(fixture.publishButton().props.disabled, true);
+});
+
+test("image or alt edits invalidate the preview and save only the new exact image with the locked revision", async t => {
+  const fixture = mount(t, async () => catalog([documentFor(article)]));
+  await fixture.settle();
+  find(fixture.render(), element => element.props["aria-label"] === `Open to edit: ${article.title}`).props.onClick();
+  await fixture.preview();
+  const nextImage = { ...featuredImage, alt: "Hands compare a blank paper form with notes beside a calculator." };
+  fixture.imageControl("image-alt").props.onChange({ target: { value: nextImage.alt } });
+  assert.equal(fixture.publishButton().props.disabled, true);
+  assert.equal(find(fixture.render(), element => element.props.className === "nbe-preview"), undefined);
+  await fixture.preview();
+  const expected = content.parseNativeBlogInput({ ...article, featuredImage: nextImage });
+  let finish;
+  fixture.deliver(async (_url, options) => options.method === "POST" ? new Promise(resolve => { finish = resolve; }) : catalog([documentFor(expected)], "catalog-revision-b"));
+  fixture.publishButton().props.onClick();
+  assert.equal(fixture.imagePicker().props.disabled, true, "the image is locked during publication like other content");
+  const payload = JSON.parse(fixture.posts()[0].options.body);
+  assert.deepEqual(payload.post.featuredImage, nextImage);
+  assert.equal(payload.revision, "catalog-revision-a");
+  assert.equal(payload.previewFingerprint, createHash("sha256").update(JSON.stringify(expected)).digest("hex"));
+  finish(queued(expected));
+  await fixture.settle();
+  assert.deepEqual(fixture.imagePicker().props.value, nextImage);
+});
+
+test("an image change cannot revive an asynchronous preview of the previous selection", async t => {
+  const fixture = mount(t);
+  await fixture.settle();
+  fixture.fill();
+  let finishDigest;
+  Object.defineProperty(globalThis, "crypto", { configurable: true, value: {
+    randomUUID: () => webcrypto.randomUUID(),
+    subtle: { digest: () => new Promise(resolve => { finishDigest = resolve; }) },
+  } });
+  const preparing = fixture.preview();
+  fixture.selectImage(undefined);
+  finishDigest(new Uint8Array(32).buffer);
+  await preparing;
+  assert.equal(find(fixture.render(), element => element.props.className === "nbe-preview"), undefined);
+  assert.equal(fixture.publishButton().props.disabled, true);
+  assert.equal(fixture.imagePicker().props.value, undefined);
+});
+
+test("an existing featured image cannot be accidentally removed, while a replacement can be previewed", async t => {
+  const fixture = mount(t, async () => catalog([documentFor(article)]));
+  await fixture.settle();
+  find(fixture.render(), element => element.props["aria-label"] === `Open to edit: ${article.title}`).props.onClick();
+  assert.equal(fixture.imagePicker().props.required, true);
+  await fixture.preview();
+  fixture.imageControl("image").props.onChange({ target: { value: "" } });
+  await fixture.preview();
+  assert.match(text(fixture.render()), /Choose a picture to replace this article’s featured image/);
+  assert.equal(find(fixture.render(), element => element.props.className === "nbe-preview"), undefined);
+  assert.equal(fixture.publishButton().props.disabled, true);
+  assert.equal(fixture.field("body").props.value, article.body);
+  assert.equal(fixture.field("slug").props.readOnly, true);
+  assert.equal(fixture.posts().length, 0);
+
+  const replacement = content.nativeBlogImages.find(item => item.assetId !== featuredImage.assetId);
+  fixture.imageControl("image").props.onChange({ target: { value: replacement.assetId } });
+  await fixture.preview();
+  assert.deepEqual(fixture.imagePicker().props.value, { assetId: replacement.assetId, alt: replacement.alt });
+  assert.equal(fixture.publishButton().props.disabled, false);
 });

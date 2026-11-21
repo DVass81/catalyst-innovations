@@ -2,6 +2,7 @@ import StudioPhoto from "@/components/studio/StudioPhoto";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import BlogArticle, { BlogArticleSchema } from "@/components/BlogArticle";
+import BlogFeaturedImage from "@/components/BlogFeaturedImage";
 import { blogReadingMinutes, getPublishedPosts } from "@/lib/blog";
 import { breadcrumbSchema, pageMetadata } from "@/lib/seo";
 import { site } from "@/lib/site";
@@ -29,7 +30,7 @@ export default async function BlogPage() {
     {featured ? <>
       <BlogArticleSchema post={featured} />
       <BlogArticle post={featured} atBlogHome />
-      {earlier.length > 0 && <section className="wrap blog-archive" aria-labelledby="blog-archive-heading"><p className="overline">From the archive</p><h2 id="blog-archive-heading">Previous editions</h2><ol>{earlier.map(article => <li key={article.slug}><div><p className="overline">{article.category}</p><h3><Link href={`/blog/${article.slug}`}>{article.title}</Link></h3></div><p><time dateTime={article.publishedAt}>{new Date(`${article.publishedAt}T12:00:00Z`).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" })}</time><span>{blogReadingMinutes(article)} min read</span></p></li>)}</ol></section>}
+      {earlier.length > 0 && <section className="wrap blog-archive" aria-labelledby="blog-archive-heading"><p className="overline">From the archive</p><h2 id="blog-archive-heading">Previous editions</h2><ol>{earlier.map(article => <li key={article.slug}><div><BlogFeaturedImage cover={article.cover} thumbnail /><p className="overline">{article.category}</p><h3><Link href={`/blog/${article.slug}`}>{article.title}</Link></h3></div><p><time dateTime={article.publishedAt}>{new Date(`${article.publishedAt}T12:00:00Z`).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" })}</time><span>{blogReadingMinutes(article)} min read</span></p></li>)}</ol></section>}
     </> : <>
     <section className="wrap page-intro insights-intro">
       <p className="overline">The Catalyst Blog</p>

@@ -296,7 +296,7 @@ test("blog social previews use published post titles and reject unavailable rout
   const React = require("react");
   const { renderToStaticMarkup } = require("react-dom/server");
   const article = { slug: "a-public-post", title: "Making the field and office work together", category: "Field operations" };
-  const page = load("app/blog/[slug]/opengraph-image.tsx", {
+  const page = load("components/BlogSocialImage.tsx", {
     "next/og": { ImageResponse: class { constructor(element, options) { this.element = element; this.options = options; } } },
     "next/navigation": { notFound() { throw new Error("NOT_FOUND"); } },
     "@/lib/blog": { getPublishedPost: async slug => slug === article.slug ? article : undefined },
@@ -310,4 +310,24 @@ test("blog social previews use published post titles and reject unavailable rout
   assert.deepEqual(response.options, { width: 1200, height: 630 });
   assert.doesNotMatch(html, /<img|<script/);
   await assert.rejects(page.default({ params: Promise.resolve({ slug: "unpublished" }) }), /NOT_FOUND/);
+});
+
+test("legacy blog social-image URLs keep the same response and missing-post behavior through a normal route", async () => {
+  const calls = [];
+  const expected = new Response("Legacy social card fixture", { headers: { "Content-Type": "image/png" } });
+  const route = load("app/blog/[slug]/opengraph-image/route.ts", {
+    "@/components/BlogSocialImage": { default: async context => {
+      calls.push(context);
+      if ((await context.params).slug === "unpublished") throw new Error("NOT_FOUND");
+      return expected;
+    } },
+  });
+  const params = Promise.resolve({ slug: "a-public-post" });
+  const response = await route.GET(new Request(`${site.url}/blog/a-public-post/opengraph-image`), { params });
+  assert.equal(response, expected);
+  assert.equal(response.headers.get("content-type"), "image/png");
+  assert.equal(calls.length, 1);
+  assert.equal(calls[0].params, params);
+  assert.equal(route.revalidate, 300);
+  await assert.rejects(route.GET(new Request(`${site.url}/blog/unpublished/opengraph-image`), { params: Promise.resolve({ slug: "unpublished" }) }), /NOT_FOUND/);
 });

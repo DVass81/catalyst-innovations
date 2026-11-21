@@ -7,11 +7,11 @@ import { services } from "@/data/services";
 import { industryNeeds } from "@/data/industryNeeds";
 import { approvalContentPayload, articleWordCount } from "@/studio/lib/approval";
 import nativeCatalog from "@/data/blog-published.json";
-import { nativeBlogHeadings, nativeReadingMinutes, parseNativeBlogDocument } from "@/lib/native-blog-content";
+import { nativeBlogHeadings, nativeReadingMinutes, nativeBlogImage, parseNativeBlogDocument } from "@/lib/native-blog-content";
 
 export type BlogSource = Insight["sources"][number] & { publishedAt?: string; methodology?: string; context?: string };
 export type BlogEvidence = { claim: string; source: number; context: string; methodology: string; dataDate?: string };
-export type BlogPost = Omit<Insight, "solution" | "sources"> & { solution?: string; sources: BlogSource[]; evidence: BlogEvidence[]; nativeBody?: string };
+export type BlogPost = Omit<Insight, "solution" | "sources" | "cover"> & { solution?: string; sources: BlogSource[]; evidence: BlogEvidence[]; nativeBody?: string; cover?: { url: string; alt: string; caption?: string; width?: number; height?: number; credit?: string; sourceUrl?: string } };
 
 /** Published content only. Editor drafts and credentials never enter this reader. */
 const slug = z.string().max(100).regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
@@ -189,6 +189,7 @@ export function readNativePublishedBlog(input: unknown, today = todayEastern()):
     slug: post.slug, title: post.title, description: post.description, category: post.category,
     publishedAt: post.publishedAt, updatedAt: post.updatedAt, nativeBody: post.body,
     introduction: "", takeaway: "", example: { title: "", text: "" }, nextStep: "", tools: [], sources: [], evidence: [],
+    ...(post.featuredImage ? { cover: nativeBlogImage(post.featuredImage) } : {}),
     sections: nativeBlogHeadings(post.body).map(heading => ({ id: heading.id, heading: heading.text, paragraphs: [] })),
   })).sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
 }
