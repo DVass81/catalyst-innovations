@@ -150,6 +150,77 @@ test("reused operation with changed content or missing commit proof cannot repla
   await expectStatus(publishDocument(article, revision, operation, async url => url === `${endpoint}?ref=main` ? catalogResponse([published]) : Response.json([])), 503);
 });
 
+test("featured images persist in catalog reads and normalized writes without changing legacy posts", async () => {
+  const image = contentModule.exports.nativeBlogImages[0];
+  const featuredImage = { assetId: image.assetId, alt: image.alt };
+  const withImage = { ...published, featuredImage };
+  const catalog = await readPublicationCatalog(async () => catalogResponse([withImage]));
+  assert.deepEqual(catalog.posts[0].featuredImage, featuredImage);
+  const previous = { ...published, slug: "previous-text-only-post", publicationId: otherOperation };
+  let writes = 0;
+  const result = await publishDocument({ ...article, featuredImage: { ...featuredImage, alt: ` ${image.alt} ` } }, revision, operation, async (_url, options) => {
+    if (options.method === "GET") return catalogResponse([previous]);
+    writes++;
+    const [document, retained] = JSON.parse(Buffer.from(JSON.parse(options.body).content, "base64").toString("utf8"));
+    assert.deepEqual(document.featuredImage, featuredImage);
+    assert.deepEqual(retained, previous);
+    assert.equal(Object.hasOwn(retained, "featuredImage"), false);
+    return Response.json({ commit: { sha: commitSha } });
+  });
+  assert.equal(writes, 1);
+  assert.deepEqual(result.document.featuredImage, featuredImage);
+});
+
+test("an identical image publication retry recovers its receipt while every image change conflicts", async () => {
+  const [first, second] = contentModule.exports.nativeBlogImages;
+  const featuredImage = { assetId: first.assetId, alt: first.alt };
+  const withImage = { ...published, featuredImage };
+  let writes = 0;
+  const provider = async (url, options) => {
+    if (options.method !== "GET") { writes++; throw new Error("No retry may write."); }
+    if (url === `${endpoint}?ref=main`) return catalogResponse([withImage]);
+    return Response.json([{ sha: commitSha, commit: { message: `Publish blog ${article.slug} (${operation})` } }]);
+  };
+  const identical = await publishDocument({ ...article, featuredImage: { ...featuredImage, alt: ` ${first.alt} ` } }, nextRevision, operation, provider);
+  assert.equal(identical.idempotentReplay, true);
+  assert.deepEqual(identical.document.featuredImage, featuredImage);
+  for (const changed of [
+    article,
+    { ...article, featuredImage: { assetId: second.assetId, alt: second.alt } },
+    { ...article, featuredImage: { assetId: first.assetId, alt: "A different description of the same manufacturing image." } },
+  ]) await expectStatus(publishDocument(changed, revision, operation, provider), 409);
+  await expectStatus(publishDocument({ ...article, featuredImage }, revision, operation, async (_url, options) => {
+    assert.equal(options.method, "GET");
+    return catalogResponse([published]);
+  }), 409);
+  assert.equal(writes, 0);
+});
+
+test("a new approved operation can change only the image while retaining the article address and first date", async () => {
+  const [first, second] = contentModule.exports.nativeBlogImages;
+  const previous = { ...published, featuredImage: { assetId: first.assetId, alt: first.alt } };
+  const featuredImage = { assetId: second.assetId, alt: second.alt };
+  const result = await publishDocument({ ...article, featuredImage }, revision, otherOperation, async (_url, options) => {
+    if (options.method === "GET") return catalogResponse([previous]);
+    const [document] = JSON.parse(Buffer.from(JSON.parse(options.body).content, "base64").toString("utf8"));
+    assert.equal(document.slug, published.slug);
+    assert.equal(document.publishedAt, published.publishedAt);
+    assert.deepEqual(document.featuredImage, featuredImage);
+    return Response.json({ commit: { sha: commitSha } });
+  });
+  assert.equal(result.idempotentReplay, false);
+  assert.deepEqual(result.document.featuredImage, featuredImage);
+});
+
+test("an older open editor cannot silently remove an article's assigned picture", async () => {
+  const image = contentModule.exports.nativeBlogImages[0];
+  const withImage = { ...published, featuredImage: { assetId: image.assetId, alt: image.alt } };
+  await expectStatus(publishDocument({ ...article, body: `${article.body} An older editor changed this text.` }, revision, otherOperation, async (_url, options) => {
+    assert.equal(options.method, "GET", "An image-free request must be rejected before a write.");
+    return catalogResponse([withImage]);
+  }), 422);
+});
+
 test("two concurrent identical requests produce one durable write and a verified replay", async () => {
   let current = [];
   let catalogReads = 0;

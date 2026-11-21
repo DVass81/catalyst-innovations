@@ -52,15 +52,18 @@ test("guide and blog libraries keep their routes and readable labels distinct be
 const blogPosts = [1, 2, 3].map(number => ({ ...data.insights[0], slug: `editorial-fixture-${number}`, title: `Distinct editorial fixture ${number}`, publishedAt: "2026-10-30", evidence: [] }));
 const content = load("lib/native-blog-content.ts");
 const nativeBody = load("components/NativeBlogBody.tsx", { "@/lib/native-blog-content": content });
+const featuredPicture = load("components/BlogFeaturedImage.tsx", { "next/image": { default: props => React.createElement("img", props) } });
 const articleReader = load("components/BlogArticle.tsx", {
   "next/link": link,
   "@/components/ArticleShare": { default: ({ url }) => React.createElement("a", { href: url }, "Share this article") },
   "@/components/NativeBlogBody": nativeBody,
+  "@/components/BlogFeaturedImage": featuredPicture,
   "@/lib/blog": { blogReadingMinutes: () => 4 },
   "@/lib/calculators": { getCalculator: () => ({ title: "Example calculator", description: "A sample calculator" }) },
   "@/lib/site": { site: { url: "https://mycatalystinnovations.com", name: "Catalyst Innovations" } },
 });
 const pageShared = {
+  "@/components/BlogFeaturedImage": featuredPicture,
   "@/components/studio/StudioPhoto": { default: () => React.createElement("figure", null, "Representative photography") },
   "next/link": link,
   "@/data/insights": data,
@@ -71,6 +74,25 @@ const pageShared = {
   "@/components/BlogLibrary": { default: library.default },
   "@/components/BlogArticle": articleReader,
 };
+
+test("featured pictures appear once above the title with attribution in full articles and archive summaries", async () => {
+  const image = content.nativeBlogImages.find(image => image.label === "Office and paperwork");
+  const cover = content.nativeBlogImage({ assetId: image.assetId, alt: image.alt });
+  const post = { ...blogPosts[0], cover };
+  const html = renderToStaticMarkup(React.createElement(articleReader.default, { post, atBlogHome: true }));
+  assert.equal((html.match(/<img /g) ?? []).length, 1);
+  assert.ok(html.indexOf('class="blog-featured-image"') < html.indexOf("<h1>"));
+  assert.match(html, /Hands review a blank tax form/);
+  assert.match(html, /Photo by Kelly Sikkema on Unsplash/);
+  assert.match(html, /Representative photography/);
+  assert.ok(html.includes(image.sourceUrl));
+  assert.match(html, /loading="eager"/);
+  const page = load("app/blog/page.tsx", { ...pageShared, "@/lib/blog": { getPublishedPosts: async () => [post, { ...blogPosts[1], cover }], blogReadingMinutes: () => 4 }, "../insights/insights.css": {}, "./blog.css": {} });
+  const listing = renderToStaticMarkup(await page.default());
+  assert.equal((listing.match(/<img /g) ?? []).length, 2);
+  assert.match(listing, /blog-featured-thumbnail/);
+  assert.match(listing, /loading="lazy"/);
+});
 
 test("the public blog and homepage highlights contain only distinct published blog posts", async () => {
   const shared = {
@@ -145,6 +167,7 @@ test("Guides remain eight static references even when the separate blog is unava
 test("optional homepage blog suggestions do not hide the homepage during a catalog outage", async () => {
   const { default: Highlights } = load("components/BlogHighlights.tsx", {
     "next/link": link,
+    "@/components/BlogFeaturedImage": featuredPicture,
     "@/data/insights": data,
     "@/lib/blog": { getPublishedPosts: async () => { throw new Error("catalog unavailable"); } },
     "./BlogHighlights.module.css": { default: {} },

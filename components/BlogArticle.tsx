@@ -1,6 +1,7 @@
 import Link from "next/link";
 import ArticleShare from "@/components/ArticleShare";
 import NativeBlogBody from "@/components/NativeBlogBody";
+import BlogFeaturedImage from "@/components/BlogFeaturedImage";
 import { blogReadingMinutes, type BlogPost } from "@/lib/blog";
 import { getCalculator } from "@/lib/calculators";
 import { site } from "@/lib/site";
@@ -17,7 +18,7 @@ export function BlogArticleSchema({ post }: { post: BlogPost }) {
     datePublished: post.publishedAt, dateModified: post.updatedAt, inLanguage: "en-US", mainEntityOfPage: canonical, url: canonical,
     isPartOf: { "@type": "Blog", name: "The Catalyst Blog", url: new URL("/blog", site.url).toString() },
     author: { "@type": "Organization", name: site.name, url: site.url }, publisher: { "@type": "Organization", name: site.name, url: site.url },
-    image: new URL(`/blog/${post.slug}/opengraph-image`, site.url).toString(),
+    image: new URL(post.cover?.url ?? `/blog/${post.slug}/opengraph-image`, site.url).toString(),
   };
   return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema).replace(/</g, "\\u003c") }} />;
 }
@@ -40,18 +41,13 @@ export function BlogArticle({ post, related = [], atBlogHome = false }: BlogArti
       {!atBlogHome && <Link className="breadcrumb" href="/blog">← The Catalyst Blog</Link>}
       <div className="blog-publisher"><span className="blog-publisher-initials" aria-hidden="true">CI</span><div><p className="blog-publisher-name">Catalyst Innovations</p><p className="insight-byline"><time dateTime={post.publishedAt}>{displayDate(post.publishedAt)}</time><span aria-hidden="true">·</span><span>{blogReadingMinutes(post)} min read</span></p></div></div>
       <div className="blog-post-context"><p className="overline">{atBlogHome ? "The Catalyst Blog · Latest edition" : "The Catalyst Blog"}</p><span className="blog-post-topic">{post.category}</span></div>
+      <BlogFeaturedImage cover={post.cover} priority />
       <h1>{post.title}</h1>
       <p className="intro-copy">{post.description}</p>
     </header>
     <div className={`wrap insight-layout${post.sections.length ? "" : " blog-without-toc"}`}>
       {post.sections.length > 0 && <details className="insight-toc"><summary>In this article<span>{post.sections.length} sections</span></summary><nav aria-label="On this page"><ol role="list">{post.sections.map(section => <li key={section.id}><a href={`#${section.id}`}>{section.heading.replace(/^\d+\. /, "")}</a></li>)}</ol>{post.evidence.length > 0 && <a href="#facts-in-context">The facts in context ↓</a>}{post.tools.length > 0 && <a href="#try-your-numbers">Try your numbers ↓</a>}</nav></details>}
       <div className="insight-body">
-        {post.cover && <figure className="insight-cover">
-          {/* The published-content reader validates cover URLs before rendering. */}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={post.cover.url} alt={post.cover.alt} width={1600} height={900} loading="lazy" decoding="async" />
-          {post.cover.caption && <figcaption>{post.cover.caption}</figcaption>}
-        </figure>}
         {post.nativeBody ? <NativeBlogBody body={post.nativeBody} /> : <>
           <p className="insight-opening">{post.introduction}</p>
           <aside className="insight-takeaway"><p className="overline">The useful idea</p><p>{post.takeaway}</p></aside>
@@ -66,7 +62,7 @@ export function BlogArticle({ post, related = [], atBlogHome = false }: BlogArti
       </div>
     </div>
     </article>
-    {related.length > 0 && <section className="wrap content-section insight-related"><p className="overline">Keep the conversation going</p><h2>Another perspective.</h2><div className="insights-grid">{related.map(item => <article key={item.slug} className="insight-card"><p className="overline">{item.category}</p><h3><Link href={`/blog/${item.slug}`}>{item.title}</Link></h3><p>{item.description}</p><Link className="text-link" href={`/blog/${item.slug}`}>Read the article ↗<span className="sr-only">: {item.title}</span></Link></article>)}</div></section>}
+    {related.length > 0 && <section className="wrap content-section insight-related"><p className="overline">Keep the conversation going</p><h2>Another perspective.</h2><div className="insights-grid">{related.map(item => <article key={item.slug} className="insight-card"><BlogFeaturedImage cover={item.cover} thumbnail /><p className="overline">{item.category}</p><h3><Link href={`/blog/${item.slug}`}>{item.title}</Link></h3><p>{item.description}</p><Link className="text-link" href={`/blog/${item.slug}`}>Read the article ↗<span className="sr-only">: {item.title}</span></Link></article>)}</div></section>}
   </>;
 }
 

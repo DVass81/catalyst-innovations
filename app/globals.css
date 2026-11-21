@@ -331,3 +331,11 @@ html {
     linear-gradient(90deg, rgb(10 22 40 / 0.045) 1px, transparent 1px);
   background-size: 48px 48px;
 }
+
+/* Shared article photography in the reader, summaries and private previews. */
+.blog-featured-image { margin: 22px 0 18px; min-width: 0; }
+.blog-featured-image img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 6px; }
+.blog-featured-image figcaption { margin-top: 8px; color: #52616c; font: 400 12px/1.6 Arial, Helvetica, sans-serif; overflow-wrap: anywhere; }
+.blog-featured-image figcaption a { color: #245b83; text-decoration: underline; text-underline-offset: 3px; }
+.blog-featured-thumbnail { max-width: 340px; }
+.blog-featured-thumbnail figcaption { font-size: 11px; }

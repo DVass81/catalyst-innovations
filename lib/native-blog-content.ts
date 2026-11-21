@@ -1,5 +1,94 @@
 import { z } from "zod";
 
+/**
+ * Existing licensed studio photography, frozen under content-addressed names.
+ * Sources, license review and representative-use limits: docs/studio-media-sources.md.
+ * Never overwrite these files; a new image version receives a new asset ID.
+ */
+export const nativeBlogImages = [
+  {
+    assetId: "05d5d59601b54f95f56e0ef35543e57bed10c6a15f05861ee3eab61de1234c2e",
+    label: "Manufacturing", src: "/blog-images/05d5d59601b54f95f56e0ef35543e57bed10c6a15f05861ee3eab61de1234c2e.webp",
+    width: 1400, height: 1000, alt: "Two workers guide a suspended metal component on a factory floor.",
+    credit: "Photo by Cemrecan Yurtman on Unsplash",
+    sourceUrl: "https://unsplash.com/photos/a-factory-filled-with-lots-of-machines-and-workers-WysVHhi69js",
+    licenseUrl: "https://unsplash.com/license", caption: "Representative photography",
+  },
+  {
+    assetId: "7b5a3562937e179b6cd5f2289196559fe5ed976c9f637bb50461c3592bcfc889",
+    label: "Planning", src: "/blog-images/7b5a3562937e179b6cd5f2289196559fe5ed976c9f637bb50461c3592bcfc889.webp",
+    width: 1200, height: 900, alt: "Two colleagues organize yellow sticky notes on a glass planning wall.",
+    credit: "Photo by airfocus on Unsplash",
+    sourceUrl: "https://unsplash.com/photos/people-collaborating-on-project-plan-v89zhr0iBFY",
+    licenseUrl: "https://unsplash.com/license", caption: "Representative photography",
+  },
+  {
+    assetId: "1a329330baac6864e4f19245d7befa3f97803c02fd75a4808a8e9b8f284a25c1",
+    label: "Skilled trades", src: "/blog-images/1a329330baac6864e4f19245d7befa3f97803c02fd75a4808a8e9b8f284a25c1.webp",
+    width: 1200, height: 900, alt: "A technician uses insulated test probes to check an electrical control panel.",
+    credit: "Photo by Toolmash Expo on Unsplash",
+    sourceUrl: "https://unsplash.com/photos/electrician-testing-electrical-panel-with-multimeter-PkHf7BUWbtk",
+    licenseUrl: "https://unsplash.com/license", caption: "Representative photography",
+  },
+  {
+    assetId: "bb8e44824daf63574ac39c5433c34a35c5de5f67f6c4ba92c65a93b501265b6e",
+    label: "Warehouse", src: "/blog-images/bb8e44824daf63574ac39c5433c34a35c5de5f67f6c4ba92c65a93b501265b6e.webp",
+    width: 1200, height: 900, alt: "A warehouse worker retrieves stock from a shelf while standing on a stepladder.",
+    credit: "Photo by Kseniia Ilinykh on Unsplash",
+    sourceUrl: "https://unsplash.com/photos/a-man-standing-on-a-ladder-in-a-warehouse-cNyDTmtBQbc",
+    licenseUrl: "https://unsplash.com/license", caption: "Representative photography",
+  },
+  {
+    assetId: "b7915c6a14df94a4869d9d35ae2635b440114635a89b6b672e6ae8ee51f039bf",
+    label: "Office and paperwork", src: "/blog-images/b7915c6a14df94a4869d9d35ae2635b440114635a89b6b672e6ae8ee51f039bf.webp",
+    width: 1200, height: 800, alt: "Hands review a blank tax form beside a calculator, notebook and laptop.",
+    credit: "Photo by Kelly Sikkema on Unsplash",
+    sourceUrl: "https://unsplash.com/photos/person-reviewing-documents-with-calculator-and-laptop-0oZpRxG5Hkk",
+    licenseUrl: "https://unsplash.com/license", caption: "Representative photography",
+  },
+  {
+    assetId: "2b5bcd6e9378e5fbd6f5e666041c391e3168595b70fb296c2bec8b7df33de5fc",
+    label: "Community", src: "/blog-images/2b5bcd6e9378e5fbd6f5e666041c391e3168595b70fb296c2bec8b7df33de5fc.webp",
+    width: 1200, height: 800, alt: "An aerial view of homes, trees, playing fields and a neighborhood playground.",
+    credit: "Photo by Alex Reynolds on Unsplash",
+    sourceUrl: "https://unsplash.com/photos/aerial-view-of-suburban-neighborhood-with-park-and-trees-fI4J4hWCKRo",
+    licenseUrl: "https://unsplash.com/license", caption: "Representative photography",
+  },
+  {
+    assetId: "89855a5a83374d1138943b839979ef89081a16cc3989c01a997b0a410b7750ac",
+    label: "Plumbing", src: "/blog-images/89855a5a83374d1138943b839979ef89081a16cc3989c01a997b0a410b7750ac.webp",
+    width: 1200, height: 900, alt: "A technician fits a threaded radiator pipe with plumbing tools beside the work.",
+    credit: "Photo by Sergei Starostin on Pexels",
+    sourceUrl: "https://www.pexels.com/photo/professional-plumber-installing-a-radiator-pipe-29226620/",
+    licenseUrl: "https://www.pexels.com/license/", caption: "Representative photography",
+  },
+  {
+    assetId: "958ee4bd63bcc9c7e9c5fb28e626f1da5792406f06367de482ee75b7d9afeaae",
+    label: "Painting", src: "/blog-images/958ee4bd63bcc9c7e9c5fb28e626f1da5792406f06367de482ee75b7d9afeaae.webp",
+    width: 1200, height: 900, alt: "A person uses a roller to paint an interior wall beside a protected window and paint tray.",
+    credit: "Photo by Tima Miroshnichenko on Pexels",
+    sourceUrl: "https://www.pexels.com/photo/man-painting-the-wall-6474471/",
+    licenseUrl: "https://www.pexels.com/license/", caption: "Representative photography",
+  },
+] as const;
+
+const featuredImageSchema = z.object({
+  assetId: z.enum(nativeBlogImages.map(image => image.assetId)),
+  alt: z.string().trim().min(10).max(250).refine(value => !/[<>\u0000-\u001f\u007f]/.test(value), "Describe the image using plain text."),
+}).strict();
+
+export type NativeBlogFeaturedImage = z.infer<typeof featuredImageSchema>;
+
+export function nativeBlogImage(featuredImage: NativeBlogFeaturedImage | undefined) {
+  if (!featuredImage) return undefined;
+  const image = nativeBlogImages.find(item => item.assetId === featuredImage.assetId);
+  if (!image) return undefined;
+  return {
+    url: image.src, alt: featuredImage.alt, width: image.width, height: image.height,
+    credit: image.credit, sourceUrl: image.sourceUrl, caption: image.caption, licenseUrl: image.licenseUrl,
+  };
+}
+
 const calendarDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/).refine(value => {
   const date = new Date(`${value}T12:00:00Z`);
   return Number.isFinite(date.getTime()) && date.toISOString().slice(0, 10) === value;
@@ -12,6 +101,7 @@ export const nativeBlogSchema = z.object({
   description: z.string().trim().min(30).max(240),
   category: z.string().trim().min(1).max(80),
   body: z.string().min(100).max(60_000).refine(value => value.trim().length >= 100, "Enter at least 100 characters of article text."),
+  featuredImage: featuredImageSchema.optional(),
 });
 
 export const nativeBlogDocumentSchema = nativeBlogSchema.extend({

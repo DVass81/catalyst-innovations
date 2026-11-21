@@ -2,7 +2,9 @@
 
 import { useCallback, useEffect, useRef, useState, type FormEvent } from "react";
 import NativeBlogBody from "@/components/NativeBlogBody";
-import { parseNativeBlogInput, nativeReadingMinutes, type NativeBlogInput } from "@/lib/native-blog-content";
+import BlogFeaturedImage from "@/components/BlogFeaturedImage";
+import NativeBlogImagePicker from "@/components/NativeBlogImagePicker";
+import { parseNativeBlogInput, nativeReadingMinutes, nativeBlogImage, type NativeBlogInput, type NativeBlogFeaturedImage } from "@/lib/native-blog-content";
 
 type Receipt = { edition: string; slug: string; publicationId: string; documentFingerprint: string; savedAt: string };
 type State = { edition: string; canPublish: boolean; reason: string; status: string; receipt: Receipt | null; checkedAt: string };
@@ -53,10 +55,17 @@ export default function NativeBlogPublisher() {
     setError("");
   }
 
+  function changeImage(value: NativeBlogFeaturedImage | undefined) {
+    requestVersion.current++;
+    setPost(previous => { const next = { ...previous }; if (value) next.featuredImage = value; else delete next.featuredImage; return next; });
+    setPreview(null);
+    setError("");
+  }
+
   async function prepare(event: FormEvent) {
     event.preventDefault();
     const normalized = parseNativeBlogInput(post);
-    if (!normalized) { setError("Complete every field. Use 10–120 characters for the title, 30–240 for the summary, and at least 100 for the article."); return; }
+    if (!normalized || !normalized.featuredImage) { setError("Complete every field and choose a featured picture. Use 10–120 characters for the title, 30–240 for the summary, and at least 100 for the article."); return; }
     const version = requestVersion.current;
     setBusy(true); setError(""); setPreview(null);
     try {
@@ -108,9 +117,10 @@ export default function NativeBlogPublisher() {
         <div><label htmlFor="publisher-slug">Article address <span>lowercase-words-with-hyphens</span></label><input id="publisher-slug" value={post.slug} maxLength={100} pattern="[a-z0-9]+(-[a-z0-9]+)*" required onChange={e => change("slug", e.target.value)} /></div>
         <div className="nbe-field-full"><label htmlFor="publisher-summary">Summary <span>30–240 characters</span></label><textarea id="publisher-summary" value={post.description} minLength={30} maxLength={240} required rows={3} onChange={e => change("description", e.target.value)} /></div>
         <div><label htmlFor="publisher-category">Category</label><input id="publisher-category" value={post.category} maxLength={80} required onChange={e => change("category", e.target.value)} /></div>
+        <NativeBlogImagePicker idPrefix="publisher" value={post.featuredImage} onChange={changeImage} required />
         <div className="nbe-field-full"><label htmlFor="publisher-body">Article <span>Headings, lists, emphasis and HTTPS links are supported.</span></label><textarea className="nbe-body-input" id="publisher-body" value={post.body} minLength={100} maxLength={60_000} required rows={18} onChange={e => change("body", e.target.value)} /></div>
       </div><div className="nbe-actions"><button className="nbe-button" type="submit">{busy ? "Preparing…" : "Preview article"}</button></div></fieldset>
     </form>}
-    {preview && !complete && <article className="nbe-preview" aria-labelledby="publisher-preview-title"><p className="nbe-eyebrow">Publication preview · {preview.edition}</p><h2 id="publisher-preview-title">{preview.post.title}</h2><p>{preview.post.category} · {nativeReadingMinutes(preview.post.body)} min read</p><p>{preview.post.description}</p><div className="nbe-preview-body"><NativeBlogBody body={preview.post.body} /></div><div className="nbe-actions"><button className="nbe-button" disabled={busy || !state?.canPublish} onClick={() => void publish()}>{busy ? "Saving…" : "Publish Friday article"}</button></div>{!state?.canPublish && <p>{state?.reason}</p>}</article>}
+    {preview && !complete && <article className="nbe-preview" aria-labelledby="publisher-preview-title"><p className="nbe-eyebrow">Publication preview · {preview.edition}</p><BlogFeaturedImage cover={nativeBlogImage(preview.post.featuredImage)} /><h2 id="publisher-preview-title">{preview.post.title}</h2><p>{preview.post.category} · {nativeReadingMinutes(preview.post.body)} min read</p><p>{preview.post.description}</p><div className="nbe-preview-body"><NativeBlogBody body={preview.post.body} /></div><div className="nbe-actions"><button className="nbe-button" disabled={busy || !state?.canPublish} onClick={() => void publish()}>{busy ? "Saving…" : "Publish Friday article"}</button></div>{!state?.canPublish && <p>{state?.reason}</p>}</article>}
   </section>;
 }

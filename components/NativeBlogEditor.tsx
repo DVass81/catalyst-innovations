@@ -3,7 +3,9 @@
 import { useCallback, useEffect, useRef, useState, type FormEvent } from "react";
 import Link from "next/link";
 import NativeBlogBody from "@/components/NativeBlogBody";
-import { nativeBlogSchema, nativeBlogDocumentSchema, parseNativeBlogInput, type NativeBlogDocument, type NativeBlogInput } from "@/lib/native-blog-content";
+import NativeBlogImagePicker from "@/components/NativeBlogImagePicker";
+import BlogFeaturedImage from "@/components/BlogFeaturedImage";
+import { nativeBlogSchema, nativeBlogDocumentSchema, parseNativeBlogInput, nativeBlogImage, type NativeBlogDocument, type NativeBlogInput, type NativeBlogFeaturedImage } from "@/lib/native-blog-content";
 
 const emptyPost: NativeBlogInput = { title: "", slug: "", description: "", category: "", body: "" };
 type FieldErrors = Partial<Record<keyof NativeBlogInput, string>>;
@@ -70,6 +72,7 @@ export function NativeBlogEditor() {
   const catalogRequest = useRef(0);
   const previewHeading = useRef<HTMLHeadingElement>(null);
   const errorSummary = useRef<HTMLDivElement>(null);
+  const requiresFeaturedImage = !selectedSlug || posts.some(article => article.slug === selectedSlug && Boolean(article.featuredImage));
 
   const loadCatalog = useCallback(async (signal?: AbortSignal, statusRevision?: string) => {
     const requestId = ++catalogRequest.current;
@@ -146,10 +149,20 @@ export function NativeBlogEditor() {
     setErrors({});
   }
 
-  function updatePost(field: keyof NativeBlogInput, value: string) {
+  function updatePost(field: Exclude<keyof NativeBlogInput, "featuredImage">, value: string) {
     invalidatePreview();
     if (field === "slug") setSlugEdited(true);
     setPost(current => ({ ...current, [field]: value, ...(field === "title" && !slugEdited && !selectedSlug ? { slug: articleSlug(value) } : {}) }));
+  }
+
+  function updateFeaturedImage(value: NativeBlogFeaturedImage | undefined) {
+    invalidatePreview();
+    setPost(current => {
+      const next = { ...current };
+      if (value) next.featuredImage = value;
+      else delete next.featuredImage;
+      return next;
+    });
   }
 
   function selectArticle(slug: string) {
@@ -157,7 +170,7 @@ export function NativeBlogEditor() {
     setSelectedSlug(slug);
     setSlugEdited(Boolean(slug));
     const existing = posts.find(article => article.slug === slug);
-    setPost(existing ? { title: existing.title, slug: existing.slug, description: existing.description, category: existing.category, body: existing.body } : { ...emptyPost });
+    setPost(existing ? { title: existing.title, slug: existing.slug, description: existing.description, category: existing.category, body: existing.body, ...(existing.featuredImage ? { featuredImage: existing.featuredImage } : {}) } : { ...emptyPost });
   }
 
   async function previewArticle(event: FormEvent<HTMLFormElement>) {
@@ -170,13 +183,15 @@ export function NativeBlogEditor() {
     setRetryPublish(false);
     const candidate = { ...post, description: post.description.trim() || articleSummary(post.body) };
     const parsed = parseNativeBlogInput(candidate);
-    if (!parsed) {
+    const imageRequired = requiresFeaturedImage && !post.featuredImage;
+    if (!parsed || imageRequired) {
       const result = nativeBlogSchema.safeParse(candidate);
       const fieldErrors: FieldErrors = {};
       if (!result.success) for (const issue of result.error.issues) {
         const field = issue.path[0];
-        if (typeof field === "string" && Object.hasOwn(emptyPost, field)) fieldErrors[field as keyof NativeBlogInput] ??= issue.message;
+        if (typeof field === "string" && (Object.hasOwn(emptyPost, field) || field === "featuredImage")) fieldErrors[field as keyof NativeBlogInput] ??= issue.message;
       }
+      if (imageRequired) fieldErrors.featuredImage = selectedSlug ? "Choose a picture to replace this article’s featured image." : "Choose a featured image for your new article.";
       setErrors(fieldErrors);
       setError("Check the fields below, then preview your article again.");
       requestAnimationFrame(() => errorSummary.current?.focus());
@@ -297,6 +312,7 @@ export function NativeBlogEditor() {
           <div className="nbe-field"><label htmlFor="native-blog-category">Topic</label><input id="native-blog-category" value={post.category} onChange={event => updatePost("category", event.target.value)} maxLength={80} required placeholder="For example, Business operations" aria-invalid={Boolean(errors.category)} aria-describedby={errorId("category")} />{errors.category && <p className="nbe-field-error" id={errorId("category")}>{errors.category}</p>}</div>
           <div className="nbe-field"><label htmlFor="native-blog-slug">Article URL</label><div className="nbe-slug"><span>/blog/</span><input id="native-blog-slug" value={post.slug} onChange={event => updatePost("slug", event.target.value)} readOnly={Boolean(selectedSlug)} maxLength={100} required aria-invalid={Boolean(errors.slug)} aria-describedby={["native-blog-slug-help", errorId("slug")].filter(Boolean).join(" ")} /></div><p className="nbe-hint" id="native-blog-slug-help">{selectedSlug ? "The URL stays fixed when editing this article." : "Created from the title. You can adjust it before publishing."}</p>{errors.slug && <p className="nbe-field-error" id={errorId("slug")}>{errors.slug}</p>}</div>
           <div className="nbe-field nbe-field-wide"><label htmlFor="native-blog-description">Short summary <span>Optional</span></label><textarea id="native-blog-description" value={post.description} onChange={event => updatePost("description", event.target.value)} maxLength={240} rows={2} aria-invalid={Boolean(errors.description)} aria-describedby={["native-blog-description-help", errorId("description")].filter(Boolean).join(" ")} /><p className="nbe-hint" id="native-blog-description-help">Leave blank to use the opening text of your article. The preview shows the summary that will be used.</p>{errors.description && <p className="nbe-field-error" id={errorId("description")}>{errors.description}</p>}</div>
+          <div className="nbe-field nbe-field-wide nbe-image-field" role="group" aria-label="Featured picture" aria-describedby={errorId("featuredImage")}><NativeBlogImagePicker value={post.featuredImage} onChange={updateFeaturedImage} disabled={busy} required={requiresFeaturedImage} idPrefix="native-blog" />{errors.featuredImage && <p className="nbe-field-error" id={errorId("featuredImage")}>{errors.featuredImage}</p>}</div>
           <div className="nbe-field nbe-field-wide"><label htmlFor="native-blog-body">Paste article</label><textarea className="nbe-body-input" id="native-blog-body" value={post.body} onChange={event => updatePost("body", event.target.value)} rows={20} required aria-invalid={Boolean(errors.body)} aria-describedby={["native-blog-body-help", errorId("body")].filter(Boolean).join(" ")} /><p className="nbe-hint" id="native-blog-body-help">Separate paragraphs with a blank line. Use ## for headings and - for lists. Articles can contain up to 60,000 characters. Copy your text before leaving this page.</p>{errors.body && <p className="nbe-field-error" id={errorId("body")}>{errors.body}</p>}</div>
         </div>
       </fieldset>
@@ -307,7 +323,7 @@ export function NativeBlogEditor() {
     {preview && <section className="nbe-preview" aria-labelledby="native-blog-preview-heading">
       <h2 id="native-blog-preview-heading" ref={previewHeading} tabIndex={-1}>Article preview</h2>
       <dl className="nbe-preview-meta"><div><dt>Public URL</dt><dd>/blog/{preview.post.slug}</dd></div><div><dt>Page title</dt><dd>{preview.post.title}</dd></div><div><dt>Topic</dt><dd>{preview.post.category}</dd></div><div><dt>Summary</dt><dd>{preview.post.description}</dd></div></dl>
-      <article className="nbe-preview-article"><p className="nbe-eyebrow">{preview.post.category}</p><h3 className="nbe-article-title">{preview.post.title}</h3><NativeBlogBody body={preview.post.body} className="nbe-preview-body" /></article>
+      <article className="nbe-preview-article"><div className="nbe-preview-image"><BlogFeaturedImage cover={nativeBlogImage(preview.post.featuredImage)} /></div><p className="nbe-eyebrow">{preview.post.category}</p><h3 className="nbe-article-title">{preview.post.title}</h3><NativeBlogBody body={preview.post.body} className="nbe-preview-body" /></article>
     </section>}
   </section>;
 }

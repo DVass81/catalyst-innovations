@@ -57,6 +57,7 @@ export async function POST(request: NextRequest) {
   catch { return json({ error: "The article could not be read or is too large." }, 400); }
   const post = parseNativeBlogInput(input?.post);
   if (!post || !["preview", "publish"].includes(input?.action)) return json({ error: "Check the article fields." }, 422);
+  if (!post.featuredImage) return json({ error: "Choose a featured picture for this article." }, 422);
   try {
     if (input.action === "preview") {
       const state = await readPublisherState();

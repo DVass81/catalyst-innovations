@@ -57,6 +57,18 @@ test("live requires the exact saved version, including edits made on the same da
   assert.equal(delivery.publicationFingerprint(document), delivery.publicationFingerprint({ ...document, unexpected: "ignored by schema" }));
 });
 
+test("an image or its alternative text changes the exact version without changing article text", async t => {
+  environment(t);
+  const image = content.nativeBlogImages[0];
+  const illustrated = { ...document, featuredImage: { assetId: image.assetId, alt: image.alt } };
+  const described = { ...illustrated, featuredImage: { ...illustrated.featuredImage, alt: "Workers coordinate a metal component in a manufacturing workplace." } };
+  assert.notEqual(delivery.publicationFingerprint(illustrated), delivery.publicationFingerprint(document));
+  assert.notEqual(delivery.publicationFingerprint(illustrated), delivery.publicationFingerprint(described));
+  assert.equal((await delivery.readArticleDeliveries([illustrated], async () => manifest([document])))[document.slug].status, "saved");
+  assert.equal((await delivery.readArticleDeliveries([described], async () => manifest([illustrated])))[document.slug].status, "saved");
+  assert.equal((await delivery.readArticleDeliveries([illustrated], async () => manifest([illustrated])))[document.slug].status, "live");
+});
+
 test("public verification only requests the fixed endpoint and sends no credentials", async t => {
   environment(t);
   const result = await delivery.readArticleDeliveries([document], async (url, init) => {

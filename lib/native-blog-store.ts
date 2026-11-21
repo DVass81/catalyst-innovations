@@ -103,8 +103,8 @@ export async function readPublicationCatalog(fetcher: typeof fetch = fetch): Pro
 }
 
 function sameContent(document: NativeBlogDocument, input: NativeBlogInput) {
-  return document.title === input.title && document.slug === input.slug && document.description === input.description &&
-    document.category === input.category && document.body === input.body;
+  const savedInput = parseNativeBlogInput(document);
+  return savedInput !== null && JSON.stringify(savedInput) === JSON.stringify(input);
 }
 
 function publicationMessage(slug: string, operationId: string) {
@@ -130,6 +130,9 @@ export async function publishDocument(input: NativeBlogInput, expectedRevision: 
   if (repeated) return replayPublication(repeated, normalized, operationId, fetcher);
   if (catalog.revision !== expectedRevision) throw conflict();
   const previous = catalog.posts.find(post => post.slug === normalized.slug);
+  if (previous?.featuredImage && !normalized.featuredImage) {
+    throw new NativeBlogStoreError(422, "This article has a featured picture. Reload the article and keep or replace its picture before publishing.");
+  }
   const today = new Intl.DateTimeFormat("en-CA", { timeZone: "America/New_York", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date());
   const document = parseNativeBlogDocument({ ...normalized, publishedAt: previous?.publishedAt ?? today, updatedAt: today, publicationId: operationId });
   if (!document) throw unavailable();
