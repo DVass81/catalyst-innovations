@@ -205,7 +205,7 @@ test("the Blog share component uses the editorial address and event without chan
   const mocks = { "@/lib/blog-attribution": attribution, "@/lib/site": { track: () => {} }, "./ArticleShare.module.css": { default: {} } };
   const ArticleShare = load("components/ArticleShare.tsx", mocks).default;
   const html = renderToStaticMarkup(React.createElement(ArticleShare, props));
-  assert.match(html, /Share the article/);
+  assert.match(html, /Share this post/);
   const linkedIn = html.match(/href="(https:\/\/www\.linkedin\.com[^\"]+)"/)[1].replaceAll("&amp;", "&");
   const shared = new URL(new URL(linkedIn).searchParams.get("url"));
   assert.equal(shared.pathname, `/blog/${post}`);

@@ -120,6 +120,9 @@ test("the Blog home shows the complete latest article and its formatting without
   assert.match(html, /4 min read/);
   assert.match(html, /<time dateTime="2026-10-30">October 30, 2026<\/time>/);
   assert.match(html, /The entire opening is visible immediately/);
+  assert.match(html, /<details class="insight-toc"><summary>In this article/);
+  assert.doesNotMatch(html, /<details[^>]*\bopen(?:=|[\s>])/);
+  assert.ok(html.indexOf('</details>') < html.indexOf('class="native-blog-body"'), "optional contents never hide the article body");
   assert.match(html, /<h2 id="section-a-useful-section-label">A useful section label<\/h2>/);
   assert.match(html, /<strong>important label<\/strong>/);
   assert.match(html, /<li>Second practical step<\/li>/);
