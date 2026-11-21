@@ -6,6 +6,8 @@ Prepared November 20, 2026. This replaces the unfinished Sanity Blog setup. The 
 
 The public `/blog` opens directly to the full latest edition, with its title, topic, publication date, reading time, section headings, lists and emphasis. No extra read-article step is required. Earlier editions appear below it, and each article retains its permanent `/blog/<slug>` URL for sharing. Both views use the same reader so published formatting stays consistent.
 
+The reader presents each edition as a company post with a compact publisher row, date and reading time above the title, a comfortable single reading column, optional collapsible contents and a sharing footer. The complete article stays visible when contents are closed. No likes, views or comment counts are invented.
+
 1. Open `https://mycatalystinnovations.com/blog/editor` and enter the private editor password.
 2. Paste Echo’s article and enter its title and topic. The URL is suggested from the title; the short summary can be entered or derived from the article’s opening.
 3. Select **Preview article**. Check the entire text, sources, claims and formatting. Changing any field requires a new preview.

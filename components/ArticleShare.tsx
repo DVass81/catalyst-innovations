@@ -25,8 +25,8 @@ export default function ArticleShare({ slug, title, url, kind = "guide" }: { slu
       share("copy");
     } catch { setCopied(false); setFallback(true); }
   }
-  return <section className={styles.share} aria-label="Share this article">
-    <div><p className="overline">Useful to someone on your team?</p><p className={styles.label}>{kind === "blog" ? "Share the article." : "Share the guide."}</p></div>
+  return <section className={styles.share} data-content-kind={kind} aria-label={kind === "blog" ? "Share this post" : "Share this article"}>
+    {kind === "blog" ? <p className={styles.label}>Share this post</p> : <div><p className="overline">Useful to someone on your team?</p><p className={styles.label}>Share the guide.</p></div>}
     <div className={styles.actions}>
       <button type="button" onClick={copy}>{copied ? <Check size={16} aria-hidden="true" /> : <Copy size={16} aria-hidden="true" />}{copied ? "Link copied" : "Copy link"}</button>
       <a href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(linkedin)}`} target="_blank" rel="noopener noreferrer" onClick={() => share("linkedin")}>LinkedIn <ArrowUpRight size={15} aria-hidden="true" /><span className="sr-only"> (opens in a new tab)</span></a>
